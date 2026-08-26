@@ -1,100 +1,129 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import { type SharedData } from '@/types';
+import { DotLottiePlayer } from '@dotlottie/react-player';
+import '@dotlottie/react-player/dist/index.css';
 import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 
 interface AuthSplitLayoutProps {
     title?: string;
     description?: string;
-    bgImage?: string;
     reverse?: boolean;
+}
+
+interface LottieVisualProps {
+    label: string;
+    isActive: boolean;
+}
+
+function LottieVisual({ label, isActive }: LottieVisualProps) {
+    return (
+        <div 
+            className={`relative flex w-full max-w-[430px] flex-col items-center select-none pt-12 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                isActive 
+                    ? 'opacity-100 scale-100 blur-0 translate-y-0 pointer-events-auto' 
+                    : 'opacity-0 scale-95 blur-sm translate-y-4 pointer-events-none'
+            }`}
+        >
+            {/* Ambient Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 rounded-full bg-white/5 blur-[120px] pointer-events-none" />
+
+            {/* Container Card Putih / Light Card */}
+            <div className="relative z-10 w-full overflow-hidden rounded-[2.5rem] bg-[#f8fafc] p-6 shadow-2xl ring-1 ring-white/20">
+                
+                {/* Mini Top Bar Dekoratif */}
+                <div className="mb-4 flex items-center justify-between px-2">
+                    <div className="flex gap-1.5">
+                        <div className="size-2.5 rounded-full bg-neutral-300" />
+                        <div className="size-2.5 rounded-full bg-neutral-300" />
+                        <div className="size-2.5 rounded-full bg-neutral-300" />
+                    </div>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-neutral-400">
+                        {label}
+                    </span>
+                </div>
+
+                {/* dotLottie Player */}
+                <div className="flex w-full items-center justify-center">
+                    <DotLottiePlayer
+                        src="/animation/auth/Login.lottie"
+                        autoplay
+                        loop
+                        className="w-full h-auto max-h-[300px]"
+                    />
+                </div>
+            </div>
+
+            {/* Tagline Badge */}
+            <div className="mt-5 text-center">
+                <span className="inline-block rounded-full bg-neutral-900/90 border border-neutral-800 px-4 py-1.5 text-xs font-semibold text-neutral-300 backdrop-blur-md shadow-lg">
+                    ✦ Login & Register Experience
+                </span>
+            </div>
+        </div>
+    );
 }
 
 export default function AuthSplitLayout({ 
     children, 
     title, 
     description, 
-    bgImage, 
     reverse = false 
 }: PropsWithChildren<AuthSplitLayoutProps>) {
     const { name, quote } = usePage<SharedData>().props;
 
     return (
-        <div className="relative min-h-dvh w-full overflow-hidden bg-[#0a192f] font-sans antialiased">
+        <div className="relative min-h-dvh w-full overflow-hidden bg-black font-sans antialiased">
             
             {/* =========================================================================
-                1. BACKGROUND VISUAL (STATIS - TIDAK BERGERAK)
+                1. BACKGROUND VISUAL (FADING LOTTIE CONTENT)
                ========================================================================= */}
             <div className="hidden lg:grid grid-cols-2 h-dvh w-full absolute inset-0 z-0">
                 
                 {/* Sisi Kiri (Tampilan saat form di kanan / Login) */}
-                <div className="relative h-full flex flex-col justify-between p-12 text-white border-r border-[#1e3a5f]/40 overflow-hidden">
-                    {bgImage ? (
-                        <div className="absolute inset-0 z-0">
-                            <img 
-                                src={bgImage} 
-                                alt="Visual Login" 
-                                className="h-full w-full object-cover object-center" 
-                            />
-                            <div className="absolute inset-0 bg-[#0a192f]/40 backdrop-blur-[2px]" />
-                        </div>
-                    ) : (
-                        <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#0e2442] via-[#0a192f] to-[#06101e]" />
-                            <div className="absolute top-1/4 -left-20 h-96 w-96 rounded-full bg-[#1d4ed8]/20 blur-[100px] pointer-events-none" />
-                            <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-[#38bdf8]/10 blur-[90px] pointer-events-none" />
-                        </>
-                    )}
-
-                    <Link href={route('home')} className="relative z-20 flex items-center gap-3 text-lg font-semibold tracking-wide text-white transition-opacity hover:opacity-90">
-                        <div className="flex size-10 items-center justify-center rounded-xl bg-[#1e3a5f]/60 border border-white/10 backdrop-blur-md">
-                            <AppLogoIcon className="size-6 fill-current text-[#60a5fa]" />
+                <div className="relative h-full flex flex-col justify-between p-12 text-white border-r border-neutral-900 overflow-hidden bg-black">
+                    <Link href={route('home')} className="relative z-20 flex items-center gap-3 text-lg font-semibold tracking-tight text-white transition-opacity hover:opacity-80">
+                        <div className="flex size-10 items-center justify-center rounded-xl bg-neutral-900 border border-neutral-800 backdrop-blur-md">
+                            <AppLogoIcon className="size-6 fill-current text-white" />
                         </div>
                         <span>{name}</span>
                     </Link>
 
+                    {/* Lottie Card dengan Fade State & Login Access */}
+                    <div className="relative z-10 mt-auto mb-6 flex w-full justify-center">
+                        <LottieVisual label="LOGIN ACCESS" isActive={!reverse} />
+                    </div>
+
                     {quote && (
-                        <div className="relative z-20 mt-auto">
-                            <blockquote className="space-y-3 border-l-2 border-[#38bdf8]/40 pl-5">
-                                <p className="text-lg font-normal leading-relaxed text-[#cbd5e1]">&ldquo;{quote.message}&rdquo;</p>
-                                <footer className="text-sm font-medium tracking-wide text-[#94a3b8]">{quote.author}</footer>
+                        <div className={`relative z-20 mt-auto transition-opacity duration-700 ${!reverse ? 'opacity-100' : 'opacity-0'}`}>
+                            <blockquote className="space-y-2 border-l-2 border-neutral-800 pl-4">
+                                <p className="text-sm font-normal text-neutral-400">&ldquo;{quote.message}&rdquo;</p>
+                                <footer className="text-xs font-medium text-neutral-600">{quote.author}</footer>
                             </blockquote>
                         </div>
                     )}
                 </div>
 
                 {/* Sisi Kanan (Tampilan saat form meluncur ke kiri / Register) */}
-                <div className="relative h-full flex flex-col justify-between p-12 text-white overflow-hidden">
-                    {bgImage ? (
-                        <div className="absolute inset-0 z-0">
-                            <img 
-                                src={bgImage} 
-                                alt="Visual Register" 
-                                className="h-full w-full object-cover object-center" 
-                            />
-                            <div className="absolute inset-0 bg-[#0a192f]/40 backdrop-blur-[2px]" />
-                        </div>
-                    ) : (
-                        <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#06101e] via-[#0a192f] to-[#0e2442]" />
-                            <div className="absolute top-10 right-10 h-96 w-96 rounded-full bg-[#1d4ed8]/20 blur-[100px] pointer-events-none" />
-                            <div className="absolute bottom-1/4 -right-20 h-80 w-80 rounded-full bg-[#38bdf8]/10 blur-[90px] pointer-events-none" />
-                        </>
-                    )}
-
+                <div className="relative h-full flex flex-col justify-between p-12 text-white overflow-hidden bg-black">
                     <div className="relative z-20 flex justify-end">
-                        <Link href={route('home')} className="flex items-center gap-3 text-lg font-semibold tracking-wide text-white transition-opacity hover:opacity-90">
+                        <Link href={route('home')} className="flex items-center gap-3 text-lg font-semibold tracking-tight text-white transition-opacity hover:opacity-80">
                             <span>{name}</span>
-                            <div className="flex size-10 items-center justify-center rounded-xl bg-[#1e3a5f]/60 border border-white/10 backdrop-blur-md">
-                                <AppLogoIcon className="size-6 fill-current text-[#60a5fa]" />
+                            <div className="flex size-10 items-center justify-center rounded-xl bg-neutral-900 border border-neutral-800 backdrop-blur-md">
+                                <AppLogoIcon className="size-6 fill-current text-white" />
                             </div>
                         </Link>
                     </div>
 
-                    <div className="relative z-20 mt-auto text-right">
-                        <blockquote className="space-y-2 border-r-2 border-[#38bdf8]/40 pr-5">
-                            <p className="text-lg font-normal leading-relaxed text-[#cbd5e1]">&ldquo;Join us today and unlock all premium features.&rdquo;</p>
-                            <footer className="text-sm font-medium tracking-wide text-[#94a3b8]">{name} Team</footer>
+                    {/* Lottie Card dengan Fade State & Register Access */}
+                    <div className="relative z-10 mt-auto mb-6 flex w-full justify-center">
+                        <LottieVisual label="REGISTER ACCESS" isActive={reverse} />
+                    </div>
+
+                    <div className={`relative z-20 mt-auto text-right transition-opacity duration-700 ${reverse ? 'opacity-100' : 'opacity-0'}`}>
+                        <blockquote className="space-y-2 border-r-2 border-neutral-800 pr-4">
+                            <p className="text-sm font-normal text-neutral-400">&ldquo;Improve your warehouse efficiency. Explore our system's features and sign up for full access.&rdquo;</p>
+                            <footer className="text-xs font-medium text-neutral-600">{name} Team</footer>
                         </blockquote>
                     </div>
                 </div>
@@ -102,40 +131,40 @@ export default function AuthSplitLayout({
             </div>
 
             {/* =========================================================================
-                2. PANEL FORM PUTIH (SATU-SATUNYA ELEMEN YANG SLIDE)
+                2. PANEL FORM PUTIH (ROUNDED & FULL SLIDE ANIMATION TETAP AKTIF)
                ========================================================================= */}
             <div 
-                className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-white p-6 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
+                className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-white p-6 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
                     reverse 
-                        ? 'lg:-translate-x-full' // Meluncur ke kiri (Register)
-                        : 'lg:translate-x-0'      // Tetap di kanan (Login)
+                        ? 'lg:-translate-x-full lg:rounded-r-[2.5rem] lg:rounded-l-none' // Meluncur ke kiri (Register)
+                        : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'      // Tetap di kanan (Login)
                 }`}
             >
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[380px]">
                     
                     {/* Mobile Logo */}
                     <Link href={route('home')} className="relative z-20 flex items-center justify-center lg:hidden">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[#0a192f] shadow-md shadow-[#0a192f]/20">
-                            <AppLogoIcon className="size-7 fill-current text-[#60a5fa]" />
+                        <div className="flex size-12 items-center justify-center rounded-2xl bg-black shadow-md shadow-black/30">
+                            <AppLogoIcon className="size-7 fill-current text-white" />
                         </div>
                     </Link>
 
                     {/* Form Header */}
                     <div className="flex flex-col items-start gap-1.5 text-left sm:items-center sm:text-center">
-                        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0a192f]">{title}</h1>
+                        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-950">{title}</h1>
                         {description && (
-                            <p className="text-sm text-balance text-slate-500">{description}</p>
+                            <p className="text-sm text-balance text-neutral-500">{description}</p>
                         )}
                     </div>
 
-                    {/* Children Inputs & Controls */}
-                    <div className="w-full text-slate-900 
-                        [&_label]:text-[#0a192f] [&_label]:font-medium
-                        [&_input]:border-slate-300 [&_input]:bg-white [&_input]:text-slate-900 [&_input]:placeholder:text-slate-400 [&_input]:focus:border-[#0e2442] [&_input]:focus:ring-[#0e2442]/15
-                        [&_button[type=submit]]:bg-[#0a192f] [&_button[type=submit]]:text-white [&_button[type=submit]]:hover:bg-[#0e2442] [&_button[type=submit]]:shadow-lg [&_button[type=submit]]:shadow-[#0a192f]/25 [&_button[type=submit]]:transition-all
-                        [&_a]:text-[#0e2442] [&_a]:font-semibold [&_a]:hover:text-[#1e3a5f] [&_a]:hover:underline
-                        [&_input[type=checkbox]]:border-slate-300 [&_input[type=checkbox]]:text-[#0a192f] [&_input[type=checkbox]]:focus:ring-[#0a192f]
-                        [&_p.text-muted-foreground]:text-slate-500
+                    {/* Inputs & Controls */}
+                    <div className="w-full text-neutral-900 
+                        [&_label]:text-neutral-900 [&_label]:font-medium
+                        [&_input]:rounded-xl [&_input]:border-neutral-300 [&_input]:bg-white [&_input]:text-neutral-900 [&_input]:placeholder:text-neutral-400 [&_input]:focus:border-black [&_input]:focus:ring-black/10
+                        [&_button[type=submit]]:rounded-xl [&_button[type=submit]]:bg-black [&_button[type=submit]]:text-white [&_button[type=submit]]:hover:bg-neutral-800 [&_button[type=submit]]:shadow-lg [&_button[type=submit]]:shadow-black/20 [&_button[type=submit]]:transition-all
+                        [&_a]:text-black [&_a]:font-semibold [&_a]:hover:text-neutral-700 [&_a]:hover:underline
+                        [&_input[type=checkbox]]:rounded [&_input[type=checkbox]]:border-neutral-300 [&_input[type=checkbox]]:text-black [&_input[type=checkbox]]:focus:ring-black
+                        [&_p.text-muted-foreground]:text-neutral-500
                     ">
                         {children}
                     </div>
@@ -145,4 +174,4 @@ export default function AuthSplitLayout({
 
         </div>
     );
-}   
+}
