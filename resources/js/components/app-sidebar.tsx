@@ -24,6 +24,7 @@ import {
     Warehouse,
 } from 'lucide-react';
 import AppLogo from './app-logo';
+import AppLogoIcon from './app-logo-icon';
 
 interface NavGroupProps {
     title: string;
@@ -94,25 +95,33 @@ export function AppSidebar() {
         ];
 
         return (
-            <Sidebar collapsible="icon" variant="inset">
-                <SidebarHeader>
+            <Sidebar collapsible="icon" variant="inset" className="bg-[#0d0d0d] border-r border-white/5">
+                <SidebarHeader className="pb-0">
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton size="lg" asChild>
+                            <SidebarMenuButton size="lg" asChild className="hover:bg-white/5">
                                 <Link href="/admin" prefetch>
-                                    <AppLogo />
+                                    <div className="bg-[#1a56ff] flex aspect-square size-8 items-center justify-center rounded-md shadow-lg shadow-[#1a56ff]/30">
+                                        <AppLogoIcon className="size-5 fill-current text-white" />
+                                    </div>
+                                    <div className="ml-1 grid flex-1 text-left text-sm">
+                                        <span className="mb-0.5 truncate leading-none font-bold text-white">VVARSA</span>
+                                        <span className="text-[10px] font-semibold tracking-widest uppercase text-[#ffc200]">Admin Panel</span>
+                                    </div>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
+                    {/* Divider */}
+                    <div className="mx-3 mt-3 h-px bg-white/10" />
                 </SidebarHeader>
 
-                <SidebarContent>
+                <SidebarContent className="[&_[data-sidebar=group-label]]:text-white/30 [&_[data-sidebar=group-label]]:text-[10px] [&_[data-sidebar=group-label]]:tracking-widest [&_[data-sidebar=menu-button]]:text-white/70 [&_[data-sidebar=menu-button]:hover]:bg-white/5 [&_[data-sidebar=menu-button]:hover]:text-white [&_[data-sidebar=menu-button][data-active=true]]:bg-[#1a56ff]/20 [&_[data-sidebar=menu-button][data-active=true]]:text-[#1a56ff] [&_[data-sidebar=menu-button][data-active=true]]:font-semibold">
                     <NavMain items={adminMainItems} />
                     <NavGroup title="Platform Admin" items={adminGroupItems} />
                 </SidebarContent>
 
-                <SidebarFooter>
+                <SidebarFooter className="border-t border-white/10 [&_[data-sidebar=menu-button]]:text-white/70 [&_[data-sidebar=menu-button]:hover]:bg-white/5 [&_[data-sidebar=menu-button]:hover]:text-white">
                     <NavUser />
                 </SidebarFooter>
             </Sidebar>

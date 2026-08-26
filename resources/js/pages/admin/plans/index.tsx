@@ -74,24 +74,36 @@ export default function PlansIndex({ plans }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Paket Langganan SaaS" />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
-                
-                {/* Header */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Paket Langganan SaaS</h1>
-                        <p className="text-muted-foreground text-sm">
-                            Konfigurasi penawaran paket, batasan resource produk & user, serta fitur aktif untuk tenant.
-                        </p>
+            <div className="flex flex-col gap-0">
+
+                {/* Page Header */}
+                <div className="relative overflow-hidden bg-[#0d0d0d] px-6 pt-6 pb-5 md:px-8">
+                    <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
+                    <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <div className="mb-1.5 flex items-center gap-2">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest uppercase text-[#1a56ff] border border-[#1a56ff]/20">
+                                    <CreditCard size={11} />
+                                    Platform Admin
+                                </span>
+                            </div>
+                            <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">Paket Langganan SaaS</h1>
+                            <p className="mt-0.5 text-sm text-white/50">Konfigurasi penawaran paket, batasan resource produk &amp; user, serta fitur aktif untuk tenant.</p>
+                        </div>
+                        <Button
+                            size="sm"
+                            onClick={() => setIsCreateOpen(true)}
+                            className="bg-[#1a56ff] hover:bg-[#1a56ff]/90 text-white gap-1.5 shadow-lg shadow-[#1a56ff]/20"
+                        >
+                            <Plus size={14} /> Buat Paket Baru
+                        </Button>
                     </div>
-                    
-                    <Button onClick={() => setIsCreateOpen(true)} className="inline-flex items-center gap-2 rounded-xl">
-                        <Plus size={16} />
-                        Buat Paket Baru
-                    </Button>
                 </div>
 
-                {/* Plans List Grid */}
+                {/* Content */}
+                <div className="flex flex-col gap-6 px-6 pb-6 pt-4 md:px-8">
+
+                    {/* Plans List Grid */}
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {plans.map((plan) => (
                         <Card key={plan.id} className="border-border relative flex flex-col overflow-hidden rounded-2xl shadow-sm hover:shadow-md transition-shadow">
@@ -159,11 +171,12 @@ export default function PlansIndex({ plans }: Props) {
                         </Card>
                     ))}
                 </div>
-
-                {/* Create/Edit Modals */}
-                <CreatePlanDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} />
-                <EditPlanDialog plan={editingPlan} open={isEditOpen} onOpenChange={setIsEditOpen} />
+                </div>
             </div>
+
+            {/* Create/Edit Modals */}
+            <CreatePlanDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} />
+            <EditPlanDialog plan={editingPlan} open={isEditOpen} onOpenChange={setIsEditOpen} />
         </AppLayout>
     );
 }

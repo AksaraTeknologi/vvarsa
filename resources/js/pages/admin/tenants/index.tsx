@@ -4,7 +4,7 @@ import { Head, router } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search } from 'lucide-react';
+import { Search, Building2 } from 'lucide-react';
 import { useState } from 'react';
 import { getColumns, type Tenant } from './columns';
 import { DataTable } from './data-table';
@@ -63,17 +63,29 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Kelola Tenant" />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
-                
-                {/* Header */}
-                <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Kelola Tenant</h1>
-                    <p className="text-muted-foreground text-sm">
-                        Pantau daftar tenant bisnis yang terdaftar, status operasional, dan kapasitas paket langganan.
-                    </p>
+            <div className="flex flex-col gap-0">
+
+                {/* Page Header */}
+                <div className="relative overflow-hidden bg-[#0d0d0d] px-6 pt-6 pb-5 md:px-8">
+                    <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
+                    <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <div className="mb-1.5 flex items-center gap-2">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest uppercase text-[#1a56ff] border border-[#1a56ff]/20">
+                                    <Building2 size={11} />
+                                    Platform Admin
+                                </span>
+                            </div>
+                            <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">Kelola Tenant</h1>
+                            <p className="mt-0.5 text-sm text-white/50">Pantau daftar tenant bisnis yang terdaftar, status operasional, dan kapasitas paket langganan.</p>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Filters */}
+                {/* Content */}
+                <div className="flex flex-col gap-6 px-6 pb-6 pt-4 md:px-8">
+
+                    {/* Filters */}
                 <div className="bg-card border-border flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row items-center shadow-sm">
                     <div className="relative flex-1 w-full">
                         <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
@@ -138,6 +150,7 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                             </div>
                         </div>
                     )}
+                </div>
                 </div>
             </div>
 
