@@ -14,9 +14,6 @@ import {
     Plus,
     ShieldCheck,
     TrendingUp,
-    CalendarDays,
-    Store,
-    ExternalLink,
 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -186,29 +183,6 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
                         </Card>
                     </div>
 
-                    {/* Quick Navigation Cards */}
-                    <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
-                        {[
-                            { title: 'Daftar Tenant', href: '/admin/tenants', icon: Building2, color: 'bg-[#1a56ff]/10 text-[#1a56ff]' },
-                            { title: 'Daftar Pengguna', href: '/admin/users', icon: Users, color: 'bg-[#ffc200]/15 text-amber-600 dark:text-[#ffc200]' },
-                            { title: 'Daftar Supplier', href: '/admin/supplier', icon: Store, color: 'bg-[#ffb5c6]/20 text-rose-600 dark:text-rose-400' },
-                            { title: 'Kelola Event', href: '/admin/events', icon: CalendarDays, color: 'bg-purple-500/10 text-purple-600 dark:text-purple-400' },
-                        ].map((item) => (
-                            <Link key={item.href} href={item.href}>
-                                <Card className="border border-gray-200/80 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/10 hover:shadow-md transition-all duration-200 cursor-pointer group">
-                                    <CardContent className="flex flex-col items-start gap-3 p-4">
-                                        <div className={`p-2 rounded-lg ${item.color}`}>
-                                            <item.icon size={16} />
-                                        </div>
-                                        <div className="flex items-center justify-between w-full">
-                                            <span className="text-sm font-medium">{item.title}</span>
-                                            <ExternalLink size={12} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </Link>
-                        ))}
-                    </div>
 
                     {/* Grid for Recent Lists */}
                     <div className="grid gap-6 md:grid-cols-2">
