@@ -7,7 +7,11 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+        // ⬇️ PENGATURAN WARNA DAN BENTUK ADA DI BARIS INI ⬇️
+        // bg-[#1c1c1e]   : Warna background card (Abu-abu sangat gelap)
+        // border-[#2c2c2e]: Warna garis pinggir
+        // rounded-2xl    : Tingkat kelengkungan (ganti ke rounded-xl jika masih terlalu bulat)
+        "bg-[#1c1c1e] text-white flex flex-col gap-6 rounded-2xl border border-[#2c2c2e] py-6 shadow-lg",
         className
       )}
       {...props}
@@ -19,7 +23,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header"
-      className={cn("flex flex-col gap-1.5 px-6", className)}
+      className={cn("flex flex-col gap-2 px-6", className)}
       {...props}
     />
   )
@@ -29,7 +33,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("text-xl font-bold leading-none tracking-tight", className)}
       {...props}
     />
   )
@@ -39,7 +43,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-gray-400 text-sm font-medium", className)}
       {...props}
     />
   )
