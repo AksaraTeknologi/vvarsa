@@ -38,6 +38,8 @@ export default function UiPreview() {
                                 Default
                             </Button>
                             <Button variant="secondary">Secondary</Button>
+                            <Button variant="save">save</Button>
+                            <Button variant="edit">edit</Button>
                             <Button variant="dark">Dark</Button>
                             <Button variant="destructive">Delete</Button>
                             <Button variant="outline">Outline</Button>

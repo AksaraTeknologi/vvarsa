@@ -5,36 +5,31 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  // Base classes: Bulat sempurna, font tebal, efek animasi klik (scale-95), transisi halus
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-base font-bold transition-all duration-200 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-5 [&_svg]:shrink-0 outline-none focus-visible:ring-4 focus-visible:ring-[#1a56ff]/50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-base font-bold transition-all duration-200 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-5 [&_svg]:shrink-0 outline-none focus-visible:ring-4 focus-visible:ring-black/10 dark:focus-visible:ring-white/10",
   {
     variants: {
       variant: {
-        // Tombol aksi utama (Warna Biru Unipay)
         default:
-          "bg-[#1a56ff] text-white shadow-[0_4px_14px_0_rgba(26,86,255,0.3)] hover:bg-[#1545cc]",
-        // Tombol aksi di atas background putih (seperti di Bottom Sheet)
+          "bg-[var(--purple)] text-white shadow-[0_4px_14px_0_rgba(94,75,242,0.3)] hover:opacity-90",
+        save:
+          "bg-[var(--lime)] text-[var(--white)] shadow-[0_4px_14px_0_rgba(114,225,92,0.35)] hover:opacity-95",
+        edit:
+          "bg-[var(--cyber-yellow)] text-[var(--white)] shadow-[0_4px_14px_0_rgba(255,210,0,0.3)] hover:opacity-95",
         secondary:
-          "bg-white text-black hover:bg-gray-100 shadow-[0_4px_14px_0_rgba(0,0,0,0.05)]",
-        // Tombol kapsul gelap (seperti tombol Withdraw/Deposit)
+          "bg-[var(--white-lavender)] text-[var(--black)] hover:bg-gray-100 shadow-[0_2px_8px_0_rgba(0,0,0,0.04)]",
         dark: 
-          "bg-[#1c1c1e] text-white hover:bg-[#2c2c2e]",
-        // Tombol destruktif/hapus
+          "bg-[var(--black)] text-white hover:bg-black/90 shadow-[0_4px_14px_0_rgba(31,34,43,0.2)]",
         destructive:
-          "bg-red-500 text-white shadow-[0_4px_14px_0_rgba(239,68,68,0.3)] hover:bg-red-600",
-        // Tombol outline (Garis luar transparan)
+          "bg-[var(--coral-red)] text-white shadow-[0_4px_14px_0_rgba(255,82,82,0.3)] hover:opacity-90",
         outline:
-          "border-2 border-[#1c1c1e] bg-transparent text-white hover:bg-[#1c1c1e]",
-        // Tombol tanpa background
-        ghost: "hover:bg-[#1c1c1e] text-white",
-        // Tombol gaya link teks
-        link: "text-[#1a56ff] underline-offset-4 hover:underline",
+          "border-2 border-[var(--black)] bg-transparent text-[var(--black)] hover:bg-[var(--black)] hover:text-white",
+        ghost: "hover:bg-[var(--white-lavender)] text-[var(--black)]",
+        link: "text-[var(--purple)] underline-offset-4 hover:underline",
       },
       size: {
-        // Ukuran dibuat lebih "chunky" agar ramah untuk sentuhan jari (Mobile first)
-        default: "h-14 px-8 py-2",
-        sm: "h-10 px-6 text-sm",
-        lg: "h-16 px-10 text-lg",
+        default: "h-14 px-8 py-3",
+        sm: "h-10 px-5 text-sm",
+        lg: "h-16 px-10 text-lg tracking-wide",
         icon: "size-14",
       },
     },

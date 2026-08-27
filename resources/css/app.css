@@ -113,7 +113,22 @@
     --sidebar-ring: oklch(0.87 0 0); */
 
     /* baru */
-    --utama: #2D3142;
+    --black: #000000;
+    --white:#FFFFFF;
+    --purple:#5E4BF2;
+    --orange:#FF8C67;
+    --yellow:#D8F380;
+    --blue:#79D7FF;
+    --pink:#FFAEC9;
+    --green:#9CE97A;
+    --matcha:#86D2A3;
+    --mint:#4FE4B0;
+    --lime:#72E15C;
+    --tosca:#69E3CC;
+    --coral-red:#FF5252;
+    --cyber-yellow:#FFD200;
+    --white-lavender:#F1EFFD;
+    --oatmeal:#F6F3EC;
     --background: #FFFFFF;
     --foreground: #000000;
     --card: #FFFFFF;
