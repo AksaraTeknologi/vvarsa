@@ -78,7 +78,7 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
                                 </span>
                             </div>
                             <h1 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
-                                Selamat datang kembali 👋
+                                Selamat datang kembali
                             </h1>
                             <p className="mt-1 text-sm text-white/50">
                                 Kelola infrastruktur platform, tenant bisnis, dan rencana langganan SaaS.
@@ -88,7 +88,7 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
                         {/* Quick Actions */}
                         <div className="flex flex-wrap items-center gap-2">
                             <Link href="/admin/tenants/create">
-                                <Button size="sm" className="bg-[#1a56ff] hover:bg-[#1a56ff]/90 text-white gap-1.5 shadow-lg shadow-[#1a56ff]/20">
+                                <Button className='default'>
                                     <Plus size={14} />
                                     Tambah Tenant
                                 </Button>

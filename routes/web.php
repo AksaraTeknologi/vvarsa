@@ -25,6 +25,10 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+Route::get('/ui-preview', function () {
+    return Inertia::render('ui-preview');
+})->name('ui-preview');
+
 // ── Platform Admin ────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'verified', 'role:admin'])
     ->prefix('admin')
