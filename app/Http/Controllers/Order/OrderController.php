@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderReceiptMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Package;
@@ -15,6 +16,7 @@ use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -98,6 +100,7 @@ class OrderController extends Controller
         $validated = $request->validate([
             'customer_name'          => 'required|string|max:255',
             'customer_phone'         => 'nullable|string|max:20',
+            'customer_email'         => 'nullable|email|max:255',
             'notes'                  => 'nullable|string',
             'payment_method'         => 'nullable|string|max:255',
             'items'                  => 'required|array|min:1',
@@ -108,7 +111,9 @@ class OrderController extends Controller
             'items.*.paket_harga'    => 'required|integer|min:1',
         ]);
 
-        DB::transaction(function () use ($validated, $tenant) {
+        $order = null;
+
+        DB::transaction(function () use ($validated, $tenant, &$order) {
             $orderNumber = Order::generateOrderNumber($tenant->id);
 
             // ── Kelompokkan item per paket ────────────────────────────────────
@@ -206,6 +211,7 @@ class OrderController extends Controller
                 'order_number'   => $orderNumber,
                 'customer_name'  => $validated['customer_name'],
                 'customer_phone' => $validated['customer_phone'] ?? null,
+                'customer_email' => $validated['customer_email'] ?? null,
                 'status'         => 'pending',
                 'payment_status' => !empty($validated['payment_method']) ? 'paid' : 'unpaid',
                 'payment_method' => $validated['payment_method'] ?? null,
@@ -223,8 +229,10 @@ class OrderController extends Controller
             }
         });
 
-        return redirect()->route('orders.index')
-            ->with('success', 'Pesanan berhasil dibuat.');
+        return redirect()->route('pos.index')
+            ->with('success', 'Pesanan berhasil dibuat.')
+            ->with('last_order_id', $order?->id)
+            ->with('last_order_email', $order?->customer_email);
     }
 
     public function show(Order $order): Response
@@ -364,5 +372,40 @@ class OrderController extends Controller
         $order->update(['status' => 'cancelled']);
 
         return back()->with('success', 'Pesanan berhasil dibatalkan.');
+    }
+
+    /**
+     * Generate PDF receipt and send it to the customer's email.
+     */
+    public function sendReceipt(Order $order)
+    {
+        $tenant = app('tenant');
+        abort_if($order->tenant_id !== $tenant->id, 403);
+
+        if (empty($order->customer_email)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pesanan ini tidak memiliki alamat email pelanggan.',
+            ], 422);
+        }
+
+        $order->load(['items', 'user:id,name']);
+
+        try {
+            Mail::to($order->customer_email)
+                ->send(new OrderReceiptMail($order));
+
+            return response()->json([
+                'success' => true,
+                'message' => "Struk berhasil dikirim ke {$order->customer_email}",
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim email: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

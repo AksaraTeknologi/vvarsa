@@ -12,8 +12,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete();
             $table->string('order_number')->unique();
-            $table->string('customer_name');
+            $table->string('customer_name')->nullable();
             $table->string('customer_phone')->nullable();
+            $table->string('customer_email')->nullable();
             $table->string('status')->default('pending');
             $table->string('payment_status')->default('unpaid');
             $table->string('payment_method')->nullable();

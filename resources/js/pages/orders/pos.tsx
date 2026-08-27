@@ -1,10 +1,10 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import {
     ShoppingBag, Trash2, Plus, Minus, Check,
-    Banknote, CreditCard, Smartphone, ShoppingCart, Package
+    Banknote, CreditCard, Smartphone, ShoppingCart, Package, Mail, Loader2
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -52,10 +52,13 @@ interface Props {
 }
 
 export default function PosPage({ variants, packages, paymentMethods = [] }: Props) {
+    const { props } = usePage<{ flash: { success?: string; last_order_id?: string; last_order_email?: string } }>();
+
     const [cart, setCart] = useState<CartItem[]>([]);
     const [activeCartItemId, setActiveCartItemId] = useState<number | null>(null);
     const [customerName, setCustomerName] = useState('');
     const [customerPhone, setCustomerPhone] = useState('');
+    const [customerEmail, setCustomerEmail] = useState('');
     const [notes, setNotes] = useState('');
 
     const defaultPayment = paymentMethods.length > 0
@@ -68,6 +71,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
     const [cashReceived, setCashReceived] = useState(0);
     const [processing, setProcessing] = useState(false);
     const [successOrder, setSuccessOrder] = useState<string | null>(null);
+    const [lastOrderId, setLastOrderId] = useState<string | null>(null);
+    const [lastOrderEmail, setLastOrderEmail] = useState<string | null>(null);
+    const [sendingReceipt, setSendingReceipt] = useState(false);
+    const [receiptSent, setReceiptSent] = useState(false);
 
     // Helper: Find variant by ID (supports string/UUID and numbers)
     const findVariant = (vId: string | number, packageId?: number) => {
@@ -299,9 +306,14 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
         setActiveCartItemId(null);
         setCustomerName('');
         setCustomerPhone('');
+        setCustomerEmail('');
         setNotes('');
         setCashReceived(0);
         setSuccessOrder(null);
+        setLastOrderId(null);
+        setLastOrderEmail(null);
+        setReceiptSent(false);
+        setSendingReceipt(false);
     };
 
     const handleCheckout = () => {
@@ -326,6 +338,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
         router.post('/orders', {
             customer_name: customerName,
             customer_phone: customerPhone,
+            customer_email: customerEmail,
             notes: notes,
             payment_method: paymentMethod,
             items: items,
@@ -334,12 +347,48 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                 setProcessing(false);
                 const flash = (page.props as any).flash;
                 setSuccessOrder(flash?.success ?? 'Pesanan berhasil dibuat!');
-                setTimeout(() => {
-                    clearCart();
-                }, 3000);
+                setLastOrderId(flash?.last_order_id ?? null);
+                setLastOrderEmail(flash?.last_order_email ?? null);
+                setReceiptSent(false);
+                // Cart dikosongkan manual oleh user via tombol "Pesanan Baru"
             },
             onError: () => setProcessing(false),
         });
+    };
+
+    const handleSendReceipt = async () => {
+        if (!lastOrderId || sendingReceipt || receiptSent) return;
+        setSendingReceipt(true);
+
+        // Baca XSRF-TOKEN dari cookie yang di-set otomatis oleh Laravel
+        const xsrfToken = decodeURIComponent(
+            document.cookie
+                .split('; ')
+                .find(row => row.startsWith('XSRF-TOKEN='))
+                ?.split('=')[1] ?? ''
+        );
+
+        try {
+            const res = await fetch(`/orders/${lastOrderId}/send-receipt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': xsrfToken,
+                    'Accept': 'application/json',
+                },
+            });
+            const data = await res.json();
+            if (data.success) {
+                setReceiptSent(true);
+                goeyToast.success(data.message ?? 'Struk berhasil dikirim!');
+            } else {
+                goeyToast.error(data.message ?? 'Gagal mengirim struk.');
+            }
+        } catch {
+            goeyToast.error('Terjadi kesalahan saat mengirim struk.');
+        } finally {
+            setSendingReceipt(false);
+        }
     };
 
     return (
@@ -525,23 +574,76 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         )}
                     </div>
 
-                    {/* Success Banner */}
-                    {successOrder && (
-                        <div className="m-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-3 text-sm text-emerald-700 dark:text-emerald-400 flex items-start gap-2">
-                            <Check size={15} className="shrink-0 mt-0.5" />
-                            {successOrder}
-                        </div>
-                    )}
+                    {/* State A: Order Success View (Replaces Cart View completely) */}
+                    {successOrder ? (
+                        <div className="flex-1 flex flex-col justify-between p-6 bg-emerald-50/50 dark:bg-emerald-950/20">
+                            <div className="space-y-6">
+                                <div className="text-center space-y-2 pt-4">
+                                    <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto shadow-sm">
+                                        <Check size={28} className="stroke-[2.5]" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-foreground">Pesanan Berhasil!</h3>
+                                    <p className="text-sm text-muted-foreground">{successOrder}</p>
+                                </div>
 
-                    {/* Cart Items */}
-                    <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
-                        {cart.length === 0 && !successOrder && (
-                            <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground text-sm">
-                                <ShoppingCart size={28} className="mb-2 opacity-30" />
-                                Keranjang kosong.<br />
-                                {packages.length > 0 ? 'Pilih paket di kiri untuk memulai.' : 'Pilih varian rasa di kiri untuk memulai.'}
+                                {/* Send Receipt Section */}
+                                {lastOrderId && lastOrderEmail && (
+                                    <div className="bg-card border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 space-y-3 shadow-sm">
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                                                <Mail size={14} className="text-indigo-500" />
+                                                Struk Digital (Email)
+                                            </Label>
+                                            <p className="text-xs text-muted-foreground">
+                                                Kirimkan file PDF struk pembelian ke: <span className="font-semibold text-foreground">{lastOrderEmail}</span>
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            id="send-receipt-btn"
+                                            onClick={handleSendReceipt}
+                                            disabled={sendingReceipt || receiptSent}
+                                            className={`flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all shadow-sm
+                                                ${receiptSent
+                                                    ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 cursor-default border border-emerald-300 dark:border-emerald-700'
+                                                    : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-60 shadow-indigo-200 dark:shadow-none'
+                                                }`}
+                                        >
+                                            {sendingReceipt ? (
+                                                <><Loader2 size={14} className="animate-spin" /> Sedang Mengirim Struk PDF...</>
+                                            ) : receiptSent ? (
+                                                <><Check size={14} /> Struk Berhasil Terkirim ke Email</>
+                                            ) : (
+                                                <><Mail size={14} /> Kirim Struk ke Email</>
+                                            )}
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-                        )}
+
+                            {/* New Order Button at the Bottom */}
+                            <div className="pt-4 border-t border-border">
+                                <Button
+                                    type="button"
+                                    id="new-order-btn"
+                                    onClick={clearCart}
+                                    className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-sm"
+                                >
+                                    <ShoppingCart size={16} /> Buat Transaksi Baru
+                                </Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            {/* State B: Cart Items */}
+                            <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
+                                {cart.length === 0 && (
+                                    <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground text-sm">
+                                        <ShoppingCart size={28} className="mb-2 opacity-30" />
+                                        Keranjang kosong.<br />
+                                        {packages.length > 0 ? 'Pilih paket di kiri untuk memulai.' : 'Pilih varian rasa di kiri untuk memulai.'}
+                                    </div>
+                                )}
 
                         {cart.map((item) => {
                             if (item.package_id === 0) {
@@ -728,6 +830,13 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     className="h-9 text-sm rounded-xl"
                                 />
                                 <Input
+                                    type="email"
+                                    value={customerEmail}
+                                    onChange={(e) => setCustomerEmail(e.target.value)}
+                                    placeholder="Email pelanggan (opsional)"
+                                    className="h-9 text-sm rounded-xl"
+                                />
+                                <Input
                                     value={notes}
                                     onChange={(e) => setNotes(e.target.value)}
                                     placeholder="Catatan (opsional)"
@@ -798,7 +907,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                             {/* Cash Received (for cash payment) */}
                             {isCash && (
-                                <div className="space-y-1.5">
+                                <div className="space-y-2">
                                     <Label className="text-xs text-muted-foreground">Uang Diterima (Rp)</Label>
                                     <Input
                                         type="text"
@@ -807,9 +916,40 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         placeholder={`Min: ${formatRupiah(subtotal)}`}
                                         className="h-9 text-sm rounded-xl"
                                     />
-                                    {cashReceived >= subtotal && (
-                                        <div className="text-sm font-semibold text-emerald-600">
-                                            Kembalian: {formatRupiah(change)}
+
+                                    {/* Quick Cash Buttons */}
+                                    <div className="grid grid-cols-5 gap-1.5 pt-0.5">
+                                        <button
+                                            type="button"
+                                            onClick={() => setCashReceived(subtotal)}
+                                            className={`px-1.5 py-1.5 rounded-lg text-[11px] font-semibold border transition-all truncate text-center ${
+                                                cashReceived === subtotal && subtotal > 0
+                                                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                                                    : 'bg-muted hover:bg-muted/80 text-foreground border-border'
+                                            }`}
+                                        >
+                                            Uang Pas
+                                        </button>
+                                        {[10000, 20000, 50000, 100000].map((nominal) => (
+                                            <button
+                                                key={nominal}
+                                                type="button"
+                                                onClick={() => setCashReceived(nominal)}
+                                                className={`px-1 py-1.5 rounded-lg text-[11px] font-semibold border transition-all truncate text-center ${
+                                                    cashReceived === nominal
+                                                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                                                        : 'bg-muted hover:bg-muted/80 text-foreground border-border'
+                                                }`}
+                                            >
+                                                {nominal >= 1000 ? `${nominal / 1000}k` : nominal}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {cashReceived >= subtotal && cashReceived > 0 && (
+                                        <div className="text-sm font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-xl px-3 py-1.5 flex justify-between items-center">
+                                            <span className="text-xs">Kembalian:</span>
+                                            <span>{formatRupiah(change)}</span>
                                         </div>
                                     )}
                                 </div>
@@ -825,12 +965,6 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     <span>Total</span>
                                     <span className="text-indigo-600">{formatRupiah(subtotal)}</span>
                                 </div>
-                                {totalHpp > 0 && (
-                                    <div className="flex justify-between text-xs text-emerald-600 pt-0.5">
-                                        <span>Est. Untung</span>
-                                        <span>+{formatRupiah(subtotal - totalHpp)}</span>
-                                    </div>
-                                )}
                             </div>
 
                             {/* Checkout Button */}
@@ -842,6 +976,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 {processing ? 'Memproses...' : `Buat Pesanan — ${formatRupiah(subtotal)}`}
                             </Button>
                         </div>
+                    )}
+                    </>
                     )}
                 </div>
             </div>
