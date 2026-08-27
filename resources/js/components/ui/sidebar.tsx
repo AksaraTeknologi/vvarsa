@@ -363,11 +363,52 @@ function SidebarSeparator({
   )
 }
 
-function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+let globalSidebarScroll = 0
+
+function SidebarContent({ className, onScroll, ...props }: React.ComponentProps<"div">) {
+  const contentRef = React.useRef<HTMLDivElement>(null)
+
+  React.useLayoutEffect(() => {
+    const el = contentRef.current
+    if (!el) return
+
+    const saved = typeof window !== "undefined" ? sessionStorage.getItem("sidebar_scroll_top") : null
+    if (saved !== null) {
+      el.scrollTop = Number(saved)
+    } else if (globalSidebarScroll > 0) {
+      el.scrollTop = globalSidebarScroll
+    }
+
+    requestAnimationFrame(() => {
+      if (!contentRef.current) return
+      const activeEl = contentRef.current.querySelector('[data-active="true"]') as HTMLElement | null
+      if (activeEl) {
+        const containerRect = contentRef.current.getBoundingClientRect()
+        const activeRect = activeEl.getBoundingClientRect()
+        if (activeRect.top < containerRect.top || activeRect.bottom > containerRect.bottom) {
+          activeEl.scrollIntoView({ block: "nearest" })
+        }
+      }
+    })
+  }, [])
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const top = e.currentTarget.scrollTop
+    globalSidebarScroll = top
+    try {
+      sessionStorage.setItem("sidebar_scroll_top", String(top))
+    } catch {
+      // ignore storage error
+    }
+    onScroll?.(e)
+  }
+
   return (
     <div
+      ref={contentRef}
       data-slot="sidebar-content"
       data-sidebar="content"
+      onScroll={handleScroll}
       className={cn(
         "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className
