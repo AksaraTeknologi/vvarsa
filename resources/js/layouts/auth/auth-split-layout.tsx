@@ -1,7 +1,6 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import { type SharedData } from '@/types';
-import { DotLottiePlayer } from '@dotlottie/react-player';
-import '@dotlottie/react-player/dist/index.css';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 
@@ -18,10 +17,10 @@ interface LottieVisualProps {
 
 function LottieVisual({ label, isActive }: LottieVisualProps) {
     return (
-        <div 
+        <div
             className={`relative flex w-full max-w-[430px] flex-col items-center select-none pt-12 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                isActive 
-                    ? 'opacity-100 scale-100 blur-0 translate-y-0 pointer-events-auto' 
+                isActive
+                    ? 'opacity-100 scale-100 blur-0 translate-y-0 pointer-events-auto'
                     : 'opacity-0 scale-95 blur-sm translate-y-4 pointer-events-none'
             }`}
         >
@@ -30,7 +29,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
 
             {/* Container Card Putih / Light Card */}
             <div className="relative z-10 w-full overflow-hidden rounded-[2.5rem] bg-[#f8fafc] p-6 shadow-2xl ring-1 ring-white/20">
-                
+
                 {/* Mini Top Bar Dekoratif */}
                 <div className="mb-4 flex items-center justify-between px-2">
                     <div className="flex gap-1.5">
@@ -45,7 +44,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
 
                 {/* dotLottie Player */}
                 <div className="flex w-full items-center justify-center">
-                    <DotLottiePlayer
+                    <DotLottieReact
                         src="/animation/auth/Login.lottie"
                         autoplay
                         loop
@@ -64,22 +63,22 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
     );
 }
 
-export default function AuthSplitLayout({ 
-    children, 
-    title, 
-    description, 
-    reverse = false 
+export default function AuthSplitLayout({
+    children,
+    title,
+    description,
+    reverse = false
 }: PropsWithChildren<AuthSplitLayoutProps>) {
     const { name, quote } = usePage<SharedData>().props;
 
     return (
         <div className="relative min-h-dvh w-full overflow-hidden bg-black font-sans antialiased">
-            
+
             {/* =========================================================================
                 1. BACKGROUND VISUAL (FADING LOTTIE CONTENT)
                ========================================================================= */}
             <div className="hidden lg:grid grid-cols-2 h-dvh w-full absolute inset-0 z-0">
-                
+
                 {/* Sisi Kiri (Tampilan saat form di kanan / Login) */}
                 <div className="relative h-full flex flex-col justify-between p-12 text-white border-r border-neutral-900 overflow-hidden bg-black">
                     <Link href={route('home')} className="relative z-20 flex items-center gap-3 text-lg font-semibold tracking-tight text-white transition-opacity hover:opacity-80">
@@ -133,15 +132,15 @@ export default function AuthSplitLayout({
             {/* =========================================================================
                 2. PANEL FORM PUTIH (ROUNDED & FULL SLIDE ANIMATION TETAP AKTIF)
                ========================================================================= */}
-            <div 
+            <div
                 className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-white p-6 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
-                    reverse 
+                    reverse
                         ? 'lg:-translate-x-full lg:rounded-r-[2.5rem] lg:rounded-l-none' // Meluncur ke kiri (Register)
                         : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'      // Tetap di kanan (Login)
                 }`}
             >
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[380px]">
-                    
+
                     {/* Mobile Logo */}
                     <Link href={route('home')} className="relative z-20 flex items-center justify-center lg:hidden">
                         <div className="flex size-12 items-center justify-center rounded-2xl bg-black shadow-md shadow-black/30">
@@ -158,7 +157,7 @@ export default function AuthSplitLayout({
                     </div>
 
                     {/* Inputs & Controls */}
-                    <div className="w-full text-neutral-900 
+                    <div className="w-full text-neutral-900
                         [&_label]:text-neutral-900 [&_label]:font-medium
                         [&_input]:rounded-xl [&_input]:border-neutral-300 [&_input]:bg-white [&_input]:text-neutral-900 [&_input]:placeholder:text-neutral-400 [&_input]:focus:border-black [&_input]:focus:ring-black/10
                         [&_button[type=submit]]:rounded-xl [&_button[type=submit]]:bg-black [&_button[type=submit]]:text-white [&_button[type=submit]]:hover:bg-neutral-800 [&_button[type=submit]]:shadow-lg [&_button[type=submit]]:shadow-black/20 [&_button[type=submit]]:transition-all
