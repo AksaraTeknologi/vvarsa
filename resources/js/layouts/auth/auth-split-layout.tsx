@@ -28,7 +28,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 rounded-full bg-white/5 blur-[120px] pointer-events-none" />
 
             {/* Container Card Putih / Light Card */}
-            <div className="relative z-10 w-full overflow-hidden rounded-[2.5rem] bg-[#f8fafc] p-6 shadow-2xl ring-1 ring-white/20">
+            <div className="relative z-10 w-full overflow-hidden rounded-[2.5rem] bg-[#f8fafc] p-20 shadow-2xl ring-1 ring-white/20">
 
                 {/* Mini Top Bar Dekoratif */}
                 <div className="mb-4 flex items-center justify-between px-2">
@@ -48,7 +48,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
                         src="/animation/auth/Login.lottie"
                         autoplay
                         loop
-                        className="w-full h-auto max-h-[300px]"
+                        className="w-full h-auto scale-[2.5] translate-y-10"
                     />
                 </div>
             </div>
@@ -160,7 +160,6 @@ export default function AuthSplitLayout({
                     <div className="w-full text-neutral-900
                         [&_label]:text-neutral-900 [&_label]:font-medium
                         [&_input]:rounded-xl [&_input]:border-neutral-300 [&_input]:bg-white [&_input]:text-neutral-900 [&_input]:placeholder:text-neutral-400 [&_input]:focus:border-black [&_input]:focus:ring-black/10
-                        [&_button[type=submit]]:rounded-xl [&_button[type=submit]]:bg-black [&_button[type=submit]]:text-white [&_button[type=submit]]:hover:bg-neutral-800 [&_button[type=submit]]:shadow-lg [&_button[type=submit]]:shadow-black/20 [&_button[type=submit]]:transition-all
                         [&_a]:text-black [&_a]:font-semibold [&_a]:hover:text-neutral-700 [&_a]:hover:underline
                         [&_input[type=checkbox]]:rounded [&_input[type=checkbox]]:border-neutral-300 [&_input[type=checkbox]]:text-black [&_input[type=checkbox]]:focus:ring-black
                         [&_p.text-muted-foreground]:text-neutral-500

@@ -63,8 +63,7 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           mode="single"
           selected={dateValue}
           onSelect={handleSelect}
-          captionLayout="dropdown-buttons"
-          initialFocus
+          captionLayout="dropdown"
         />
       </PopoverContent>
     </Popover>
