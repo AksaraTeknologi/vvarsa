@@ -9,35 +9,35 @@ const features = [
         icon: Package,
         title: 'Stok selalu siap',
         text: 'Pantau bahan, produk, dan pergerakan stok tanpa spreadsheet berantakan.',
-        color: 'bg-[#836FFF] text-white shadow-[#836FFF]/25',
-        badgeBg: 'bg-[#E2DCFE] text-[#836FFF] border border-[#836FFF]/20',
-        borderColor: 'border-[#836FFF]/30',
+        color: 'bg-[#1777fb] text-white shadow-[#1777fb]/25',
+        badgeBg: 'bg-[#eef5ff] text-[#1777fb] border border-[#1777fb]/20',
+        borderColor: 'border-[#1777fb]/30',
         tag: 'Praktis',
     },
     {
         icon: BarChart3,
         title: 'Bisnis lebih terarah',
         text: 'Lihat penjualan dan laporan keuangan yang membantu keputusan harian.',
-        color: 'bg-[#FFE082] text-[#2D3142] shadow-[#FFE082]/30',
-        badgeBg: 'bg-[#FFF8E5] text-[#b88600] border border-[#FFE082]/40',
-        borderColor: 'border-[#FFE082]/50',
+        color: 'bg-[#ffbc03] text-[#0f172a] shadow-[#ffbc03]/30',
+        badgeBg: 'bg-[#fff8e5] text-[#b88600] border border-[#ffbc03]/30',
+        borderColor: 'border-[#ffbc03]/40',
         tag: 'Otomatis',
     },
     {
         icon: Utensils,
         title: 'Komunitas bertumbuh',
         text: 'Terhubung dengan pemilik usaha lain, event, supplier, dan insight baru.',
-        color: 'bg-[#FFADAD] text-[#2D3142] shadow-[#FFADAD]/25',
-        badgeBg: 'bg-[#FFF0F0] text-[#c06060] border border-[#FFADAD]/30',
-        borderColor: 'border-[#FFADAD]/40',
+        color: 'bg-[#fb0001] text-white shadow-[#fb0001]/25',
+        badgeBg: 'bg-[#fdf0f4] text-[#fb0001] border border-[#fb0001]/20',
+        borderColor: 'border-[#fb0001]/30',
         tag: 'Seru & Ramai',
     },
 ];
 
 const stats = [
-    { value: '4.8x', label: 'lebih cepat kelola stok', color: 'text-[#FFE082]' },
-    { value: '24/7', label: 'data tersimpan aman', color: 'text-[#E2DCFE]' },
-    { value: '1 ruang', label: 'untuk operasional', color: 'text-[#E7F0FF]' },
+    { value: '4.8x', label: 'lebih cepat kelola stok', color: 'text-[#ffbc03]' },
+    { value: '24/7', label: 'data tersimpan aman', color: 'text-[#f5c4d1]' },
+    { value: '1 ruang', label: 'untuk operasional', color: 'text-[#1777fb]' },
 ];
 
 const plans = [
@@ -46,11 +46,11 @@ const plans = [
         price: 'Gratis',
         note: 'Untuk mulai merapikan bisnis',
         icon: Package,
-        accentColor: 'text-[#836FFF]',
-        headerBg: 'bg-[#E2DCFE]',
-        badgeBg: 'bg-[#836FFF] text-white',
-        border: 'border-2 border-[#836FFF]/30',
-        btnBg: 'bg-[#836FFF] hover:bg-[#6a56e0] text-white',
+        accentColor: 'text-[#1777fb]',
+        headerBg: 'bg-[#eef5ff]',
+        badgeBg: 'bg-[#1777fb] text-white',
+        border: 'border-2 border-[#1777fb]/20',
+        btnBg: 'bg-[#1777fb] hover:bg-[#0d5ecc] text-white',
         features: ['Kelola inventori', 'Laporan keuangan harian', 'Akses komunitas'],
     },
     {
@@ -58,11 +58,11 @@ const plans = [
         price: 'Rp149.000',
         note: 'Untuk bisnis yang sedang tumbuh pesat',
         icon: Sparkles,
-        accentColor: 'text-[#c06060]',
-        headerBg: 'bg-[#FFF0F0]',
-        badgeBg: 'bg-[#FFADAD] text-[#2D3142]',
-        border: 'border-4 border-[#FFADAD]',
-        btnBg: 'bg-[#FFADAD] hover:bg-[#ff9090] text-[#2D3142]',
+        accentColor: 'text-[#fb0001]',
+        headerBg: 'bg-[#fdf0f4]',
+        badgeBg: 'bg-[#fb0001] text-white',
+        border: 'border-4 border-[#fb0001]',
+        btnBg: 'bg-[#fb0001] hover:bg-[#d00001] text-white',
         featured: true,
         features: ['Semua fitur Free', 'Export laporan & PDF', 'Multi-user hingga 5 orang', 'Fitur POS kasir cepat'],
     },
@@ -71,24 +71,24 @@ const plans = [
         price: 'Rp499.000',
         note: 'Untuk tim dan operasional besar',
         icon: Crown,
-        accentColor: 'text-[#b88600]',
-        headerBg: 'bg-[#FFF8E5]',
-        badgeBg: 'bg-[#FFE082] text-[#2D3142]',
-        border: 'border-2 border-[#FFE082]/50',
-        btnBg: 'bg-[#FFE082] hover:bg-[#ffd54f] text-[#2D3142]',
+        accentColor: 'text-[#d99b00]',
+        headerBg: 'bg-[#fff8e5]',
+        badgeBg: 'bg-[#ffbc03] text-[#0f172a]',
+        border: 'border-2 border-[#ffbc03]/40',
+        btnBg: 'bg-[#ffbc03] hover:bg-[#e0a500] text-[#0f172a]',
         features: ['Semua fitur Pro', 'Akses API khusus', 'Dukungan prioritas 24/7', 'Kustomisasi laporan'],
     },
 ];
 
 const cuteStickerArchGallery = [
-    { label: 'Boba Cute', pos: '0% 0%', bg: 'bg-[#E2DCFE]', border: 'border-[#836FFF]' },
-    { label: 'Ramen Joy', pos: '35% 0%', bg: 'bg-[#FFF0F0]', border: 'border-[#FFADAD]' },
-    { label: 'Fresh Milk', pos: '68% 0%', bg: 'bg-[#FFF8E5]', border: 'border-[#FFE082]' },
-    { label: 'Pastry Croissant', pos: '100% 0%', bg: 'bg-[#E2DCFE]/60', border: 'border-[#836FFF]' },
-    { label: 'Happy Order Box', pos: '30% 45%', bg: 'bg-[#E7F0FF]', border: 'border-[#836FFF]' },
-    { label: 'Crazy Chili', pos: '75% 45%', bg: 'bg-[#FFF0F0]', border: 'border-[#FFADAD]' },
-    { label: 'Cake Slice', pos: '10% 85%', bg: 'bg-[#FFF8E5]', border: 'border-[#FFE082]' },
-    { label: 'Fruit Friends', pos: '90% 85%', bg: 'bg-[#E7F0FF]', border: 'border-[#836FFF]' },
+    { label: 'Boba Cute', pos: '0% 0%', bg: 'bg-[#eef5ff]', border: 'border-[#1777fb]' },
+    { label: 'Ramen Joy', pos: '35% 0%', bg: 'bg-[#fdf0f4]', border: 'border-[#fb0001]' },
+    { label: 'Fresh Milk', pos: '68% 0%', bg: 'bg-[#fff8e5]', border: 'border-[#ffbc03]' },
+    { label: 'Pastry Croissant', pos: '100% 0%', bg: 'bg-[#f5c4d1]/40', border: 'border-[#fb0001]' },
+    { label: 'Happy Order Box', pos: '30% 45%', bg: 'bg-[#eef5ff]', border: 'border-[#1777fb]' },
+    { label: 'Crazy Chili', pos: '75% 45%', bg: 'bg-[#fdf0f4]', border: 'border-[#fb0001]' },
+    { label: 'Cake Slice', pos: '10% 85%', bg: 'bg-[#fff8e5]', border: 'border-[#ffbc03]' },
+    { label: 'Fruit Friends', pos: '90% 85%', bg: 'bg-[#eef5ff]', border: 'border-[#1777fb]' },
 ];
 
 export default function Welcome() {
@@ -145,36 +145,36 @@ export default function Welcome() {
                 }
             `}</style>
 
-            <div className="min-h-screen bg-[#F8F7FF] font-['Plus_Jakarta_Sans'] text-[#2D3142] selection:bg-[#FFE082] selection:text-[#2D3142]">
+            <div className="min-h-screen bg-[#f8fafc] font-['Plus_Jakarta_Sans'] text-[#0f172a] selection:bg-[#ffbc03] selection:text-[#0f172a]">
                 {/* Header Top Bar */}
-                <header className="sticky top-0 z-40 mx-auto w-full border-b-2 border-[#EFEFF5] bg-white/95 px-6 py-4 shadow-sm backdrop-blur-md lg:px-10">
+                <header className="sticky top-0 z-40 mx-auto w-full border-b-2 border-[#0f172a]/10 bg-white/95 px-6 py-4 shadow-sm backdrop-blur-md lg:px-10">
                     <div className="mx-auto flex max-w-7xl items-center justify-between">
                         <Link href={route('home')} className="flex items-center gap-3 group" aria-label="VVARSA">
-                            <span className="flex size-11 items-center justify-center rounded-2xl bg-[#836FFF] text-white shadow-md shadow-[#836FFF]/30 transition group-hover:rotate-6 group-hover:scale-110">
+                            <span className="flex size-11 items-center justify-center rounded-2xl bg-[#1777fb] text-white shadow-md shadow-[#1777fb]/30 transition group-hover:rotate-6 group-hover:scale-110">
                                 <ChefHat className="size-6" strokeWidth={2.5} />
                             </span>
-                            <span className="text-2xl font-black tracking-tight text-[#2D3142]">
-                                VVAR<span className="text-[#836FFF]">SA</span>
-                                <span className="ml-1.5 inline-block rounded-full bg-[#FFE082] px-2 py-0.5 text-[10px] font-black uppercase text-[#2D3142]">
+                            <span className="text-2xl font-black tracking-tight text-[#0f172a]">
+                                VVAR<span className="text-[#fb0001]">SA</span>
+                                <span className="ml-1.5 inline-block rounded-full bg-[#ffbc03] px-2 py-0.5 text-[10px] font-black uppercase text-[#0f172a]">
                                     Fresh
                                 </span>
                             </span>
                         </Link>
 
-                        <nav className="hidden items-center gap-7 text-base font-bold text-[#4A4E69] md:flex">
-                            <a href="#manfaat" className="rounded-full px-3 py-1.5 transition hover:bg-[#E2DCFE] hover:text-[#836FFF]">
+                        <nav className="hidden items-center gap-7 text-base font-bold text-[#475569] md:flex">
+                            <a href="#manfaat" className="rounded-full px-3 py-1.5 transition hover:bg-[#eef5ff] hover:text-[#1777fb]">
                                 Manfaat
                             </a>
-                            <a href="#cara-kerja" className="rounded-full px-3 py-1.5 transition hover:bg-[#FFF8E5] hover:text-[#b88600]">
+                            <a href="#cara-kerja" className="rounded-full px-3 py-1.5 transition hover:bg-[#fff8e5] hover:text-[#b88600]">
                                 Cara kerja
                             </a>
-                            <a href="#produk" className="rounded-full px-3 py-1.5 transition hover:bg-[#FFF0F0] hover:text-[#c06060]">
+                            <a href="#produk" className="rounded-full px-3 py-1.5 transition hover:bg-[#fdf0f4] hover:text-[#fb0001]">
                                 Ekosistem
                             </a>
-                            <a href="#paket" className="rounded-full px-3 py-1.5 transition hover:bg-[#FFF8E5] hover:text-[#b88600]">
+                            <a href="#paket" className="rounded-full px-3 py-1.5 transition hover:bg-[#fff8e5] hover:text-[#b88600]">
                                 Paket
                             </a>
-                            <a href="#cerita" className="rounded-full px-3 py-1.5 transition hover:bg-[#E2DCFE]/50 hover:text-[#2D3142]">
+                            <a href="#cerita" className="rounded-full px-3 py-1.5 transition hover:bg-[#f5c4d1]/30 hover:text-[#0f172a]">
                                 Cerita pengguna
                             </a>
                         </nav>
@@ -183,18 +183,18 @@ export default function Welcome() {
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="rounded-full border-2 border-[#836FFF] bg-white px-5 py-2.5 text-base font-extrabold text-[#836FFF] shadow-sm transition hover:bg-[#836FFF] hover:text-white"
+                                    className="rounded-full border-2 border-[#0f172a] bg-white px-5 py-2.5 text-base font-extrabold text-[#0f172a] shadow-sm transition hover:bg-[#ffbc03]"
                                 >
                                     Dashboard
                                 </Link>
                             ) : (
                                 <>
-                                    <Link href={route('login')} className="px-4 py-2.5 text-base font-extrabold text-[#4A4E69] transition hover:text-[#836FFF]">
+                                    <Link href={route('login')} className="px-4 py-2.5 text-base font-extrabold text-[#475569] transition hover:text-[#1777fb]">
                                         Masuk
                                     </Link>
                                     <Link
                                         href={route('register')}
-                                        className="rounded-full bg-[#836FFF] px-6 py-2.5 text-base font-extrabold text-white shadow-md shadow-[#836FFF]/30 transition hover:-translate-y-0.5 hover:bg-[#6a56e0]"
+                                        className="rounded-full bg-[#1777fb] px-6 py-2.5 text-base font-extrabold text-white shadow-md shadow-[#1777fb]/30 transition hover:-translate-y-0.5 hover:bg-[#fb0001]"
                                     >
                                         Mulai Gratis <ArrowRight className="ml-1 inline size-4 stroke-[3]" />
                                     </Link>
@@ -205,7 +205,7 @@ export default function Welcome() {
                         <button
                             type="button"
                             onClick={() => setMenuOpen(!menuOpen)}
-                            className="rounded-2xl bg-[#F8F7FF] p-2.5 text-[#2D3142] hover:bg-[#E2DCFE] md:hidden"
+                            className="rounded-2xl bg-[#f1f5f9] p-2.5 text-[#0f172a] hover:bg-[#e2e8f0] md:hidden"
                             aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
                         >
                             {menuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
@@ -215,21 +215,21 @@ export default function Welcome() {
 
                 {/* Mobile Navigation */}
                 {menuOpen && (
-                    <div className="relative z-30 mx-6 mt-2 flex flex-col gap-2 rounded-3xl border-2 border-[#EFEFF5] bg-white p-4 shadow-xl md:hidden">
-                        <a href="#manfaat" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#2D3142] hover:bg-[#E2DCFE]">
+                    <div className="relative z-30 mx-6 mt-2 flex flex-col gap-2 rounded-3xl border-2 border-[#0f172a] bg-white p-4 shadow-xl md:hidden">
+                        <a href="#manfaat" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#0f172a] hover:bg-[#eef5ff]">
                             Manfaat
                         </a>
-                        <a href="#cara-kerja" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#2D3142] hover:bg-[#FFF8E5]">
+                        <a href="#cara-kerja" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#0f172a] hover:bg-[#fff8e5]">
                             Cara kerja
                         </a>
-                        <a href="#produk" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#2D3142] hover:bg-[#FFF0F0]">
+                        <a href="#produk" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#0f172a] hover:bg-[#fdf0f4]">
                             Ekosistem
                         </a>
-                        <a href="#paket" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#2D3142] hover:bg-[#FFF8E5]">
+                        <a href="#paket" onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-2.5 text-base font-bold text-[#0f172a] hover:bg-[#fff8e5]">
                             Paket
                         </a>
                         {!auth.user && (
-                            <Link href={route('login')} className="mt-2 rounded-2xl bg-[#836FFF] px-4 py-3 text-center text-base font-extrabold text-white shadow-md">
+                            <Link href={route('login')} className="mt-2 rounded-2xl bg-[#1777fb] px-4 py-3 text-center text-base font-extrabold text-white shadow-md">
                                 Masuk ke akun
                             </Link>
                         )}
@@ -241,58 +241,58 @@ export default function Welcome() {
                     <section className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pt-12 pb-20 lg:grid-cols-[1fr_1fr] lg:px-10 lg:pt-16 lg:pb-28">
                         <div className="relative z-10 max-w-xl">
                             {/* Cute Tag */}
-                            <div className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[#836FFF]/40 bg-[#E2DCFE] px-4 py-2 text-xs font-black tracking-wider text-[#836FFF] uppercase shadow-sm">
-                                <Sparkles className="size-4 text-[#FFE082] fill-[#FFE082]" />
+                            <div className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[#fb0001] bg-[#fdf0f4] px-4 py-2 text-xs font-black tracking-wider text-[#fb0001] uppercase shadow-sm">
+                                <Sparkles className="size-4 text-[#ffbc03] fill-[#ffbc03]" />
                                 <span>Solusi Usaha Paling Seger</span>
-                                <span className="rounded-full bg-[#FFE082] px-2 py-0.5 text-[10px] text-[#2D3142]">New</span>
+                                <span className="rounded-full bg-[#ffbc03] px-2 py-0.5 text-[10px] text-[#0f172a]">New</span>
                             </div>
 
-                            <h1 className="text-5xl leading-[1.02] font-black tracking-tight text-[#2D3142] sm:text-6xl lg:text-[4.8rem]">
+                            <h1 className="text-5xl leading-[1.02] font-black tracking-tight text-[#0f172a] sm:text-6xl lg:text-[4.8rem]">
                                 Kelola bisnis <br />
-                                <span className="inline-block rounded-2xl bg-[#FFE082] px-4 py-1 text-[#2D3142] -rotate-1 shadow-md">
+                                <span className="inline-block rounded-2xl bg-[#ffbc03] px-4 py-1 text-[#0f172a] -rotate-1 shadow-md">
                                     jadi seru & rapi.
                                 </span>
                             </h1>
 
-                            <p className="mt-7 max-w-lg text-lg leading-relaxed font-semibold text-[#4A4E69]">
-                                Pantau stok bahan, catat transaksi penjualan, dan rapikan laporan keuangan tanpa perlu pusing. <span className="text-[#836FFF] font-bold">Semua dalam 1 tempat!</span>
+                            <p className="mt-7 max-w-lg text-lg leading-relaxed font-semibold text-[#475569]">
+                                Pantau stok bahan, catat transaksi penjualan, dan rapikan laporan keuangan tanpa perlu pusing. <span className="text-[#fb0001] font-bold">Semua dalam 1 tempat!</span>
                             </p>
 
                             <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
                                 <Link
                                     href={auth.user ? route('dashboard') : route('register')}
-                                    className="group inline-flex items-center justify-center rounded-2xl bg-[#836FFF] px-7 py-4 text-base font-black text-white shadow-lg shadow-[#836FFF]/30 transition hover:-translate-y-1 hover:bg-[#6a56e0]"
+                                    className="group inline-flex items-center justify-center rounded-2xl bg-[#1777fb] px-7 py-4 text-base font-black text-white shadow-lg shadow-[#1777fb]/30 transition hover:-translate-y-1 hover:bg-[#0d5ecc]"
                                 >
                                     Coba Gratis Sekarang <ArrowRight className="ml-2 size-5 transition group-hover:translate-x-1 stroke-[3]" />
                                 </Link>
 
                                 <a
                                     href="#cara-kerja"
-                                    className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#EFEFF5] bg-white px-6 py-4 text-base font-extrabold text-[#2D3142] shadow-sm transition hover:border-[#836FFF] hover:bg-[#E2DCFE] hover:text-[#836FFF]"
+                                    className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#0f172a]/15 bg-white px-6 py-4 text-base font-extrabold text-[#0f172a] shadow-sm transition hover:border-[#1777fb] hover:bg-[#eef5ff] hover:text-[#1777fb]"
                                 >
-                                    <Play className="size-4 fill-[#FFE082] text-[#FFE082]" /> Lihat cara kerja
+                                    <Play className="size-4 fill-[#ffbc03] text-[#ffbc03]" /> Lihat cara kerja
                                 </a>
                             </div>
 
                             {/* Cute Avatars Banner */}
-                            <div className="mt-10 flex items-center gap-4 rounded-2xl border-2 border-[#EFEFF5] bg-white p-3.5 shadow-sm max-w-md">
+                            <div className="mt-10 flex items-center gap-4 rounded-2xl border-2 border-[#0f172a]/10 bg-white p-3.5 shadow-sm max-w-md">
                                 <div className="flex -space-x-3">
-                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#FFE082] text-sm font-black shadow-sm">
-                                        <Soup className="size-5 text-[#2D3142]" />
+                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#ffbc03] text-sm font-black shadow-sm">
+                                        <Soup className="size-5 text-[#0f172a]" />
                                     </span>
-                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#836FFF] text-sm font-black text-white shadow-sm">
+                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#1777fb] text-sm font-black text-white shadow-sm">
                                         <Coffee className="size-5" />
                                     </span>
-                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#E2DCFE] text-sm font-black text-[#836FFF] shadow-sm">
+                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#f5c4d1] text-sm font-black text-[#fb0001] shadow-sm">
                                         <CakeSlice className="size-5" />
                                     </span>
-                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#FFADAD] text-sm font-black text-white shadow-sm">
+                                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-[#fb0001] text-sm font-black text-white shadow-sm">
                                         <Heart className="size-5 fill-white" />
                                     </span>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-black uppercase text-[#836FFF]">Dipercaya 1,200+ Usaha</p>
-                                    <p className="text-sm font-extrabold text-[#2D3142]">Kuliner, Cafe, Retail & UMKM</p>
+                                    <p className="text-xs font-black uppercase text-[#1777fb]">Dipercaya 1,200+ Usaha</p>
+                                    <p className="text-sm font-extrabold text-[#0f172a]">Kuliner, Cafe, Retail & UMKM</p>
                                 </div>
                             </div>
                         </div>
@@ -300,37 +300,37 @@ export default function Welcome() {
                         {/* Hero Interactive Visual */}
                         <div className="relative min-h-[460px] sm:min-h-[520px] lg:min-h-[560px]">
                             {/* Cute Layered Card Backgrounds */}
-                            <div className="absolute top-4 right-2 h-[88%] w-[88%] rotate-4 rounded-[2.5rem] border-4 border-[#836FFF]/30 bg-[#FFE082] shadow-xl sm:rounded-[3rem]" />
-                            <div className="absolute top-8 left-2 h-[88%] w-[88%] -rotate-3 rounded-[2.5rem] border-4 border-[#836FFF]/30 bg-[#E2DCFE] shadow-lg sm:rounded-[3rem]" />
+                            <div className="absolute top-4 right-2 h-[88%] w-[88%] rotate-4 rounded-[2.5rem] border-4 border-[#0f172a] bg-[#ffbc03] shadow-xl sm:rounded-[3rem]" />
+                            <div className="absolute top-8 left-2 h-[88%] w-[88%] -rotate-3 rounded-[2.5rem] border-4 border-[#0f172a] bg-[#f5c4d1] shadow-lg sm:rounded-[3rem]" />
 
                             {/* Main Card */}
                             <div data-reveal className="absolute inset-x-2 top-0 mx-auto h-[90%] max-w-[440px] transition duration-700">
-                                <div className="h-full overflow-hidden rounded-[2.5rem] border-4 border-[#EFEFF5] bg-white p-6 shadow-2xl transition hover:rotate-1 sm:rounded-[3rem]">
+                                <div className="h-full overflow-hidden rounded-[2.5rem] border-4 border-[#0f172a] bg-white p-6 shadow-2xl transition hover:rotate-1 sm:rounded-[3rem]">
                                     {/* Card Header */}
-                                    <div className="flex items-center justify-between border-b-2 border-[#EFEFF5] pb-4">
+                                    <div className="flex items-center justify-between border-b-2 border-[#0f172a]/10 pb-4">
                                         <div className="flex items-center gap-3">
-                                            <span className="flex size-10 items-center justify-center rounded-2xl bg-[#836FFF] text-white">
+                                            <span className="flex size-10 items-center justify-center rounded-2xl bg-[#1777fb] text-white">
                                                 <ChefHat className="size-5" />
                                             </span>
                                             <div>
-                                                <p className="text-xs font-bold text-[#9A9BAC]">Dapur & Cafe</p>
-                                                <p className="text-base font-black text-[#2D3142]">VVARSA Live</p>
+                                                <p className="text-xs font-bold text-[#64748b]">Dapur & Cafe</p>
+                                                <p className="text-base font-black text-[#0f172a]">VVARSA Live</p>
                                             </div>
                                         </div>
-                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF0F0] border border-[#FFADAD]/50 px-3 py-1 text-xs font-black text-[#c06060]">
-                                            <span className="size-2 rounded-full bg-[#FFADAD] animate-pulse"></span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fdf0f4] border border-[#fb0001]/30 px-3 py-1 text-xs font-black text-[#fb0001]">
+                                            <span className="size-2 rounded-full bg-[#fb0001] animate-pulse"></span>
                                             Live Update
                                         </span>
                                     </div>
 
                                     {/* Sales Display */}
-                                    <div className="mt-5 rounded-2xl border-2 border-[#836FFF]/20 bg-[#E2DCFE] p-5">
+                                    <div className="mt-5 rounded-2xl border-2 border-[#1777fb]/20 bg-[#eef5ff] p-5">
                                         <div className="flex items-start justify-between">
                                             <div>
-                                                <p className="text-xs font-extrabold text-[#836FFF] uppercase tracking-wider">Penjualan Hari Ini</p>
-                                                <p className="mt-1 text-3xl font-black text-[#2D3142]">Rp 3.450.000</p>
+                                                <p className="text-xs font-extrabold text-[#1777fb] uppercase tracking-wider">Penjualan Hari Ini</p>
+                                                <p className="mt-1 text-3xl font-black text-[#0f172a]">Rp 3.450.000</p>
                                             </div>
-                                            <span className="rounded-xl bg-[#FFE082] px-2.5 py-1 text-xs font-black text-[#2D3142] shadow-sm">
+                                            <span className="rounded-xl bg-[#ffbc03] px-2.5 py-1 text-xs font-black text-[#0f172a] shadow-sm">
                                                 +24%
                                             </span>
                                         </div>
@@ -342,12 +342,12 @@ export default function Welcome() {
                                                     key={idx}
                                                     className={`w-full rounded-t-xl transition-all duration-300 ${
                                                         idx === 5
-                                                            ? 'bg-[#FFADAD]'
+                                                            ? 'bg-[#fb0001]'
                                                             : idx % 3 === 0
-                                                              ? 'bg-[#836FFF]'
+                                                              ? 'bg-[#1777fb]'
                                                               : idx % 2 === 0
-                                                                ? 'bg-[#FFE082]'
-                                                                : 'bg-[#E2DCFE]'
+                                                                ? 'bg-[#ffbc03]'
+                                                                : 'bg-[#f5c4d1]'
                                                     }`}
                                                     style={{ height: `${height}%` }}
                                                 />
@@ -356,42 +356,42 @@ export default function Welcome() {
                                     </div>
 
                                     {/* Stock Widget */}
-                                    <div className="mt-4 flex items-center justify-between rounded-2xl border-2 border-[#EFEFF5] bg-[#FFF8E5] p-4">
+                                    <div className="mt-4 flex items-center justify-between rounded-2xl border-2 border-[#0f172a]/10 bg-[#fff8e5] p-4">
                                         <div className="flex items-center gap-3">
-                                            <span className="rounded-xl bg-[#FFE082] p-2.5 text-[#2D3142]">
+                                            <span className="rounded-xl bg-[#ffbc03] p-2.5 text-[#0f172a]">
                                                 <Package className="size-5" />
                                             </span>
                                             <div>
-                                                <p className="text-xs font-bold text-[#9A9BAC]">Inventori Bahan</p>
-                                                <p className="text-sm font-black text-[#2D3142]">128 item aman & cukup</p>
+                                                <p className="text-xs font-bold text-[#64748b]">Inventori Bahan</p>
+                                                <p className="text-sm font-black text-[#0f172a]">128 item aman & cukup</p>
                                             </div>
                                         </div>
-                                        <Check className="size-6 text-[#836FFF] stroke-[3]" />
+                                        <Check className="size-6 text-[#1777fb] stroke-[3]" />
                                     </div>
                                 </div>
                             </div>
 
                             {/* Floating Cute Badges */}
-                            <div className="absolute top-[8%] -left-2 z-20 w-44 -rotate-6 rounded-2xl border-3 border-[#EFEFF5] bg-white p-3.5 shadow-xl transition hover:rotate-0 sm:-left-6">
+                            <div className="absolute top-[8%] -left-2 z-20 w-44 -rotate-6 rounded-2xl border-3 border-[#0f172a] bg-white p-3.5 shadow-xl transition hover:rotate-0 sm:-left-6">
                                 <div className="flex items-center gap-2.5">
-                                    <span className="rounded-xl bg-[#FFADAD] p-2 text-[#2D3142]">
+                                    <span className="rounded-xl bg-[#fb0001] p-2 text-white">
                                         <TrendingUp className="size-4" />
                                     </span>
                                     <div>
-                                        <p className="text-[11px] font-bold text-[#9A9BAC]">Profit Bulan Ini</p>
-                                        <p className="text-base font-black text-[#836FFF]">Rp 14.8 Juta</p>
+                                        <p className="text-[11px] font-bold text-[#64748b]">Profit Bulan Ini</p>
+                                        <p className="text-base font-black text-[#fb0001]">Rp 14.8 Juta</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="absolute bottom-[8%] -right-2 z-20 w-44 rotate-6 rounded-2xl border-3 border-[#EFEFF5] bg-[#FFE082] p-3.5 shadow-xl transition hover:rotate-0 sm:-right-6">
+                            <div className="absolute bottom-[8%] -right-2 z-20 w-44 rotate-6 rounded-2xl border-3 border-[#0f172a] bg-[#ffbc03] p-3.5 shadow-xl transition hover:rotate-0 sm:-right-6">
                                 <div className="flex items-center gap-2.5">
-                                    <span className="rounded-xl bg-white p-2 text-[#2D3142]">
-                                        <Sparkles className="size-4 text-[#836FFF]" />
+                                    <span className="rounded-xl bg-white p-2 text-[#0f172a]">
+                                        <Sparkles className="size-4 text-[#fb0001]" />
                                     </span>
                                     <div>
-                                        <p className="text-[11px] font-extrabold text-[#2D3142]">Status Bisnis</p>
-                                        <p className="text-base font-black text-[#2D3142]">Super Rapi!</p>
+                                        <p className="text-[11px] font-extrabold text-[#0f172a]">Status Bisnis</p>
+                                        <p className="text-base font-black text-[#0f172a]">Super Rapi!</p>
                                     </div>
                                 </div>
                             </div>
@@ -401,10 +401,10 @@ export default function Welcome() {
                     {/* Features Grid (Manfaat) */}
                     <section data-reveal id="manfaat" className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
                         <div className="mb-10 text-center">
-                            <span className="rounded-full bg-[#E2DCFE] border-2 border-[#836FFF]/40 px-4 py-1.5 text-xs font-black uppercase text-[#836FFF]">
+                            <span className="rounded-full bg-[#eef5ff] border-2 border-[#1777fb] px-4 py-1.5 text-xs font-black uppercase text-[#1777fb]">
                                 Mengapa Harus VVARSA?
                             </span>
-                            <h2 className="mt-4 text-3xl font-black tracking-tight text-[#2D3142] sm:text-4xl">
+                            <h2 className="mt-4 text-3xl font-black tracking-tight text-[#0f172a] sm:text-4xl">
                                 Fitur Lengkap, Tampilan Manis & Mudah
                             </h2>
                         </div>
@@ -424,11 +424,11 @@ export default function Welcome() {
                                                 {tag}
                                             </span>
                                         </div>
-                                        <h3 className="mt-6 text-xl font-black text-[#2D3142]">{title}</h3>
-                                        <p className="mt-2 text-base leading-relaxed font-semibold text-[#4A4E69]">{text}</p>
+                                        <h3 className="mt-6 text-xl font-black text-[#0f172a]">{title}</h3>
+                                        <p className="mt-2 text-base leading-relaxed font-semibold text-[#64748b]">{text}</p>
                                     </div>
 
-                                    <div className="mt-6 flex items-center gap-1 text-sm font-black text-[#836FFF]">
+                                    <div className="mt-6 flex items-center gap-1 text-sm font-black text-[#1777fb]">
                                         <span>Pelajari lebih lanjut</span>
                                         <ArrowRight className="size-4 transition group-hover:translate-x-1 stroke-[3]" />
                                     </div>
@@ -438,40 +438,40 @@ export default function Welcome() {
                     </section>
 
                     {/* How It Works (Cara Kerja) */}
-                    <section data-reveal id="cara-kerja" className="bg-[#FFF8E5] border-y-3 border-[#FFE082]/40 px-6 py-20 lg:px-10 lg:py-28">
+                    <section data-reveal id="cara-kerja" className="bg-[#fff8e5] border-y-3 border-[#0f172a]/10 px-6 py-20 lg:px-10 lg:py-28">
                         <div className="mx-auto max-w-7xl">
                             <div className="grid items-end gap-8 lg:grid-cols-[1fr_auto]">
                                 <div>
-                                    <span className="rounded-full bg-[#FFADAD] px-4 py-1.5 text-xs font-black uppercase text-[#2D3142] shadow-sm">
+                                    <span className="rounded-full bg-[#fb0001] px-4 py-1.5 text-xs font-black uppercase text-white shadow-sm">
                                         Proses Cepat & Ringkas
                                     </span>
-                                    <h2 className="mt-4 max-w-2xl text-4xl leading-tight font-black tracking-tight text-[#2D3142] sm:text-5xl">
+                                    <h2 className="mt-4 max-w-2xl text-4xl leading-tight font-black tracking-tight text-[#0f172a] sm:text-5xl">
                                         3 Langkah Mudah <br />
-                                        <span className="inline-block rounded-xl bg-white px-3 py-0.5 text-[#836FFF] border-2 border-[#836FFF]/30 mt-1">
+                                        <span className="inline-block rounded-xl bg-white px-3 py-0.5 text-[#1777fb] border-2 border-[#1777fb] mt-1">
                                             Bikin Bisnis Lancar Jaya.
                                         </span>
                                     </h2>
                                 </div>
-                                <p className="max-w-xs text-base font-bold text-[#4A4E69]">
+                                <p className="max-w-xs text-base font-bold text-[#64748b]">
                                     Dirancang simpel agar kamu dan tim bisa langsung pakai tanpa perlu pelatihan rumit.
                                 </p>
                             </div>
 
                             <div className="mt-12 grid gap-6 md:grid-cols-3">
                                 {[
-                                    { step: '01', title: 'Catat Stok & Produk', desc: 'Masukkan daftar bahan baku dan barang dengan beberapa klik saja.', color: 'bg-[#836FFF]', textColor: 'text-[#836FFF]' },
-                                    { step: '02', title: 'Jalankan Kasir POS', desc: 'Catat pesanan pelanggan dengan cepat, stok terpotong otomatis.', color: 'bg-[#FFADAD]', textColor: 'text-[#c06060]' },
-                                    { step: '03', title: 'Pantau Laporan Keuangan', desc: 'Lihat profit harian & bulanan langsung dalam tampilan grafik yang jernih.', color: 'bg-[#FFE082]', textColor: 'text-[#2D3142]' },
+                                    { step: '01', title: 'Catat Stok & Produk', desc: 'Masukkan daftar bahan baku dan barang dengan beberapa klik saja.', color: 'bg-[#1777fb]', textColor: 'text-[#1777fb]' },
+                                    { step: '02', title: 'Jalankan Kasir POS', desc: 'Catat pesanan pelanggan dengan cepat, stok terpotong otomatis.', color: 'bg-[#fb0001]', textColor: 'text-[#fb0001]' },
+                                    { step: '03', title: 'Pantau Laporan Keuangan', desc: 'Lihat profit harian & bulanan langsung dalam tampilan grafik yang jernih.', color: 'bg-[#ffbc03]', textColor: 'text-[#0f172a]' },
                                 ].map((item) => (
                                     <div
                                         key={item.step}
-                                        className="group relative rounded-3xl border-3 border-[#EFEFF5] bg-white p-7 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                                        className="group relative rounded-3xl border-3 border-[#0f172a] bg-white p-7 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
                                     >
-                                        <span className={`inline-block rounded-2xl ${item.color} px-4 py-2 text-xl font-black text-[#2D3142] shadow-md`}>
+                                        <span className={`inline-block rounded-2xl ${item.color} px-4 py-2 text-xl font-black text-white shadow-md`}>
                                             Langkah {item.step}
                                         </span>
-                                        <h3 className="mt-8 text-2xl font-black text-[#2D3142]">{item.title}</h3>
-                                        <p className="mt-3 text-base font-semibold leading-relaxed text-[#4A4E69]">{item.desc}</p>
+                                        <h3 className="mt-8 text-2xl font-black text-[#0f172a]">{item.title}</h3>
+                                        <p className="mt-3 text-base font-semibold leading-relaxed text-[#64748b]">{item.desc}</p>
                                     </div>
                                 ))}
                             </div>
