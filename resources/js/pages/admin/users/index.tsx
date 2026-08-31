@@ -4,7 +4,7 @@ import { Head, router } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Plus } from 'lucide-react';
+import { Search, Plus, Users } from 'lucide-react';
 import { useState } from 'react';
 import { getColumns, type UserItem } from './columns';
 import { DataTable } from './data-table';
@@ -65,24 +65,36 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Daftar Pengguna" />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
-                
-                {/* Header */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Daftar Pengguna</h1>
-                        <p className="text-muted-foreground text-sm">
-                            Pantau daftar seluruh pengguna yang terdaftar di sistem platform ini.
-                        </p>
+            <div className="flex flex-col gap-0">
+
+                {/* Page Header */}
+                <div className="relative overflow-hidden bg-[#0d0d0d] px-6 pt-6 pb-5 md:px-8">
+                    <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
+                    <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <div className="mb-1.5 flex items-center gap-2">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest uppercase text-[#1a56ff] border border-[#1a56ff]/20">
+                                    <Users size={11} />
+                                    Platform Admin
+                                </span>
+                            </div>
+                            <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">Daftar Pengguna</h1>
+                            <p className="mt-0.5 text-sm text-white/50">Pantau daftar seluruh pengguna yang terdaftar di sistem platform ini.</p>
+                        </div>
+                        <Button
+                            size="sm"
+                            onClick={() => setIsCreateOpen(true)}
+                            className="bg-[#1a56ff] hover:bg-[#1a56ff]/90 text-white gap-1.5 shadow-lg shadow-[#1a56ff]/20"
+                        >
+                            <Plus size={14} /> Tambah Pengguna
+                        </Button>
                     </div>
-                    
-                    <Button onClick={() => setIsCreateOpen(true)} className="inline-flex items-center gap-2 rounded-xl">
-                        <Plus size={16} />
-                        Tambah Pengguna Baru
-                    </Button>
                 </div>
 
-                {/* Filters */}
+                {/* Content */}
+                <div className="flex flex-col gap-6 px-6 pb-6 pt-4 md:px-8">
+
+                    {/* Filters */}
                 <div className="bg-card border-border flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row items-center shadow-sm">
                     <div className="relative flex-1 w-full">
                         <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
@@ -147,6 +159,7 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
                             </div>
                         </div>
                     )}
+                </div>
                 </div>
             </div>
 

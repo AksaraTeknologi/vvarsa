@@ -36,8 +36,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
+        <>
             <Head title="Log in" />
+
+            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
@@ -84,13 +86,13 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             id="remember"
                             name="remember"
                             checked={data.remember}
-                            onClick={() => setData('remember', !data.remember)}
+                            onCheckedChange={(checked) => setData('remember', checked === true)}
                             tabIndex={3}
                         />
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" variant="dark" className="mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
@@ -103,8 +105,17 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     </TextLink>
                 </div>
             </form>
-
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
-        </AuthLayout>
+        </>
     );
 }
+
+// Pasang Persistent Layout (reverse=false agar posisi form di kanan)
+Login.layout = (page: React.ReactNode) => (
+    <AuthLayout 
+        title="Log in to your account" 
+        description="Enter your email and password below to log in"
+        reverse={false}
+    >
+        {page}
+    </AuthLayout>
+);

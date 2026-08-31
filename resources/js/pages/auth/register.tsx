@@ -32,8 +32,9 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
+        <>
             <Head title="Register" />
+
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
@@ -101,7 +102,7 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                    <Button type="submit" variant="dark" className="mt-2 w-full" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Create account
                     </Button>
@@ -114,6 +115,17 @@ export default function Register() {
                     </TextLink>
                 </div>
             </form>
-        </AuthLayout>
+        </>
     );
 }
+
+// Pasang Persistent Layout (reverse=true agar posisi form bergeser ke kiri)
+Register.layout = (page: React.ReactNode) => (
+    <AuthLayout 
+        title="Create an account" 
+        description="Enter your details below to create your account"
+        reverse={true}
+    >
+        {page}
+    </AuthLayout>
+);
