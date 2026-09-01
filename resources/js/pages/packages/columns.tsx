@@ -2,14 +2,15 @@
 
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import DeleteConfirmDialog from '@/components/delete-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Link, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Trash, Package } from 'lucide-react';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
-import { Badge } from '@/components/ui/badge';
 import { type ProductVariant } from '@/types/mrp';
+import { Link } from '@inertiajs/react';
+import { ColumnDef } from '@tanstack/react-table';
+import { Edit, Package, Trash } from 'lucide-react';
 
 interface PackageModel {
     id: number;
@@ -23,8 +24,10 @@ interface PackageModel {
 
 function PackageActions({ pkg }: { pkg: PackageModel }) {
     const handleDelete = () => {
-        router.delete(`/packages/${pkg.id}`, {
-            preserveScroll: true,
+        handleAsyncAction(() => routerPromise('delete', `/packages/${pkg.id}`, {}, { preserveScroll: true }), {
+            loading: `Menghapus paket "${pkg.name}"...`,
+            success: `Paket "${pkg.name}" berhasil dihapus!`,
+            error: 'Gagal Menghapus',
         });
     };
 
@@ -83,14 +86,12 @@ export const columns: ColumnDef<PackageModel>[] = [
             const pkg = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className="bg-indigo-50 dark:bg-indigo-950/40 p-1.5 rounded-lg text-indigo-500">
+                    <div className="rounded-lg bg-indigo-50 p-1.5 text-indigo-500 dark:bg-indigo-950/40">
                         <Package size={16} />
                     </div>
                     <div>
-                        <div className="font-semibold text-sm text-slate-800 dark:text-slate-100">{pkg.name}</div>
-                        {pkg.description && (
-                            <div className="text-xs text-muted-foreground mt-0.5 max-w-xs truncate">{pkg.description}</div>
-                        )}
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">{pkg.name}</div>
+                        {pkg.description && <div className="text-muted-foreground mt-0.5 max-w-xs truncate text-xs">{pkg.description}</div>}
                     </div>
                 </div>
             );
@@ -100,22 +101,14 @@ export const columns: ColumnDef<PackageModel>[] = [
         accessorKey: 'capacity',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Kapasitas (Isi)" />,
         cell: ({ row }) => {
-            return (
-                <div className="font-semibold">
-                    {row.original.capacity} Pcs
-                </div>
-            );
+            return <div className="font-semibold">{row.original.capacity} Pcs</div>;
         },
     },
     {
         accessorKey: 'price',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Bundle" />,
         cell: ({ row }) => {
-            return (
-                <div className="text-indigo-600 font-bold">
-                    {formatRupiah(Number(row.original.price))}
-                </div>
-            );
+            return <div className="font-bold text-indigo-600">{formatRupiah(Number(row.original.price))}</div>;
         },
     },
     {
@@ -124,15 +117,15 @@ export const columns: ColumnDef<PackageModel>[] = [
         cell: ({ row }) => {
             const pkg = row.original;
             return !pkg.variants || pkg.variants.length === 0 ? (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
+                <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
                     Bebas Mix
                 </span>
             ) : (
-                <div className="flex flex-wrap gap-1 max-w-xs">
+                <div className="flex max-w-xs flex-wrap gap-1">
                     {pkg.variants.map((v) => (
                         <span
                             key={v.id}
-                            className="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30"
+                            className="inline-flex items-center rounded-lg border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:border-indigo-900/30 dark:bg-indigo-950/20 dark:text-indigo-400"
                         >
                             {v.name.replace('Mochi ', '')}
                         </span>

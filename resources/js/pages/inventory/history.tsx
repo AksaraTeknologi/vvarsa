@@ -55,10 +55,16 @@ export default function StockHistory({ movements, products, filters }: Props) {
                         <p className="text-muted-foreground text-sm">Semua catatan stok masuk, keluar, dan opname</p>
                     </div>
                     <div className="flex gap-2">
-                        <Link href="/inventory/stock-in" className="bg-emerald-600 hover:bg-emerald-700 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white transition-colors">
+                        <Link
+                            href="/inventory/stock-in"
+                            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
+                        >
                             <ArrowUpRight size={16} /> Stok Masuk
                         </Link>
-                        <Link href="/inventory/stock-out" className="bg-rose-600 hover:bg-rose-700 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white transition-colors">
+                        <Link
+                            href="/inventory/stock-out"
+                            className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-rose-700"
+                        >
                             <ArrowDownRight size={16} /> Stok Keluar
                         </Link>
                     </div>
@@ -77,7 +83,7 @@ export default function StockHistory({ movements, products, filters }: Props) {
                             <button
                                 key={t.value}
                                 onClick={() => applyFilter({ type: t.value })}
-                                className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors ${(filters.type || '') === t.value ? 'bg-primary text-primary-foreground' : 'border-border border hover:bg-muted'}`}
+                                className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors ${(filters.type || '') === t.value ? 'bg-primary text-primary-foreground' : 'border-border hover:bg-muted border'}`}
                             >
                                 {t.label}
                             </button>
@@ -89,11 +95,13 @@ export default function StockHistory({ movements, products, filters }: Props) {
                         <select
                             value={filters.product || ''}
                             onChange={(e) => applyFilter({ product: e.target.value })}
-                            className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         >
                             <option value="">Semua Produk</option>
                             {products.map((p) => (
-                                <option key={p.id} value={p.id}>{p.name}</option>
+                                <option key={p.id} value={p.id}>
+                                    {p.name}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -144,19 +152,18 @@ export default function StockHistory({ movements, products, filters }: Props) {
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-3 text-center">
-                                                    <span className={`text-sm font-semibold ${m.type === 'in' ? 'text-emerald-600' : m.type === 'out' ? 'text-rose-600' : 'text-blue-600'}`}>
-                                                        {m.type === 'in' ? '+' : m.type === 'out' ? '-' : '±'}{m.qty} {m.product?.unit}
+                                                    <span
+                                                        className={`text-sm font-semibold ${m.type === 'in' ? 'text-emerald-600' : m.type === 'out' ? 'text-rose-600' : 'text-blue-600'}`}
+                                                    >
+                                                        {m.type === 'in' ? '+' : m.type === 'out' ? '-' : '±'}
+                                                        {m.qty} {m.product?.unit}
                                                     </span>
                                                 </td>
                                                 <td className="text-muted-foreground px-4 py-3 text-center text-sm">
                                                     {m.qty_before} → <strong className="text-foreground">{m.qty_after}</strong>
                                                 </td>
-                                                <td className="text-muted-foreground px-4 py-3 text-sm">
-                                                    {m.reference || m.note || '—'}
-                                                </td>
-                                                <td className="text-muted-foreground px-4 py-3 text-sm">
-                                                    {m.user?.name || '—'}
-                                                </td>
+                                                <td className="text-muted-foreground px-4 py-3 text-sm">{m.reference || m.note || '—'}</td>
+                                                <td className="text-muted-foreground px-4 py-3 text-sm">{m.user?.name || '—'}</td>
                                             </tr>
                                         );
                                     })
@@ -169,7 +176,8 @@ export default function StockHistory({ movements, products, filters }: Props) {
                     {movements.last_page > 1 && (
                         <div className="border-border flex items-center justify-between border-t px-4 py-3">
                             <p className="text-muted-foreground text-sm">
-                                {(movements.current_page - 1) * movements.per_page + 1}–{Math.min(movements.current_page * movements.per_page, movements.total)} dari {movements.total} data
+                                {(movements.current_page - 1) * movements.per_page + 1}–
+                                {Math.min(movements.current_page * movements.per_page, movements.total)} dari {movements.total} data
                             </p>
                             <div className="flex gap-1">
                                 {movements.links.map((link, i) => (

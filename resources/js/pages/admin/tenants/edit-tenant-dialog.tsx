@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { z } from 'zod';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
 import { type Tenant } from './columns';
 
 interface Plan {
@@ -23,7 +23,10 @@ interface EditTenantDialogProps {
 
 const editTenantSchema = z.object({
     name: z.string().min(1, 'Nama tenant wajib diisi'),
-    slug: z.string().min(1, 'Slug wajib diisi').regex(/^[a-z0-9-]+$/, 'Slug hanya boleh berisi huruf kecil, angka, dan tanda hubung'),
+    slug: z
+        .string()
+        .min(1, 'Slug wajib diisi')
+        .regex(/^[a-z0-9-]+$/, 'Slug hanya boleh berisi huruf kecil, angka, dan tanda hubung'),
     business_type: z.string().min(1, 'Jenis bisnis wajib diisi'),
     phone: z.string().nullable().optional(),
     address: z.string().nullable().optional(),
@@ -91,9 +94,7 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Edit Tenant / Bisnis</DialogTitle>
-                        <DialogDescription>
-                            Perbarui detail bisnis tenant, paket langganan, dan status keaktifan mereka.
-                        </DialogDescription>
+                        <DialogDescription>Perbarui detail bisnis tenant, paket langganan, dan status keaktifan mereka.</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
@@ -131,10 +132,7 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="tenant-business-type">Jenis Bisnis</Label>
-                                <Select
-                                    value={form.data.business_type}
-                                    onValueChange={(val) => form.setData('business_type', val)}
-                                >
+                                <Select value={form.data.business_type} onValueChange={(val) => form.setData('business_type', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
                                         <SelectValue placeholder="Pilih Jenis" />
                                     </SelectTrigger>
@@ -152,10 +150,7 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
 
                             <div className="grid gap-2">
                                 <Label htmlFor="tenant-plan">Paket Langganan</Label>
-                                <Select
-                                    value={form.data.plan_id}
-                                    onValueChange={(val) => form.setData('plan_id', val)}
-                                >
+                                <Select value={form.data.plan_id} onValueChange={(val) => form.setData('plan_id', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
                                         <SelectValue placeholder="Pilih Paket" />
                                     </SelectTrigger>
@@ -205,7 +200,9 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                                 checked={form.data.is_active}
                                 onCheckedChange={(checked) => form.setData('is_active', checked === true)}
                             />
-                            <Label htmlFor="tenant-is-active" className="cursor-pointer text-sm">Tenant Aktif (Dapat Mengakses Sistem)</Label>
+                            <Label htmlFor="tenant-is-active" className="cursor-pointer text-sm">
+                                Tenant Aktif (Dapat Mengakses Sistem)
+                            </Label>
                         </div>
                     </div>
 

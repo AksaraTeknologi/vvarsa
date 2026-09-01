@@ -121,11 +121,7 @@ export default function Register() {
 
 // Pasang Persistent Layout (reverse=true agar posisi form bergeser ke kiri)
 Register.layout = (page: React.ReactNode) => (
-    <AuthLayout 
-        title="Create an account" 
-        description="Enter your details below to create your account"
-        reverse={true}
-    >
+    <AuthLayout title="Create an account" description="Enter your details below to create your account" reverse={true}>
         {page}
     </AuthLayout>
 );

@@ -22,6 +22,7 @@ class EnsureTenantMiddleware
 
         // Platform admin tidak butuh tenant context
         if ($user->hasRole('admin')) {
+            $request->session()->reflash();
             return redirect()->route('admin.dashboard');
         }
 
@@ -30,6 +31,7 @@ class EnsureTenantMiddleware
             if ($request->routeIs('choose-business') || $request->routeIs('choose-business.store')) {
                 return $next($request);
             }
+            $request->session()->reflash();
             return redirect()->route('choose-business');
         }
 

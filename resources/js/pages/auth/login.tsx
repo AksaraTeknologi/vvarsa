@@ -111,11 +111,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
 // Pasang Persistent Layout (reverse=false agar posisi form di kanan)
 Login.layout = (page: React.ReactNode) => (
-    <AuthLayout 
-        title="Log in to your account" 
-        description="Enter your email and password below to log in"
-        reverse={false}
-    >
+    <AuthLayout title="Log in to your account" description="Enter your email and password below to log in" reverse={false}>
         {page}
     </AuthLayout>
 );

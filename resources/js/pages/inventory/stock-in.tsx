@@ -1,17 +1,17 @@
+import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DatePicker } from '@/components/ui/date-picker';
 import { useState } from 'react';
 import { z } from 'zod';
-import { formatRupiah } from '@/lib/utils-mrp';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Inventori', href: '/inventory' },
@@ -85,7 +85,9 @@ export default function StockIn({ products }: Props) {
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="product_id" className="mb-1.5 block">Produk *</Label>
+                                <Label htmlFor="product_id" className="mb-1.5 block">
+                                    Produk *
+                                </Label>
                                 <Select
                                     value={data.product_id}
                                     onValueChange={(val) => {
@@ -94,7 +96,10 @@ export default function StockIn({ products }: Props) {
                                         if (p) setData('unit_cost', p.cost_price);
                                     }}
                                 >
-                                    <SelectTrigger id="product_id" className={`rounded-xl h-10 ${displayError('product_id') ? 'border-rose-500' : ''}`}>
+                                    <SelectTrigger
+                                        id="product_id"
+                                        className={`h-10 rounded-xl ${displayError('product_id') ? 'border-rose-500' : ''}`}
+                                    >
                                         <SelectValue placeholder="Pilih produk..." />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -114,18 +119,20 @@ export default function StockIn({ products }: Props) {
                             </div>
 
                             {selectedProduct && (
-                                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 text-sm">
+                                <div className="rounded-xl bg-blue-50 p-3 text-sm dark:bg-blue-900/20">
                                     <p className="font-medium text-blue-700 dark:text-blue-400">{selectedProduct.name}</p>
-                                    <p className="text-blue-600 dark:text-blue-300 mt-0.5 text-xs">
-                                        Stok sekarang: {selectedProduct.current_stock} {selectedProduct.unit} |
-                                        Minimum: {selectedProduct.min_stock} {selectedProduct.unit}
+                                    <p className="mt-0.5 text-xs text-blue-600 dark:text-blue-300">
+                                        Stok sekarang: {selectedProduct.current_stock} {selectedProduct.unit} | Minimum: {selectedProduct.min_stock}{' '}
+                                        {selectedProduct.unit}
                                     </p>
                                 </div>
                             )}
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <Label htmlFor="qty" className="mb-1.5 block">Jumlah Masuk *</Label>
+                                    <Label htmlFor="qty" className="mb-1.5 block">
+                                        Jumlah Masuk *
+                                    </Label>
                                     <Input
                                         id="qty"
                                         type="number"
@@ -142,7 +149,9 @@ export default function StockIn({ products }: Props) {
                                     {displayError('qty') && <p className="mt-1 text-xs text-rose-500">{displayError('qty')}</p>}
                                 </div>
                                 <div>
-                                    <Label htmlFor="unit_cost" className="mb-1.5 block">Harga Modal/Unit (Rp)</Label>
+                                    <Label htmlFor="unit_cost" className="mb-1.5 block">
+                                        Harga Modal/Unit (Rp)
+                                    </Label>
                                     <Input
                                         id="unit_cost"
                                         type="text"
@@ -153,16 +162,17 @@ export default function StockIn({ products }: Props) {
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="movement_date" className="block">Tanggal *</Label>
-                                <DatePicker
-                                    value={data.movement_date}
-                                    onChange={(val) => setData('movement_date', val)}
-                                />
+                                <Label htmlFor="movement_date" className="block">
+                                    Tanggal *
+                                </Label>
+                                <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
                                 {displayError('movement_date') && <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>}
                             </div>
 
                             <div>
-                                <Label htmlFor="reference" className="mb-1.5 block">No. Referensi</Label>
+                                <Label htmlFor="reference" className="mb-1.5 block">
+                                    No. Referensi
+                                </Label>
                                 <Input
                                     id="reference"
                                     type="text"
@@ -173,7 +183,9 @@ export default function StockIn({ products }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="note" className="mb-1.5 block">Catatan</Label>
+                                <Label htmlFor="note" className="mb-1.5 block">
+                                    Catatan
+                                </Label>
                                 <Textarea
                                     id="note"
                                     rows={2}
@@ -187,14 +199,12 @@ export default function StockIn({ products }: Props) {
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">
-                                Batal
-                            </Link>
+                            <Link href="/inventory">Batal</Link>
                         </Button>
                         <Button
                             type="submit"
                             disabled={processing}
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-70 rounded-xl px-5"
+                            className="rounded-xl bg-emerald-600 px-5 text-white hover:bg-emerald-700 disabled:opacity-70"
                         >
                             {processing ? 'Menyimpan...' : 'Simpan Stok Masuk'}
                         </Button>

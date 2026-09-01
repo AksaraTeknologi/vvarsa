@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { z } from 'zod';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
+import { z } from 'zod';
 
 interface Tenant {
     id: number;
@@ -18,21 +18,26 @@ interface CreateUserDialogProps {
     tenants: Tenant[];
 }
 
-const createUserSchema = z.object({
-    name: z.string().min(1, 'Nama wajib diisi'),
-    email: z.string().email('Format email tidak valid'),
-    password: z.string().min(8, 'Password minimal 8 karakter'),
-    role: z.enum(['admin', 'owner', 'staff']),
-    tenant_id: z.string().optional().nullable(),
-}).refine(data => {
-    if ((data.role === 'owner' || data.role === 'staff') && !data.tenant_id) {
-        return false;
-    }
-    return true;
-}, {
-    message: 'Bisnis / Tenant wajib dipilih untuk peran Owner atau Staff',
-    path: ['tenant_id'],
-});
+const createUserSchema = z
+    .object({
+        name: z.string().min(1, 'Nama wajib diisi'),
+        email: z.string().email('Format email tidak valid'),
+        password: z.string().min(8, 'Password minimal 8 karakter'),
+        role: z.enum(['admin', 'owner', 'staff']),
+        tenant_id: z.string().optional().nullable(),
+    })
+    .refine(
+        (data) => {
+            if ((data.role === 'owner' || data.role === 'staff') && !data.tenant_id) {
+                return false;
+            }
+            return true;
+        },
+        {
+            message: 'Bisnis / Tenant wajib dipilih untuk peran Owner atau Staff',
+            path: ['tenant_id'],
+        },
+    );
 
 export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDialogProps) {
     const form = useForm({
@@ -76,9 +81,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Tambah Pengguna Baru</DialogTitle>
-                        <DialogDescription>
-                            Buat akun pengguna baru dan tentukan peran serta bisnis tenant mereka.
-                        </DialogDescription>
+                        <DialogDescription>Buat akun pengguna baru dan tentukan peran serta bisnis tenant mereka.</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
@@ -154,10 +157,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                         {form.data.role !== 'admin' && (
                             <div className="grid gap-2">
                                 <Label htmlFor="tenant_id">Bisnis / Tenant</Label>
-                                <Select
-                                    value={form.data.tenant_id || ''}
-                                    onValueChange={(val) => form.setData('tenant_id', val)}
-                                >
+                                <Select value={form.data.tenant_id || ''} onValueChange={(val) => form.setData('tenant_id', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
                                         <SelectValue placeholder="Pilih Bisnis" />
                                     </SelectTrigger>

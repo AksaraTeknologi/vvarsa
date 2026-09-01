@@ -106,6 +106,6 @@ class ChooseBusinessController extends Controller
             'is_active' => true,
         ]);
 
-        return to_route('dashboard');
+        return to_route('dashboard')->with('success', 'Bisnis berhasil dibuat! Selamat datang di dashboard Anda.');
     }
 }

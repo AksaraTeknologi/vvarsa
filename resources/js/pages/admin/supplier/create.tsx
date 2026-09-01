@@ -1,9 +1,9 @@
-import React from 'react';
-import AppLayout from '@/layouts/app-layout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { type BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Admin Dashboard', href: '/admin' },
@@ -37,23 +37,22 @@ export default function SupplierCreate() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Supplier" />
 
-            <div className="flex flex-col gap-6 p-4 md:p-6 max-w-4xl mx-auto w-full">
+            <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 p-4 md:p-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Tambah Supplier Baru</h1>
-                    <p className="text-sm text-muted-foreground mt-1">
-                        Masukkan informasi detail mengenai supplier baru.
-                    </p>
+                    <h1 className="text-foreground text-2xl font-bold tracking-tight">Tambah Supplier Baru</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">Masukkan informasi detail mengenai supplier baru.</p>
                 </div>
 
-                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-                    <form onSubmit={submit} className="p-6 space-y-8">
-
+                <div className="bg-card border-border overflow-hidden rounded-xl border shadow-sm">
+                    <form onSubmit={submit} className="space-y-8 p-6">
                         {/* Section: Informasi Dasar */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Informasi Dasar</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <h2 className="border-b pb-2 text-lg font-semibold">Informasi Dasar</h2>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-medium">Nama Supplier <span className="text-red-500">*</span></label>
+                                    <label htmlFor="name" className="text-sm font-medium">
+                                        Nama Supplier <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="name"
                                         value={data.name}
@@ -65,12 +64,14 @@ export default function SupplierCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="business_type" className="text-sm font-medium">Tipe Bisnis</label>
+                                    <label htmlFor="business_type" className="text-sm font-medium">
+                                        Tipe Bisnis
+                                    </label>
                                     <select
                                         id="business_type"
                                         value={data.business_type}
                                         onChange={(e) => setData('business_type', e.target.value)}
-                                        className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         <option value="">Pilih Tipe Bisnis</option>
                                         <option value="FNB">F&B (Makanan/Minuman)</option>
@@ -85,10 +86,12 @@ export default function SupplierCreate() {
 
                         {/* Section: Kontak */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Kontak & Lokasi</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <h2 className="border-b pb-2 text-lg font-semibold">Kontak & Lokasi</h2>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <label htmlFor="contact_name" className="text-sm font-medium">Nama PIC / Kontak</label>
+                                    <label htmlFor="contact_name" className="text-sm font-medium">
+                                        Nama PIC / Kontak
+                                    </label>
                                     <Input
                                         id="contact_name"
                                         value={data.contact_name}
@@ -99,7 +102,9 @@ export default function SupplierCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="phone" className="text-sm font-medium">Nomor Telepon/WA</label>
+                                    <label htmlFor="phone" className="text-sm font-medium">
+                                        Nomor Telepon/WA
+                                    </label>
                                     <Input
                                         id="phone"
                                         value={data.phone}
@@ -110,7 +115,9 @@ export default function SupplierCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="email" className="text-sm font-medium">Email</label>
+                                    <label htmlFor="email" className="text-sm font-medium">
+                                        Email
+                                    </label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -122,7 +129,9 @@ export default function SupplierCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="website" className="text-sm font-medium">Website</label>
+                                    <label htmlFor="website" className="text-sm font-medium">
+                                        Website
+                                    </label>
                                     <Input
                                         id="website"
                                         value={data.website}
@@ -133,24 +142,23 @@ export default function SupplierCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="city" className="text-sm font-medium">Kota</label>
-                                    <Input
-                                        id="city"
-                                        value={data.city}
-                                        onChange={(e) => setData('city', e.target.value)}
-                                        placeholder="Nama Kota"
-                                    />
+                                    <label htmlFor="city" className="text-sm font-medium">
+                                        Kota
+                                    </label>
+                                    <Input id="city" value={data.city} onChange={(e) => setData('city', e.target.value)} placeholder="Nama Kota" />
                                     {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
                                 </div>
 
                                 <div className="space-y-2 md:col-span-2">
-                                    <label htmlFor="address" className="text-sm font-medium">Alamat Lengkap</label>
+                                    <label htmlFor="address" className="text-sm font-medium">
+                                        Alamat Lengkap
+                                    </label>
                                     <textarea
                                         id="address"
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
                                         placeholder="Jalan, RT/RW, Kelurahan, Kecamatan..."
-                                        className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     ></textarea>
                                     {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
                                 </div>
@@ -159,22 +167,24 @@ export default function SupplierCreate() {
 
                         {/* Section: Pengaturan & Lainnya */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Lainnya</h2>
+                            <h2 className="border-b pb-2 text-lg font-semibold">Lainnya</h2>
 
                             <div className="space-y-2">
-                                <label htmlFor="description" className="text-sm font-medium">Deskripsi / Catatan Tambahan</label>
+                                <label htmlFor="description" className="text-sm font-medium">
+                                    Deskripsi / Catatan Tambahan
+                                </label>
                                 <textarea
                                     id="description"
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
                                     placeholder="Catatan khusus tentang supplier ini..."
-                                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                 ></textarea>
                                 {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
 
-                            <div className="flex flex-col sm:flex-row gap-6 pt-2">
-                                <label className="flex items-center space-x-2 cursor-pointer">
+                            <div className="flex flex-col gap-6 pt-2 sm:flex-row">
+                                <label className="flex cursor-pointer items-center space-x-2">
                                     <input
                                         type="checkbox"
                                         checked={data.is_active}
@@ -184,7 +194,7 @@ export default function SupplierCreate() {
                                     <span className="text-sm font-medium">Supplier Aktif</span>
                                 </label>
 
-                                <label className="flex items-center space-x-2 cursor-pointer">
+                                <label className="flex cursor-pointer items-center space-x-2">
                                     <input
                                         type="checkbox"
                                         checked={data.is_verified}
@@ -197,7 +207,7 @@ export default function SupplierCreate() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center justify-end gap-3 pt-6 border-t">
+                        <div className="flex items-center justify-end gap-3 border-t pt-6">
                             <Button type="button" variant="outline" asChild>
                                 <Link href="/admin/supplier">Batal</Link>
                             </Button>
@@ -205,7 +215,6 @@ export default function SupplierCreate() {
                                 {processing ? 'Menyimpan...' : 'Simpan Supplier'}
                             </Button>
                         </div>
-
                     </form>
                 </div>
             </div>

@@ -6,9 +6,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Eye, Heart, MessageCircle, PinIcon, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Komunitas', href: '/community' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Komunitas', href: '/community' }];
 
 interface Props {
     posts: PaginatedData<CommunityPost>;
@@ -61,8 +59,15 @@ export default function CommunityIndex({ posts, liked_post_ids, filters }: Props
                     {CATEGORIES.map((cat) => (
                         <button
                             key={cat.value}
-                            onClick={() => { setCategory(cat.value); router.get('/community', { category: cat.value, search, business_type: filters.business_type }, { preserveState: true, replace: true }); }}
-                            className={`shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors ${category === cat.value ? 'bg-primary text-primary-foreground' : 'border-border border hover:bg-muted'}`}
+                            onClick={() => {
+                                setCategory(cat.value);
+                                router.get(
+                                    '/community',
+                                    { category: cat.value, search, business_type: filters.business_type },
+                                    { preserveState: true, replace: true },
+                                );
+                            }}
+                            className={`shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors ${category === cat.value ? 'bg-primary text-primary-foreground' : 'border-border hover:bg-muted border'}`}
                         >
                             {cat.label}
                         </button>
@@ -78,7 +83,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters }: Props
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                        className="border-border bg-background w-full rounded-xl border py-2.5 pr-4 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="border-border bg-background w-full rounded-xl border py-2.5 pr-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     />
                 </div>
 
@@ -107,21 +112,31 @@ export default function CommunityIndex({ posts, liked_post_ids, filters }: Props
                                                     <PinIcon size={10} /> Disematkan
                                                 </span>
                                             )}
-                                            <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${CATEGORY_STYLES[post.category] || 'bg-slate-100 text-slate-600'}`}>
+                                            <span
+                                                className={`rounded-full px-2 py-0.5 text-xs font-medium ${CATEGORY_STYLES[post.category] || 'bg-slate-100 text-slate-600'}`}
+                                            >
                                                 {CATEGORIES.find((c) => c.value === post.category)?.label || post.category}
                                             </span>
                                         </div>
-                                        <h2 className="font-semibold leading-snug group-hover:text-primary transition-colors">{post.title}</h2>
-                                        <p className="text-muted-foreground mt-1 text-sm line-clamp-2">{truncate(post.content, 120)}</p>
+                                        <h2 className="group-hover:text-primary leading-snug font-semibold transition-colors">{post.title}</h2>
+                                        <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">{truncate(post.content, 120)}</p>
                                         <div className="mt-3 flex items-center gap-4 text-xs text-slate-400">
-                                            <span>{post.user?.name || 'Anonim'} · {post.tenant?.name}</span>
+                                            <span>
+                                                {post.user?.name || 'Anonim'} · {post.tenant?.name}
+                                            </span>
                                             <span>{formatDate(post.created_at, { day: 'numeric', month: 'short' })}</span>
                                             <span className="flex items-center gap-1">
                                                 <Heart size={11} className={liked_post_ids.includes(post.id) ? 'fill-rose-500 text-rose-500' : ''} />
                                                 {post.likes_count}
                                             </span>
-                                            <span className="flex items-center gap-1"><MessageCircle size={11} />{post.replies_count}</span>
-                                            <span className="flex items-center gap-1"><Eye size={11} />{post.views_count}</span>
+                                            <span className="flex items-center gap-1">
+                                                <MessageCircle size={11} />
+                                                {post.replies_count}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <Eye size={11} />
+                                                {post.views_count}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

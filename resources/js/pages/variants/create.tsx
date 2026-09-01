@@ -1,15 +1,16 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
-import { AlertCircle, ArrowLeft, FlaskConical, Calculator } from 'lucide-react';
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link } from '@inertiajs/react';
+import { ArrowLeft, Calculator, FlaskConical } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Varian Produk', href: '/variants' },
@@ -40,12 +41,12 @@ export default function VariantCreate({ recipes }: Props) {
     const [sellPrice, setSellPrice] = useState(0);
     const [description, setDescription] = useState('');
     const [isActive, setIsActive] = useState(true);
-    
+
     const [recipeId, setRecipeId] = useState<number | null>(null);
     const [recipeQty, setRecipeQty] = useState(1.0);
 
-    const selectedRecipe = recipes.find(r => r.id === recipeId);
-    
+    const selectedRecipe = recipes.find((r) => r.id === recipeId);
+
     // HPP = selectedRecipe.hpp * recipeQty
     const hpp = selectedRecipe ? selectedRecipe.hpp * recipeQty : 0;
     const margin = sellPrice > 0 ? ((sellPrice - hpp) / sellPrice) * 100 : 0;
@@ -55,19 +56,32 @@ export default function VariantCreate({ recipes }: Props) {
         e.preventDefault();
         setProcessing(true);
         setFormErrors({});
-        
-        router.post('/variants', {
-            name,
-            sku,
-            sell_price: sellPrice,
-            description,
-            is_active: isActive,
-            recipe_id: recipeId,
-            recipe_qty: recipeQty,
-        }, {
-            onError: (errors) => { setFormErrors(errors); setProcessing(false); },
-            onFinish: () => setProcessing(false),
-        });
+
+        handleAsyncAction(
+            () =>
+                routerPromise(
+                    'post',
+                    '/variants',
+                    {
+                        name,
+                        sku,
+                        sell_price: sellPrice,
+                        description,
+                        is_active: isActive,
+                        recipe_id: recipeId,
+                        recipe_qty: recipeQty,
+                    },
+                    {
+                        onError: (errors) => setFormErrors(errors),
+                        onFinish: () => setProcessing(false),
+                    },
+                ),
+            {
+                loading: 'Menyimpan varian baru...',
+                success: 'Varian berhasil disimpan!',
+                error: 'Gagal Menyimpan',
+            },
+        ).finally(() => setProcessing(false));
     };
 
     return (
@@ -77,10 +91,12 @@ export default function VariantCreate({ recipes }: Props) {
             <div className="mx-auto max-w-3xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
-                        <Link href="/variants"><ArrowLeft size={18} /></Link>
+                        <Link href="/variants">
+                            <ArrowLeft size={18} />
+                        </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                             <FlaskConical className="text-violet-500" size={22} />
                             Tambah Varian Produk
                         </h1>
@@ -90,7 +106,7 @@ export default function VariantCreate({ recipes }: Props) {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Informasi Varian */}
-                    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <h2 className="text-sm font-semibold">Informasi Penjualan Varian</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="col-span-2 space-y-1.5">
@@ -140,12 +156,8 @@ export default function VariantCreate({ recipes }: Props) {
                                 />
                             </div>
                             <div className="col-span-2 flex items-center gap-2">
-                                <Checkbox
-                                    id="is_active"
-                                    checked={isActive}
-                                    onCheckedChange={(checked) => setIsActive(!!checked)}
-                                />
-                                <Label htmlFor="is_active" className="cursor-pointer font-normal text-sm">
+                                <Checkbox id="is_active" checked={isActive} onCheckedChange={(checked) => setIsActive(!!checked)} />
+                                <Label htmlFor="is_active" className="cursor-pointer text-sm font-normal">
                                     Varian ini aktif dan tampil di POS kasir
                                 </Label>
                             </div>
@@ -153,16 +165,13 @@ export default function VariantCreate({ recipes }: Props) {
                     </div>
 
                     {/* Penghubung Resep */}
-                    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <h2 className="text-sm font-semibold">Formula / Resep Acuan</h2>
                         <div className="grid grid-cols-3 gap-4">
                             <div className="col-span-2 space-y-1.5">
                                 <Label htmlFor="recipe_id">Pilih Resep Acuan *</Label>
-                                <Select
-                                    value={recipeId ? String(recipeId) : ''}
-                                    onValueChange={(val) => setRecipeId(parseInt(val))}
-                                >
-                                    <SelectTrigger className="rounded-xl h-10">
+                                <Select value={recipeId ? String(recipeId) : ''} onValueChange={(val) => setRecipeId(parseInt(val))}>
+                                    <SelectTrigger className="h-10 rounded-xl">
                                         <SelectValue placeholder="Pilih resep dasar..." />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -192,14 +201,17 @@ export default function VariantCreate({ recipes }: Props) {
                         </div>
 
                         {selectedRecipe && selectedRecipe.ingredients && selectedRecipe.ingredients.length > 0 && (
-                            <div className="pt-3 border-t border-border space-y-2">
-                                <span className="text-xs font-semibold text-muted-foreground block">
+                            <div className="border-border space-y-2 border-t pt-3">
+                                <span className="text-muted-foreground block text-xs font-semibold">
                                     Estimasi Konsumsi Bahan Baku (kelipatan {recipeQty}):
                                 </span>
                                 <div className="flex flex-wrap gap-1.5">
                                     {selectedRecipe.ingredients.map((ing, i) => (
-                                        <span key={i} className="text-xs bg-muted px-2 py-1 rounded-lg text-muted-foreground">
-                                            {ing.ingredient_name}: <strong>{(ing.qty * recipeQty).toFixed(3).replace(/\.?0+$/, '')} {ing.unit}</strong>
+                                        <span key={i} className="bg-muted text-muted-foreground rounded-lg px-2 py-1 text-xs">
+                                            {ing.ingredient_name}:{' '}
+                                            <strong>
+                                                {(ing.qty * recipeQty).toFixed(3).replace(/\.?0+$/, '')} {ing.unit}
+                                            </strong>
                                         </span>
                                     ))}
                                 </div>
@@ -208,22 +220,24 @@ export default function VariantCreate({ recipes }: Props) {
                     </div>
 
                     {/* HPP & Margin Preview */}
-                    <div className={`rounded-2xl p-5 border flex items-center gap-4 ${margin >= 20 ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200' : margin >= 10 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200' : 'bg-rose-50 dark:bg-rose-900/20 border-rose-200'}`}>
+                    <div
+                        className={`flex items-center gap-4 rounded-2xl border p-5 ${margin >= 20 ? 'border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20' : margin >= 10 ? 'border-amber-200 bg-amber-50 dark:bg-amber-900/20' : 'border-rose-200 bg-rose-50 dark:bg-rose-900/20'}`}
+                    >
                         <Calculator size={20} className="text-muted-foreground shrink-0" />
-                        <div className="flex-1 grid grid-cols-3 gap-4 text-sm">
+                        <div className="grid flex-1 grid-cols-3 gap-4 text-sm">
                             <div>
-                                <div className="text-xs text-muted-foreground mb-0.5">HPP (Modal Varian)</div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">HPP (Modal Varian)</div>
                                 <div className="font-semibold text-violet-700 dark:text-violet-400">{formatRupiah(hpp)}</div>
                             </div>
                             <div>
-                                <div className="text-xs text-muted-foreground mb-0.5">Untung/Varian</div>
-                                <div className={`font-semibold ${profit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                                    {formatRupiah(profit)}
-                                </div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">Untung/Varian</div>
+                                <div className={`font-semibold ${profit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{formatRupiah(profit)}</div>
                             </div>
                             <div>
-                                <div className="text-xs text-muted-foreground mb-0.5">Margin Keuntungan</div>
-                                <div className={`font-semibold ${margin >= 20 ? 'text-emerald-600' : margin >= 10 ? 'text-amber-600' : 'text-rose-600'}`}>
+                                <div className="text-muted-foreground mb-0.5 text-xs">Margin Keuntungan</div>
+                                <div
+                                    className={`font-semibold ${margin >= 20 ? 'text-emerald-600' : margin >= 10 ? 'text-amber-600' : 'text-rose-600'}`}
+                                >
                                     {margin.toFixed(1)}%
                                 </div>
                             </div>
@@ -231,8 +245,10 @@ export default function VariantCreate({ recipes }: Props) {
                     </div>
 
                     <div className="flex justify-end gap-3">
-                        <Button variant="outline" asChild className="rounded-xl"><Link href="/variants">Batal</Link></Button>
-                        <Button type="submit" disabled={processing} className="bg-violet-600 hover:bg-violet-700 text-white rounded-xl px-5">
+                        <Button variant="outline" asChild className="rounded-xl">
+                            <Link href="/variants">Batal</Link>
+                        </Button>
+                        <Button type="submit" disabled={processing} className="rounded-xl bg-violet-600 px-5 text-white hover:bg-violet-700">
                             {processing ? 'Menyimpan...' : 'Tambah Varian'}
                         </Button>
                     </div>

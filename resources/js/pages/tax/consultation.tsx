@@ -45,7 +45,7 @@ export default function TaxConsultation() {
 
                 <div className="mx-auto max-w-3xl">
                     {/* Header */}
-                    <div className="from-indigo-600 to-purple-600 mb-6 rounded-2xl bg-gradient-to-r p-6 text-white">
+                    <div className="mb-6 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
                         <div className="flex items-center gap-3">
                             <Shield size={32} className="shrink-0 text-white/80" />
                             <div>
@@ -58,16 +58,39 @@ export default function TaxConsultation() {
                     {/* Quick Contacts */}
                     <div className="mb-6 grid gap-4 sm:grid-cols-3">
                         {[
-                            { icon: Phone, title: 'Kring Pajak', desc: 'Hotline DJP', value: '1500200', href: 'tel:1500200', color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400' },
-                            { icon: MessageSquare, title: 'Live Chat DJP', desc: 'Chat online pajak.go.id', value: 'Kunjungi Website', href: 'https://www.pajak.go.id', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
-                            { icon: Clock, title: 'Jam Layanan', desc: 'Senin–Jumat', value: '08.00–16.00 WIB', href: null, color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
+                            {
+                                icon: Phone,
+                                title: 'Kring Pajak',
+                                desc: 'Hotline DJP',
+                                value: '1500200',
+                                href: 'tel:1500200',
+                                color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400',
+                            },
+                            {
+                                icon: MessageSquare,
+                                title: 'Live Chat DJP',
+                                desc: 'Chat online pajak.go.id',
+                                value: 'Kunjungi Website',
+                                href: 'https://www.pajak.go.id',
+                                color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                            },
+                            {
+                                icon: Clock,
+                                title: 'Jam Layanan',
+                                desc: 'Senin–Jumat',
+                                value: '08.00–16.00 WIB',
+                                href: null,
+                                color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
+                            },
                         ].map(({ icon: Icon, title, desc, value, href, color }) => (
                             <div key={title} className={`rounded-2xl p-4 ${color}`}>
                                 <Icon size={20} className="mb-2" />
                                 <p className="font-semibold">{title}</p>
                                 <p className="text-xs opacity-70">{desc}</p>
                                 {href ? (
-                                    <a href={href} target="_blank" rel="noopener noreferrer" className="mt-1 block text-sm font-medium underline">{value}</a>
+                                    <a href={href} target="_blank" rel="noopener noreferrer" className="mt-1 block text-sm font-medium underline">
+                                        {value}
+                                    </a>
                                 ) : (
                                     <p className="mt-1 text-sm font-medium">{value}</p>
                                 )}

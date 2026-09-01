@@ -3,9 +3,10 @@
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Link, router } from '@inertiajs/react';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, ToggleLeft, ToggleRight, Edit } from 'lucide-react';
+import { Edit, Eye, ToggleLeft, ToggleRight } from 'lucide-react';
 
 export interface Tenant {
     id: number;
@@ -24,9 +25,7 @@ export interface Tenant {
     };
 }
 
-export const getColumns = (
-    onEdit: (tenant: Tenant) => void
-): ColumnDef<Tenant>[] => [
+export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -46,7 +45,7 @@ export const getColumns = (
                         {tenant.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <div className="font-semibold text-sm text-foreground">{tenant.name}</div>
+                        <div className="text-foreground text-sm font-semibold">{tenant.name}</div>
                         <span className="text-muted-foreground text-xs">{tenant.slug}.vvarsa.com</span>
                     </div>
                 </div>
@@ -88,8 +87,8 @@ export const getColumns = (
                     variant={tenant.is_active ? 'default' : 'destructive'}
                     className={
                         tenant.is_active
-                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 hover:bg-emerald-100'
-                            : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400 hover:bg-rose-100'
+                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400'
+                            : 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
                     }
                 >
                     {tenant.is_active ? 'Aktif' : 'Nonaktif'}
@@ -102,31 +101,21 @@ export const getColumns = (
         header: () => <div className="text-center">Aksi</div>,
         cell: ({ row }) => {
             const tenant = row.original;
-            
+
             const handleToggleActive = () => {
-                router.post(`/admin/tenants/${tenant.id}/toggle`, {}, {
-                    preserveScroll: true,
+                handleAsyncAction(() => routerPromise('post', `/admin/tenants/${tenant.id}/toggle`, {}, { preserveScroll: true }), {
+                    loading: `Mengubah status bisnis "${tenant.name}"...`,
+                    success: `Status bisnis "${tenant.name}" berhasil diubah!`,
+                    error: 'Gagal Mengubah Status',
                 });
             };
 
             return (
                 <div className="flex items-center justify-center gap-2">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => onEdit(tenant)}
-                        className="h-8 w-8 hover:bg-muted"
-                        title="Edit Tenant"
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => onEdit(tenant)} className="hover:bg-muted h-8 w-8" title="Edit Tenant">
                         <Edit size={15} />
                     </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        asChild
-                        className="h-8 w-8 hover:bg-muted"
-                        title="Detail Tenant"
-                    >
+                    <Button variant="ghost" size="icon" asChild className="hover:bg-muted h-8 w-8" title="Detail Tenant">
                         <Link href={`/admin/tenants/${tenant.id}`}>
                             <Eye size={15} />
                         </Link>
@@ -135,9 +124,7 @@ export const getColumns = (
                         variant="ghost"
                         size="icon"
                         onClick={handleToggleActive}
-                        className={`h-8 w-8 hover:bg-muted ${
-                            tenant.is_active ? 'text-rose-500' : 'text-emerald-500'
-                        }`}
+                        className={`hover:bg-muted h-8 w-8 ${tenant.is_active ? 'text-rose-500' : 'text-emerald-500'}`}
                         title={tenant.is_active ? 'Nonaktifkan' : 'Aktifkan'}
                     >
                         {tenant.is_active ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}

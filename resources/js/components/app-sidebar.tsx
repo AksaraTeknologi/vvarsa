@@ -1,4 +1,3 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
@@ -35,9 +34,7 @@ function NavGroup({ title, items }: NavGroupProps) {
     if (items.length === 0) return null;
     return (
         <div className="mb-1">
-            <div className="text-sidebar-foreground/50 mb-1 px-4 text-[11px] font-semibold tracking-wider uppercase">
-                {title}
-            </div>
+            <div className="text-sidebar-foreground/50 mb-1 px-4 text-[11px] font-semibold tracking-wider uppercase">{title}</div>
             <NavMain items={items} />
         </div>
     );
@@ -47,8 +44,8 @@ export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
     const user = auth.user;
 
-    const isAdmin      = user?.roles?.includes('admin');
-    const isOwner      = user?.roles?.includes('owner');
+    const isAdmin = user?.roles?.includes('admin');
+    const isOwner = user?.roles?.includes('owner');
     const isSupervisor = user?.roles?.includes('supervisor');
 
     // ── Platform Admin Navigation ──
@@ -95,18 +92,18 @@ export function AppSidebar() {
         ];
 
         return (
-            <Sidebar collapsible="icon" variant="inset" className="bg-[#0d0d0d] border-r border-white/5">
+            <Sidebar collapsible="icon" variant="inset" className="border-r border-white/5 bg-[#0d0d0d]">
                 <SidebarHeader className="pb-0">
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton size="lg" asChild className="hover:bg-white/5">
                                 <Link href="/admin" prefetch>
-                                    <div className="bg-[#1a56ff] flex aspect-square size-8 items-center justify-center rounded-md shadow-lg shadow-[#1a56ff]/30">
+                                    <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-[#1a56ff] shadow-lg shadow-[#1a56ff]/30">
                                         <AppLogoIcon className="size-5 fill-current text-white" />
                                     </div>
                                     <div className="ml-1 grid flex-1 text-left text-sm">
                                         <span className="mb-0.5 truncate leading-none font-bold text-white">VVARSA</span>
-                                        <span className="text-[10px] font-semibold tracking-widest uppercase text-[#ffc200]">Admin Panel</span>
+                                        <span className="text-[10px] font-semibold tracking-widest text-[#ffc200] uppercase">Admin Panel</span>
                                     </div>
                                 </Link>
                             </SidebarMenuButton>
@@ -116,7 +113,7 @@ export function AppSidebar() {
                     <div className="mx-3 mt-3 h-px bg-white/10" />
                 </SidebarHeader>
 
-                <SidebarContent className="[&_[data-sidebar=group-label]]:text-white/30 [&_[data-sidebar=group-label]]:text-[10px] [&_[data-sidebar=group-label]]:tracking-widest [&_[data-sidebar=menu-button]]:text-white/70 [&_[data-sidebar=menu-button]:hover]:bg-white/5 [&_[data-sidebar=menu-button]:hover]:text-white [&_[data-sidebar=menu-button][data-active=true]]:bg-[#1a56ff]/20 [&_[data-sidebar=menu-button][data-active=true]]:text-[#1a56ff] [&_[data-sidebar=menu-button][data-active=true]]:font-semibold">
+                <SidebarContent className="[&_[data-sidebar=group-label]]:text-[10px] [&_[data-sidebar=group-label]]:tracking-widest [&_[data-sidebar=group-label]]:text-white/30 [&_[data-sidebar=menu-button]]:text-white/70 [&_[data-sidebar=menu-button]:hover]:bg-white/5 [&_[data-sidebar=menu-button]:hover]:text-white [&_[data-sidebar=menu-button][data-active=true]]:bg-[#1a56ff]/20 [&_[data-sidebar=menu-button][data-active=true]]:font-semibold [&_[data-sidebar=menu-button][data-active=true]]:text-[#1a56ff]">
                     <NavMain items={adminMainItems} />
                     <NavGroup title="Platform Admin" items={adminGroupItems} />
                 </SidebarContent>
@@ -180,28 +177,30 @@ export function AppSidebar() {
     ];
 
     // Finance items are only visible to the tenant owner
-    const financeNavItems: NavItem[] = isOwner ? [
-        {
-            title: 'Ringkasan',
-            href: '/finance',
-            icon: BarChart3,
-        },
-        {
-            title: 'Transaksi',
-            href: '/finance/transactions',
-            icon: Receipt,
-        },
-        {
-            title: 'Laporan Penjualan',
-            href: '/finance/sales-report',
-            icon: TrendingUp,
-        },
-        {
-            title: 'Laporan Pengeluaran',
-            href: '/finance/expense-report',
-            icon: CreditCard,
-        },
-    ] : [];
+    const financeNavItems: NavItem[] = isOwner
+        ? [
+              {
+                  title: 'Ringkasan',
+                  href: '/finance',
+                  icon: BarChart3,
+              },
+              {
+                  title: 'Transaksi',
+                  href: '/finance/transactions',
+                  icon: Receipt,
+              },
+              {
+                  title: 'Laporan Penjualan',
+                  href: '/finance/sales-report',
+                  icon: TrendingUp,
+              },
+              {
+                  title: 'Laporan Pengeluaran',
+                  href: '/finance/expense-report',
+                  icon: CreditCard,
+              },
+          ]
+        : [];
 
     // Business items are role-dependent
     const businessNavItems: NavItem[] = [

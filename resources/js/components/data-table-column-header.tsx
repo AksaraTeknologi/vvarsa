@@ -1,25 +1,15 @@
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 import { Column } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
     column: Column<TData, TValue>;
     title: string;
 }
 
-export function DataTableColumnHeader<TData, TValue>({
-    column,
-    title,
-    className,
-}: DataTableColumnHeaderProps<TData, TValue>) {
+export function DataTableColumnHeader<TData, TValue>({ column, title, className }: DataTableColumnHeaderProps<TData, TValue>) {
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>;
     }
@@ -31,7 +21,7 @@ export function DataTableColumnHeader<TData, TValue>({
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="-ml-3 h-8 data-[state=open]:bg-accent text-xs font-semibold uppercase tracking-wider hover:cursor-pointer"
+                        className="data-[state=open]:bg-accent -ml-3 h-8 text-xs font-semibold tracking-wider uppercase hover:cursor-pointer"
                     >
                         <span>{title}</span>
                         {column.getIsSorted() === 'desc' ? (
@@ -45,16 +35,16 @@ export function DataTableColumnHeader<TData, TValue>({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
                     <DropdownMenuItem className="hover:cursor-pointer" onClick={() => column.toggleSorting(false)}>
-                        <ArrowUp className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                        <ArrowUp className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
                         Asc
                     </DropdownMenuItem>
                     <DropdownMenuItem className="hover:cursor-pointer" onClick={() => column.toggleSorting(true)}>
-                        <ArrowDown className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                        <ArrowDown className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
                         Desc
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="hover:cursor-pointer" onClick={() => column.toggleVisibility(false)}>
-                        <EyeOff className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                        <EyeOff className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
                         Sembunyikan
                     </DropdownMenuItem>
                 </DropdownMenuContent>

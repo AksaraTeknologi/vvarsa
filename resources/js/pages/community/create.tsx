@@ -1,11 +1,11 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -41,7 +41,7 @@ export default function CommunityCreate() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
-        
+
         const result = discussionSchema.safeParse(data);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -93,9 +93,11 @@ export default function CommunityCreate() {
                         </div>
                     </div>
 
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div>
-                            <Label htmlFor="title" className="mb-1.5 block">Judul Diskusi *</Label>
+                            <Label htmlFor="title" className="mb-1.5 block">
+                                Judul Diskusi *
+                            </Label>
                             <Input
                                 id="title"
                                 type="text"
@@ -108,7 +110,9 @@ export default function CommunityCreate() {
                         </div>
 
                         <div>
-                            <Label htmlFor="content" className="mb-1.5 block">Isi Diskusi *</Label>
+                            <Label htmlFor="content" className="mb-1.5 block">
+                                Isi Diskusi *
+                            </Label>
                             <Textarea
                                 id="content"
                                 rows={8}
@@ -123,15 +127,9 @@ export default function CommunityCreate() {
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/community">
-                                Batal
-                            </Link>
+                            <Link href="/community">Batal</Link>
                         </Button>
-                        <Button
-                            type="submit"
-                            disabled={processing || !data.title || !data.content}
-                            className="rounded-xl px-5"
-                        >
+                        <Button type="submit" disabled={processing || !data.title || !data.content} className="rounded-xl px-5">
                             {processing ? 'Memposting...' : 'Posting Diskusi'}
                         </Button>
                     </div>

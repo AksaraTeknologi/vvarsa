@@ -1,14 +1,13 @@
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type SubscriptionPlan } from '@/types/mrp';
-import { Head, router } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { CheckCircle, Crown, Package, Users, XCircle, Zap } from 'lucide-react';
 import { useState } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Langganan', href: '/subscription' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Langganan', href: '/subscription' }];
 
 interface TenantPlan {
     name: string;
@@ -63,9 +62,21 @@ const FEATURE_LABELS: Record<string, string> = {
 
 // Features to highlight comparison
 const COMPARISON_FEATURES = [
-    'inventory', 'stock_opname', 'finance_daily', 'finance_monthly', 'finance_export',
-    'events_view', 'events_register', 'community_post', 'suppliers_view', 'tax_reports',
-    'tax_consultation', 'multi_user', 'export_pdf', 'api_access', 'dedicated_support',
+    'inventory',
+    'stock_opname',
+    'finance_daily',
+    'finance_monthly',
+    'finance_export',
+    'events_view',
+    'events_register',
+    'community_post',
+    'suppliers_view',
+    'tax_reports',
+    'tax_consultation',
+    'multi_user',
+    'export_pdf',
+    'api_access',
+    'dedicated_support',
 ];
 
 export default function SubscriptionIndex({ plans, current_plan, subscription, product_count, user_count }: Props) {
@@ -74,24 +85,32 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
 
     const handleUpgrade = (planId: number) => {
         setLoadingPlanId(planId);
-        router.post('/subscription/upgrade', {
-            plan_id: planId
-        }, {
-            onFinish: () => setLoadingPlanId(null)
-        });
+        handleAsyncAction(
+            () =>
+                routerPromise(
+                    'post',
+                    '/subscription/upgrade',
+                    { plan_id: planId },
+                    {
+                        onFinish: () => setLoadingPlanId(null),
+                    },
+                ),
+            {
+                loading: 'Memproses upgrade paket...',
+                success: 'Paket berhasil diperbarui!',
+                error: 'Gagal Upgrade Paket',
+            },
+        ).finally(() => setLoadingPlanId(null));
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Langganan" />
             <div className="flex flex-col gap-8 p-4 md:p-6">
-
                 {/* Header */}
                 <div className="text-center">
                     <h1 className="text-3xl font-bold tracking-tight">Pilih Paket yang Tepat</h1>
-                    <p className="text-muted-foreground mt-2">
-                        Mulai gratis, upgrade kapan saja sesuai kebutuhan bisnis Anda
-                    </p>
+                    <p className="text-muted-foreground mt-2">Mulai gratis, upgrade kapan saja sesuai kebutuhan bisnis Anda</p>
                 </div>
 
                 {/* Current status */}
@@ -133,15 +152,20 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                             >
                                 {isPopular && (
                                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">
-                                            Paling Populer
-                                        </span>
+                                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">Paling Populer</span>
                                     </div>
                                 )}
 
                                 <div className="mb-4">
-                                    <div className={`mb-3 inline-flex rounded-xl p-2.5 ${plan.slug === 'free' ? 'bg-slate-100 dark:bg-slate-800' : plan.slug === 'pro' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-purple-100 dark:bg-purple-900/30'}`}>
-                                        <Icon size={20} className={plan.slug === 'free' ? 'text-slate-600' : plan.slug === 'pro' ? 'text-blue-600' : 'text-purple-600'} />
+                                    <div
+                                        className={`mb-3 inline-flex rounded-xl p-2.5 ${plan.slug === 'free' ? 'bg-slate-100 dark:bg-slate-800' : plan.slug === 'pro' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-purple-100 dark:bg-purple-900/30'}`}
+                                    >
+                                        <Icon
+                                            size={20}
+                                            className={
+                                                plan.slug === 'free' ? 'text-slate-600' : plan.slug === 'pro' ? 'text-blue-600' : 'text-purple-600'
+                                            }
+                                        />
                                     </div>
                                     <h2 className="text-xl font-bold">{plan.name}</h2>
                                     <div className="mt-2">
@@ -156,7 +180,9 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                                 <div className="mb-4 space-y-1 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
                                     <div className="flex items-center justify-between text-sm">
                                         <span className="text-muted-foreground">Pengguna</span>
-                                        <span className="font-semibold">{plan.max_users === 99 || plan.max_users >= 99 ? 'Tak Terbatas' : plan.max_users}</span>
+                                        <span className="font-semibold">
+                                            {plan.max_users === 99 || plan.max_users >= 99 ? 'Tak Terbatas' : plan.max_users}
+                                        </span>
                                     </div>
                                     <div className="flex items-center justify-between text-sm">
                                         <span className="text-muted-foreground">Produk</span>
@@ -170,12 +196,12 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                                         const hasFeature = plan.features?.includes(feat);
                                         return (
                                             <div key={feat} className="flex items-center gap-2 text-sm">
-                                                {hasFeature
-                                                    ? <CheckCircle size={14} className="shrink-0 text-emerald-500" />
-                                                    : <XCircle size={14} className="text-muted-foreground/30 shrink-0" />}
-                                                <span className={hasFeature ? '' : 'text-muted-foreground/50'}>
-                                                    {FEATURE_LABELS[feat] || feat}
-                                                </span>
+                                                {hasFeature ? (
+                                                    <CheckCircle size={14} className="shrink-0 text-emerald-500" />
+                                                ) : (
+                                                    <XCircle size={14} className="text-muted-foreground/30 shrink-0" />
+                                                )}
+                                                <span className={hasFeature ? '' : 'text-muted-foreground/50'}>{FEATURE_LABELS[feat] || feat}</span>
                                             </div>
                                         );
                                     })}
@@ -188,13 +214,19 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                                         isCurrent
                                             ? 'bg-muted text-muted-foreground cursor-not-allowed'
                                             : plan.slug === 'pro'
-                                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                            : plan.slug === 'enterprise'
-                                            ? 'bg-purple-600 text-white hover:bg-purple-700'
-                                            : 'border-border border hover:bg-muted'
+                                              ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                              : plan.slug === 'enterprise'
+                                                ? 'bg-purple-600 text-white hover:bg-purple-700'
+                                                : 'border-border hover:bg-muted border'
                                     }`}
                                 >
-                                    {isLoading ? 'Memproses...' : isCurrent ? '✓ Paket Aktif' : plan.price === 0 || Number(plan.price) === 0 ? 'Mulai Gratis' : 'Upgrade Sekarang'}
+                                    {isLoading
+                                        ? 'Memproses...'
+                                        : isCurrent
+                                          ? '✓ Paket Aktif'
+                                          : plan.price === 0 || Number(plan.price) === 0
+                                            ? 'Mulai Gratis'
+                                            : 'Upgrade Sekarang'}
                                 </button>
                             </div>
                         );
@@ -206,9 +238,18 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                     <h2 className="mb-4 font-semibold">Pertanyaan Umum</h2>
                     <div className="space-y-4">
                         {[
-                            { q: 'Apakah bisa upgrade/downgrade kapan saja?', a: 'Ya, Anda bisa upgrade atau downgrade paket kapan saja. Perubahan berlaku di periode tagihan berikutnya.' },
-                            { q: 'Metode pembayaran apa yang diterima?', a: 'Kami menerima transfer bank, kartu kredit/debit, dan dompet digital (GoPay, OVO, DANA).' },
-                            { q: 'Apakah ada uji coba gratis untuk paket berbayar?', a: 'Paket Free sudah bisa digunakan selamanya tanpa biaya. Anda bisa upgrade kapan saja saat bisnis Anda berkembang.' },
+                            {
+                                q: 'Apakah bisa upgrade/downgrade kapan saja?',
+                                a: 'Ya, Anda bisa upgrade atau downgrade paket kapan saja. Perubahan berlaku di periode tagihan berikutnya.',
+                            },
+                            {
+                                q: 'Metode pembayaran apa yang diterima?',
+                                a: 'Kami menerima transfer bank, kartu kredit/debit, dan dompet digital (GoPay, OVO, DANA).',
+                            },
+                            {
+                                q: 'Apakah ada uji coba gratis untuk paket berbayar?',
+                                a: 'Paket Free sudah bisa digunakan selamanya tanpa biaya. Anda bisa upgrade kapan saja saat bisnis Anda berkembang.',
+                            },
                         ].map((item, i) => (
                             <div key={i} className="border-border border-b pb-4 last:border-0 last:pb-0">
                                 <p className="mb-1 text-sm font-semibold">{item.q}</p>

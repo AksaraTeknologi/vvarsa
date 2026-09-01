@@ -1,13 +1,14 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { type Product } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
-import { ArrowLeft, Save } from 'lucide-react';
-import { useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { type BreadcrumbItem } from '@/types';
+import { type Product } from '@/types/mrp';
+import { Head, Link } from '@inertiajs/react';
+import { ArrowLeft, Save } from 'lucide-react';
+import { useState } from 'react';
 import { z } from 'zod';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -32,7 +33,7 @@ const opnameSchema = z.object({
             product_id: z.number(),
             actual_stock: z.number().min(0, 'Stok aktual tidak boleh negatif'),
             note: z.string().optional(),
-        })
+        }),
     ),
 });
 
@@ -42,14 +43,14 @@ export default function Opname({ products }: Props) {
             product_id: p.id,
             actual_stock: p.current_stock,
             note: '',
-        }))
+        })),
     );
     const [opname_date, setOpnameDate] = useState(new Date().toISOString().split('T')[0]);
     const [processing, setProcessing] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
     const updateItem = (productId: number, field: keyof OpnameItem, value: number | string) => {
-        setItems((prev) => prev.map((item) => item.product_id === productId ? { ...item, [field]: value } : item));
+        setItems((prev) => prev.map((item) => (item.product_id === productId ? { ...item, [field]: value } : item)));
     };
 
     const getDifference = (productId: number) => {
@@ -62,7 +63,7 @@ export default function Opname({ products }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
-        
+
         const result = opnameSchema.safeParse({ opname_date, items });
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -75,9 +76,22 @@ export default function Opname({ products }: Props) {
         }
 
         setProcessing(true);
-        router.post('/inventory/opname', { items: items as any, opname_date }, {
-            onFinish: () => setProcessing(false),
-        });
+        handleAsyncAction(
+            () =>
+                routerPromise(
+                    'post',
+                    '/inventory/opname',
+                    { items: items as any, opname_date },
+                    {
+                        onFinish: () => setProcessing(false),
+                    },
+                ),
+            {
+                loading: 'Menyimpan hasil stok opname...',
+                success: 'Stok opname berhasil disimpan!',
+                error: 'Gagal Menyimpan',
+            },
+        ).finally(() => setProcessing(false));
     };
 
     const changedCount = items.filter((item) => {
@@ -89,7 +103,7 @@ export default function Opname({ products }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Stok Opname" />
             <div className="p-4 md:p-6">
-                <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div className="flex items-center gap-3">
                         <Button variant="ghost" size="icon" asChild className="rounded-xl">
                             <Link href="/inventory">
@@ -98,16 +112,11 @@ export default function Opname({ products }: Props) {
                         </Button>
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight">Stok Opname</h1>
-                            <p className="text-muted-foreground text-sm">
-                                Cocokkan stok sistem dengan stok fisik aktual
-                            </p>
+                            <p className="text-muted-foreground text-sm">Cocokkan stok sistem dengan stok fisik aktual</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3 w-full sm:w-auto">
-                        <DatePicker
-                            value={opname_date}
-                            onChange={(val) => setOpnameDate(val)}
-                        />
+                    <div className="flex w-full items-center gap-3 sm:w-auto">
+                        <DatePicker value={opname_date} onChange={(val) => setOpnameDate(val)} />
                     </div>
                 </div>
 
@@ -140,7 +149,9 @@ export default function Opname({ products }: Props) {
                                                 <p className="text-muted-foreground text-xs">{product.category?.name}</p>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-center">
-                                                <span className="text-muted-foreground text-sm">{product.current_stock} {product.unit}</span>
+                                                <span className="text-muted-foreground text-sm">
+                                                    {product.current_stock} {product.unit}
+                                                </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-center">
                                                 <Input
@@ -148,14 +159,16 @@ export default function Opname({ products }: Props) {
                                                     min={0}
                                                     value={item.actual_stock}
                                                     onChange={(e) => updateItem(product.id, 'actual_stock', parseInt(e.target.value) || 0)}
-                                                    className="w-24 text-center rounded-xl mx-auto h-9"
+                                                    className="mx-auto h-9 w-24 rounded-xl text-center"
                                                 />
                                                 {clientErrors[`items.${idx}.actual_stock`] && (
-                                                    <p className="text-xs text-rose-500 mt-1">{clientErrors[`items.${idx}.actual_stock`]}</p>
+                                                    <p className="mt-1 text-xs text-rose-500">{clientErrors[`items.${idx}.actual_stock`]}</p>
                                                 )}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-center">
-                                                <span className={`text-sm font-semibold ${diff > 0 ? 'text-emerald-600' : diff < 0 ? 'text-rose-600' : 'text-muted-foreground'}`}>
+                                                <span
+                                                    className={`text-sm font-semibold ${diff > 0 ? 'text-emerald-600' : diff < 0 ? 'text-rose-600' : 'text-muted-foreground'}`}
+                                                >
                                                     {diff > 0 ? `+${diff}` : diff === 0 ? '—' : diff}
                                                 </span>
                                             </TableCell>
@@ -165,7 +178,7 @@ export default function Opname({ products }: Props) {
                                                     value={item.note}
                                                     onChange={(e) => updateItem(product.id, 'note', e.target.value)}
                                                     placeholder="Catatan..."
-                                                    className="w-full rounded-xl h-9"
+                                                    className="h-9 w-full rounded-xl"
                                                 />
                                             </TableCell>
                                         </TableRow>
@@ -177,15 +190,9 @@ export default function Opname({ products }: Props) {
 
                     <div className="mt-4 flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">
-                                Batal
-                            </Link>
+                            <Link href="/inventory">Batal</Link>
                         </Button>
-                        <Button
-                            type="submit"
-                            disabled={processing || changedCount === 0}
-                            className="inline-flex items-center gap-2 rounded-xl"
-                        >
+                        <Button type="submit" disabled={processing || changedCount === 0} className="inline-flex items-center gap-2 rounded-xl">
                             <Save size={16} />
                             {processing ? 'Menyimpan...' : `Simpan Opname (${changedCount} perubahan)`}
                         </Button>

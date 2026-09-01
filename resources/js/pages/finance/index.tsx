@@ -2,20 +2,9 @@ import AppLayout from '@/layouts/app-layout';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Legend,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Keuangan', href: '/finance' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Keuangan', href: '/finance' }];
 
 interface MonthData {
     label: string;
@@ -78,14 +67,20 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 <div className="grid gap-4 sm:grid-cols-2">
                     <div className={`rounded-2xl p-5 ${netToday >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
                         <p className="text-sm font-medium">Net Profit Hari Ini</p>
-                        <p className={`text-2xl font-bold ${netToday >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                            {netToday >= 0 ? '+' : ''}{formatRupiah(netToday)}
+                        <p
+                            className={`text-2xl font-bold ${netToday >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
+                        >
+                            {netToday >= 0 ? '+' : ''}
+                            {formatRupiah(netToday)}
                         </p>
                     </div>
                     <div className={`rounded-2xl p-5 ${netMonth >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
                         <p className="text-sm font-medium">Net Profit Bulan Ini</p>
-                        <p className={`text-2xl font-bold ${netMonth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                            {netMonth >= 0 ? '+' : ''}{formatRupiah(netMonth)}
+                        <p
+                            className={`text-2xl font-bold ${netMonth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
+                        >
+                            {netMonth >= 0 ? '+' : ''}
+                            {formatRupiah(netMonth)}
                         </p>
                     </div>
                 </div>
@@ -102,12 +97,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                         <BarChart data={twelve_months} barGap={4}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                             <XAxis dataKey="label" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
-                            <YAxis
-                                tick={{ fontSize: 10 }}
-                                axisLine={false}
-                                tickLine={false}
-                                tickFormatter={(v) => formatRupiah(v, true)}
-                            />
+                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                             <Tooltip content={<CustomTooltip />} />
                             <Legend />
                             <Bar dataKey="income" name="Pendapatan" fill="#10b981" radius={[4, 4, 0, 0]} />
@@ -120,7 +110,11 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 <div className="grid grid-cols-3 gap-4">
                     {[
                         { label: 'Transaksi', href: '/finance/transactions', color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400' },
-                        { label: 'Laporan Penjualan', href: '/finance/sales-report', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+                        {
+                            label: 'Laporan Penjualan',
+                            href: '/finance/sales-report',
+                            color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                        },
                         { label: 'Laporan Pengeluaran', href: '/finance/expense-report', color: 'bg-rose-500/10 text-rose-700 dark:text-rose-400' },
                     ].map(({ label, href, color }) => (
                         <Link

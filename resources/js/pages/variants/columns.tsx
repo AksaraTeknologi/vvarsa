@@ -2,19 +2,22 @@
 
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import DeleteConfirmDialog from '@/components/delete-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Link, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Trash, FlaskConical } from 'lucide-react';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type ProductVariant } from '@/types/mrp';
-import { Badge } from '@/components/ui/badge';
+import { Link } from '@inertiajs/react';
+import { ColumnDef } from '@tanstack/react-table';
+import { Edit, FlaskConical, Trash } from 'lucide-react';
 
 function VariantActions({ variant }: { variant: ProductVariant }) {
     const handleDelete = () => {
-        router.delete(`/variants/${variant.id}`, {
-            preserveScroll: true,
+        handleAsyncAction(() => routerPromise('delete', `/variants/${variant.id}`, {}, { preserveScroll: true }), {
+            loading: `Menghapus varian "${variant.name}"...`,
+            success: `Varian "${variant.name}" berhasil dihapus!`,
+            error: 'Gagal Menghapus',
         });
     };
 
@@ -73,14 +76,12 @@ export const columns: ColumnDef<ProductVariant & { hpp: number; margin: number; 
             const variant = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className="bg-violet-50 dark:bg-violet-950/40 p-1.5 rounded-lg text-violet-500">
+                    <div className="rounded-lg bg-violet-50 p-1.5 text-violet-500 dark:bg-violet-950/40">
                         <FlaskConical size={16} />
                     </div>
                     <div>
-                        <div className="font-semibold text-sm text-slate-800 dark:text-slate-100">{variant.name}</div>
-                        {variant.sku && (
-                            <div className="text-xs text-muted-foreground mt-0.5">SKU: {variant.sku}</div>
-                        )}
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">{variant.name}</div>
+                        {variant.sku && <div className="text-muted-foreground mt-0.5 text-xs">SKU: {variant.sku}</div>}
                     </div>
                 </div>
             );
@@ -93,15 +94,11 @@ export const columns: ColumnDef<ProductVariant & { hpp: number; margin: number; 
             const variant = row.original;
             return variant.recipe ? (
                 <div>
-                    <div className="font-semibold text-xs text-violet-600 dark:text-violet-400">
-                        {variant.recipe.name}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-0.5">
-                        Porsi: x{Number(variant.recipe_qty)}
-                    </div>
+                    <div className="text-xs font-semibold text-violet-600 dark:text-violet-400">{variant.recipe.name}</div>
+                    <div className="text-muted-foreground mt-0.5 text-xs">Porsi: x{Number(variant.recipe_qty)}</div>
                 </div>
             ) : (
-                <span className="text-xs text-muted-foreground italic">Tidak ada resep</span>
+                <span className="text-muted-foreground text-xs italic">Tidak ada resep</span>
             );
         },
     },
@@ -109,22 +106,14 @@ export const columns: ColumnDef<ProductVariant & { hpp: number; margin: number; 
         accessorKey: 'hpp',
         header: ({ column }) => <DataTableColumnHeader column={column} title="HPP" />,
         cell: ({ row }) => {
-            return (
-                <div className="text-right text-muted-foreground font-medium">
-                    {formatRupiah(row.original.hpp ?? 0)}
-                </div>
-            );
+            return <div className="text-muted-foreground text-right font-medium">{formatRupiah(row.original.hpp ?? 0)}</div>;
         },
     },
     {
         accessorKey: 'sell_price',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Jual" />,
         cell: ({ row }) => {
-            return (
-                <div className="text-right font-bold">
-                    {formatRupiah(row.original.sell_price)}
-                </div>
-            );
+            return <div className="text-right font-bold">{formatRupiah(row.original.sell_price)}</div>;
         },
     },
     {
@@ -134,10 +123,9 @@ export const columns: ColumnDef<ProductVariant & { hpp: number; margin: number; 
             const margin = row.original.margin ?? 0;
             return (
                 <div className="text-right">
-                    <span className={`font-semibold text-sm ${
-                        margin >= 20 ? 'text-emerald-600' :
-                        margin >= 10 ? 'text-amber-600' : 'text-rose-600'
-                    }`}>
+                    <span
+                        className={`text-sm font-semibold ${margin >= 20 ? 'text-emerald-600' : margin >= 10 ? 'text-amber-600' : 'text-rose-600'}`}
+                    >
                         {margin.toFixed(1)}%
                     </span>
                 </div>

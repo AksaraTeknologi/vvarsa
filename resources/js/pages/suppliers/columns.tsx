@@ -1,7 +1,7 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
 import { Supplier } from '@/types/mrp';
 import { Link } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
+import { ColumnDef } from '@tanstack/react-table';
 import { Edit } from 'lucide-react';
 
 export const columns: ColumnDef<Supplier>[] = [

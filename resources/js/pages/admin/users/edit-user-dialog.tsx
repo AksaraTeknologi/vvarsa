@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { z } from 'zod';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
 import { type UserItem } from './columns';
 
 interface Tenant {
@@ -20,23 +20,31 @@ interface EditUserDialogProps {
     tenants: Tenant[];
 }
 
-const editUserSchema = z.object({
-    name: z.string().min(1, 'Nama wajib diisi'),
-    email: z.string().email('Format email tidak valid'),
-    password: z.string().refine(val => val === '' || val.length >= 8, {
-        message: 'Password minimal 8 karakter',
-    }).optional(),
-    role: z.enum(['admin', 'owner', 'staff']),
-    tenant_id: z.string().optional().nullable(),
-}).refine(data => {
-    if ((data.role === 'owner' || data.role === 'staff') && !data.tenant_id) {
-        return false;
-    }
-    return true;
-}, {
-    message: 'Bisnis / Tenant wajib dipilih untuk peran Owner atau Staff',
-    path: ['tenant_id'],
-});
+const editUserSchema = z
+    .object({
+        name: z.string().min(1, 'Nama wajib diisi'),
+        email: z.string().email('Format email tidak valid'),
+        password: z
+            .string()
+            .refine((val) => val === '' || val.length >= 8, {
+                message: 'Password minimal 8 karakter',
+            })
+            .optional(),
+        role: z.enum(['admin', 'owner', 'staff']),
+        tenant_id: z.string().optional().nullable(),
+    })
+    .refine(
+        (data) => {
+            if ((data.role === 'owner' || data.role === 'staff') && !data.tenant_id) {
+                return false;
+            }
+            return true;
+        },
+        {
+            message: 'Bisnis / Tenant wajib dipilih untuk peran Owner atau Staff',
+            path: ['tenant_id'],
+        },
+    );
 
 export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDialogProps) {
     const form = useForm({
@@ -94,9 +102,7 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Edit Pengguna</DialogTitle>
-                        <DialogDescription>
-                            Perbarui detail informasi, peran, atau tenant bisnis untuk pengguna ini.
-                        </DialogDescription>
+                        <DialogDescription>Perbarui detail informasi, peran, atau tenant bisnis untuk pengguna ini.</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
@@ -171,10 +177,7 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
                         {form.data.role !== 'admin' && (
                             <div className="grid gap-2">
                                 <Label htmlFor="edit-tenant_id">Bisnis / Tenant</Label>
-                                <Select
-                                    value={form.data.tenant_id || ''}
-                                    onValueChange={(val) => form.setData('tenant_id', val)}
-                                >
+                                <Select value={form.data.tenant_id || ''} onValueChange={(val) => form.setData('tenant_id', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
                                         <SelectValue placeholder="Pilih Bisnis" />
                                     </SelectTrigger>

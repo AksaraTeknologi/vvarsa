@@ -1,11 +1,11 @@
-import React from 'react';
-import AppLayout from '@/layouts/app-layout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { type BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 import { type Event as EventItem } from './index';
 
 interface Props {
@@ -31,13 +31,13 @@ const formatForInput = (dateString: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     const pad = (num: number) => String(num).padStart(2, '0');
-    
+
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1);
     const day = pad(date.getDate());
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
-    
+
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
@@ -70,7 +70,10 @@ export default function EventEdit({ event }: Props) {
         if (checked) {
             setData('business_types', [...(data.business_types ?? []), id]);
         } else {
-            setData('business_types', (data.business_types ?? []).filter((t) => t !== id));
+            setData(
+                'business_types',
+                (data.business_types ?? []).filter((t) => t !== id),
+            );
         }
     };
 
@@ -78,22 +81,22 @@ export default function EventEdit({ event }: Props) {
         <AppLayout breadcrumbs={breadcrumbs(event)}>
             <Head title={`Edit Event - ${event.title}`} />
 
-            <div className="flex flex-col gap-6 p-4 md:p-6 max-w-4xl mx-auto w-full">
+            <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 p-4 md:p-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Edit Event</h1>
-                    <p className="text-sm text-muted-foreground mt-1">
-                        Perbarui rincian informasi mengenai event ini.
-                    </p>
+                    <h1 className="text-foreground text-2xl font-bold tracking-tight">Edit Event</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">Perbarui rincian informasi mengenai event ini.</p>
                 </div>
 
-                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-                    <form onSubmit={submit} className="p-6 space-y-8">
+                <div className="bg-card border-border overflow-hidden rounded-xl border shadow-sm">
+                    <form onSubmit={submit} className="space-y-8 p-6">
                         {/* Section: Informasi Event */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Informasi Event</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <h2 className="border-b pb-2 text-lg font-semibold">Informasi Event</h2>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2 md:col-span-2">
-                                    <label htmlFor="title" className="text-sm font-medium">Judul Event <span className="text-red-500">*</span></label>
+                                    <label htmlFor="title" className="text-sm font-medium">
+                                        Judul Event <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="title"
                                         value={data.title}
@@ -105,7 +108,9 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="organizer" className="text-sm font-medium">Penyelenggara / Organizer <span className="text-red-500">*</span></label>
+                                    <label htmlFor="organizer" className="text-sm font-medium">
+                                        Penyelenggara / Organizer <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="organizer"
                                         value={data.organizer}
@@ -116,12 +121,14 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="status" className="text-sm font-medium">Status Event <span className="text-red-500">*</span></label>
+                                    <label htmlFor="status" className="text-sm font-medium">
+                                        Status Event <span className="text-red-500">*</span>
+                                    </label>
                                     <select
                                         id="status"
                                         value={data.status}
                                         onChange={(e) => setData('status', e.target.value as 'upcoming' | 'ongoing' | 'completed' | 'cancelled')}
-                                        className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         <option value="upcoming">Mendatang (Upcoming)</option>
                                         <option value="ongoing">Berjalan (Ongoing)</option>
@@ -132,8 +139,8 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-medium block">Target Tipe Bisnis</label>
-                                    <div className="flex flex-wrap gap-4 mt-2">
+                                    <label className="block text-sm font-medium">Target Tipe Bisnis</label>
+                                    <div className="mt-2 flex flex-wrap gap-4">
                                         {BUSINESS_TYPES.map((type) => (
                                             <div key={type.id} className="flex items-center space-x-2">
                                                 <Checkbox
@@ -141,7 +148,10 @@ export default function EventEdit({ event }: Props) {
                                                     checked={data.business_types.includes(type.id)}
                                                     onCheckedChange={(checked) => handleBusinessTypeChange(type.id, !!checked)}
                                                 />
-                                                <label htmlFor={`type-${type.id}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer">
+                                                <label
+                                                    htmlFor={`type-${type.id}`}
+                                                    className="cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
                                                     {type.label}
                                                 </label>
                                             </div>
@@ -154,10 +164,12 @@ export default function EventEdit({ event }: Props) {
 
                         {/* Section: Waktu & Lokasi */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Waktu & Lokasi</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <h2 className="border-b pb-2 text-lg font-semibold">Waktu & Lokasi</h2>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <label htmlFor="start_date" className="text-sm font-medium">Tanggal Mulai <span className="text-red-500">*</span></label>
+                                    <label htmlFor="start_date" className="text-sm font-medium">
+                                        Tanggal Mulai <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="start_date"
                                         type="datetime-local"
@@ -168,7 +180,9 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="end_date" className="text-sm font-medium">Tanggal Selesai <span className="text-red-500">*</span></label>
+                                    <label htmlFor="end_date" className="text-sm font-medium">
+                                        Tanggal Selesai <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="end_date"
                                         type="datetime-local"
@@ -179,7 +193,9 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="location" className="text-sm font-medium">Tempat / Lokasi <span className="text-red-500">*</span></label>
+                                    <label htmlFor="location" className="text-sm font-medium">
+                                        Tempat / Lokasi <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="location"
                                         value={data.location}
@@ -190,7 +206,9 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="city" className="text-sm font-medium">Kota</label>
+                                    <label htmlFor="city" className="text-sm font-medium">
+                                        Kota
+                                    </label>
                                     <Input
                                         id="city"
                                         value={data.city}
@@ -204,10 +222,12 @@ export default function EventEdit({ event }: Props) {
 
                         {/* Section: Registrasi & Biaya */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Registrasi & Biaya</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <h2 className="border-b pb-2 text-lg font-semibold">Registrasi & Biaya</h2>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <label htmlFor="registration_fee" className="text-sm font-medium">Biaya Pendaftaran (IDR) <span className="text-red-500">*</span></label>
+                                    <label htmlFor="registration_fee" className="text-sm font-medium">
+                                        Biaya Pendaftaran (IDR) <span className="text-red-500">*</span>
+                                    </label>
                                     <Input
                                         id="registration_fee"
                                         type="number"
@@ -219,7 +239,9 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="max_participants" className="text-sm font-medium">Kapasitas Maksimal Peserta</label>
+                                    <label htmlFor="max_participants" className="text-sm font-medium">
+                                        Kapasitas Maksimal Peserta
+                                    </label>
                                     <Input
                                         id="max_participants"
                                         type="number"
@@ -231,7 +253,9 @@ export default function EventEdit({ event }: Props) {
                                 </div>
 
                                 <div className="space-y-2 md:col-span-2">
-                                    <label htmlFor="registration_url" className="text-sm font-medium">Link Registrasi Eksternal</label>
+                                    <label htmlFor="registration_url" className="text-sm font-medium">
+                                        Link Registrasi Eksternal
+                                    </label>
                                     <Input
                                         id="registration_url"
                                         type="url"
@@ -246,17 +270,19 @@ export default function EventEdit({ event }: Props) {
 
                         {/* Section: Deskripsi & Media */}
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold border-b pb-2">Rincian Tambahan & Media</h2>
+                            <h2 className="border-b pb-2 text-lg font-semibold">Rincian Tambahan & Media</h2>
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <label htmlFor="image" className="text-sm font-medium">Poster Event (Gambar)</label>
+                                    <label htmlFor="image" className="text-sm font-medium">
+                                        Poster Event (Gambar)
+                                    </label>
                                     {event.image && (
                                         <div className="mb-2">
-                                            <p className="text-xs text-muted-foreground mb-1">Poster Saat Ini:</p>
+                                            <p className="text-muted-foreground mb-1 text-xs">Poster Saat Ini:</p>
                                             <img
                                                 src={event.image}
                                                 alt="Current Poster"
-                                                className="w-32 h-32 object-cover rounded-lg border bg-slate-50"
+                                                className="h-32 w-32 rounded-lg border bg-slate-50 object-cover"
                                             />
                                         </div>
                                     )}
@@ -272,14 +298,16 @@ export default function EventEdit({ event }: Props) {
                                     />
                                     {errors.image && <p className="text-xs text-red-500">{errors.image}</p>}
                                     {data.image && data.image instanceof File && (
-                                        <p className="text-xs text-muted-foreground mt-1">
+                                        <p className="text-muted-foreground mt-1 text-xs">
                                             File baru terpilih: {data.image.name} ({Math.round(data.image.size / 1024)} KB)
                                         </p>
                                     )}
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="description" className="text-sm font-medium">Deskripsi Lengkap Event</label>
+                                    <label htmlFor="description" className="text-sm font-medium">
+                                        Deskripsi Lengkap Event
+                                    </label>
                                     <Textarea
                                         id="description"
                                         value={data.description}
@@ -290,16 +318,16 @@ export default function EventEdit({ event }: Props) {
                                     {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row gap-6 pt-4 border-t">
+                                <div className="flex flex-col gap-6 border-t pt-4 sm:flex-row">
                                     <div className="flex items-center space-x-2">
                                         <input
                                             id="allow_platform_registration"
                                             type="checkbox"
                                             checked={data.allow_platform_registration}
                                             onChange={(e) => setData('allow_platform_registration', e.target.checked)}
-                                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+                                            className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-600"
                                         />
-                                        <label htmlFor="allow_platform_registration" className="text-sm font-medium cursor-pointer">
+                                        <label htmlFor="allow_platform_registration" className="cursor-pointer text-sm font-medium">
                                             Izinkan Pendaftaran via Platform
                                         </label>
                                     </div>
@@ -310,9 +338,9 @@ export default function EventEdit({ event }: Props) {
                                             type="checkbox"
                                             checked={data.is_featured}
                                             onChange={(e) => setData('is_featured', e.target.checked)}
-                                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+                                            className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-600"
                                         />
-                                        <label htmlFor="is_featured" className="text-sm font-medium cursor-pointer">
+                                        <label htmlFor="is_featured" className="cursor-pointer text-sm font-medium">
                                             Tampilkan Sebagai Event Pilihan (Featured)
                                         </label>
                                     </div>
@@ -321,7 +349,7 @@ export default function EventEdit({ event }: Props) {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center justify-end gap-3 pt-6 border-t animate-in fade-in duration-300">
+                        <div className="animate-in fade-in flex items-center justify-end gap-3 border-t pt-6 duration-300">
                             <Button type="button" variant="outline" asChild>
                                 <Link href="/admin/events">Batal</Link>
                             </Button>

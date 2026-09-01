@@ -1,23 +1,20 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, router, useForm, usePage } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertCircle, Check, Clock, UserPlus, Users, X, ShieldCheck } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
+import { SharedData, type BreadcrumbItem } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { AlertCircle, Check, Clock, ShieldCheck, UserPlus, Users, X } from 'lucide-react';
 import { useState } from 'react';
+import { z } from 'zod';
 import { getColumns, type Member } from './columns';
 import { DataTable } from './data-table';
-import { SharedData } from '@/types';
-import { z } from 'zod';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Anggota Tim', href: '/members' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Anggota Tim', href: '/members' }];
 
 interface Role {
     id: number;
@@ -61,9 +58,9 @@ const ROLE_LABELS: Record<string, string> = {
 export default function MembersIndex({ members, roles, limit, member_count, pending_requests, is_supervisor, is_owner }: Props) {
     const { auth } = usePage<SharedData>().props;
     const authUserId = auth.user.id;
-    const authRole   = is_owner ? 'owner' : is_supervisor ? 'supervisor' : 'staff';
+    const authRole = is_owner ? 'owner' : is_supervisor ? 'supervisor' : 'staff';
 
-    const [isAddOpen, setIsAddOpen]     = useState(false);
+    const [isAddOpen, setIsAddOpen] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
     const addForm = useForm({
@@ -73,10 +70,10 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
         role: 'staff',
     });
 
-    const updateForm  = useForm({ role: 'staff' });
-    const deleteForm  = useForm({});
+    const updateForm = useForm({ role: 'staff' });
+    const deleteForm = useForm({});
     const approveForm = useForm({});
-    const rejectForm  = useForm({});
+    const rejectForm = useForm({});
 
     const handleAddMember = (e: React.FormEvent) => {
         e.preventDefault();
@@ -133,27 +130,17 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
 
     const capacityPercent = Math.round((member_count / limit) * 100);
 
-    const columns = getColumns(
-        authUserId,
-        authRole,
-        handleUpdateRole,
-        handleDeleteMember,
-        updateForm.processing,
-        deleteForm.processing
-    );
+    const columns = getColumns(authUserId, authRole, handleUpdateRole, handleDeleteMember, updateForm.processing, deleteForm.processing);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Anggota Tim" />
             <div className="flex flex-col gap-6 p-4 md:p-6">
-
                 {/* Header section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Anggota Tim</h1>
-                        <p className="text-muted-foreground text-sm">
-                            Kelola pengguna dan hak akses operasional untuk bisnis Anda.
-                        </p>
+                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Anggota Tim</h1>
+                        <p className="text-muted-foreground text-sm">Kelola pengguna dan hak akses operasional untuk bisnis Anda.</p>
                     </div>
 
                     {/* Tombol Tambah Anggota */}
@@ -179,7 +166,9 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                                 {is_supervisor && (
                                     <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-400">
                                         <ShieldCheck size={16} className="mt-0.5 shrink-0" />
-                                        <span>Sebagai <strong>Supervisor</strong>, penambahan anggota memerlukan persetujuan owner terlebih dahulu.</span>
+                                        <span>
+                                            Sebagai <strong>Supervisor</strong>, penambahan anggota memerlukan persetujuan owner terlebih dahulu.
+                                        </span>
                                     </div>
                                 )}
 
@@ -230,11 +219,8 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                                     </div>
                                     <div className="grid gap-2">
                                         <Label htmlFor="role">Peran / Hak Akses</Label>
-                                        <Select
-                                            value={addForm.data.role}
-                                            onValueChange={(val) => addForm.setData('role', val)}
-                                        >
-                                            <SelectTrigger id="role" className="rounded-xl h-9">
+                                        <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
+                                            <SelectTrigger id="role" className="h-9 rounded-xl">
                                                 <SelectValue placeholder="Pilih Peran" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -256,8 +242,12 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                                     </Button>
                                     <Button type="submit" disabled={addForm.processing} className="rounded-xl">
                                         {addForm.processing
-                                            ? (is_supervisor ? 'Mengirim...' : 'Menyimpan...')
-                                            : (is_supervisor ? 'Kirim Permintaan' : 'Tambah Anggota')}
+                                            ? is_supervisor
+                                                ? 'Mengirim...'
+                                                : 'Menyimpan...'
+                                            : is_supervisor
+                                              ? 'Kirim Permintaan'
+                                              : 'Tambah Anggota'}
                                     </Button>
                                 </DialogFooter>
                             </form>
@@ -267,14 +257,12 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
 
                 {/* ── Pending Requests Section (hanya owner) ── */}
                 {is_owner && pending_requests.length > 0 && (
-                    <Card className="border-amber-200 bg-amber-50/50 dark:border-amber-800/40 dark:bg-amber-900/10 rounded-2xl shadow-sm">
+                    <Card className="rounded-2xl border-amber-200 bg-amber-50/50 shadow-sm dark:border-amber-800/40 dark:bg-amber-900/10">
                         <CardHeader className="pb-3">
                             <CardTitle className="flex items-center gap-2 text-base text-amber-700 dark:text-amber-400">
                                 <Clock size={18} />
                                 Permintaan Menunggu Persetujuan
-                                <Badge className="bg-amber-500 text-white hover:bg-amber-500 ml-1">
-                                    {pending_requests.length}
-                                </Badge>
+                                <Badge className="ml-1 bg-amber-500 text-white hover:bg-amber-500">{pending_requests.length}</Badge>
                             </CardTitle>
                             <CardDescription>
                                 Supervisor mengajukan permintaan penambahan anggota baru. Tinjau dan setujui atau tolak.
@@ -285,23 +273,23 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                                 {pending_requests.map((req) => (
                                     <div
                                         key={req.id}
-                                        className="flex flex-col gap-3 rounded-xl border border-amber-100 bg-white px-4 py-3 dark:border-amber-800/30 dark:bg-card sm:flex-row sm:items-center sm:justify-between"
+                                        className="dark:bg-card flex flex-col gap-3 rounded-xl border border-amber-100 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-amber-800/30"
                                     >
                                         <div className="flex items-start gap-3">
                                             {/* Avatar */}
-                                            <div className="bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-sm">
+                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
                                                 {req.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <p className="text-sm font-semibold text-foreground">{req.name}</p>
-                                                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 capitalize">
+                                                    <p className="text-foreground text-sm font-semibold">{req.name}</p>
+                                                    <Badge variant="outline" className="px-1.5 py-0 text-[10px] capitalize">
                                                         {ROLE_LABELS[req.role] ?? req.role}
                                                     </Badge>
                                                 </div>
-                                                <p className="text-xs text-muted-foreground">{req.email}</p>
-                                                <p className="text-xs text-muted-foreground mt-0.5">
-                                                    Diajukan oleh: <span className="font-medium text-foreground">{req.requested_by?.name}</span>
+                                                <p className="text-muted-foreground text-xs">{req.email}</p>
+                                                <p className="text-muted-foreground mt-0.5 text-xs">
+                                                    Diajukan oleh: <span className="text-foreground font-medium">{req.requested_by?.name}</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -318,7 +306,7 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                                             </Button>
                                             <Button
                                                 size="sm"
-                                                className="h-8 gap-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-white"
+                                                className="h-8 gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700"
                                                 disabled={approveForm.processing}
                                                 onClick={() => handleApprove(req.id)}
                                             >
@@ -341,7 +329,7 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                                 <Users size={16} />
                                 Batas Kapasitas Pengguna
                             </span>
-                            <span className="font-semibold text-foreground">
+                            <span className="text-foreground font-semibold">
                                 {member_count} / {limit} pengguna terdaftar
                             </span>
                         </div>
@@ -366,9 +354,7 @@ export default function MembersIndex({ members, roles, limit, member_count, pend
                 <Card className="border-border overflow-hidden rounded-2xl shadow-sm">
                     <CardHeader>
                         <CardTitle>Daftar Pengguna</CardTitle>
-                        <CardDescription>
-                            Semua pengguna yang memiliki akses ke dashboard tenant bisnis Anda.
-                        </CardDescription>
+                        <CardDescription>Semua pengguna yang memiliki akses ke dashboard tenant bisnis Anda.</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
                         <DataTable columns={columns} data={members} />

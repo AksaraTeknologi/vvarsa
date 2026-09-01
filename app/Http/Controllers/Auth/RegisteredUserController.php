@@ -46,6 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return to_route('choose-business');
+        return to_route('choose-business')->with('success', 'Pendaftaran berhasil! Silakan buat atau pilih bisnis Anda.');
     }
 }

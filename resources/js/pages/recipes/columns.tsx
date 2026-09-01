@@ -4,16 +4,19 @@ import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import DeleteConfirmDialog from '@/components/delete-dialog';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Link, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Trash, BookOpen } from 'lucide-react';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type Recipe } from '@/types/mrp';
+import { Link } from '@inertiajs/react';
+import { ColumnDef } from '@tanstack/react-table';
+import { BookOpen, Edit, Trash } from 'lucide-react';
 
 function RecipeActions({ recipe }: { recipe: Recipe }) {
     const handleDelete = () => {
-        router.delete(`/recipes/${recipe.id}`, {
-            preserveScroll: true,
+        handleAsyncAction(() => routerPromise('delete', `/recipes/${recipe.id}`, {}, { preserveScroll: true }), {
+            loading: `Menghapus resep "${recipe.name}"...`,
+            success: `Resep "${recipe.name}" berhasil dihapus!`,
+            error: 'Gagal Menghapus',
         });
     };
 
@@ -72,14 +75,12 @@ export const columns: ColumnDef<Recipe>[] = [
             const recipe = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className="bg-violet-50 dark:bg-violet-950/40 p-1.5 rounded-lg text-violet-500">
+                    <div className="rounded-lg bg-violet-50 p-1.5 text-violet-500 dark:bg-violet-950/40">
                         <BookOpen size={16} />
                     </div>
                     <div>
-                        <div className="font-semibold text-sm text-violet-600 dark:text-violet-400">{recipe.name}</div>
-                        {recipe.description && (
-                            <div className="text-xs text-muted-foreground mt-0.5 max-w-xs truncate">{recipe.description}</div>
-                        )}
+                        <div className="text-sm font-semibold text-violet-600 dark:text-violet-400">{recipe.name}</div>
+                        {recipe.description && <div className="text-muted-foreground mt-0.5 max-w-xs truncate text-xs">{recipe.description}</div>}
                     </div>
                 </div>
             );
@@ -91,9 +92,9 @@ export const columns: ColumnDef<Recipe>[] = [
         cell: ({ row }) => {
             const ingredients = row.original.ingredients ?? [];
             return (
-                <div className="flex flex-wrap gap-1 max-w-md">
+                <div className="flex max-w-md flex-wrap gap-1">
                     {ingredients.map((ing: any, i: number) => (
-                        <span key={i} className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">
+                        <span key={i} className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs">
                             {ing.ingredient_name} ({Number(ing.qty)} {ing.unit})
                         </span>
                     ))}
@@ -105,33 +106,21 @@ export const columns: ColumnDef<Recipe>[] = [
         accessorKey: 'total_cost',
         header: ({ column }) => <DataTableColumnHeader column={column} title="HPP 1 Adonan" />,
         cell: ({ row }) => {
-            return (
-                <div className="text-right text-muted-foreground font-medium">
-                    {formatRupiah(row.original.total_cost ?? 0)}
-                </div>
-            );
+            return <div className="text-muted-foreground text-right font-medium">{formatRupiah(row.original.total_cost ?? 0)}</div>;
         },
     },
     {
         accessorKey: 'portion_qty',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Porsi Hasil" />,
         cell: ({ row }) => {
-            return (
-                <div className="text-right text-muted-foreground font-medium">
-                    {Number(row.original.portion_qty)} pcs
-                </div>
-            );
+            return <div className="text-muted-foreground text-right font-medium">{Number(row.original.portion_qty)} pcs</div>;
         },
     },
     {
         accessorKey: 'hpp',
         header: ({ column }) => <DataTableColumnHeader column={column} title="HPP per Pcs" />,
         cell: ({ row }) => {
-            return (
-                <div className="text-right font-bold text-emerald-600 dark:text-emerald-400">
-                    {formatRupiah(row.original.hpp ?? 0)}
-                </div>
-            );
+            return <div className="text-right font-bold text-emerald-600 dark:text-emerald-400">{formatRupiah(row.original.hpp ?? 0)}</div>;
         },
     },
     {

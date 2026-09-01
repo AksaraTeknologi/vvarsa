@@ -1,11 +1,12 @@
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatDate } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type CommunityPost, type CommunityReply } from '@/types/mrp';
-import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Heart, MessageCircle, ThumbsUp } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -27,7 +28,14 @@ const replySchema = z.object({
 export default function CommunityShow({ post, replies, is_liked }: Props) {
     const { auth } = usePage().props as any;
 
-    const { data, setData, post: submitReply, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post: submitReply,
+        processing,
+        errors,
+        reset,
+    } = useForm({
         content: '',
     });
 
@@ -36,7 +44,7 @@ export default function CommunityShow({ post, replies, is_liked }: Props) {
     const handleReply = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
-        
+
         const result = replySchema.safeParse(data);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -54,7 +62,11 @@ export default function CommunityShow({ post, replies, is_liked }: Props) {
     };
 
     const toggleLike = () => {
-        router.post(`/community/${post.id}/like`, {}, { preserveScroll: true });
+        handleAsyncAction(() => routerPromise('post', `/community/${post.id}/like`, {}, { preserveScroll: true }), {
+            loading: 'Memproses...',
+            success: 'Berhasil!',
+            error: 'Gagal',
+        });
     };
 
     return (
@@ -113,7 +125,9 @@ export default function CommunityShow({ post, replies, is_liked }: Props) {
                                         </div>
                                         <div>
                                             <p className="text-sm font-medium">{reply.user?.name || 'Anonim'}</p>
-                                            <p className="text-muted-foreground text-xs">{formatDate(reply.created_at, { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                                            <p className="text-muted-foreground text-xs">
+                                                {formatDate(reply.created_at, { day: 'numeric', month: 'short', year: 'numeric' })}
+                                            </p>
                                         </div>
                                     </div>
                                     <p className="text-muted-foreground text-sm leading-relaxed">{reply.content}</p>
@@ -144,11 +158,7 @@ export default function CommunityShow({ post, replies, is_liked }: Props) {
                                 </div>
                             </div>
                             <div className="flex justify-end">
-                                <Button
-                                    type="submit"
-                                    disabled={processing || !data.content.trim()}
-                                    className="rounded-xl px-5"
-                                >
+                                <Button type="submit" disabled={processing || !data.content.trim()} className="rounded-xl px-5">
                                     <ThumbsUp size={14} />
                                     {processing ? 'Membalas...' : 'Kirim Balasan'}
                                 </Button>

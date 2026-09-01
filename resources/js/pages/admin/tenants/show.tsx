@@ -1,13 +1,14 @@
-import AppLayout from '@/layouts/app-layout';
-import { formatRupiah } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, router } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Building2, Users, Package, CreditCard, Activity, ArrowLeft, Shield, User, ToggleLeft, ToggleRight } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { formatRupiah } from '@/lib/utils-mrp';
+import { type BreadcrumbItem } from '@/types';
+import { Head, router, useForm } from '@inertiajs/react';
+import { Activity, ArrowLeft, CreditCard, Package, Shield, ToggleLeft, ToggleRight, User, Users } from 'lucide-react';
 import { useState } from 'react';
 
 interface UserItem {
@@ -71,8 +72,10 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
     };
 
     const handleToggleActive = () => {
-        router.post(`/admin/tenants/${tenant.id}/toggle`, {}, {
-            preserveScroll: true,
+        handleAsyncAction(() => routerPromise('post', `/admin/tenants/${tenant.id}/toggle`, {}, { preserveScroll: true }), {
+            loading: `Mengubah status bisnis "${tenant.name}"...`,
+            success: `Status bisnis "${tenant.name}" berhasil diubah!`,
+            error: 'Gagal Mengubah Status',
         });
     };
 
@@ -80,7 +83,6 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Tenant: ${tenant.name}`} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
-                
                 {/* Back button */}
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" onClick={() => router.get('/admin/tenants')} className="rounded-xl">
@@ -92,7 +94,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                 {/* Header Profile */}
                 <div className="bg-card border-border flex flex-col gap-6 rounded-2xl border p-6 shadow-sm md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="bg-primary/10 text-primary flex h-16 w-16 items-center justify-center rounded-2xl font-bold text-2xl">
+                        <div className="bg-primary/10 text-primary flex h-16 w-16 items-center justify-center rounded-2xl text-2xl font-bold">
                             {tenant.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -102,8 +104,8 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                     variant={tenant.is_active ? 'default' : 'destructive'}
                                     className={
                                         tenant.is_active
-                                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 hover:bg-emerald-100'
-                                            : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400 hover:bg-rose-100'
+                                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400'
+                                            : 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
                                     }
                                 >
                                     {tenant.is_active ? 'Aktif' : 'Nonaktif'}
@@ -136,17 +138,13 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         {/* Upgrade plan dialog */}
                         <Dialog open={isPlanOpen} onOpenChange={setIsPlanOpen}>
                             <DialogTrigger asChild>
-                                <Button className="rounded-xl">
-                                    Ubah Paket Langganan
-                                </Button>
+                                <Button className="rounded-xl">Ubah Paket Langganan</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[400px]">
                                 <form onSubmit={handleUpdatePlan}>
                                     <DialogHeader>
                                         <DialogTitle>Ubah Paket Langganan</DialogTitle>
-                                        <DialogDescription>
-                                            Sesuaikan tingkat fitur dan batas kapasitas untuk tenant {tenant.name}.
-                                        </DialogDescription>
+                                        <DialogDescription>Sesuaikan tingkat fitur dan batas kapasitas untuk tenant {tenant.name}.</DialogDescription>
                                     </DialogHeader>
 
                                     <div className="grid gap-4 py-4">
@@ -156,7 +154,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                                 id="plan_id"
                                                 value={planForm.data.plan_id}
                                                 onChange={(e) => planForm.setData('plan_id', e.target.value)}
-                                                className="border-border bg-background rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="border-border bg-background rounded-xl border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                             >
                                                 {plans.map((plan) => (
                                                     <option key={plan.id} value={plan.id}>
@@ -190,7 +188,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.product_count}</div>
-                            <p className="text-muted-foreground text-xs mt-1">
+                            <p className="text-muted-foreground mt-1 text-xs">
                                 Batas maksimal paket: {tenant.max_products >= 9999 ? 'Tak Terbatas' : tenant.max_products}
                             </p>
                         </CardContent>
@@ -203,7 +201,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.user_count}</div>
-                            <p className="text-muted-foreground text-xs mt-1">
+                            <p className="text-muted-foreground mt-1 text-xs">
                                 Batas maksimal paket: {tenant.max_users >= 99 ? 'Tak Terbatas' : tenant.max_users}
                             </p>
                         </CardContent>
@@ -216,9 +214,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.transaction_count}</div>
-                            <p className="text-muted-foreground text-xs mt-1">
-                                Total riwayat transaksi bisnis
-                            </p>
+                            <p className="text-muted-foreground mt-1 text-xs">Total riwayat transaksi bisnis</p>
                         </CardContent>
                     </Card>
 
@@ -229,16 +225,13 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{formatRupiah(stats.total_sales)}</div>
-                            <p className="text-muted-foreground text-xs mt-1">
-                                Total omset tenant bisnis
-                            </p>
+                            <p className="text-muted-foreground mt-1 text-xs">Total omset tenant bisnis</p>
                         </CardContent>
                     </Card>
                 </div>
 
                 {/* Details & Member List Grid */}
                 <div className="grid gap-6 md:grid-cols-3">
-                    
                     {/* Left: General info */}
                     <Card className="border-border md:col-span-1">
                         <CardHeader>
@@ -248,7 +241,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         <CardContent className="space-y-4">
                             <div>
                                 <Label className="text-muted-foreground text-xs">Paket Saat Ini</Label>
-                                <p className="font-semibold text-sm capitalize">{tenant.plan?.name || 'Free'}</p>
+                                <p className="text-sm font-semibold capitalize">{tenant.plan?.name || 'Free'}</p>
                             </div>
                             <div>
                                 <Label className="text-muted-foreground text-xs">Telepon</Label>
@@ -297,14 +290,14 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                             tenant.users.map((u) => {
                                                 const role = u.roles[0]?.name || 'staff';
                                                 return (
-                                                    <tr key={u.id} className="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 transition-colors">
+                                                    <tr key={u.id} className="transition-colors hover:bg-slate-50/30 dark:hover:bg-slate-800/10">
                                                         <td className="px-6 py-3.5">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-full font-bold text-xs">
+                                                                <div className="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold">
                                                                     {u.name.charAt(0).toUpperCase()}
                                                                 </div>
                                                                 <div>
-                                                                    <div className="font-semibold text-sm">{u.name}</div>
+                                                                    <div className="text-sm font-semibold">{u.name}</div>
                                                                     <span className="text-muted-foreground text-xs">{u.email}</span>
                                                                 </div>
                                                             </div>
@@ -314,7 +307,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                                                 variant={role === 'owner' ? 'default' : 'outline'}
                                                                 className={`capitalize ${
                                                                     role === 'owner'
-                                                                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100'
+                                                                        ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400'
                                                                         : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                                                                 }`}
                                                             >

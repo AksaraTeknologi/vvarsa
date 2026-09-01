@@ -1,6 +1,3 @@
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm, router } from '@inertiajs/react';
-import { FormEventHandler, useState } from 'react';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -8,8 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { Trash2, Edit2, Plus, Check, X, ShieldAlert, ShoppingBag } from 'lucide-react';
-import { goeyToast } from 'goey-toast';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
+import { Check, Edit2, Plus, ShieldAlert, Trash2, X } from 'lucide-react';
+import { FormEventHandler, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -84,20 +84,33 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
     };
 
     const handleToggleActive = (pm: PaymentMethod) => {
-        router.patch(route('payment-methods.update', pm.id), {
-            name: pm.name,
-            account_name: pm.account_name ?? '',
-            account_number: pm.account_number ?? '',
-            is_active: !pm.is_active,
-        }, {
-            preserveScroll: true,
-        });
+        handleAsyncAction(
+            () =>
+                routerPromise(
+                    'patch',
+                    route('payment-methods.update', pm.id),
+                    {
+                        name: pm.name,
+                        account_name: pm.account_name ?? '',
+                        account_number: pm.account_number ?? '',
+                        is_active: !pm.is_active,
+                    },
+                    { preserveScroll: true },
+                ),
+            {
+                loading: `Mengubah status "${pm.name}"...`,
+                success: `Status metode pembayaran "${pm.name}" berhasil diubah!`,
+                error: 'Gagal Mengubah Status',
+            },
+        );
     };
 
     const handleDelete = (id: number) => {
         if (!confirm('Apakah Anda yakin ingin menghapus metode pembayaran ini?')) return;
-        router.delete(route('payment-methods.destroy', id), {
-            preserveScroll: true
+        handleAsyncAction(() => routerPromise('delete', route('payment-methods.destroy', id), {}, { preserveScroll: true }), {
+            loading: 'Menghapus metode pembayaran...',
+            success: 'Metode pembayaran berhasil dihapus!',
+            error: 'Gagal Menghapus',
         });
     };
 
@@ -114,12 +127,12 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
 
                     {/* Form Tambah */}
                     {editingId === null && (
-                        <form onSubmit={handleCreate} className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
-                            <h3 className="text-sm font-semibold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
+                        <form onSubmit={handleCreate} className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-slate-800 dark:text-slate-200">
                                 <Plus size={16} className="text-indigo-500" />
                                 Tambah Metode / Rekening Baru
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                 <div className="space-y-1.5">
                                     <Label htmlFor="name">Nama Metode *</Label>
                                     <Input
@@ -153,7 +166,11 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                 </div>
                             </div>
                             <div className="flex justify-end pt-1">
-                                <Button type="submit" disabled={createForm.processing} className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl">
+                                <Button
+                                    type="submit"
+                                    disabled={createForm.processing}
+                                    className="rounded-xl bg-indigo-600 text-white hover:bg-indigo-700"
+                                >
                                     {createForm.processing ? 'Menyimpan...' : 'Tambah Metode'}
                                 </Button>
                             </div>
@@ -161,25 +178,25 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                     )}
 
                     {/* List/Table */}
-                    <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
-                        <div className="p-4 border-b border-border bg-slate-50/50 dark:bg-slate-800/10">
+                    <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
+                        <div className="border-border border-b bg-slate-50/50 p-4 dark:bg-slate-800/10">
                             <h3 className="text-sm font-semibold">Daftar Metode Pembayaran Aktif</h3>
                         </div>
                         {paymentMethods.length === 0 ? (
-                            <div className="py-12 text-center text-muted-foreground text-sm space-y-2">
-                                <ShieldAlert size={28} className="mx-auto opacity-30 text-amber-500" />
+                            <div className="text-muted-foreground space-y-2 py-12 text-center text-sm">
+                                <ShieldAlert size={28} className="mx-auto text-amber-500 opacity-30" />
                                 <p>Belum ada metode pembayaran yang dikonfigurasi.</p>
                                 <p className="text-xs">Sistem akan menggunakan fallback bawaan (Tunai, Transfer, QRIS) di kasir.</p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-border">
+                            <div className="divide-border divide-y">
                                 {paymentMethods.map((pm) => {
                                     const isEditing = editingId === pm.id;
 
                                     if (isEditing) {
                                         return (
-                                            <form key={pm.id} onSubmit={(e) => handleUpdate(e, pm.id)} className="p-4 bg-indigo-50/20 space-y-4">
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                            <form key={pm.id} onSubmit={(e) => handleUpdate(e, pm.id)} className="space-y-4 bg-indigo-50/20 p-4">
+                                                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                                     <div className="space-y-1.5">
                                                         <Label>Nama Metode *</Label>
                                                         <Input
@@ -208,7 +225,9 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                 </div>
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
-                                                        <Label className="cursor-pointer" htmlFor={`edit-active-${pm.id}`}>Status Aktif</Label>
+                                                        <Label className="cursor-pointer" htmlFor={`edit-active-${pm.id}`}>
+                                                            Status Aktif
+                                                        </Label>
                                                         <input
                                                             type="checkbox"
                                                             id={`edit-active-${pm.id}`}
@@ -218,10 +237,21 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                         />
                                                     </div>
                                                     <div className="flex gap-2">
-                                                        <Button type="button" variant="outline" size="sm" onClick={cancelEditing} className="rounded-lg">
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={cancelEditing}
+                                                            className="rounded-lg"
+                                                        >
                                                             <X size={14} className="mr-1" /> Batal
                                                         </Button>
-                                                        <Button type="submit" disabled={editForm.processing} size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+                                                        <Button
+                                                            type="submit"
+                                                            disabled={editForm.processing}
+                                                            size="sm"
+                                                            className="rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+                                                        >
                                                             <Check size={14} className="mr-1" /> Simpan
                                                         </Button>
                                                     </div>
@@ -231,24 +261,32 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                     }
 
                                     return (
-                                        <div key={pm.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                        <div key={pm.id} className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="font-semibold text-sm text-slate-800 dark:text-slate-200">{pm.name}</span>
+                                                    <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{pm.name}</span>
                                                 </div>
-                                                <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
-                                                    {pm.account_number && <div>No. Rek: <span className="font-mono">{pm.account_number}</span></div>}
-                                                    {pm.account_name && <div>Atas Nama: <span className="font-medium">{pm.account_name}</span></div>}
+                                                <div className="text-muted-foreground mt-1 space-y-0.5 text-xs">
+                                                    {pm.account_number && (
+                                                        <div>
+                                                            No. Rek: <span className="font-mono">{pm.account_number}</span>
+                                                        </div>
+                                                    )}
+                                                    {pm.account_name && (
+                                                        <div>
+                                                            Atas Nama: <span className="font-medium">{pm.account_name}</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-3 justify-end">
+                                            <div className="flex items-center justify-end gap-3">
                                                 {/* Toggle Switch */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-muted-foreground">{pm.is_active ? 'Aktif' : 'Non-aktif'}</span>
+                                                    <span className="text-muted-foreground text-xs">{pm.is_active ? 'Aktif' : 'Non-aktif'}</span>
                                                     <button
                                                         type="button"
                                                         onClick={() => handleToggleActive(pm)}
-                                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 ${
+                                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:outline-none ${
                                                             pm.is_active ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-800'
                                                         }`}
                                                     >
@@ -260,12 +298,22 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                     </button>
                                                 </div>
 
-                                                <div className="h-4 w-px bg-border hidden sm:block" />
+                                                <div className="bg-border hidden h-4 w-px sm:block" />
 
-                                                <Button variant="ghost" size="icon" onClick={() => startEditing(pm)} className="h-8 w-8 text-slate-500 hover:text-slate-700">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() => startEditing(pm)}
+                                                    className="h-8 w-8 text-slate-500 hover:text-slate-700"
+                                                >
                                                     <Edit2 size={14} />
                                                 </Button>
-                                                <Button variant="ghost" size="icon" onClick={() => handleDelete(pm.id)} className="h-8 w-8 text-rose-500 hover:text-rose-700">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() => handleDelete(pm.id)}
+                                                    className="h-8 w-8 text-rose-500 hover:text-rose-700"
+                                                >
                                                     <Trash2 size={14} />
                                                 </Button>
                                             </div>

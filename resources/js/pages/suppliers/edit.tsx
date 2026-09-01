@@ -33,9 +33,7 @@ export default function SupplierEdit({ supplier }: Props) {
         city: supplier.city || '',
         business_type: supplier.business_type || '',
         // Ubah array/JSON product_categories dari database kembali menjadi string (koma)
-        product_categories: Array.isArray(supplier.product_categories)
-            ? supplier.product_categories.join(', ')
-            : '',
+        product_categories: Array.isArray(supplier.product_categories) ? supplier.product_categories.join(', ') : '',
         description: supplier.description || '',
     });
 
@@ -43,7 +41,10 @@ export default function SupplierEdit({ supplier }: Props) {
     transform((data) => ({
         ...data,
         product_categories: data.product_categories
-            ? data.product_categories.split(',').map((cat) => cat.trim()).filter(Boolean)
+            ? data.product_categories
+                  .split(',')
+                  .map((cat) => cat.trim())
+                  .filter(Boolean)
             : [],
     }));
 
@@ -62,7 +63,7 @@ export default function SupplierEdit({ supplier }: Props) {
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight">Edit Supplier</h1>
                         <p className="text-muted-foreground mt-1 text-sm">
-                            Perbarui informasi untuk supplier <span className="font-semibold text-foreground">{supplier.name}</span>.
+                            Perbarui informasi untuk supplier <span className="text-foreground font-semibold">{supplier.name}</span>.
                         </p>
                     </div>
                     <Link
@@ -76,31 +77,34 @@ export default function SupplierEdit({ supplier }: Props) {
 
                 <div className="bg-card border-border rounded-2xl border p-6 shadow-sm">
                     <form onSubmit={submit} className="space-y-6">
-
                         {/* Basic Information */}
                         <div>
                             <h2 className="mb-4 text-lg font-semibold">Informasi Dasar</h2>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-1">
-                                    <label htmlFor="name" className="text-sm font-medium">Nama Supplier <span className="text-red-500">*</span></label>
+                                    <label htmlFor="name" className="text-sm font-medium">
+                                        Nama Supplier <span className="text-red-500">*</span>
+                                    </label>
                                     <input
                                         id="name"
                                         type="text"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                         required
                                     />
                                     {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label htmlFor="business_type" className="text-sm font-medium">Jenis Bisnis</label>
+                                    <label htmlFor="business_type" className="text-sm font-medium">
+                                        Jenis Bisnis
+                                    </label>
                                     <select
                                         id="business_type"
                                         value={data.business_type}
                                         onChange={(e) => setData('business_type', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     >
                                         {BUSINESS_TYPES.map((type) => (
                                             <option key={type.value} value={type.value}>
@@ -112,26 +116,30 @@ export default function SupplierEdit({ supplier }: Props) {
                                 </div>
 
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label htmlFor="product_categories" className="text-sm font-medium">Kategori Produk</label>
+                                    <label htmlFor="product_categories" className="text-sm font-medium">
+                                        Kategori Produk
+                                    </label>
                                     <input
                                         id="product_categories"
                                         type="text"
                                         placeholder="Contoh: Sayuran, Daging, Bumbu Dapur (pisahkan dengan koma)"
                                         value={data.product_categories}
                                         onChange={(e) => setData('product_categories', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.product_categories && <p className="text-xs text-red-500">{errors.product_categories}</p>}
                                 </div>
 
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label htmlFor="description" className="text-sm font-medium">Deskripsi Singkat</label>
+                                    <label htmlFor="description" className="text-sm font-medium">
+                                        Deskripsi Singkat
+                                    </label>
                                     <textarea
                                         id="description"
                                         rows={3}
                                         value={data.description}
                                         onChange={(e) => setData('description', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                                 </div>
@@ -145,74 +153,86 @@ export default function SupplierEdit({ supplier }: Props) {
                             <h2 className="mb-4 text-lg font-semibold">Kontak & Lokasi</h2>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-1">
-                                    <label htmlFor="contact_name" className="text-sm font-medium">Nama Kontak (PIC)</label>
+                                    <label htmlFor="contact_name" className="text-sm font-medium">
+                                        Nama Kontak (PIC)
+                                    </label>
                                     <input
                                         id="contact_name"
                                         type="text"
                                         value={data.contact_name}
                                         onChange={(e) => setData('contact_name', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.contact_name && <p className="text-xs text-red-500">{errors.contact_name}</p>}
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label htmlFor="phone" className="text-sm font-medium">Nomor Telepon</label>
+                                    <label htmlFor="phone" className="text-sm font-medium">
+                                        Nomor Telepon
+                                    </label>
                                     <input
                                         id="phone"
                                         type="tel"
                                         value={data.phone}
                                         onChange={(e) => setData('phone', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label htmlFor="email" className="text-sm font-medium">Email</label>
+                                    <label htmlFor="email" className="text-sm font-medium">
+                                        Email
+                                    </label>
                                     <input
                                         id="email"
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label htmlFor="website" className="text-sm font-medium">Website / Social Media</label>
+                                    <label htmlFor="website" className="text-sm font-medium">
+                                        Website / Social Media
+                                    </label>
                                     <input
                                         id="website"
                                         type="url"
                                         placeholder="https://..."
                                         value={data.website}
                                         onChange={(e) => setData('website', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.website && <p className="text-xs text-red-500">{errors.website}</p>}
                                 </div>
 
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label htmlFor="city" className="text-sm font-medium">Kota</label>
+                                    <label htmlFor="city" className="text-sm font-medium">
+                                        Kota
+                                    </label>
                                     <input
                                         id="city"
                                         type="text"
                                         value={data.city}
                                         onChange={(e) => setData('city', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
                                 </div>
 
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label htmlFor="address" className="text-sm font-medium">Alamat Lengkap</label>
+                                    <label htmlFor="address" className="text-sm font-medium">
+                                        Alamat Lengkap
+                                    </label>
                                     <textarea
                                         id="address"
                                         rows={3}
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
-                                        className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     />
                                     {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
                                 </div>

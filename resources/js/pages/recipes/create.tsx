@@ -1,15 +1,16 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
-import { AlertCircle, ArrowLeft, BookOpen, Plus, Trash2, Calculator } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import { ArrowLeft, BookOpen, Calculator, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { formatRupiah } from '@/lib/utils-mrp';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Resep (BOM)', href: '/recipes' },
@@ -34,7 +35,7 @@ export default function RecipeCreate({ ingredients }: Props) {
     const [description, setDescription] = useState('');
     const [portionQty, setPortionQty] = useState(12);
     const [recipes, setRecipes] = useState<RecipeIngredientRow[]>([
-        { ingredient_id: null, ingredient_name: '', qty: 1, unit: 'gram', ingredient_cost: 0, isFromInventory: false }
+        { ingredient_id: null, ingredient_name: '', qty: 1, unit: 'gram', ingredient_cost: 0, isFromInventory: false },
     ]);
     const [processing, setProcessing] = useState(false);
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -64,7 +65,7 @@ export default function RecipeCreate({ ingredients }: Props) {
             updateRecipe(index, 'ingredient_cost', 0);
             updateRecipe(index, 'unit', 'gram');
         } else {
-            const product = ingredients.find(p => p.id === parseInt(productId));
+            const product = ingredients.find((p) => p.id === parseInt(productId));
             if (product) {
                 updateRecipe(index, 'ingredient_id', product.id);
                 updateRecipe(index, 'ingredient_name', product.name);
@@ -79,21 +80,35 @@ export default function RecipeCreate({ ingredients }: Props) {
         e.preventDefault();
         setProcessing(true);
         setFormErrors({});
-        router.post('/recipes', {
-            name,
-            description,
-            portion_qty: portionQty,
-            ingredients: recipes.map(r => ({
-                ingredient_id: r.ingredient_id,
-                ingredient_name: r.ingredient_name,
-                qty: r.qty,
-                unit: r.unit,
-                ingredient_cost: r.ingredient_cost,
-            })),
-        }, {
-            onError: (errors) => { setFormErrors(errors); setProcessing(false); },
-            onFinish: () => setProcessing(false),
-        });
+
+        handleAsyncAction(
+            () =>
+                routerPromise(
+                    'post',
+                    '/recipes',
+                    {
+                        name,
+                        description,
+                        portion_qty: portionQty,
+                        ingredients: recipes.map((r) => ({
+                            ingredient_id: r.ingredient_id,
+                            ingredient_name: r.ingredient_name,
+                            qty: r.qty,
+                            unit: r.unit,
+                            ingredient_cost: r.ingredient_cost,
+                        })),
+                    },
+                    {
+                        onError: (errors) => setFormErrors(errors),
+                        onFinish: () => setProcessing(false),
+                    },
+                ),
+            {
+                loading: 'Menyimpan resep baru...',
+                success: 'Resep berhasil disimpan!',
+                error: 'Gagal Menyimpan',
+            },
+        ).finally(() => setProcessing(false));
     };
 
     return (
@@ -103,10 +118,12 @@ export default function RecipeCreate({ ingredients }: Props) {
             <div className="mx-auto max-w-3xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
-                        <Link href="/recipes"><ArrowLeft size={18} /></Link>
+                        <Link href="/recipes">
+                            <ArrowLeft size={18} />
+                        </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                             <BookOpen className="text-violet-500" size={22} />
                             Tambah Resep Baru
                         </h1>
@@ -116,7 +133,7 @@ export default function RecipeCreate({ ingredients }: Props) {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Info Resep */}
-                    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <h2 className="text-sm font-semibold">Informasi Resep</h2>
                         <div className="space-y-4">
                             <div className="grid grid-cols-3 gap-4">
@@ -160,10 +177,10 @@ export default function RecipeCreate({ ingredients }: Props) {
                     </div>
 
                     {/* Resep / BOM */}
-                    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div className="flex items-center justify-between">
                             <h2 className="text-sm font-semibold">Bahan-Bahan Resep *</h2>
-                            <Button type="button" variant="outline" size="sm" onClick={addRecipe} className="rounded-xl h-8 gap-1 text-xs">
+                            <Button type="button" variant="outline" size="sm" onClick={addRecipe} className="h-8 gap-1 rounded-xl text-xs">
                                 <Plus size={12} />
                                 Tambah Bahan
                             </Button>
@@ -173,15 +190,15 @@ export default function RecipeCreate({ ingredients }: Props) {
 
                         <div className="space-y-3">
                             {recipes.map((recipe, i) => (
-                                <div key={i} className="flex gap-2 items-end">
+                                <div key={i} className="flex items-end gap-2">
                                     {/* Pilih Bahan */}
-                                    <div className="flex-[3] min-w-[120px] space-y-1">
-                                        {i === 0 && <Label className="text-xs text-muted-foreground">Pilih Bahan</Label>}
+                                    <div className="min-w-[120px] flex-[3] space-y-1">
+                                        {i === 0 && <Label className="text-muted-foreground text-xs">Pilih Bahan</Label>}
                                         <Select
                                             value={recipe.ingredient_id ? String(recipe.ingredient_id) : 'custom'}
                                             onValueChange={(v) => selectIngredient(i, v)}
                                         >
-                                            <SelectTrigger className="h-9 text-xs rounded-xl">
+                                            <SelectTrigger className="h-9 rounded-xl text-xs">
                                                 <SelectValue placeholder="Dari inventori / custom" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -195,65 +212,67 @@ export default function RecipeCreate({ ingredients }: Props) {
                                         </Select>
                                     </div>
                                     {/* Nama Bahan */}
-                                    <div className="flex-[2] min-w-[90px] space-y-1">
-                                        {i === 0 && <Label className="text-xs text-muted-foreground">Nama Bahan</Label>}
+                                    <div className="min-w-[90px] flex-[2] space-y-1">
+                                        {i === 0 && <Label className="text-muted-foreground text-xs">Nama Bahan</Label>}
                                         <Input
                                             value={recipe.ingredient_name}
                                             onChange={(e) => updateRecipe(i, 'ingredient_name', e.target.value)}
                                             placeholder="Nama bahan"
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-9 text-xs rounded-xl ${recipe.isFromInventory ? 'bg-muted' : ''}`}
+                                            className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
                                         />
                                     </div>
                                     {/* Qty */}
-                                    <div className="w-20 space-y-1 shrink-0">
-                                        {i === 0 && <Label className="text-xs text-muted-foreground">Qty</Label>}
+                                    <div className="w-20 shrink-0 space-y-1">
+                                        {i === 0 && <Label className="text-muted-foreground text-xs">Qty</Label>}
                                         <Input
                                             type="number"
                                             min={0.1}
                                             step={0.1}
                                             value={recipe.qty}
                                             onChange={(e) => updateRecipe(i, 'qty', parseFloat(e.target.value) || 0)}
-                                            className="h-9 text-xs rounded-xl"
+                                            className="h-9 rounded-xl text-xs"
                                         />
                                     </div>
                                     {/* Satuan */}
-                                    <div className="w-16 space-y-1 shrink-0">
-                                        {i === 0 && <Label className="text-xs text-muted-foreground">Satuan</Label>}
+                                    <div className="w-16 shrink-0 space-y-1">
+                                        {i === 0 && <Label className="text-muted-foreground text-xs">Satuan</Label>}
                                         <Input
                                             value={recipe.unit}
                                             onChange={(e) => updateRecipe(i, 'unit', e.target.value)}
                                             placeholder="gr"
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-9 text-xs rounded-xl ${recipe.isFromInventory ? 'bg-muted' : ''}`}
+                                            className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
                                         />
                                     </div>
                                     {/* HPP/Unit */}
-                                    <div className="w-24 space-y-1 shrink-0">
-                                        {i === 0 && <Label className="text-xs text-muted-foreground">HPP/Unit</Label>}
+                                    <div className="w-24 shrink-0 space-y-1">
+                                        {i === 0 && <Label className="text-muted-foreground text-xs">HPP/Unit</Label>}
                                         <Input
                                             type="text"
                                             value={recipe.ingredient_cost > 0 ? formatRupiah(recipe.ingredient_cost) : ''}
-                                            onChange={(e) => updateRecipe(i, 'ingredient_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
+                                            onChange={(e) =>
+                                                updateRecipe(i, 'ingredient_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)
+                                            }
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-9 text-xs rounded-xl ${recipe.isFromInventory ? 'bg-muted' : ''}`}
+                                            className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
                                             placeholder="Rp0"
                                         />
                                     </div>
                                     {/* Total HPP */}
-                                    <div className="w-28 space-y-1 shrink-0">
-                                        {i === 0 && <Label className="text-xs text-muted-foreground">Total HPP</Label>}
+                                    <div className="w-28 shrink-0 space-y-1">
+                                        {i === 0 && <Label className="text-muted-foreground text-xs">Total HPP</Label>}
                                         <Input
                                             type="text"
                                             value={recipe.qty * recipe.ingredient_cost > 0 ? formatRupiah(recipe.qty * recipe.ingredient_cost) : ''}
                                             readOnly
-                                            className="h-9 text-xs rounded-xl bg-muted font-medium"
+                                            className="bg-muted h-9 rounded-xl text-xs font-medium"
                                             placeholder="Rp0"
                                         />
                                     </div>
                                     {/* Hapus */}
                                     <div className="w-9 shrink-0">
-                                        {i === 0 && <div className="text-xs text-transparent mb-1">-</div>}
+                                        {i === 0 && <div className="mb-1 text-xs text-transparent">-</div>}
                                         <Button
                                             type="button"
                                             variant="ghost"
@@ -271,23 +290,25 @@ export default function RecipeCreate({ ingredients }: Props) {
                     </div>
 
                     {/* HPP Preview */}
-                    <div className="rounded-2xl p-5 border border-violet-200 bg-violet-50 dark:bg-violet-950/20 flex items-center gap-4">
-                        <Calculator size={20} className="text-violet-600 shrink-0" />
-                        <div className="flex-1 grid grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center gap-4 rounded-2xl border border-violet-200 bg-violet-50 p-5 dark:bg-violet-950/20">
+                        <Calculator size={20} className="shrink-0 text-violet-600" />
+                        <div className="grid flex-1 grid-cols-2 gap-4 text-sm">
                             <div>
-                                <div className="text-xs text-muted-foreground mb-0.5">Total HPP 1 Adonan / Resep</div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">Total HPP 1 Adonan / Resep</div>
                                 <div className="text-lg font-bold text-violet-700 dark:text-violet-400">{formatRupiah(totalCost)}</div>
                             </div>
                             <div>
-                                <div className="text-xs text-muted-foreground mb-0.5">HPP per Pcs (Hasil Porsi)</div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">HPP per Pcs (Hasil Porsi)</div>
                                 <div className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{formatRupiah(hpp)}</div>
                             </div>
                         </div>
                     </div>
 
                     <div className="flex justify-end gap-3">
-                        <Button variant="outline" asChild className="rounded-xl"><Link href="/recipes">Batal</Link></Button>
-                        <Button type="submit" disabled={processing} className="bg-violet-600 hover:bg-violet-700 text-white rounded-xl px-5">
+                        <Button variant="outline" asChild className="rounded-xl">
+                            <Link href="/recipes">Batal</Link>
+                        </Button>
+                        <Button type="submit" disabled={processing} className="rounded-xl bg-violet-600 px-5 text-white hover:bg-violet-700">
                             {processing ? 'Menyimpan...' : 'Simpan Resep'}
                         </Button>
                     </div>
