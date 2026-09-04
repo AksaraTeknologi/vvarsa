@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { withAuthLayout } from '@/layouts/auth-layout';
 
 type LoginForm = {
     email: string;
@@ -92,7 +92,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
-                    <Button type="submit" variant="dark" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" variant="default" className="mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
@@ -109,9 +109,5 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     );
 }
 
-// Pasang Persistent Layout (reverse=false agar posisi form di kanan)
-Login.layout = (page: React.ReactNode) => (
-    <AuthLayout title="Log in to your account" description="Enter your email and password below to log in" reverse={false}>
-        {page}
-    </AuthLayout>
-);
+// Pasang Persistent Layout
+Login.layout = withAuthLayout;

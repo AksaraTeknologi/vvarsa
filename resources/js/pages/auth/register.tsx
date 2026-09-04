@@ -7,7 +7,7 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { withAuthLayout } from '@/layouts/auth-layout';
 
 type RegisterForm = {
     name: string;
@@ -102,7 +102,7 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" variant="dark" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                    <Button type="submit" variant="default" className="mt-2 w-full" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Create account
                     </Button>
@@ -119,9 +119,5 @@ export default function Register() {
     );
 }
 
-// Pasang Persistent Layout (reverse=true agar posisi form bergeser ke kiri)
-Register.layout = (page: React.ReactNode) => (
-    <AuthLayout title="Create an account" description="Enter your details below to create your account" reverse={true}>
-        {page}
-    </AuthLayout>
-);
+// Pasang Persistent Layout
+Register.layout = withAuthLayout;

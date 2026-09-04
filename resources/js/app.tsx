@@ -12,22 +12,8 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: async (name) => {
-        const page = await resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx'));
-        
-        const pageModule = page as any;
-        const originalLayout = pageModule.default.layout || ((pageContent: any) => pageContent);
-        
-        pageModule.default.layout = (pageContent: any) => {
-            return (
-                <>
-                    <FlashMessageToaster />
-                    {originalLayout(pageContent)}
-                </>
-            );
-        };
-        
-        return pageModule;
+    resolve: (name) => {
+        return resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx'));
     },
     setup({ el, App, props }) {
         const root = createRoot(el);

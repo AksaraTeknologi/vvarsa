@@ -3,9 +3,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { BUSINESS_TYPE_LABELS } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Users } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -21,22 +22,35 @@ const CATEGORIES = [
     { value: 'announcement', label: 'Pengumuman', desc: 'Info penting untuk komunitas' },
 ];
 
+const BUSINESS_TYPE_COLORS: Record<string, string> = {
+    fnb: 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800',
+    retail: 'bg-cyan-100 text-cyan-700 border-cyan-200 dark:bg-cyan-900/20 dark:text-cyan-400 dark:border-cyan-800',
+    fashion: 'bg-pink-100 text-pink-700 border-pink-200 dark:bg-pink-900/20 dark:text-pink-400 dark:border-pink-800',
+    general: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700',
+    service: 'bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800',
+};
+
 const discussionSchema = z.object({
     title: z.string().min(5, 'Judul minimal 5 karakter'),
     content: z.string().min(10, 'Konten minimal 10 karakter'),
     category: z.enum(['discussion', 'question', 'tips', 'announcement']),
-    business_type: z.string().optional(),
 });
 
-export default function CommunityCreate() {
+interface Props {
+    tenant_business_type: string;
+}
+
+export default function CommunityCreate({ tenant_business_type }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         content: '',
         category: 'discussion',
-        business_type: '',
     });
 
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
+
+    const businessLabel = BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type;
+    const businessColor = BUSINESS_TYPE_COLORS[tenant_business_type] || BUSINESS_TYPE_COLORS.general;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,6 +86,14 @@ export default function CommunityCreate() {
                         <h1 className="text-2xl font-bold tracking-tight">Buat Diskusi</h1>
                         <p className="text-muted-foreground text-sm">Bagikan pertanyaan atau pengalaman Anda dengan komunitas</p>
                     </div>
+                </div>
+
+                {/* Community context badge */}
+                <div className={`mb-5 flex items-center gap-2.5 rounded-2xl border px-4 py-3 ${businessColor}`}>
+                    <Users size={16} />
+                    <p className="text-sm font-medium">
+                        Diskusi ini akan diposting ke komunitas <strong>{businessLabel}</strong>
+                    </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -138,3 +160,4 @@ export default function CommunityCreate() {
         </AppLayout>
     );
 }
+

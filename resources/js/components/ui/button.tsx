@@ -10,21 +10,21 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[var(--purple)] text-white shadow-[0_4px_14px_0_rgba(94,75,242,0.3)] hover:opacity-90",
+          "bg-purple text-white shadow-[0_4px_14px_0_rgba(94,75,242,0.3)] hover:opacity-90",
         save:
-          "bg-[var(--lime)] text-[var(--white)] shadow-[0_4px_14px_0_rgba(114,225,92,0.35)] hover:opacity-95",
+          "bg-lime text-white shadow-[0_4px_14px_0_rgba(114,225,92,0.35)] hover:opacity-95",
         edit:
-          "bg-[var(--cyber-yellow)] text-[var(--white)] shadow-[0_4px_14px_0_rgba(255,210,0,0.3)] hover:opacity-95",
+          "bg-cyber-yellow text-white shadow-[0_4px_14px_0_rgba(255,210,0,0.3)] hover:opacity-95",
         secondary:
-          "bg-[var(--white-lavender)] text-[var(--black)] hover:bg-gray-100 shadow-[0_2px_8px_0_rgba(0,0,0,0.04)]",
+          "bg-white-lavender text-black hover:bg-gray-100 shadow-[0_2px_8px_0_rgba(0,0,0,0.04)]",
         dark: 
-          "bg-[var(--black)] text-white hover:bg-black/90 shadow-[0_4px_14px_0_rgba(31,34,43,0.2)]",
+          "bg-black text-white hover:bg-black/90 shadow-[0_4px_14px_0_rgba(31,34,43,0.2)]",
         destructive:
-          "bg-[var(--coral-red)] text-white shadow-[0_4px_14px_0_rgba(255,82,82,0.3)] hover:opacity-90",
+          "bg-coral-red text-white shadow-[0_4px_14px_0_rgba(255,82,82,0.3)] hover:opacity-90",
         outline:
-          "border-2 border-[var(--black)] bg-transparent text-[var(--black)] hover:bg-[var(--black)] hover:text-white",
-        ghost: "hover:bg-[var(--white-lavender)] text-[var(--black)]",
-        link: "text-[var(--purple)] underline-offset-4 hover:underline",
+          "border-2 border-black bg-transparent text-black hover:bg-black hover:text-white",
+        ghost: "hover:bg-white-lavender text-black",
+        link: "text-purple underline-offset-4 hover:underline",
       },
       size: {
         default: "h-14 px-8 py-3",
