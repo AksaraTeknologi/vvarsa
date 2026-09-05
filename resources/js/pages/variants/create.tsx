@@ -42,10 +42,10 @@ export default function VariantCreate({ recipes }: Props) {
     const [description, setDescription] = useState('');
     const [isActive, setIsActive] = useState(true);
 
-    const [recipeId, setRecipeId] = useState<number | null>(null);
+    const [recipeId, setRecipeId] = useState<string | null>(null);
     const [recipeQty, setRecipeQty] = useState(1.0);
 
-    const selectedRecipe = recipes.find((r) => r.id === recipeId);
+    const selectedRecipe = recipes.find((r) => String(r.id) === String(recipeId));
 
     // HPP = selectedRecipe.hpp * recipeQty
     const hpp = selectedRecipe ? selectedRecipe.hpp * recipeQty : 0;
@@ -170,7 +170,7 @@ export default function VariantCreate({ recipes }: Props) {
                         <div className="grid grid-cols-3 gap-4">
                             <div className="col-span-2 space-y-1.5">
                                 <Label htmlFor="recipe_id">Pilih Resep Acuan *</Label>
-                                <Select value={recipeId ? String(recipeId) : ''} onValueChange={(val) => setRecipeId(parseInt(val))}>
+                                <Select value={recipeId || ''} onValueChange={(val) => setRecipeId(val)}>
                                     <SelectTrigger className="h-10 rounded-xl">
                                         <SelectValue placeholder="Pilih resep dasar..." />
                                     </SelectTrigger>

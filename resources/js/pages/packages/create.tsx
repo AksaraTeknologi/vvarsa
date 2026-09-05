@@ -25,7 +25,7 @@ export default function PackageCreate({ variants }: Props) {
         price: '',
         is_active: true as boolean,
         description: '',
-        variant_ids: [] as number[],
+        variant_ids: [] as (string | number)[],
     });
 
     const [allVariantsAllowed, setAllVariantsAllowed] = useState(true);
@@ -41,13 +41,13 @@ export default function PackageCreate({ variants }: Props) {
         post('/packages');
     };
 
-    const handleCheckboxChange = (id: number, checked: boolean) => {
+    const handleCheckboxChange = (id: string | number, checked: boolean) => {
         if (checked) {
             setData('variant_ids', [...data.variant_ids, id]);
         } else {
             setData(
                 'variant_ids',
-                data.variant_ids.filter((vId) => vId !== id),
+                data.variant_ids.filter((vId) => String(vId) !== String(id)),
             );
         }
     };
@@ -182,7 +182,7 @@ export default function PackageCreate({ variants }: Props) {
                                         <input
                                             id={`var-${v.id}`}
                                             type="checkbox"
-                                            checked={data.variant_ids.includes(v.id)}
+                                            checked={data.variant_ids.some((vId) => String(vId) === String(v.id))}
                                             onChange={(e) => handleCheckboxChange(v.id, e.target.checked)}
                                             className="rounded text-indigo-600 focus:ring-indigo-500"
                                         />

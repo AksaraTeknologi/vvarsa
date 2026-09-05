@@ -26,6 +26,8 @@ class Order extends Model
         'subtotal',
         'discount',
         'total',
+        'cash_received',
+        'change_amount',
         'notes',
         'transaction_id',
         'stock_deducted',
@@ -37,9 +39,16 @@ class Order extends Model
         'subtotal'       => 'decimal:2',
         'discount'       => 'decimal:2',
         'total'          => 'decimal:2',
+        'cash_received'  => 'decimal:2',
+        'change_amount'  => 'decimal:2',
         'stock_deducted' => 'boolean',
         'ordered_at'     => 'datetime',
     ];
+
+    public function getChangeAttribute(): ?float
+    {
+        return $this->change_amount !== null ? (float) $this->change_amount : null;
+    }
 
     // ── Relations ─────────────────────────────────────────────────────────────
 

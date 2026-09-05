@@ -21,7 +21,7 @@ interface Props {
 }
 
 interface OpnameItem {
-    product_id: number;
+    product_id: string | number;
     actual_stock: number;
     note: string;
 }
@@ -30,7 +30,7 @@ const opnameSchema = z.object({
     opname_date: z.string().min(1, 'Tanggal opname wajib diisi'),
     items: z.array(
         z.object({
-            product_id: z.number(),
+            product_id: z.union([z.string().min(1), z.number()]),
             actual_stock: z.number().min(0, 'Stok aktual tidak boleh negatif'),
             note: z.string().optional(),
         }),
@@ -49,13 +49,13 @@ export default function Opname({ products }: Props) {
     const [processing, setProcessing] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const updateItem = (productId: number, field: keyof OpnameItem, value: number | string) => {
-        setItems((prev) => prev.map((item) => (item.product_id === productId ? { ...item, [field]: value } : item)));
+    const updateItem = (productId: string | number, field: keyof OpnameItem, value: number | string) => {
+        setItems((prev) => prev.map((item) => (String(item.product_id) === String(productId) ? { ...item, [field]: value } : item)));
     };
 
-    const getDifference = (productId: number) => {
-        const product = products.find((p) => p.id === productId);
-        const item = items.find((i) => i.product_id === productId);
+    const getDifference = (productId: string | number) => {
+        const product = products.find((p) => String(p.id) === String(productId));
+        const item = items.find((i) => String(i.product_id) === String(productId));
         if (!product || !item) return 0;
         return item.actual_stock - product.current_stock;
     };
@@ -95,7 +95,7 @@ export default function Opname({ products }: Props) {
     };
 
     const changedCount = items.filter((item) => {
-        const product = products.find((p) => p.id === item.product_id);
+        const product = products.find((p) => String(p.id) === String(item.product_id));
         return product && item.actual_stock !== product.current_stock;
     }).length;
 
@@ -140,7 +140,7 @@ export default function Opname({ products }: Props) {
                             </TableHeader>
                             <TableBody>
                                 {products.map((product, idx) => {
-                                    const item = items.find((i) => i.product_id === product.id)!;
+                                    const item = items.find((i) => String(i.product_id) === String(product.id))!;
                                     const diff = getDifference(product.id);
                                     return (
                                         <TableRow key={product.id} className={`${diff !== 0 ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''}`}>

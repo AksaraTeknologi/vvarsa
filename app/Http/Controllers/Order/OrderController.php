@@ -98,9 +98,12 @@ class OrderController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'customer_name'          => 'required|string|max:255',
+            'customer_name'          => 'nullable|string|max:255',
             'customer_phone'         => 'nullable|string|max:20',
             'customer_email'         => 'nullable|email|max:255',
+            'status'                 => 'nullable|in:pending,processing,done',
+            'discount'               => 'nullable|numeric|min:0',
+            'cash_received'          => 'nullable|numeric|min:0',
             'notes'                  => 'nullable|string',
             'payment_method'         => 'nullable|string|max:255',
             'items'                  => 'required|array|min:1',
@@ -115,6 +118,8 @@ class OrderController extends Controller
 
         DB::transaction(function () use ($validated, $tenant, &$order) {
             $orderNumber = Order::generateOrderNumber($tenant->id);
+            $customerName = !empty(trim($validated['customer_name'] ?? '')) ? trim($validated['customer_name']) : 'Pelanggan Umum';
+            $orderStatus = $validated['status'] ?? 'done';
 
             // ── Kelompokkan item per paket ────────────────────────────────────
             // Frontend mengirim tiap slot sebagai 1 baris dengan paket_isi & paket_harga.
@@ -188,6 +193,33 @@ class OrderController extends Controller
                 ];
             }
 
+            // Hitung diskon dan total akhir
+            $discount = (float) ($validated['discount'] ?? 0);
+            $discount = min($discount, $subtotal);
+            $total    = max(0, $subtotal - $discount);
+
+            // Validasi dan hitung uang diterima & kembalian
+            $isCash = !empty($validated['payment_method']) && (
+                str_contains(strtolower($validated['payment_method']), 'tunai') ||
+                str_contains(strtolower($validated['payment_method']), 'cash')
+            );
+
+            $cashReceived = isset($validated['cash_received']) && $validated['cash_received'] !== ''
+                ? (float) $validated['cash_received']
+                : 0;
+
+            if ($isCash) {
+                if ($cashReceived < $total) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'cash_received' => 'Uang yang diterima (Rp ' . number_format($cashReceived, 0, ',', '.') . ') kurang dari total belanja (Rp ' . number_format($total, 0, ',', '.') . ').',
+                    ]);
+                }
+                $changeAmount = max(0, $cashReceived - $total);
+            } else {
+                $cashReceived = 0;
+                $changeAmount = 0;
+            }
+
             // ── Buat transaksi jika langsung bayar ───────────────────────────
             $transactionId = null;
             if (!empty($validated['payment_method'])) {
@@ -195,8 +227,8 @@ class OrderController extends Controller
                     'tenant_id'      => $tenant->id,
                     'type'           => 'income',
                     'category'       => 'sales',
-                    'amount'         => $subtotal,
-                    'description'    => "Penjualan Kasir POS order #{$orderNumber} - {$validated['customer_name']}",
+                    'amount'         => $total,
+                    'description'    => "Penjualan Kasir POS order #{$orderNumber} - {$customerName}",
                     'reference'      => $orderNumber,
                     'date'           => now()->toDateString(),
                     'payment_method' => $validated['payment_method'],
@@ -209,23 +241,30 @@ class OrderController extends Controller
             $order = Order::create([
                 'tenant_id'      => $tenant->id,
                 'order_number'   => $orderNumber,
-                'customer_name'  => $validated['customer_name'],
+                'customer_name'  => $customerName,
                 'customer_phone' => $validated['customer_phone'] ?? null,
                 'customer_email' => $validated['customer_email'] ?? null,
-                'status'         => 'pending',
+                'status'         => $orderStatus,
                 'payment_status' => !empty($validated['payment_method']) ? 'paid' : 'unpaid',
                 'payment_method' => $validated['payment_method'] ?? null,
                 'subtotal'       => $subtotal,
-                'discount'       => 0,
-                'total'          => $subtotal,
+                'discount'       => $discount,
+                'total'          => $total,
+                'cash_received'  => $cashReceived,
+                'change_amount'  => $changeAmount,
                 'notes'          => $validated['notes'] ?? null,
                 'transaction_id' => $transactionId,
+                'stock_deducted' => false,
                 'user_id'        => auth()->id(),
                 'ordered_at'     => now(),
             ]);
 
             foreach ($itemsData as $item) {
                 OrderItem::create(array_merge($item, ['order_id' => $order->id]));
+            }
+
+            if (in_array($orderStatus, ['processing', 'done'])) {
+                $this->deductStock($order, $tenant);
             }
         });
 
@@ -407,5 +446,22 @@ class OrderController extends Controller
                 'message' => 'Gagal mengirim email: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Stream or download PDF receipt.
+     */
+    public function receipt(Order $order)
+    {
+        $tenant = app('tenant');
+        abort_if($order->tenant_id !== $tenant->id, 403);
+
+        $order->load(['items', 'user:id,name']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.order-receipt', [
+            'order' => $order,
+        ]);
+
+        return $pdf->stream("struk-{$order->order_number}.pdf");
     }
 }

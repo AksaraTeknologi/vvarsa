@@ -236,6 +236,16 @@
             <span>TOTAL</span>
             <span>Rp {{ number_format($order->total, 0, ',', '.') }}</span>
         </div>
+        @if ($order->cash_received !== null && $order->cash_received > 0)
+        <div class="total-row" style="margin-top: 5px; padding-top: 4px; border-top: 1px dashed #ccc;">
+            <span>Tunai Diterima</span>
+            <span>Rp {{ number_format($order->cash_received, 0, ',', '.') }}</span>
+        </div>
+        <div class="total-row">
+            <span>Kembalian</span>
+            <span>Rp {{ number_format($order->change_amount ?? 0, 0, ',', '.') }}</span>
+        </div>
+        @endif
     </div>
 
     <hr class="divider" style="margin-top: 8px;">

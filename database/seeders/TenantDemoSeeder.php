@@ -309,7 +309,8 @@ class TenantDemoSeeder extends Seeder
             ]);
         }
 
-        // 30 days of transactions
+        // 30 days of transactions (dinonaktifkan untuk pengetesan kasir murni)
+        /*
         for ($i = 0; $i < 30; $i++) {
             $date    = now()->subDays($i);
             $income  = rand(150000, 800000);
@@ -338,6 +339,7 @@ class TenantDemoSeeder extends Seeder
                 'user_id'             => $owner->id,
             ]);
         }
+        */
 
         // Default Payment Methods
         PaymentMethod::create([

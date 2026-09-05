@@ -139,6 +139,7 @@ Route::middleware(['auth', 'verified', \App\Http\Middleware\EnsureTenantMiddlewa
             Route::patch('/{order}/status', [OrderController::class, 'updateStatus'])->name('status');
             Route::patch('/{order}/pay', [OrderController::class, 'markPaid'])->name('pay');
             Route::post('/{order}/send-receipt', [OrderController::class, 'sendReceipt'])->name('send-receipt');
+            Route::get('/{order}/receipt', [OrderController::class, 'receipt'])->name('receipt');
             Route::delete('/{order}', [OrderController::class, 'destroy'])->name('destroy');
         });
 

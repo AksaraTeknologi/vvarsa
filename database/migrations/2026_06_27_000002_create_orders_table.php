@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('subtotal', 14, 2)->default(0);
             $table->decimal('discount', 14, 2)->default(0);
             $table->decimal('total', 14, 2)->default(0);
+            $table->decimal('cash_received', 14, 2)->default(0);
+            $table->decimal('change_amount', 14, 2)->default(0);
             $table->text('notes')->nullable();
             $table->foreignUuid('transaction_id')->nullable()->constrained('transactions')->nullOnDelete();
             $table->boolean('stock_deducted')->default(false);

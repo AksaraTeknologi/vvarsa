@@ -1,3 +1,4 @@
+import DeleteConfirmDialog from '@/components/delete-dialog';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -5,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ExpenseCategory, type PaginatedData, type Transaction } from '@/types/mrp';
@@ -41,7 +43,7 @@ const transactionSchema = z.object({
     payment_method: z.enum(['cash', 'transfer', 'credit']),
 });
 
-export default function Transactions({ transactions, summary, expense_categories, filters }: Props) {
+export default function Transactions({ transactions, summary, expense_categories = [], filters }: Props) {
     const [showForm, setShowForm] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
@@ -71,12 +73,27 @@ export default function Transactions({ transactions, summary, expense_categories
             return;
         }
 
-        post('/finance/transactions', {
-            onSuccess: () => {
-                reset();
-                setShowForm(false);
+        const payload = {
+            ...data,
+            expense_category_id: data.type === 'expense' && data.expense_category_id && data.expense_category_id !== 'none'
+                ? data.expense_category_id
+                : null,
+        };
+
+        handleAsyncAction(
+            () =>
+                routerPromise('post', '/finance/transactions', payload, {
+                    onSuccess: () => {
+                        reset();
+                        setShowForm(false);
+                    },
+                }),
+            {
+                loading: 'Mencatat transaksi...',
+                success: 'Transaksi berhasil dicatat!',
+                error: 'Gagal Mencatat Transaksi',
             },
-        });
+        );
     };
 
     const displayError = (field: keyof typeof errors) => clientErrors[field] || errors[field];
@@ -111,7 +128,12 @@ export default function Transactions({ transactions, summary, expense_categories
                                                 key={t}
                                                 type="button"
                                                 variant={data.type === t ? 'default' : 'outline'}
-                                                onClick={() => setData('type', t)}
+                                                onClick={() => {
+                                                    setData('type', t);
+                                                    if (t === 'income') {
+                                                        setData('expense_category_id', '');
+                                                    }
+                                                }}
                                                 className={`rounded-xl py-2.5 text-sm font-medium transition-colors ${data.type === t ? (t === 'income' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-rose-600 text-white hover:bg-rose-700') : ''}`}
                                             >
                                                 {t === 'income' ? '+ Pemasukan' : '- Pengeluaran'}
@@ -129,6 +151,35 @@ export default function Transactions({ transactions, summary, expense_categories
                                         />
                                         {displayError('amount') && <p className="mt-1 text-xs text-rose-500">{displayError('amount')}</p>}
                                     </div>
+
+                                    {data.type === 'expense' && (
+                                        <div className="grid gap-1">
+                                            <Label htmlFor="expense_category_id">Kategori Pengeluaran</Label>
+                                            <Select
+                                                value={data.expense_category_id || 'none'}
+                                                onValueChange={(val) => setData('expense_category_id', val === 'none' ? '' : val)}
+                                            >
+                                                <SelectTrigger
+                                                    id="expense_category_id"
+                                                    className={`rounded-xl ${displayError('expense_category_id') ? 'border-rose-500' : ''}`}
+                                                >
+                                                    <SelectValue placeholder="Pilih kategori pengeluaran..." />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="none">Tanpa Kategori</SelectItem>
+                                                    {expense_categories?.map((cat) => (
+                                                        <SelectItem key={cat.id} value={String(cat.id)}>
+                                                            {cat.name} {cat.type ? `(${cat.type.toUpperCase()})` : ''}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            {displayError('expense_category_id') && (
+                                                <p className="mt-1 text-xs text-rose-500">{displayError('expense_category_id')}</p>
+                                            )}
+                                        </div>
+                                    )}
+
                                     <div className="grid gap-1">
                                         <Label htmlFor="description">Keterangan</Label>
                                         <Input
@@ -241,9 +292,16 @@ export default function Transactions({ transactions, summary, expense_categories
                                                             <ArrowDownRight size={12} className="text-rose-600" />
                                                         )}
                                                     </div>
-                                                    <span className="text-sm">
-                                                        {t.description || (t.type === 'income' ? 'Pemasukan' : 'Pengeluaran')}
-                                                    </span>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-medium">
+                                                            {t.description || (t.type === 'income' ? 'Pemasukan' : 'Pengeluaran')}
+                                                        </span>
+                                                        {(t.expense_category || (t as any).expenseCategory) && (
+                                                            <span className="mt-0.5 inline-flex w-fit items-center rounded-md bg-rose-50 px-1.5 py-0.5 text-[10px] font-medium text-rose-700 dark:bg-rose-950/50 dark:text-rose-300">
+                                                                {(t.expense_category || (t as any).expenseCategory)?.name}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3 text-center">
@@ -256,12 +314,33 @@ export default function Transactions({ transactions, summary, expense_categories
                                                 {formatRupiah(t.amount)}
                                             </td>
                                             <td className="px-4 py-3">
-                                                <button
-                                                    onClick={() => router.delete(`/finance/transactions/${t.id}`, { preserveScroll: true })}
-                                                    className="text-muted-foreground transition-colors hover:text-rose-600"
-                                                >
-                                                    <Trash2 size={14} />
-                                                </button>
+                                                <DeleteConfirmDialog
+                                                    trigger={
+                                                        <button
+                                                            type="button"
+                                                            className="text-muted-foreground transition-colors hover:text-rose-600"
+                                                        >
+                                                            <Trash2 size={14} />
+                                                            <span className="sr-only">Hapus Transaksi</span>
+                                                        </button>
+                                                    }
+                                                    title="Apakah Anda yakin ingin menghapus transaksi ini?"
+                                                    itemName={
+                                                        t.description
+                                                            ? `${t.description} (${formatRupiah(t.amount)})`
+                                                            : `${t.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} ${formatRupiah(t.amount)}`
+                                                    }
+                                                    onConfirm={() =>
+                                                        handleAsyncAction(
+                                                            () => routerPromise('delete', `/finance/transactions/${t.id}`, {}, { preserveScroll: true }),
+                                                            {
+                                                                loading: 'Menghapus transaksi...',
+                                                                success: 'Transaksi berhasil dihapus!',
+                                                                error: 'Gagal Menghapus Transaksi',
+                                                            },
+                                                        )
+                                                    }
+                                                />
                                             </td>
                                         </tr>
                                     ))

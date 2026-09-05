@@ -294,6 +294,18 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                             <span>Total</span>
                             <span>{formatRupiah(order.total)}</span>
                         </div>
+                        {order.cash_received !== null && order.cash_received !== undefined && Number(order.cash_received) > 0 && (
+                            <div className="border-border mt-1 border-t pt-2 space-y-1">
+                                <div className="flex justify-between text-xs text-muted-foreground">
+                                    <span>Tunai Diterima</span>
+                                    <span className="font-medium text-foreground">{formatRupiah(Number(order.cash_received))}</span>
+                                </div>
+                                <div className="flex justify-between text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                                    <span>Kembalian</span>
+                                    <span>{formatRupiah(Number(order.change_amount ?? 0))}</span>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
