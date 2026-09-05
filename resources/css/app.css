@@ -59,7 +59,20 @@
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
 
-
+    /* Role Themes */
+    --color-admin-accent: #5e4bf2;
+    --color-admin-bg: #f1effd;
+    --color-admin-hover: #e2dcfe;
+    --color-owner-accent: #5aa67a;
+    --color-owner-bg: #edf8f2;
+    --color-owner-hover: #d4f0e1;
+    --color-supervisor-accent: #2596be;
+    --color-supervisor-bg: #f0f9ff;
+    --color-supervisor-hover: #e0f2fe;
+    --color-staff-accent: #d9668a;
+    --color-staff-bg: #fff0f5;
+    --color-staff-hover: #ffd6e5;
+    
     --color-black: var(--black);
   --color-white: var(--white);
   --color-purple: var(--purple);
@@ -166,7 +179,7 @@
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0); */
 
-    /* baru */
+    /* Role themes are defined in @theme block above to generate Tailwind utilities */
     --black: #000000;
     --white: #ffffff;
     --purple: #5e4bf2;
