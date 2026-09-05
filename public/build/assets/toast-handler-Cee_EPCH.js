@@ -1,0 +1,1 @@
+import{S as a}from"./app-CV1-Ju8z.js";function j(r,o,c={},f={}){const{onSuccess:t,onError:n,...l}=f;return new Promise((p,u)=>{const s={...l,onSuccess:e=>{t==null||t(e),p(e)},onError:e=>{n==null||n(e);const i=e&&typeof e=="object"?Object.values(e)[0]:null;u(new Error(typeof i=="string"?i:"Terjadi kesalahan pada server."))}};r==="delete"?a.delete(o,s):a[r](o,c,s)})}export{j as r};
