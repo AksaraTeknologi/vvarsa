@@ -8,11 +8,20 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, variant = 'header' }: AppShellProps) {
-    const isOpen = usePage<SharedData>().props.sidebarOpen;
+    const page = usePage<SharedData>();
+    const isOpen = page.props.sidebarOpen;
+    const isAdminRoute = page.url.startsWith('/admin');
 
     if (variant === 'header') {
         return <div className="flex min-h-screen w-full flex-col">{children}</div>;
     }
 
-    return <SidebarProvider defaultOpen={isOpen}>{children}</SidebarProvider>;
+    return (
+        <SidebarProvider
+            defaultOpen={isOpen}
+            className={isAdminRoute ? 'admin-theme' : undefined}
+        >
+            {children}
+        </SidebarProvider>
+    );
 }

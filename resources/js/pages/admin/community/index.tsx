@@ -133,7 +133,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
             <Head title="Manajemen Komunitas" />
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
-                <div className="relative overflow-hidden bg-[#0d0d0d] px-6 pt-6 pb-5 md:px-8">
+                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -143,16 +143,16 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                     Platform Admin
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">Manajemen Komunitas</h1>
-                            <p className="mt-0.5 text-sm text-white/50">Kelola semua post dari seluruh tenant di platform.</p>
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Manajemen Komunitas</h1>
+                            <p className="mt-0.5 text-sm text-[#5F6073]">Kelola semua post dari seluruh tenant di platform.</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col gap-6 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Filters */}
-                    <div className="bg-card border-border flex flex-col items-center gap-3 rounded-2xl border p-4 shadow-sm sm:flex-row">
+                    <div className="admin-filter-panel bg-card border-border flex flex-col items-center gap-3 rounded-2xl border p-4 shadow-sm sm:flex-row">
                         <div className="relative w-full flex-1">
                             <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                             <Input
@@ -165,7 +165,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                             />
                         </div>
 
-                        <div className="w-full sm:w-40">
+                        <div className="w-full sm:w-44">
                             <Select value={businessType} onValueChange={(val) => setBusinessType(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
                                     <SelectValue placeholder="Tipe Bisnis" />
@@ -209,23 +209,23 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                             </Select>
                         </div>
 
-                        <Button onClick={handleFilter} className="w-full rounded-xl px-6 sm:w-auto">
+                        <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
                             Filter
                         </Button>
                     </div>
 
                     {/* Table */}
-                    <div className="border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
+                    <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
                         <table className="w-full min-w-[800px] border-collapse text-left text-sm">
                             <thead>
-                                <tr className="border-border text-muted-foreground border-b bg-slate-50/50 text-xs font-semibold tracking-wider uppercase dark:bg-slate-800/10">
+                                <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
                                     <th className="px-6 py-4">Judul</th>
                                     <th className="px-6 py-4">Penulis</th>
                                     <th className="px-6 py-4">Tenant</th>
                                     <th className="px-6 py-4">Kategori</th>
-                                    <th className="px-6 py-4">Tipe Bisnis</th>
+                                    <th className="px-6 py-4">Bisnis</th>
                                     <th className="px-6 py-4 text-center">Status</th>
-                                    <th className="px-6 py-4 text-center">Views</th>
+                                    <th className="px-6 py-4 text-center">Dilihat</th>
                                     <th className="px-6 py-4 text-right">Aksi</th>
                                 </tr>
                             </thead>

@@ -92,33 +92,33 @@ export function AppSidebar() {
         ];
 
         return (
-            <Sidebar collapsible="icon" variant="inset" className="border-r border-white/5 bg-[#0d0d0d]">
+            <Sidebar collapsible="icon" variant="inset" className="border-r border-[#E7E3FA] bg-[#F9F7F4]">
                 <SidebarHeader className="pb-0">
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton size="lg" asChild className="hover:bg-white/5">
+                            <SidebarMenuButton size="lg" asChild className="hover:bg-[#F1EFFD]">
                                 <Link href="/admin" prefetch>
-                                    <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-[#1a56ff] shadow-lg shadow-[#1a56ff]/30">
+                                    <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-[#5E4BF2] shadow-lg shadow-[#5E4BF2]/25">
                                         <AppLogoIcon className="size-5 fill-current text-white" />
                                     </div>
                                     <div className="ml-1 grid flex-1 text-left text-sm">
-                                        <span className="mb-0.5 truncate leading-none font-bold text-white">VVARSA</span>
-                                        <span className="text-[10px] font-semibold tracking-widest text-[#ffc200] uppercase">Admin Panel</span>
+                                        <span className="mb-0.5 truncate leading-none font-bold text-[#17182A]">VVARSA</span>
+                                        <span className="text-[10px] font-semibold tracking-widest text-[#5E4BF2] uppercase">Admin Panel</span>
                                     </div>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
                     {/* Divider */}
-                    <div className="mx-3 mt-3 h-px bg-white/10" />
+                    <div className="mx-3 mt-3 h-px bg-[#E7E3FA]" />
                 </SidebarHeader>
 
-                <SidebarContent className="[&_[data-sidebar=group-label]]:text-[10px] [&_[data-sidebar=group-label]]:tracking-widest [&_[data-sidebar=group-label]]:text-white/30 [&_[data-sidebar=menu-button]]:text-white/70 [&_[data-sidebar=menu-button]:hover]:bg-white/5 [&_[data-sidebar=menu-button]:hover]:text-white [&_[data-sidebar=menu-button][data-active=true]]:bg-[#1a56ff]/20 [&_[data-sidebar=menu-button][data-active=true]]:font-semibold [&_[data-sidebar=menu-button][data-active=true]]:text-[#1a56ff]">
+                <SidebarContent className="[&_[data-sidebar=group-label]]:text-[10px] [&_[data-sidebar=group-label]]:tracking-widest [&_[data-sidebar=group-label]]:text-[#9693AA] [&_[data-sidebar=menu-button]]:text-[#53556A] [&_[data-sidebar=menu-button]:hover]:bg-[#F1EFFD] [&_[data-sidebar=menu-button]:hover]:text-[#17182A] [&_[data-sidebar=menu-button][data-active=true]]:bg-[#F1EFFD] [&_[data-sidebar=menu-button][data-active=true]]:font-semibold [&_[data-sidebar=menu-button][data-active=true]]:text-[#5E4BF2]">
                     <NavMain items={adminMainItems} />
                     <NavGroup title="Platform Admin" items={adminGroupItems} />
                 </SidebarContent>
 
-                <SidebarFooter className="border-t border-white/10 [&_[data-sidebar=menu-button]]:text-white/70 [&_[data-sidebar=menu-button]:hover]:bg-white/5 [&_[data-sidebar=menu-button]:hover]:text-white">
+                <SidebarFooter className="border-t border-[#E7E3FA] [&_[data-sidebar=menu-button]]:text-[#53556A] [&_[data-sidebar=menu-button]:hover]:bg-[#F1EFFD] [&_[data-sidebar=menu-button]:hover]:text-[#17182A]">
                     <NavUser />
                 </SidebarFooter>
             </Sidebar>

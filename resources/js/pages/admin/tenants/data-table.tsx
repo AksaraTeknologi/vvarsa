@@ -17,15 +17,15 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     });
 
     return (
-        <div className="border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
+        <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-border border-b bg-slate-50/50 hover:bg-transparent dark:bg-slate-800/10">
+                        <TableRow key={headerGroup.id} className="border-border border-b bg-[#F8F7FC] hover:bg-transparent">
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}
-                                    className="text-muted-foreground h-10 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase"
+                                    className="text-muted-foreground h-10 px-6 py-3 text-[11px] font-bold tracking-wider uppercase"
                                 >
                                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                 </TableHead>
@@ -42,7 +42,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                                 className="hover:bg-muted/30 border-border border-b transition-colors"
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className="px-6 py-3.5 align-middle">
+                                    <TableCell key={cell.id} className="px-6 py-3 align-middle">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

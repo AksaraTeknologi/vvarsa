@@ -21,15 +21,15 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className 
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="data-[state=open]:bg-accent -ml-3 h-8 text-xs font-semibold tracking-wider uppercase hover:cursor-pointer"
+                        className="data-[state=open]:bg-[#EAE7FF] -ml-3 h-8 rounded-lg px-2 text-[11px] font-extrabold tracking-[0.06em] text-[#686673] uppercase hover:cursor-pointer hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
                     >
                         <span>{title}</span>
                         {column.getIsSorted() === 'desc' ? (
-                            <ArrowDown className="ml-2 h-4 w-4" />
+                            <ArrowDown className="ml-1.5 size-3.5" />
                         ) : column.getIsSorted() === 'asc' ? (
-                            <ArrowUp className="ml-2 h-4 w-4" />
+                            <ArrowUp className="ml-1.5 size-3.5" />
                         ) : (
-                            <ChevronsUpDown className="ml-2 h-4 w-4" />
+                            <ChevronsUpDown className="ml-1.5 size-3.5" />
                         )}
                     </Button>
                 </DropdownMenuTrigger>
