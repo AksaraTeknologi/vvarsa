@@ -1,15 +1,15 @@
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product, type ProductCategory } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, AlertCircle } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -73,37 +73,43 @@ export default function InventoryEdit({ product, categories }: Props) {
     };
 
     const costPrice = data.purchase_qty > 0 ? data.purchase_price / data.purchase_qty : 0;
-    const margin = data.sell_price > 0
-        ? Math.round(((data.sell_price - costPrice) / data.sell_price) * 100)
-        : 0;
+    const margin = data.sell_price > 0 ? Math.round(((data.sell_price - costPrice) / data.sell_price) * 100) : 0;
 
     const displayError = (field: keyof typeof data): string | undefined => clientErrors[field] || errors[field];
-
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Edit — ${product.name}`} />
             <div className="mx-auto max-w-2xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
-                    <Button variant="outline" size="icon" asChild className="rounded-xl h-9 w-9">
+                    <Button variant="outline" size="icon" asChild className="h-9 w-9 rounded-xl">
                         <Link href="/inventory">
                             <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Edit Produk</h1>
+                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Edit Produk</h1>
                         <p className="text-muted-foreground mt-0.5 text-sm">
-                            Stok saat ini: <strong>{product.current_stock} {product.unit}</strong>
-                            {' '}&mdash; ubah stok via{' '}
-                            <Link href="/inventory/stock-in" className="text-primary hover:underline">Stok Masuk</Link> /
-                            <Link href="/inventory/stock-out" className="text-primary hover:underline"> Stok Keluar</Link>
+                            Stok saat ini:{' '}
+                            <strong>
+                                {product.current_stock} {product.unit}
+                            </strong>{' '}
+                            &mdash; ubah stok via{' '}
+                            <Link href="/inventory/stock-in" className="text-primary hover:underline">
+                                Stok Masuk
+                            </Link>{' '}
+                            /
+                            <Link href="/inventory/stock-out" className="text-primary hover:underline">
+                                {' '}
+                                Stok Keluar
+                            </Link>
                         </p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
-                        <h2 className="text-sm font-semibold text-foreground">Informasi Dasar</h2>
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                        <h2 className="text-foreground text-sm font-semibold">Informasi Dasar</h2>
 
                         <div className="space-y-2">
                             <Label htmlFor="name">Nama Produk *</Label>
@@ -126,25 +132,19 @@ export default function InventoryEdit({ product, categories }: Props) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="sku">SKU</Label>
-                                <Input
-                                    id="sku"
-                                    type="text"
-                                    value={data.sku}
-                                    onChange={(e) => setData('sku', e.target.value)}
-                                />
+                                <Input id="sku" type="text" value={data.sku} onChange={(e) => setData('sku', e.target.value)} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="category_id">Kategori</Label>
-                                <Select
-                                    value={data.category_id || undefined}
-                                    onValueChange={(val) => setData('category_id', val)}
-                                >
+                                <Select value={data.category_id || undefined} onValueChange={(val) => setData('category_id', val)}>
                                     <SelectTrigger id="category_id" className="rounded-xl">
                                         <SelectValue placeholder="Pilih kategori" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((c) => (
-                                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                            <SelectItem key={c.id} value={String(c.id)}>
+                                                {c.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -154,16 +154,15 @@ export default function InventoryEdit({ product, categories }: Props) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="unit">Satuan *</Label>
-                                <Select
-                                    value={data.unit}
-                                    onValueChange={(val) => setData('unit', val)}
-                                >
+                                <Select value={data.unit} onValueChange={(val) => setData('unit', val)}>
                                     <SelectTrigger id="unit" className="rounded-xl">
                                         <SelectValue placeholder="Pilih satuan" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {UNITS.map((u) => (
-                                            <SelectItem key={u} value={u}>{u}</SelectItem>
+                                            <SelectItem key={u} value={u}>
+                                                {u}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -181,8 +180,8 @@ export default function InventoryEdit({ product, categories }: Props) {
                         </div>
                     </div>
 
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
-                        <h2 className="text-sm font-semibold text-foreground">Harga & Kemasan</h2>
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                        <h2 className="text-foreground text-sm font-semibold">Harga & Kemasan</h2>
                         <div className="grid grid-cols-3 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="purchase_price">Harga Beli Kemasan (Rp) *</Label>
@@ -194,7 +193,7 @@ export default function InventoryEdit({ product, categories }: Props) {
                                     className={displayError('purchase_price') ? 'border-rose-500' : ''}
                                     required
                                 />
-                                {displayError('purchase_price') && <p className="text-xs text-rose-500 mt-1">{displayError('purchase_price')}</p>}
+                                {displayError('purchase_price') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_price')}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="purchase_qty">Isi Kemasan *</Label>
@@ -208,7 +207,7 @@ export default function InventoryEdit({ product, categories }: Props) {
                                     className={displayError('purchase_qty') ? 'border-rose-500' : ''}
                                     required
                                 />
-                                {displayError('purchase_qty') && <p className="text-xs text-rose-500 mt-1">{displayError('purchase_qty')}</p>}
+                                {displayError('purchase_qty') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_qty')}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="sell_price">Harga Jual (Rp) (Opsional)</Label>
@@ -219,24 +218,26 @@ export default function InventoryEdit({ product, categories }: Props) {
                                     onChange={(e) => setData('sell_price', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                     className={displayError('sell_price') ? 'border-rose-500' : ''}
                                 />
-                                {displayError('sell_price') && <p className="text-xs text-rose-500 mt-1">{displayError('sell_price')}</p>}
+                                {displayError('sell_price') && <p className="mt-1 text-xs text-rose-500">{displayError('sell_price')}</p>}
                             </div>
                         </div>
                         {data.purchase_qty > 0 && data.purchase_price > 0 && (
-                            <div className="text-sm text-muted-foreground bg-muted/30 rounded-xl p-3">
+                            <div className="text-muted-foreground bg-muted/30 rounded-xl p-3 text-sm">
                                 Estimasi Harga Modal per {data.unit}: <strong>{formatRupiah(data.purchase_price / data.purchase_qty)}</strong>
                             </div>
                         )}
                         {data.sell_price > 0 && costPrice > 0 && (
-                            <div className={`rounded-xl p-3 text-sm ${margin >= 20 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'}`}>
+                            <div
+                                className={`rounded-xl p-3 text-sm ${margin >= 20 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'}`}
+                            >
                                 Margin keuntungan: <strong>{margin}%</strong>
                                 {margin < 20 && ' — margin rendah, pertimbangkan kembali harga jual'}
                             </div>
                         )}
                     </div>
 
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
-                        <h2 className="text-sm font-semibold text-foreground">Pengaturan</h2>
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                        <h2 className="text-foreground text-sm font-semibold">Pengaturan</h2>
 
                         <div className="space-y-2">
                             <Label htmlFor="description">Deskripsi</Label>
@@ -250,26 +251,18 @@ export default function InventoryEdit({ product, categories }: Props) {
                         </div>
 
                         <div className="flex items-center gap-2 pt-2">
-                            <Checkbox
-                                id="is_active"
-                                checked={data.is_active}
-                                onCheckedChange={(checked) => setData('is_active', !!checked)}
-                            />
-                            <Label htmlFor="is_active" className="cursor-pointer">Produk Aktif</Label>
+                            <Checkbox id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', !!checked)} />
+                            <Label htmlFor="is_active" className="cursor-pointer">
+                                Produk Aktif
+                            </Label>
                         </div>
                     </div>
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">
-                                Batal
-                            </Link>
+                            <Link href="/inventory">Batal</Link>
                         </Button>
-                        <Button
-                            type="submit"
-                            disabled={processing}
-                            className="rounded-xl px-6"
-                        >
+                        <Button type="submit" disabled={processing} className="rounded-xl px-6">
                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                         </Button>
                     </div>

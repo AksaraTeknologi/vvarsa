@@ -4,7 +4,7 @@ import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
-import { Shield, User as UserIcon, Mail, Trash2, ShieldCheck } from 'lucide-react';
+import { Mail, Shield, ShieldCheck, Trash2, User as UserIcon } from 'lucide-react';
 
 export interface Member {
     id: number;
@@ -43,7 +43,7 @@ export const getColumns = (
     onUpdateRole: (memberId: number, currentRole: string) => void,
     onDeleteMember: (memberId: number, name: string) => void,
     isUpdateProcessing: boolean,
-    isDeleteProcessing: boolean
+    isDeleteProcessing: boolean,
 ): ColumnDef<Member>[] => [
     {
         accessorKey: 'no',
@@ -64,7 +64,7 @@ export const getColumns = (
                         {member.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <div className="flex items-center gap-1.5 font-medium text-sm text-foreground">
+                        <div className="text-foreground flex items-center gap-1.5 text-sm font-medium">
                             {member.name}
                             {member.id === authUserId && (
                                 <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
@@ -83,7 +83,7 @@ export const getColumns = (
         header: ({ column }) => <DataTableColumnHeader column={column} title="Kontak" />,
         cell: ({ row }) => {
             return (
-                <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
+                <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
                     <Mail size={14} className="opacity-60" />
                     {row.original.email}
                 </div>
@@ -97,10 +97,7 @@ export const getColumns = (
             const role = row.original.roles[0]?.name || 'staff';
             const meta = ROLE_BADGE[role] ?? ROLE_BADGE.staff;
             return (
-                <Badge
-                    variant="outline"
-                    className={`capitalize border-transparent ${meta.className}`}
-                >
+                <Badge variant="outline" className={`border-transparent capitalize ${meta.className}`}>
                     <span className="flex items-center gap-1">
                         {meta.icon}
                         {meta.label}
@@ -129,7 +126,7 @@ export const getColumns = (
                                     size="sm"
                                     onClick={() => onUpdateRole(member.id, role)}
                                     disabled={isUpdateProcessing}
-                                    className="text-xs hover:bg-muted"
+                                    className="hover:bg-muted text-xs"
                                     title={`Ubah ke ${nextRoleMeta?.label ?? nextRole}`}
                                 >
                                     → {nextRoleMeta?.label ?? nextRole}
@@ -139,7 +136,7 @@ export const getColumns = (
                                     size="icon"
                                     onClick={() => onDeleteMember(member.id, member.name)}
                                     disabled={isDeleteProcessing}
-                                    className="text-destructive hover:bg-destructive/10 h-8 w-8 hover:text-destructive hover:cursor-pointer"
+                                    className="text-destructive hover:bg-destructive/10 hover:text-destructive h-8 w-8 hover:cursor-pointer"
                                 >
                                     <Trash2 size={15} />
                                 </Button>

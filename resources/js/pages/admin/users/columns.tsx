@@ -2,9 +2,9 @@
 
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { Badge } from '@/components/ui/badge';
-import { ColumnDef } from '@tanstack/react-table';
-import { Shield, User as UserIcon, Calendar, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ColumnDef } from '@tanstack/react-table';
+import { Calendar, Edit, Shield, User as UserIcon } from 'lucide-react';
 
 interface Tenant {
     id: number;
@@ -20,9 +20,7 @@ export interface UserItem {
     tenant?: Tenant | null;
 }
 
-export const getColumns = (
-    onEdit: (user: UserItem) => void
-): ColumnDef<UserItem>[] => [
+export const getColumns = (onEdit: (user: UserItem) => void): ColumnDef<UserItem>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -42,7 +40,7 @@ export const getColumns = (
                         {user.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <div className="font-semibold text-sm text-foreground">{user.name}</div>
+                        <div className="text-foreground text-sm font-semibold">{user.name}</div>
                         <span className="text-muted-foreground text-xs">{user.email}</span>
                     </div>
                 </div>
@@ -55,9 +53,9 @@ export const getColumns = (
         cell: ({ row }) => {
             const tenant = row.original.tenant;
             return tenant ? (
-                <span className="text-sm font-medium text-foreground">{tenant.name}</span>
+                <span className="text-foreground text-sm font-medium">{tenant.name}</span>
             ) : (
-                <Badge variant="outline" className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-350">
+                <Badge variant="outline" className="dark:text-slate-350 bg-slate-100 text-slate-700 dark:bg-slate-800">
                     Platform Admin
                 </Badge>
             );
@@ -71,12 +69,12 @@ export const getColumns = (
             return (
                 <Badge
                     variant={role === 'admin' ? 'destructive' : role === 'owner' ? 'default' : 'outline'}
-                    className={`capitalize border-transparent ${
+                    className={`border-transparent capitalize ${
                         role === 'admin'
-                            ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400 hover:bg-rose-100'
+                            ? 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
                             : role === 'owner'
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100'
-                            : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                              ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400'
+                              : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                     }`}
                 >
                     {role === 'admin' ? (
@@ -104,7 +102,7 @@ export const getColumns = (
         header: ({ column }) => <DataTableColumnHeader column={column} title="Tanggal Bergabung" />,
         cell: ({ row }) => {
             return (
-                <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
+                <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
                     <Calendar size={14} className="opacity-60" />
                     <span>
                         {new Date(row.original.created_at).toLocaleDateString('id-ID', {
@@ -124,13 +122,7 @@ export const getColumns = (
             const user = row.original;
             return (
                 <div className="flex items-center justify-center gap-2">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => onEdit(user)}
-                        className="h-8 w-8 hover:bg-muted"
-                        title="Edit Pengguna"
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => onEdit(user)} className="hover:bg-muted h-8 w-8" title="Edit Pengguna">
                         <Edit size={15} />
                     </Button>
                 </div>

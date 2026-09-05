@@ -1,14 +1,12 @@
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { formatDate, formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Order, type OrderItem } from '@/types/mrp';
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import {
-    ArrowLeft, ClipboardList, Clock, ShoppingBag, CheckCircle2,
-    XCircle, Check, CreditCard, Banknote, Smartphone, Package
-} from 'lucide-react';
+import { ArrowLeft, Banknote, Check, CheckCircle2, ClipboardList, Clock, CreditCard, Package, ShoppingBag, Smartphone, XCircle } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { formatRupiah, formatDate } from '@/lib/utils-mrp';
 
 interface PaymentMethod {
     id: number;
@@ -25,7 +23,13 @@ interface Props {
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType; next?: string; nextLabel?: string }> = {
     pending: { label: 'Menunggu', color: 'text-amber-600 bg-amber-50 border-amber-200', icon: Clock, next: 'processing', nextLabel: 'Mulai Proses' },
-    processing: { label: 'Sedang Diproses', color: 'text-blue-600 bg-blue-50 border-blue-200', icon: ShoppingBag, next: 'done', nextLabel: 'Tandai Selesai' },
+    processing: {
+        label: 'Sedang Diproses',
+        color: 'text-blue-600 bg-blue-50 border-blue-200',
+        icon: ShoppingBag,
+        next: 'done',
+        nextLabel: 'Tandai Selesai',
+    },
     done: { label: 'Selesai', color: 'text-emerald-600 bg-emerald-50 border-emerald-200', icon: CheckCircle2 },
     cancelled: { label: 'Dibatalkan', color: 'text-rose-600 bg-rose-50 border-rose-200', icon: XCircle },
 };
@@ -91,10 +95,13 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
     ];
 
     const [showPayModal, setShowPayModal] = useState(false);
-    
-    const defaultPayment = paymentMethods.length > 0
-        ? (paymentMethods[0].account_number ? `${paymentMethods[0].name} (${paymentMethods[0].account_number})` : paymentMethods[0].name)
-        : 'Tunai (Cash)';
+
+    const defaultPayment =
+        paymentMethods.length > 0
+            ? paymentMethods[0].account_number
+                ? `${paymentMethods[0].name} (${paymentMethods[0].account_number})`
+                : paymentMethods[0].name
+            : 'Tunai (Cash)';
 
     const { data, setData, patch, processing } = useForm({ payment_method: defaultPayment });
     const statusConfig = STATUS_CONFIG[order.status];
@@ -107,7 +114,11 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
 
     const handleAdvanceStatus = () => {
         if (!statusConfig?.next) return;
-        router.patch(`/orders/${order.id}/status`, { status: statusConfig.next });
+        handleAsyncAction(() => routerPromise('patch', `/orders/${order.id}/status`, { status: statusConfig.next }), {
+            loading: 'Memperbarui status pesanan...',
+            success: 'Status pesanan berhasil diperbarui!',
+            error: 'Gagal Memperbarui Status',
+        });
     };
 
     const handleMarkPaid = (e: React.FormEvent) => {
@@ -117,22 +128,38 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
 
     const handleCancel = () => {
         if (!confirm(`Batalkan pesanan ${order.order_number}?`)) return;
-        router.delete(`/orders/${order.id}`, { onSuccess: () => router.visit('/orders') });
+        handleAsyncAction(
+            () =>
+                routerPromise(
+                    'delete',
+                    `/orders/${order.id}`,
+                    {},
+                    {
+                        onSuccess: () => router.visit('/orders'),
+                    },
+                ),
+            {
+                loading: 'Membatalkan pesanan...',
+                success: 'Pesanan berhasil dibatalkan!',
+                error: 'Gagal Membatalkan Pesanan',
+            },
+        );
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Pesanan ${order.order_number}`} />
 
-            <div className="mx-auto max-w-2xl p-4 md:p-6 space-y-5">
-
+            <div className="mx-auto max-w-2xl space-y-5 p-4 md:p-6">
                 {/* ── Header ──────────────────────────────────────────────────── */}
                 <div className="flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
-                        <Link href="/orders"><ArrowLeft size={18} /></Link>
+                        <Link href="/orders">
+                            <ArrowLeft size={18} />
+                        </Link>
                     </Button>
                     <div>
-                        <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight">
                             <ClipboardList className="text-indigo-500" size={20} />
                             {order.order_number}
                         </h1>
@@ -141,7 +168,7 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                 </div>
 
                 {/* ── Status Card ─────────────────────────────────────────────── */}
-                <div className={`rounded-2xl p-4 border flex items-center justify-between ${statusConfig?.color}`}>
+                <div className={`flex items-center justify-between rounded-2xl border p-4 ${statusConfig?.color}`}>
                     <div className="flex items-center gap-3">
                         {StatusIcon && <StatusIcon size={22} />}
                         <div>
@@ -153,16 +180,16 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-2 flex-wrap justify-end">
+                    <div className="flex flex-wrap justify-end gap-2">
                         {statusConfig?.next && (
-                            <Button size="sm" variant="outline" className="rounded-xl text-xs h-8" onClick={handleAdvanceStatus}>
+                            <Button size="sm" variant="outline" className="h-8 rounded-xl text-xs" onClick={handleAdvanceStatus}>
                                 {statusConfig.nextLabel}
                             </Button>
                         )}
                         {order.payment_status === 'unpaid' && order.status !== 'cancelled' && (
                             <Button
                                 size="sm"
-                                className="rounded-xl text-xs h-8 bg-emerald-600 hover:bg-emerald-700 text-white"
+                                className="h-8 rounded-xl bg-emerald-600 text-xs text-white hover:bg-emerald-700"
                                 onClick={() => setShowPayModal(true)}
                             >
                                 <Check size={12} className="mr-1" />
@@ -173,7 +200,7 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                             <Button
                                 size="sm"
                                 variant="outline"
-                                className="rounded-xl text-xs h-8 text-rose-500 border-rose-200 hover:bg-rose-50"
+                                className="h-8 rounded-xl border-rose-200 text-xs text-rose-500 hover:bg-rose-50"
                                 onClick={handleCancel}
                             >
                                 Batalkan
@@ -183,44 +210,42 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                 </div>
 
                 {/* ── Customer Info ───────────────────────────────────────────── */}
-                <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
-                    <h2 className="text-sm font-semibold mb-3">Pelanggan</h2>
+                <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                    <h2 className="mb-3 text-sm font-semibold">Pelanggan</h2>
                     <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                            <div className="text-xs text-muted-foreground">Nama</div>
-                            <div className="font-medium mt-0.5">{order.customer_name}</div>
+                            <div className="text-muted-foreground text-xs">Nama</div>
+                            <div className="mt-0.5 font-medium">{order.customer_name}</div>
                         </div>
                         {order.customer_phone && (
                             <div>
-                                <div className="text-xs text-muted-foreground">No. HP</div>
-                                <div className="font-medium mt-0.5">{order.customer_phone}</div>
+                                <div className="text-muted-foreground text-xs">No. HP</div>
+                                <div className="mt-0.5 font-medium">{order.customer_phone}</div>
                             </div>
                         )}
                         {order.notes && (
                             <div className="col-span-2">
-                                <div className="text-xs text-muted-foreground">Catatan</div>
-                                <div className="mt-0.5 text-muted-foreground italic">"{order.notes}"</div>
+                                <div className="text-muted-foreground text-xs">Catatan</div>
+                                <div className="text-muted-foreground mt-0.5 italic">"{order.notes}"</div>
                             </div>
                         )}
                     </div>
                 </div>
 
                 {/* ── Item Pesanan (paket) ─────────────────────────────────────── */}
-                <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
-                    <h2 className="text-sm font-semibold mb-3">Item Pesanan</h2>
+                <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                    <h2 className="mb-3 text-sm font-semibold">Item Pesanan</h2>
 
                     <div className="space-y-3">
                         {paketGroups.map((group, gi) => (
-                            <div key={gi} className="border border-border rounded-xl overflow-hidden">
+                            <div key={gi} className="border-border overflow-hidden rounded-xl border">
                                 {/* Header paket */}
-                                <div className="flex items-center justify-between bg-muted/40 px-4 py-2.5 border-b border-border">
+                                <div className="bg-muted/40 border-border flex items-center justify-between border-b px-4 py-2.5">
                                     <div className="flex items-center gap-2">
                                         <Package size={14} className="text-indigo-500" />
-                                        <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                                            Isi {group.paket_isi}
-                                        </span>
+                                        <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Isi {group.paket_isi}</span>
                                         {group.paket_isi > 1 && (
-                                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">· Mix</span>
+                                            <span className="text-muted-foreground text-[10px] tracking-wider uppercase">· Mix</span>
                                         )}
                                     </div>
                                     <div className="text-right">
@@ -229,19 +254,15 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                                 </div>
 
                                 {/* Slot varian */}
-                                <div className="divide-y divide-border">
+                                <div className="divide-border divide-y">
                                     {group.items.map((item, ii) => (
                                         <div key={ii} className="flex items-center justify-between px-4 py-2.5 text-sm">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-[10px] text-muted-foreground w-4 text-center font-mono">
-                                                    {ii + 1}
-                                                </span>
+                                                <span className="text-muted-foreground w-4 text-center font-mono text-[10px]">{ii + 1}</span>
                                                 <span className="font-medium">{item.variant_name}</span>
                                             </div>
                                             {Number(item.unit_hpp ?? 0) > 0 && (
-                                                <span className="text-xs text-muted-foreground">
-                                                    HPP: {formatRupiah(Number(item.unit_hpp))}
-                                                </span>
+                                                <span className="text-muted-foreground text-xs">HPP: {formatRupiah(Number(item.unit_hpp))}</span>
                                             )}
                                         </div>
                                     ))}
@@ -249,7 +270,7 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
 
                                 {/* Estimasi untung per paket */}
                                 {group.hpp > 0 && (
-                                    <div className="px-4 py-2 bg-emerald-50 dark:bg-emerald-900/20 border-t border-emerald-100 dark:border-emerald-800 flex justify-between text-xs text-emerald-700 dark:text-emerald-400">
+                                    <div className="flex justify-between border-t border-emerald-100 bg-emerald-50 px-4 py-2 text-xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
                                         <span className="font-semibold">+{formatRupiah(group.paket_harga - group.hpp)}</span>
                                     </div>
                                 )}
@@ -258,7 +279,7 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                     </div>
 
                     {/* ── Ringkasan total ─────────────────────────────────────── */}
-                    <div className="mt-4 pt-3 border-t border-border space-y-1.5">
+                    <div className="border-border mt-4 space-y-1.5 border-t pt-3">
                         <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Subtotal</span>
                             <span>{formatRupiah(order.subtotal)}</span>
@@ -269,7 +290,7 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
                                 <span className="text-rose-500">-{formatRupiah(order.discount)}</span>
                             </div>
                         )}
-                        <div className="flex justify-between font-bold text-base pt-1 border-t border-border">
+                        <div className="border-border flex justify-between border-t pt-1 text-base font-bold">
                             <span>Total</span>
                             <span>{formatRupiah(order.total)}</span>
                         </div>
@@ -278,7 +299,7 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
 
                 {/* ── Transaksi link ───────────────────────────────────────────── */}
                 {order.transaction && (
-                    <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm dark:border-emerald-800 dark:bg-emerald-900/20">
                         <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
                             <CheckCircle2 size={16} />
                             <span>Transaksi income otomatis dibuat</span>
@@ -292,81 +313,81 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
 
             {/* ── Modal Tandai Lunas ───────────────────────────────────────────── */}
             {showPayModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-card border border-border rounded-2xl shadow-xl p-6 w-full max-w-sm">
-                        <h2 className="text-lg font-bold mb-1">Tandai Pesanan Lunas</h2>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            Total: <span className="font-semibold text-foreground">{formatRupiah(order.total)}</span>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+                    <div className="bg-card border-border w-full max-w-sm rounded-2xl border p-6 shadow-xl">
+                        <h2 className="mb-1 text-lg font-bold">Tandai Pesanan Lunas</h2>
+                        <p className="text-muted-foreground mb-4 text-sm">
+                            Total: <span className="text-foreground font-semibold">{formatRupiah(order.total)}</span>
                         </p>
                         <form onSubmit={handleMarkPaid} className="space-y-4">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Metode Pembayaran</label>
-                                <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
-                                    {paymentMethods.length > 0 ? (
-                                        paymentMethods.map((pm) => {
-                                            const lowerName = pm.name.toLowerCase();
-                                            const Icon = lowerName.includes('tunai') || lowerName.includes('cash')
-                                                ? Banknote
-                                                : (lowerName.includes('qris') || lowerName.includes('shopee') || lowerName.includes('gopay') || lowerName.includes('ovo') || lowerName.includes('wallet')
-                                                    ? Smartphone
-                                                    : CreditCard);
+                                <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto pr-1">
+                                    {paymentMethods.length > 0
+                                        ? paymentMethods.map((pm) => {
+                                              const lowerName = pm.name.toLowerCase();
+                                              const Icon =
+                                                  lowerName.includes('tunai') || lowerName.includes('cash')
+                                                      ? Banknote
+                                                      : lowerName.includes('qris') ||
+                                                          lowerName.includes('shopee') ||
+                                                          lowerName.includes('gopay') ||
+                                                          lowerName.includes('ovo') ||
+                                                          lowerName.includes('wallet')
+                                                        ? Smartphone
+                                                        : CreditCard;
 
-                                            const value = pm.account_number ? `${pm.name} (${pm.account_number})` : pm.name;
+                                              const value = pm.account_number ? `${pm.name} (${pm.account_number})` : pm.name;
 
-                                            return (
-                                                <button
-                                                    key={pm.id}
-                                                    type="button"
-                                                    onClick={() => setData('payment_method', value)}
-                                                    className={`flex flex-col items-center justify-center text-center gap-1.5 p-2.5 border rounded-xl text-xs font-medium transition-all ${data.payment_method === value
-                                                        ? 'bg-indigo-600 text-white border-indigo-600'
-                                                        : 'bg-muted hover:bg-muted/80 border-border'
-                                                        }`}
-                                                >
-                                                    <Icon size={16} />
-                                                    <span className="line-clamp-1">{pm.name}</span>
-                                                    {pm.account_number && (
-                                                        <span className="text-[10px] opacity-80 block truncate max-w-full font-mono">
-                                                            {pm.account_number}
-                                                        </span>
-                                                    )}
-                                                </button>
-                                            );
-                                        })
-                                    ) : (
-                                        (['cash', 'transfer', 'qris'] as const).map((method) => {
-                                            const Icon = PAYMENT_ICONS[method];
-                                            return (
-                                                <button
-                                                    key={method}
-                                                    type="button"
-                                                    onClick={() => setData('payment_method', method)}
-                                                    className={`flex flex-col items-center gap-1.5 rounded-xl p-3 border text-xs font-medium transition-all ${data.payment_method === method
-                                                        ? 'bg-indigo-600 text-white border-indigo-600'
-                                                        : 'bg-muted hover:bg-muted/80 border-border'
-                                                        }`}
-                                                >
-                                                    <Icon size={18} />
-                                                    {PAYMENT_LABELS[method].split(' ')[0]}
-                                                </button>
-                                            );
-                                        })
-                                    )}
+                                              return (
+                                                  <button
+                                                      key={pm.id}
+                                                      type="button"
+                                                      onClick={() => setData('payment_method', value)}
+                                                      className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border p-2.5 text-center text-xs font-medium transition-all ${
+                                                          data.payment_method === value
+                                                              ? 'border-indigo-600 bg-indigo-600 text-white'
+                                                              : 'bg-muted hover:bg-muted/80 border-border'
+                                                      }`}
+                                                  >
+                                                      <Icon size={16} />
+                                                      <span className="line-clamp-1">{pm.name}</span>
+                                                      {pm.account_number && (
+                                                          <span className="block max-w-full truncate font-mono text-[10px] opacity-80">
+                                                              {pm.account_number}
+                                                          </span>
+                                                      )}
+                                                  </button>
+                                              );
+                                          })
+                                        : (['cash', 'transfer', 'qris'] as const).map((method) => {
+                                              const Icon = PAYMENT_ICONS[method];
+                                              return (
+                                                  <button
+                                                      key={method}
+                                                      type="button"
+                                                      onClick={() => setData('payment_method', method)}
+                                                      className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-xs font-medium transition-all ${
+                                                          data.payment_method === method
+                                                              ? 'border-indigo-600 bg-indigo-600 text-white'
+                                                              : 'bg-muted hover:bg-muted/80 border-border'
+                                                      }`}
+                                                  >
+                                                      <Icon size={18} />
+                                                      {PAYMENT_LABELS[method].split(' ')[0]}
+                                                  </button>
+                                              );
+                                          })}
                                 </div>
                             </div>
                             <div className="flex gap-2">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="flex-1 rounded-xl"
-                                    onClick={() => setShowPayModal(false)}
-                                >
+                                <Button type="button" variant="outline" className="flex-1 rounded-xl" onClick={() => setShowPayModal(false)}>
                                     Batal
                                 </Button>
                                 <Button
                                     type="submit"
                                     disabled={processing}
-                                    className="flex-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white"
+                                    className="flex-1 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700"
                                 >
                                     {processing ? 'Memproses...' : 'Konfirmasi Lunas'}
                                 </Button>

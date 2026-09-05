@@ -1,14 +1,13 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Package, Save } from 'lucide-react';
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 
 interface Props {
     variants: ProductVariant[];
@@ -33,7 +32,7 @@ export default function PackageCreate({ variants }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         transform((data) => ({
             ...data,
             variant_ids: allVariantsAllowed ? [] : data.variant_ids,
@@ -46,7 +45,10 @@ export default function PackageCreate({ variants }: Props) {
         if (checked) {
             setData('variant_ids', [...data.variant_ids, id]);
         } else {
-            setData('variant_ids', data.variant_ids.filter(vId => vId !== id));
+            setData(
+                'variant_ids',
+                data.variant_ids.filter((vId) => vId !== id),
+            );
         }
     };
 
@@ -54,27 +56,25 @@ export default function PackageCreate({ variants }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Paket Produk" />
 
-            <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 max-w-3xl">
+            <div className="flex max-w-3xl flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex items-center gap-4">
-                    <Button asChild variant="outline" size="icon" className="h-8 w-8 rounded-lg shrink-0">
+                    <Button asChild variant="outline" size="icon" className="h-8 w-8 shrink-0 rounded-lg">
                         <Link href="/packages">
                             <ArrowLeft size={14} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight">
                             <Package className="text-indigo-500" size={22} />
                             Tambah Paket Produk
                         </h1>
-                        <p className="text-muted-foreground text-xs mt-0.5">
-                            Definisikan paket harga dan slot kapasitas rasa
-                        </p>
+                        <p className="text-muted-foreground mt-0.5 text-xs">Definisikan paket harga dan slot kapasitas rasa</p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         {/* Name */}
                         <div className="grid gap-1.5">
                             <Label htmlFor="name">Nama Paket *</Label>
@@ -129,7 +129,7 @@ export default function PackageCreate({ variants }: Props) {
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder="Catatan opsional mengenai paket..."
-                                className="rounded-xl text-sm min-h-[80px]"
+                                className="min-h-[80px] rounded-xl text-sm"
                             />
                             {errors.description && <p className="text-xs text-rose-500">{errors.description}</p>}
                         </div>
@@ -143,23 +143,25 @@ export default function PackageCreate({ variants }: Props) {
                                 onChange={(e) => setData('is_active', e.target.checked)}
                                 className="rounded text-indigo-600 focus:ring-indigo-500"
                             />
-                            <Label htmlFor="is_active" className="cursor-pointer">Paket aktif dan dapat dipilih di Kasir</Label>
+                            <Label htmlFor="is_active" className="cursor-pointer">
+                                Paket aktif dan dapat dipilih di Kasir
+                            </Label>
                         </div>
                     </div>
 
                     {/* Varian Mochi Pembatas */}
-                    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div>
                                 <h2 className="text-sm font-semibold">Batasan Varian Rasa</h2>
-                                <p className="text-xs text-muted-foreground mt-0.5">
+                                <p className="text-muted-foreground mt-0.5 text-xs">
                                     Pilih rasa mochi apa saja yang diperbolehkan di dalam paket ini
                                 </p>
                             </div>
                         </div>
 
                         {/* Toggle All Allowed */}
-                        <div className="flex items-center gap-2 border-b border-border pb-3">
+                        <div className="border-border flex items-center gap-2 border-b pb-3">
                             <input
                                 id="all_allowed"
                                 type="checkbox"
@@ -167,7 +169,7 @@ export default function PackageCreate({ variants }: Props) {
                                 onChange={(e) => setAllVariantsAllowed(e.target.checked)}
                                 className="rounded text-indigo-600 focus:ring-indigo-500"
                             />
-                            <Label htmlFor="all_allowed" className="font-semibold text-sm cursor-pointer">
+                            <Label htmlFor="all_allowed" className="cursor-pointer text-sm font-semibold">
                                 Bebas Mix (Semua rasa diperbolehkan)
                             </Label>
                         </div>
@@ -176,7 +178,7 @@ export default function PackageCreate({ variants }: Props) {
                         {!allVariantsAllowed && (
                             <div className="grid grid-cols-2 gap-3 pt-1">
                                 {variants.map((v) => (
-                                    <div key={v.id} className="flex items-center gap-2 p-2 hover:bg-muted/40 rounded-xl transition-colors">
+                                    <div key={v.id} className="hover:bg-muted/40 flex items-center gap-2 rounded-xl p-2 transition-colors">
                                         <input
                                             id={`var-${v.id}`}
                                             type="checkbox"
@@ -184,7 +186,7 @@ export default function PackageCreate({ variants }: Props) {
                                             onChange={(e) => handleCheckboxChange(v.id, e.target.checked)}
                                             className="rounded text-indigo-600 focus:ring-indigo-500"
                                         />
-                                        <Label htmlFor={`var-${v.id}`} className="text-sm cursor-pointer leading-tight">
+                                        <Label htmlFor={`var-${v.id}`} className="cursor-pointer text-sm leading-tight">
                                             {v.name}
                                         </Label>
                                     </div>
@@ -199,7 +201,7 @@ export default function PackageCreate({ variants }: Props) {
                         <Button asChild variant="outline" className="rounded-xl">
                             <Link href="/packages">Batal</Link>
                         </Button>
-                        <Button type="submit" disabled={processing} className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl gap-1.5">
+                        <Button type="submit" disabled={processing} className="gap-1.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">
                             <Save size={16} />
                             Simpan Paket
                         </Button>

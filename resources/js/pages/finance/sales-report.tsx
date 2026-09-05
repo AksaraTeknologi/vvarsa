@@ -1,10 +1,10 @@
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { formatRupiah, MONTHS_ID } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Keuangan', href: '/finance' },
@@ -41,7 +41,7 @@ export default function SalesReport({ data, total_sales, period, year, month, to
                         {(['daily', 'monthly', 'yearly'] as const).map((p) => (
                             <Button
                                 key={p}
-                                variant={period === p ? "default" : "outline"}
+                                variant={period === p ? 'default' : 'outline'}
                                 onClick={() => router.get('/finance/sales-report', { period: p, year, month })}
                                 className="h-8 rounded-xl px-3 text-xs"
                             >
@@ -55,30 +55,28 @@ export default function SalesReport({ data, total_sales, period, year, month, to
                 {period !== 'yearly' && (
                     <div className="bg-card border-border flex gap-3 rounded-2xl border p-4">
                         {period === 'daily' && (
-                            <Select
-                                value={String(month)}
-                                onValueChange={(val) => router.get('/finance/sales-report', { period, year, month: val })}
-                            >
+                            <Select value={String(month)} onValueChange={(val) => router.get('/finance/sales-report', { period, year, month: val })}>
                                 <SelectTrigger className="w-[140px] rounded-xl">
                                     <SelectValue placeholder="Bulan" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {MONTHS_ID.map((m, i) => (
-                                        <SelectItem key={i} value={String(i + 1)}>{m}</SelectItem>
+                                        <SelectItem key={i} value={String(i + 1)}>
+                                            {m}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         )}
-                        <Select
-                            value={String(year)}
-                            onValueChange={(val) => router.get('/finance/sales-report', { period, year: val, month })}
-                        >
+                        <Select value={String(year)} onValueChange={(val) => router.get('/finance/sales-report', { period, year: val, month })}>
                             <SelectTrigger className="w-[100px] rounded-xl">
                                 <SelectValue placeholder="Tahun" />
                             </SelectTrigger>
                             <SelectContent>
                                 {[2024, 2025, 2026].map((y) => (
-                                    <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                                    <SelectItem key={y} value={String(y)}>
+                                        {y}
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>

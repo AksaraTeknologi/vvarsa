@@ -7,11 +7,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        // ⬇️ PENGATURAN WARNA DAN BENTUK ADA DI BARIS INI ⬇️
-        // bg-[#1c1c1e]   : Warna background card (Abu-abu sangat gelap)
-        // border-[#2c2c2e]: Warna garis pinggir
-        // rounded-2xl    : Tingkat kelengkungan (ganti ke rounded-xl jika masih terlalu bulat)
-        "bg-[#1c1c1e] text-white flex flex-col gap-6 rounded-2xl border border-[#2c2c2e] py-6 shadow-lg",
+        "bg-[var(--black)] text-white flex flex-col gap-6 rounded-2xl border border-[var(--dark-grey)] py-6 shadow-lg",
         className
       )}
       {...props}

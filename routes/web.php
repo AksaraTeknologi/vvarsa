@@ -22,7 +22,7 @@ use Inertia\Inertia;
 
 // ── Public ────────────────────────────────────────────────────────────────────
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('landingpage/index');
 })->name('home');
 
 Route::get('/ui-preview', function () {
@@ -70,6 +70,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::get('/events/{event}/edit', [\App\Http\Controllers\Admin\EventController::class, 'edit'])->name('events.edit');
         Route::put('/events/{event}', [\App\Http\Controllers\Admin\EventController::class, 'update'])->name('events.update');
         Route::delete('/events/{event}', [\App\Http\Controllers\Admin\EventController::class, 'destroy'])->name('events.destroy');
+
+        // Community Management (Admin)
+        Route::get('/community', [\App\Http\Controllers\Admin\CommunityController::class, 'index'])->name('community.index');
+        Route::patch('/community/{post}/pin', [\App\Http\Controllers\Admin\CommunityController::class, 'togglePin'])->name('community.pin');
+        Route::patch('/community/{post}/active', [\App\Http\Controllers\Admin\CommunityController::class, 'toggleActive'])->name('community.active');
+        Route::delete('/community/{post}', [\App\Http\Controllers\Admin\CommunityController::class, 'destroy'])->name('community.destroy');
     });
 
 // ── Authenticated + Tenant ─────────────────────────────────────────────────

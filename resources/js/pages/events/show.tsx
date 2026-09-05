@@ -1,8 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
-import { formatDate, formatDateTime, formatRupiah } from '@/lib/utils-mrp';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { formatDate, formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Event } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, CalendarDays, CheckCircle, Clock, MapPin, Users, XCircle } from 'lucide-react';
 import { getCalculatedStatus } from './index';
 
@@ -31,15 +32,19 @@ export default function EventShow({ event, is_registered, recent_registrations }
     const canRegister = event.allow_platform_registration && calculatedStatus === 'upcoming' && !isFull;
 
     const handleRegister = () => {
-        router.post(`/events/${event.id}/register`, {}, {
-            preserveScroll: true,
+        handleAsyncAction(() => routerPromise('post', `/events/${event.id}/register`, {}, { preserveScroll: true }), {
+            loading: 'Mendaftarkan ke event...',
+            success: 'Berhasil terdaftar ke event!',
+            error: 'Gagal Mendaftar',
         });
     };
 
     const handleCancel = () => {
         if (confirm('Batalkan pendaftaran event ini?')) {
-            router.delete(`/events/${event.id}/register`, {
-                preserveScroll: true,
+            handleAsyncAction(() => routerPromise('delete', `/events/${event.id}/register`, {}, { preserveScroll: true }), {
+                loading: 'Membatalkan pendaftaran...',
+                success: 'Pendaftaran berhasil dibatalkan!',
+                error: 'Gagal Membatalkan',
             });
         }
     };
@@ -61,7 +66,10 @@ export default function EventShow({ event, is_registered, recent_registrations }
                         <div className="space-y-6 lg:col-span-2">
                             {/* Event Header */}
                             <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
-                                <div className="from-primary to-primary/70 flex items-end bg-gradient-to-br p-6 text-white" style={{ minHeight: '160px' }}>
+                                <div
+                                    className="from-primary to-primary/70 flex items-end bg-gradient-to-br p-6 text-white"
+                                    style={{ minHeight: '160px' }}
+                                >
                                     <div>
                                         <div className="mb-2 flex gap-2">
                                             {event.business_types?.map((type) => (
@@ -70,7 +78,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                                 </span>
                                             ))}
                                         </div>
-                                        <h1 className="text-2xl font-bold leading-tight">{event.title}</h1>
+                                        <h1 className="text-2xl leading-tight font-bold">{event.title}</h1>
                                         <p className="mt-1 text-white/80">{event.organizer}</p>
                                     </div>
                                 </div>
@@ -81,9 +89,13 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                             <CalendarDays size={16} className="text-primary mt-0.5 shrink-0" />
                                             <div>
                                                 <p className="text-muted-foreground text-xs">Tanggal</p>
-                                                <p className="text-sm font-medium">{formatDate(event.start_date, { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                                                <p className="text-sm font-medium">
+                                                    {formatDate(event.start_date, { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                </p>
                                                 {event.end_date !== event.start_date && (
-                                                    <p className="text-muted-foreground text-xs">s/d {formatDate(event.end_date, { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                                                    <p className="text-muted-foreground text-xs">
+                                                        s/d {formatDate(event.end_date, { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                    </p>
                                                 )}
                                             </div>
                                         </div>
@@ -147,7 +159,9 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                     <div className="flex items-center justify-between">
                                         <span className="text-muted-foreground text-sm">Biaya Pendaftaran</span>
                                     </div>
-                                    <p className={`text-2xl font-bold ${event.registration_fee === 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}>
+                                    <p
+                                        className={`text-2xl font-bold ${event.registration_fee === 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}
+                                    >
                                         {event.registration_fee === 0 ? 'GRATIS' : formatRupiah(event.registration_fee)}
                                     </p>
                                 </div>
@@ -195,7 +209,10 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         Daftar Sekarang
                                     </button>
                                 ) : isFull ? (
-                                    <button disabled className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700">
+                                    <button
+                                        disabled
+                                        className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700"
+                                    >
                                         Pendaftaran Penuh
                                     </button>
                                 ) : event.registration_url ? (
@@ -208,7 +225,10 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         Daftar di Website Penyelenggara ↗
                                     </a>
                                 ) : (
-                                    <button disabled className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700">
+                                    <button
+                                        disabled
+                                        className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700"
+                                    >
                                         Pendaftaran Ditutup
                                     </button>
                                 )}

@@ -1,14 +1,14 @@
+import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DatePicker } from '@/components/ui/date-picker';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -46,7 +46,7 @@ export default function StockOut({ products }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
-        
+
         const result = stockOutSchema.safeParse(data);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -62,7 +62,7 @@ export default function StockOut({ products }: Props) {
             setClientErrors((prev) => ({ ...prev, qty: 'Stok tidak mencukupi!' }));
             return;
         }
-        
+
         post('/inventory/stock-out');
     };
 
@@ -85,14 +85,13 @@ export default function StockOut({ products }: Props) {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div>
-                            <Label htmlFor="product_id" className="mb-1.5 block">Produk *</Label>
-                            <Select
-                                value={data.product_id}
-                                onValueChange={(val) => setData('product_id', val)}
-                            >
-                                <SelectTrigger id="product_id" className={`rounded-xl h-10 ${displayError('product_id') ? 'border-rose-500' : ''}`}>
+                            <Label htmlFor="product_id" className="mb-1.5 block">
+                                Produk *
+                            </Label>
+                            <Select value={data.product_id} onValueChange={(val) => setData('product_id', val)}>
+                                <SelectTrigger id="product_id" className={`h-10 rounded-xl ${displayError('product_id') ? 'border-rose-500' : ''}`}>
                                     <SelectValue placeholder="Pilih produk..." />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -112,8 +111,12 @@ export default function StockOut({ products }: Props) {
                         </div>
 
                         {selectedProduct && (
-                            <div className={`rounded-xl p-3 text-sm ${isInsufficientStock ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-50 dark:bg-slate-800/50'}`}>
-                                <p className={`font-medium ${isInsufficientStock ? 'text-rose-700 dark:text-rose-400' : ''}`}>{selectedProduct.name}</p>
+                            <div
+                                className={`rounded-xl p-3 text-sm ${isInsufficientStock ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-50 dark:bg-slate-800/50'}`}
+                            >
+                                <p className={`font-medium ${isInsufficientStock ? 'text-rose-700 dark:text-rose-400' : ''}`}>
+                                    {selectedProduct.name}
+                                </p>
                                 <p className={`mt-0.5 text-xs ${isInsufficientStock ? 'text-rose-600 dark:text-rose-300' : 'text-muted-foreground'}`}>
                                     Stok tersedia: {selectedProduct.current_stock} {selectedProduct.unit}
                                     {isInsufficientStock && ' — Stok tidak mencukupi!'}
@@ -123,7 +126,9 @@ export default function StockOut({ products }: Props) {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="qty" className="mb-1.5 block">Jumlah Keluar *</Label>
+                                <Label htmlFor="qty" className="mb-1.5 block">
+                                    Jumlah Keluar *
+                                </Label>
                                 <Input
                                     id="qty"
                                     type="number"
@@ -141,17 +146,18 @@ export default function StockOut({ products }: Props) {
                                 {displayError('qty') && <p className="mt-1 text-xs text-rose-500">{displayError('qty')}</p>}
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="movement_date" className="block">Tanggal *</Label>
-                                <DatePicker
-                                    value={data.movement_date}
-                                    onChange={(val) => setData('movement_date', val)}
-                                />
+                                <Label htmlFor="movement_date" className="block">
+                                    Tanggal *
+                                </Label>
+                                <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
                                 {displayError('movement_date') && <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>}
                             </div>
                         </div>
 
                         <div>
-                            <Label htmlFor="reference" className="mb-1.5 block">No. Referensi</Label>
+                            <Label htmlFor="reference" className="mb-1.5 block">
+                                No. Referensi
+                            </Label>
                             <Input
                                 id="reference"
                                 type="text"
@@ -162,7 +168,9 @@ export default function StockOut({ products }: Props) {
                         </div>
 
                         <div>
-                            <Label htmlFor="note" className="mb-1.5 block">Catatan</Label>
+                            <Label htmlFor="note" className="mb-1.5 block">
+                                Catatan
+                            </Label>
                             <Textarea
                                 id="note"
                                 rows={2}
@@ -175,14 +183,12 @@ export default function StockOut({ products }: Props) {
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">
-                                Batal
-                            </Link>
+                            <Link href="/inventory">Batal</Link>
                         </Button>
                         <Button
                             type="submit"
                             disabled={processing || !data.product_id || !!isInsufficientStock}
-                            className="bg-rose-600 hover:bg-rose-700 text-white disabled:opacity-70 rounded-xl px-5"
+                            className="rounded-xl bg-rose-600 px-5 text-white hover:bg-rose-700 disabled:opacity-70"
                         >
                             {processing ? 'Menyimpan...' : 'Simpan Stok Keluar'}
                         </Button>

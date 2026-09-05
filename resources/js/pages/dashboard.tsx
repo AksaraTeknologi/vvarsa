@@ -3,21 +3,10 @@ import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Event, type Product, type Transaction } from '@/types/mrp';
 import { Head, Link } from '@inertiajs/react';
-import {
-    AlertTriangle,
-    ArrowDownRight,
-    ArrowUpRight,
-    CalendarDays,
-    Package,
-    TrendingDown,
-    TrendingUp,
-    Wallet,
-} from 'lucide-react';
+import { AlertTriangle, ArrowDownRight, ArrowUpRight, CalendarDays, Package, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
 
 interface DashboardStats {
     total_products: number;
@@ -72,7 +61,9 @@ function StatCard({
                     {subtitle && <p className="text-muted-foreground mt-1 text-xs">{subtitle}</p>}
                 </div>
                 {trend && (
-                    <div className={`flex items-center gap-1 text-xs font-medium ${trend === 'up' ? 'text-emerald-500' : trend === 'down' ? 'text-rose-500' : 'text-slate-400'}`}>
+                    <div
+                        className={`flex items-center gap-1 text-xs font-medium ${trend === 'up' ? 'text-emerald-500' : trend === 'down' ? 'text-rose-500' : 'text-slate-400'}`}
+                    >
                         {trend === 'up' ? <ArrowUpRight size={14} /> : trend === 'down' ? <ArrowDownRight size={14} /> : null}
                     </div>
                 )}
@@ -100,13 +91,10 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex flex-col gap-6 p-4 md:p-6">
-
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">
-                        Ringkasan performa bisnis Anda hari ini
-                    </p>
+                    <p className="text-muted-foreground mt-1 text-sm">Ringkasan performa bisnis Anda hari ini</p>
                 </div>
 
                 {/* ── Stats Cards ─────────────────────────────────────── */}
@@ -164,20 +152,9 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                                 <XAxis dataKey="date" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                                <YAxis
-                                    tick={{ fontSize: 11 }}
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tickFormatter={(v) => formatRupiah(v, true)}
-                                />
+                                <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Area
-                                    type="monotone"
-                                    dataKey="sales"
-                                    stroke="#10b981"
-                                    strokeWidth={2.5}
-                                    fill="url(#salesGradient)"
-                                />
+                                <Area type="monotone" dataKey="sales" stroke="#10b981" strokeWidth={2.5} fill="url(#salesGradient)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
@@ -192,7 +169,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         </div>
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
-                                <Package size={32} className="text-emerald-500 mb-2" />
+                                <Package size={32} className="mb-2 text-emerald-500" />
                                 <p className="text-muted-foreground text-sm">Semua stok aman!</p>
                             </div>
                         ) : (
@@ -204,7 +181,9 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                             <p className="text-muted-foreground text-xs">{p.category?.name}</p>
                                         </div>
                                         <div className="shrink-0 text-right">
-                                            <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${p.current_stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}>
+                                            <span
+                                                className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${p.current_stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}
+                                            >
                                                 {p.current_stock} {p.unit}
                                             </span>
                                         </div>
@@ -231,17 +210,26 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                             <div className="space-y-3">
                                 {recent_transactions.map((t) => (
                                     <div key={t.id} className="flex items-center gap-3">
-                                        <div className={`rounded-xl p-2 ${t.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}>
-                                            {t.type === 'income'
-                                                ? <ArrowUpRight size={14} className="text-emerald-600 dark:text-emerald-400" />
-                                                : <ArrowDownRight size={14} className="text-rose-600 dark:text-rose-400" />}
+                                        <div
+                                            className={`rounded-xl p-2 ${t.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
+                                        >
+                                            {t.type === 'income' ? (
+                                                <ArrowUpRight size={14} className="text-emerald-600 dark:text-emerald-400" />
+                                            ) : (
+                                                <ArrowDownRight size={14} className="text-rose-600 dark:text-rose-400" />
+                                            )}
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm font-medium">{t.description || (t.type === 'income' ? 'Penjualan' : 'Pengeluaran')}</p>
+                                            <p className="truncate text-sm font-medium">
+                                                {t.description || (t.type === 'income' ? 'Penjualan' : 'Pengeluaran')}
+                                            </p>
                                             <p className="text-muted-foreground text-xs">{t.date}</p>
                                         </div>
-                                        <span className={`shrink-0 text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                                            {t.type === 'income' ? '+' : '-'}{formatRupiah(t.amount, true)}
+                                        <span
+                                            className={`shrink-0 text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
+                                        >
+                                            {t.type === 'income' ? '+' : '-'}
+                                            {formatRupiah(t.amount, true)}
                                         </span>
                                     </div>
                                 ))}
@@ -262,14 +250,16 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         ) : (
                             <div className="space-y-3">
                                 {upcoming_events.map((e) => (
-                                    <Link key={e.id} href={`/events/${e.id}`} className="hover:bg-muted/50 -mx-2 flex items-start gap-3 rounded-xl p-2 transition-colors">
+                                    <Link
+                                        key={e.id}
+                                        href={`/events/${e.id}`}
+                                        className="hover:bg-muted/50 -mx-2 flex items-start gap-3 rounded-xl p-2 transition-colors"
+                                    >
                                         <div className="bg-primary/10 text-primary flex flex-col items-center rounded-xl px-3 py-2 text-center">
                                             <span className="text-xs font-semibold">
                                                 {new Date(e.start_date).toLocaleString('id-ID', { month: 'short' })}
                                             </span>
-                                            <span className="text-lg font-bold leading-none">
-                                                {new Date(e.start_date).getDate()}
-                                            </span>
+                                            <span className="text-lg leading-none font-bold">{new Date(e.start_date).getDate()}</span>
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm font-medium">{e.title}</p>
@@ -295,10 +285,30 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     <h2 className="mb-4 font-semibold">Aksi Cepat</h2>
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                         {[
-                            { label: 'Tambah Produk', href: '/inventory/create', color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-400', icon: Package },
-                            { label: 'Stok Masuk', href: '/inventory/stock-in', color: 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400', icon: TrendingUp },
-                            { label: 'Catat Transaksi', href: '/finance/transactions', color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-400', icon: Wallet },
-                            { label: 'Lihat Event', href: '/events', color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 dark:text-amber-400', icon: CalendarDays },
+                            {
+                                label: 'Tambah Produk',
+                                href: '/inventory/create',
+                                color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-400',
+                                icon: Package,
+                            },
+                            {
+                                label: 'Stok Masuk',
+                                href: '/inventory/stock-in',
+                                color: 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400',
+                                icon: TrendingUp,
+                            },
+                            {
+                                label: 'Catat Transaksi',
+                                href: '/finance/transactions',
+                                color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-400',
+                                icon: Wallet,
+                            },
+                            {
+                                label: 'Lihat Event',
+                                href: '/events',
+                                color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 dark:text-amber-400',
+                                icon: CalendarDays,
+                            },
                         ].map(({ label, href, color, icon: Icon }) => (
                             <Link
                                 key={href}

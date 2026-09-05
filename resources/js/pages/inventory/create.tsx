@@ -1,16 +1,16 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { type ProductCategory } from '@/types/mrp';
-import { Head, useForm, Link } from '@inertiajs/react';
-import { AlertCircle } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/app-layout';
+import { formatRupiah } from '@/lib/utils-mrp';
+import { type BreadcrumbItem } from '@/types';
+import { type ProductCategory } from '@/types/mrp';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
-import { Textarea } from '@/components/ui/textarea';
-import { formatRupiah } from '@/lib/utils-mrp';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Inventori', href: '/inventory' },
@@ -53,7 +53,7 @@ export default function InventoryCreate({ categories }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
-        
+
         const result = productSchema.safeParse(data);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -64,14 +64,12 @@ export default function InventoryCreate({ categories }: Props) {
             setClientErrors(newErrors);
             return;
         }
-        
+
         post('/inventory');
     };
 
     const costPrice = data.purchase_qty > 0 ? data.purchase_price / data.purchase_qty : 0;
-    const margin = data.sell_price > 0
-        ? Math.round(((data.sell_price - costPrice) / data.sell_price) * 100)
-        : 0;
+    const margin = data.sell_price > 0 ? Math.round(((data.sell_price - costPrice) / data.sell_price) * 100) : 0;
 
     const displayError = (field: keyof typeof errors) => clientErrors[field] || errors[field];
 
@@ -80,14 +78,14 @@ export default function InventoryCreate({ categories }: Props) {
             <Head title="Tambah Produk" />
             <div className="mx-auto max-w-2xl p-4 md:p-6">
                 <div className="mb-6">
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Tambah Produk</h1>
+                    <h1 className="text-foreground text-2xl font-bold tracking-tight">Tambah Produk</h1>
                     <p className="text-muted-foreground mt-1 text-sm">Isi detail produk baru Anda</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
-                        <h2 className="text-sm font-semibold text-foreground">Informasi Dasar</h2>
-                        
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                        <h2 className="text-foreground text-sm font-semibold">Informasi Dasar</h2>
+
                         <div className="space-y-2">
                             <Label htmlFor="name">Nama Produk *</Label>
                             <Input
@@ -120,16 +118,15 @@ export default function InventoryCreate({ categories }: Props) {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="category_id">Kategori</Label>
-                                <Select
-                                    value={data.category_id || undefined}
-                                    onValueChange={(val) => setData('category_id', val)}
-                                >
+                                <Select value={data.category_id || undefined} onValueChange={(val) => setData('category_id', val)}>
                                     <SelectTrigger id="category_id" className="rounded-xl">
                                         <SelectValue placeholder="Pilih kategori" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((c) => (
-                                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                            <SelectItem key={c.id} value={String(c.id)}>
+                                                {c.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -139,16 +136,15 @@ export default function InventoryCreate({ categories }: Props) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="unit">Satuan *</Label>
-                                <Select
-                                    value={data.unit}
-                                    onValueChange={(val) => setData('unit', val)}
-                                >
+                                <Select value={data.unit} onValueChange={(val) => setData('unit', val)}>
                                     <SelectTrigger id="unit" className="rounded-xl">
                                         <SelectValue placeholder="Pilih satuan" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {UNITS.map((u) => (
-                                            <SelectItem key={u} value={u}>{u}</SelectItem>
+                                            <SelectItem key={u} value={u}>
+                                                {u}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -167,8 +163,8 @@ export default function InventoryCreate({ categories }: Props) {
                         </div>
                     </div>
 
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-4">
-                        <h2 className="text-sm font-semibold text-foreground">Harga & Kemasan</h2>
+                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                        <h2 className="text-foreground text-sm font-semibold">Harga & Kemasan</h2>
                         <div className="grid grid-cols-3 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="purchase_price">Harga Beli Kemasan (Rp) *</Label>
@@ -180,7 +176,7 @@ export default function InventoryCreate({ categories }: Props) {
                                     className={displayError('purchase_price') ? 'border-rose-500' : ''}
                                     required
                                 />
-                                {displayError('purchase_price') && <p className="text-xs text-rose-500 mt-1">{displayError('purchase_price')}</p>}
+                                {displayError('purchase_price') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_price')}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="purchase_qty">Isi Kemasan *</Label>
@@ -194,7 +190,7 @@ export default function InventoryCreate({ categories }: Props) {
                                     className={displayError('purchase_qty') ? 'border-rose-500' : ''}
                                     required
                                 />
-                                {displayError('purchase_qty') && <p className="text-xs text-rose-500 mt-1">{displayError('purchase_qty')}</p>}
+                                {displayError('purchase_qty') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_qty')}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="sell_price">Harga Jual (Rp) (Opsional)</Label>
@@ -205,23 +201,25 @@ export default function InventoryCreate({ categories }: Props) {
                                     onChange={(e) => setData('sell_price', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                     className={displayError('sell_price') ? 'border-rose-500' : ''}
                                 />
-                                {displayError('sell_price') && <p className="text-xs text-rose-500 mt-1">{displayError('sell_price')}</p>}
+                                {displayError('sell_price') && <p className="mt-1 text-xs text-rose-500">{displayError('sell_price')}</p>}
                             </div>
                         </div>
                         {data.purchase_qty > 0 && data.purchase_price > 0 && (
-                            <div className="text-sm text-muted-foreground bg-muted/30 rounded-xl p-3">
+                            <div className="text-muted-foreground bg-muted/30 rounded-xl p-3 text-sm">
                                 Estimasi Harga Modal per {data.unit}: <strong>{formatRupiah(data.purchase_price / data.purchase_qty)}</strong>
                             </div>
                         )}
                         {data.sell_price > 0 && costPrice > 0 && (
-                            <div className={`rounded-xl p-3 text-sm ${margin >= 20 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'}`}>
+                            <div
+                                className={`rounded-xl p-3 text-sm ${margin >= 20 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'}`}
+                            >
                                 Margin keuntungan: <strong>{margin}%</strong>
                                 {margin < 20 && ' — margin rendah, pertimbangkan kembali harga jual'}
                             </div>
                         )}
                     </div>
 
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm space-y-2">
+                    <div className="bg-card border-border space-y-2 rounded-2xl border p-5 shadow-sm">
                         <Label htmlFor="description">Deskripsi (Opsional)</Label>
                         <Textarea
                             id="description"
@@ -234,15 +232,9 @@ export default function InventoryCreate({ categories }: Props) {
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">
-                                Batal
-                            </Link>
+                            <Link href="/inventory">Batal</Link>
                         </Button>
-                        <Button
-                            type="submit"
-                            disabled={processing}
-                            className="rounded-xl px-6"
-                        >
+                        <Button type="submit" disabled={processing} className="rounded-xl px-6">
                             {processing ? 'Menyimpan...' : 'Simpan Produk'}
                         </Button>
                     </div>

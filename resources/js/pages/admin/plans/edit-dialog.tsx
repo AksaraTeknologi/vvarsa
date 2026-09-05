@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useForm } from '@inertiajs/react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { AVAILABLE_FEATURES, type Plan } from './index';
 
 interface EditPlanDialogProps {
@@ -48,7 +48,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
         } else {
             form.setData(
                 'features',
-                currentFeatures.filter((f) => f !== featureId)
+                currentFeatures.filter((f) => f !== featureId),
             );
         }
     };
@@ -56,7 +56,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!plan) return;
-        
+
         form.put(`/admin/plans/${plan.id}`, {
             onSuccess: () => {
                 onOpenChange(false);
@@ -66,7 +66,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-auto">
+            <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-[500px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Edit Paket Langganan</DialogTitle>
@@ -101,14 +101,14 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                                 />
                                 {form.errors.price && <p className="text-destructive text-xs">{form.errors.price}</p>}
                             </div>
-                            
+
                             <div className="grid gap-2">
                                 <Label htmlFor="edit-billing_cycle">Siklus Penagihan</Label>
                                 <Select
                                     value={form.data.billing_cycle}
                                     onValueChange={(value) => form.setData('billing_cycle', value as 'monthly' | 'yearly')}
                                 >
-                                    <SelectTrigger className="rounded-xl w-full">
+                                    <SelectTrigger className="w-full rounded-xl">
                                         <SelectValue placeholder="Siklus Penagihan" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -152,22 +152,30 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                                 checked={form.data.is_active}
                                 onCheckedChange={(checked) => form.setData('is_active', checked === true)}
                             />
-                            <Label htmlFor="edit-is_active" className="cursor-pointer text-sm">Paket Aktif & Ditawarkan</Label>
+                            <Label htmlFor="edit-is_active" className="cursor-pointer text-sm">
+                                Paket Aktif & Ditawarkan
+                            </Label>
                         </div>
 
-                        <div className="space-y-2 pt-2 border-t">
+                        <div className="space-y-2 border-t pt-2">
                             <Label className="text-sm font-semibold">Daftar Fitur Aktif</Label>
-                            <div className="grid grid-cols-2 gap-2.5 max-h-48 overflow-y-auto p-1 border rounded-lg bg-slate-50/50 dark:bg-slate-800/10">
+                            <div className="grid max-h-48 grid-cols-2 gap-2.5 overflow-y-auto rounded-lg border bg-slate-50/50 p-1 dark:bg-slate-800/10">
                                 {AVAILABLE_FEATURES.map((feat) => {
                                     const isChecked = form.data.features.includes(feat.id);
                                     return (
-                                        <div key={feat.id} className="flex items-start gap-2 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">
+                                        <div
+                                            key={feat.id}
+                                            className="flex items-start gap-2 rounded p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                        >
                                             <Checkbox
                                                 id={`edit-feat-${feat.id}`}
                                                 checked={isChecked}
                                                 onCheckedChange={(checked) => handleFeatureChange(feat.id, checked === true)}
                                             />
-                                            <label htmlFor={`edit-feat-${feat.id}`} className="text-xs leading-none cursor-pointer text-slate-700 dark:text-slate-300">
+                                            <label
+                                                htmlFor={`edit-feat-${feat.id}`}
+                                                className="cursor-pointer text-xs leading-none text-slate-700 dark:text-slate-300"
+                                            >
                                                 {feat.label}
                                             </label>
                                         </div>

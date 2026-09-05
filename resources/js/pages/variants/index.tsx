@@ -1,17 +1,15 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type PaginatedData, type ProductVariant } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { FlaskConical, PlusCircle, Search } from 'lucide-react';
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Varian Produk', href: '/variants' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Varian Produk', href: '/variants' }];
 
 interface Props {
     variants: PaginatedData<ProductVariant & { hpp: number; margin: number; profit: number }>;
@@ -34,15 +32,13 @@ export default function VariantsIndex({ variants, filters }: Props) {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                             <FlaskConical className="text-violet-500" size={26} />
                             Varian Produk
                         </h1>
-                        <p className="text-muted-foreground text-sm mt-0.5">
-                            Produk yang dijual beserta resep & kalkulasi HPP otomatis
-                        </p>
+                        <p className="text-muted-foreground mt-0.5 text-sm">Produk yang dijual beserta resep & kalkulasi HPP otomatis</p>
                     </div>
-                    <Button asChild className="bg-violet-600 hover:bg-violet-700 text-white rounded-xl gap-1.5">
+                    <Button asChild className="gap-1.5 rounded-xl bg-violet-600 text-white hover:bg-violet-700">
                         <Link href="/variants/create">
                             <PlusCircle size={16} />
                             Tambah Varian
@@ -52,16 +48,16 @@ export default function VariantsIndex({ variants, filters }: Props) {
 
                 {/* Search */}
                 <form onSubmit={handleSearch} className="flex gap-2">
-                    <div className="relative flex-1 max-w-sm">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={14} />
+                    <div className="relative max-w-sm flex-1">
+                        <Search className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" size={14} />
                         <Input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Cari varian..."
-                            className="pl-9 h-9 rounded-xl text-sm"
+                            className="h-9 rounded-xl pl-9 text-sm"
                         />
                     </div>
-                    <Button type="submit" variant="outline" className="rounded-xl h-9">
+                    <Button type="submit" variant="outline" className="h-9 rounded-xl">
                         Cari
                     </Button>
                 </form>
@@ -77,7 +73,7 @@ export default function VariantsIndex({ variants, filters }: Props) {
                                 key={i}
                                 variant={link.active ? 'default' : 'outline'}
                                 size="sm"
-                                className="rounded-lg h-8 px-3 text-xs"
+                                className="h-8 rounded-lg px-3 text-xs"
                                 disabled={!link.url}
                                 onClick={() => link.url && router.get(link.url)}
                                 dangerouslySetInnerHTML={{ __html: link.label }}

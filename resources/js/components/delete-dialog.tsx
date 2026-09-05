@@ -1,14 +1,6 @@
-import React from 'react';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import React from 'react';
 
 interface DeleteConfirmDialogProps {
     trigger: React.ReactNode;
@@ -41,24 +33,14 @@ export default function DeleteConfirmDialog({
                     <DialogDescription>
                         {description}
                         <br />
-                        <span className="font-semibold text-foreground mt-2 block">
-                            Data yang dihapus: {itemName}
-                        </span>
+                        <span className="text-foreground mt-2 block font-semibold">Data yang dihapus: {itemName}</span>
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="gap-2 sm:gap-0">
-                    <Button
-                        variant="outline"
-                        onClick={() => setOpen(false)}
-                        className="hover:cursor-pointer"
-                    >
+                    <Button variant="outline" onClick={() => setOpen(false)} className="hover:cursor-pointer">
                         Batal
                     </Button>
-                    <Button
-                        variant="destructive"
-                        onClick={handleConfirm}
-                        className="hover:cursor-pointer"
-                    >
+                    <Button variant="destructive" onClick={handleConfirm} className="hover:cursor-pointer">
                         Hapus
                     </Button>
                 </DialogFooter>

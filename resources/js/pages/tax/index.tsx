@@ -1,23 +1,21 @@
+import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
+import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type PaginatedData, type TaxReport } from '@/types/mrp';
-import { Head, Link, useForm, router } from '@inertiajs/react';
-import { Plus, AlertCircle } from 'lucide-react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DatePicker } from '@/components/ui/date-picker';
+import { z } from 'zod';
 import { columns } from './columns';
 import { DataTable } from './data-table';
-import { z } from 'zod';
-import { formatRupiah } from '@/lib/utils-mrp';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Pajak', href: '/tax' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Pajak', href: '/tax' }];
 
 interface Props {
     reports: PaginatedData<TaxReport>;
@@ -57,7 +55,7 @@ export default function TaxIndex({ reports }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
-        
+
         const result = taxSchema.safeParse(data);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -69,35 +67,31 @@ export default function TaxIndex({ reports }: Props) {
             return;
         }
 
-        post('/tax', { 
-            onSuccess: () => { 
-                reset(); 
-                setIsAddOpen(false); 
-            } 
+        post('/tax', {
+            onSuccess: () => {
+                reset();
+                setIsAddOpen(false);
+            },
         });
     };
 
     const displayError = (field: keyof typeof errors) => clientErrors[field] || errors[field];
 
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Laporan Pajak" />
             <div className="flex flex-col gap-6 p-4 md:p-6">
-                
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Laporan Pajak</h1>
+                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Laporan Pajak</h1>
                         <p className="text-muted-foreground mt-1 text-sm">Kelola kewajiban pajak bisnis Anda</p>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/tax/consultation">
-                                Konsultasi Pajak
-                            </Link>
+                            <Link href="/tax/consultation">Konsultasi Pajak</Link>
                         </Button>
-                        
+
                         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                             <DialogTrigger asChild>
                                 <Button className="inline-flex items-center gap-2 rounded-xl">
@@ -117,29 +111,28 @@ export default function TaxIndex({ reports }: Props) {
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
                                                 <Label htmlFor="period">Periode</Label>
-                                                <Input 
+                                                <Input
                                                     id="period"
-                                                    type="text" 
-                                                    value={data.period} 
-                                                    onChange={(e) => setData('period', e.target.value)} 
-                                                    placeholder="2026-06" 
+                                                    type="text"
+                                                    value={data.period}
+                                                    onChange={(e) => setData('period', e.target.value)}
+                                                    placeholder="2026-06"
                                                     className={displayError('period') ? 'border-rose-500' : ''}
-                                                    required 
+                                                    required
                                                 />
                                                 {displayError('period') && <p className="text-xs text-rose-500">{displayError('period')}</p>}
                                             </div>
                                             <div className="space-y-1">
                                                 <Label htmlFor="tax_type">Jenis Pajak</Label>
-                                                <Select
-                                                    value={data.tax_type}
-                                                    onValueChange={(val) => setData('tax_type', val)}
-                                                >
-                                                    <SelectTrigger id="tax_type" className="rounded-xl h-9">
+                                                <Select value={data.tax_type} onValueChange={(val) => setData('tax_type', val)}>
+                                                    <SelectTrigger id="tax_type" className="h-9 rounded-xl">
                                                         <SelectValue placeholder="Jenis Pajak" />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         {TAX_TYPES.map((t) => (
-                                                            <SelectItem key={t} value={t}>{t}</SelectItem>
+                                                            <SelectItem key={t} value={t}>
+                                                                {t}
+                                                            </SelectItem>
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
@@ -148,12 +141,12 @@ export default function TaxIndex({ reports }: Props) {
 
                                         <div className="space-y-1">
                                             <Label htmlFor="gross_amount">Omzet Bruto (Rp)</Label>
-                                            <Input 
+                                            <Input
                                                 id="gross_amount"
-                                                type="text" 
-                                                value={formatRupiah(data.gross_amount)} 
-                                                onChange={(e) => setData('gross_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)} 
-                                                onBlur={calculateTax} 
+                                                type="text"
+                                                value={formatRupiah(data.gross_amount)}
+                                                onChange={(e) => setData('gross_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
+                                                onBlur={calculateTax}
                                                 className={displayError('gross_amount') ? 'border-rose-500' : ''}
                                                 required
                                             />
@@ -162,11 +155,11 @@ export default function TaxIndex({ reports }: Props) {
 
                                         <div className="space-y-1">
                                             <Label htmlFor="tax_amount">Jumlah Pajak (Rp)</Label>
-                                            <Input 
+                                            <Input
                                                 id="tax_amount"
-                                                type="text" 
-                                                value={formatRupiah(data.tax_amount)} 
-                                                onChange={(e) => setData('tax_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)} 
+                                                type="text"
+                                                value={formatRupiah(data.tax_amount)}
+                                                onChange={(e) => setData('tax_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                                 className={displayError('tax_amount') ? 'border-rose-500' : ''}
                                                 required
                                             />
@@ -176,11 +169,8 @@ export default function TaxIndex({ reports }: Props) {
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
                                                 <Label htmlFor="status">Status</Label>
-                                                <Select
-                                                    value={data.status}
-                                                    onValueChange={(val) => setData('status', val as any)}
-                                                >
-                                                    <SelectTrigger id="status" className="rounded-xl h-9">
+                                                <Select value={data.status} onValueChange={(val) => setData('status', val as any)}>
+                                                    <SelectTrigger id="status" className="h-9 rounded-xl">
                                                         <SelectValue placeholder="Status" />
                                                     </SelectTrigger>
                                                     <SelectContent>
@@ -190,18 +180,25 @@ export default function TaxIndex({ reports }: Props) {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                            <div className="space-y-1.5 flex flex-col justify-end">
-                                                <Label htmlFor="due_date" className="mb-0.5">Jatuh Tempo</Label>
-                                                <DatePicker
-                                                    value={data.due_date}
-                                                    onChange={(val) => setData('due_date', val)}
-                                                />
+                                            <div className="flex flex-col justify-end space-y-1.5">
+                                                <Label htmlFor="due_date" className="mb-0.5">
+                                                    Jatuh Tempo
+                                                </Label>
+                                                <DatePicker value={data.due_date} onChange={(val) => setData('due_date', val)} />
                                             </div>
                                         </div>
                                     </div>
 
                                     <DialogFooter>
-                                        <Button type="button" variant="outline" onClick={() => { setIsAddOpen(false); reset(); }} className="rounded-xl">
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() => {
+                                                setIsAddOpen(false);
+                                                reset();
+                                            }}
+                                            className="rounded-xl"
+                                        >
                                             Batal
                                         </Button>
                                         <Button type="submit" disabled={processing} className="rounded-xl px-6">
@@ -215,11 +212,11 @@ export default function TaxIndex({ reports }: Props) {
                 </div>
 
                 {/* Tax Info Banner */}
-                <div className="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5 dark:bg-indigo-950/10 dark:border-indigo-900/30">
+                <div className="rounded-2xl border border-indigo-100 bg-indigo-50/50 p-5 dark:border-indigo-900/30 dark:bg-indigo-950/10">
                     <h2 className="font-semibold text-indigo-700 dark:text-indigo-400">Info Pajak UMKM 2026</h2>
                     <p className="text-muted-foreground mt-1 text-sm">
-                        UMKM dengan omzet hingga <strong>Rp 4,8 miliar/tahun</strong> dikenakan PPh Final sebesar <strong>0,5%</strong> dari omzet bruto.
-                        Dibayarkan paling lambat tanggal <strong>15 bulan berikutnya</strong>.
+                        UMKM dengan omzet hingga <strong>Rp 4,8 miliar/tahun</strong> dikenakan PPh Final sebesar <strong>0,5%</strong> dari omzet
+                        bruto. Dibayarkan paling lambat tanggal <strong>15 bulan berikutnya</strong>.
                     </p>
                 </div>
 
@@ -229,18 +226,19 @@ export default function TaxIndex({ reports }: Props) {
 
                     {/* Pagination */}
                     {reports.last_page > 1 && (
-                        <div className="border-border flex items-center justify-between border-t bg-card px-4 py-3 rounded-xl border shadow-sm">
+                        <div className="border-border bg-card flex items-center justify-between rounded-xl border border-t px-4 py-3 shadow-sm">
                             <p className="text-muted-foreground text-sm">
-                                Menampilkan {(reports.current_page - 1) * reports.per_page + 1}–{Math.min(reports.current_page * reports.per_page, reports.total)} dari {reports.total} laporan
+                                Menampilkan {(reports.current_page - 1) * reports.per_page + 1}–
+                                {Math.min(reports.current_page * reports.per_page, reports.total)} dari {reports.total} laporan
                             </p>
                             <div className="flex gap-1">
                                 {reports.links.map((link, i) => (
                                     <Button
                                         key={i}
-                                        variant={link.active ? "default" : "outline"}
+                                        variant={link.active ? 'default' : 'outline'}
                                         disabled={!link.url}
                                         onClick={() => link.url && router.get(link.url)}
-                                        className="h-8 px-3 rounded-lg text-xs"
+                                        className="h-8 rounded-lg px-3 text-xs"
                                     >
                                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
                                     </Button>

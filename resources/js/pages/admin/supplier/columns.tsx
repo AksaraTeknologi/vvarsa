@@ -4,9 +4,10 @@ import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import DeleteConfirmDialog from '@/components/delete-dialog';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Link, router } from '@inertiajs/react';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Trash, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Edit, Trash } from 'lucide-react';
 
 // Kita pindahkan interface kesini agar bisa di-import oleh index.tsx
 export interface Supplier {
@@ -28,8 +29,10 @@ export interface Supplier {
 function SupplierActions({ supplier }: { supplier: Supplier }) {
     const handleDelete = () => {
         // Sesuaikan route delete dengan yang ada di web.php (jika sudah ada)
-        router.delete(`/admin/supplier/${supplier.id}`, {
-            preserveScroll: true,
+        handleAsyncAction(() => routerPromise('delete', `/admin/supplier/${supplier.id}`, {}, { preserveScroll: true }), {
+            loading: `Menghapus supplier "${supplier.name}"...`,
+            success: `Supplier "${supplier.name}" berhasil dihapus!`,
+            error: 'Gagal Menghapus',
         });
     };
 
@@ -88,7 +91,7 @@ export const columns: ColumnDef<Supplier>[] = [
             const supplier = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">{supplier.name}</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">{supplier.name}</div>
                     {supplier.is_verified && (
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -111,7 +114,7 @@ export const columns: ColumnDef<Supplier>[] = [
             return (
                 <div className="flex flex-col">
                     <span className="font-medium">{supplier.contact_name || '-'}</span>
-                    <span className="text-xs text-muted-foreground">{supplier.phone || supplier.email || ''}</span>
+                    <span className="text-muted-foreground text-xs">{supplier.phone || supplier.email || ''}</span>
                 </div>
             );
         },
@@ -121,7 +124,7 @@ export const columns: ColumnDef<Supplier>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Tipe Bisnis" />,
         cell: ({ row }) => {
             return (
-                <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-xs">
+                <span className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                     {row.original.business_type || 'Umum'}
                 </span>
             );
@@ -134,7 +137,7 @@ export const columns: ColumnDef<Supplier>[] = [
             return (
                 <div className="text-center">
                     <span className="font-semibold text-amber-500">{row.original.rating}</span>
-                    <span className="text-xs text-muted-foreground"> / 5</span>
+                    <span className="text-muted-foreground text-xs"> / 5</span>
                 </div>
             );
         },
@@ -147,11 +150,11 @@ export const columns: ColumnDef<Supplier>[] = [
             return (
                 <div className="text-center">
                     {isActive ? (
-                        <span className="px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-100 dark:bg-emerald-500/20 dark:text-emerald-400 rounded-full">
+                        <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400">
                             Aktif
                         </span>
                     ) : (
-                        <span className="px-2 py-1 text-xs font-medium text-rose-700 bg-rose-100 dark:bg-rose-500/20 dark:text-rose-400 rounded-full">
+                        <span className="rounded-full bg-rose-100 px-2 py-1 text-xs font-medium text-rose-700 dark:bg-rose-500/20 dark:text-rose-400">
                             Nonaktif
                         </span>
                     )}

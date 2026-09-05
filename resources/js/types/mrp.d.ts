@@ -248,7 +248,7 @@ export interface OrderItem {
     unit_price: number;
     unit_hpp: number;
     total: number;
-    paket_isi: number | null;   // jumlah isi paket (1 / 3 / 6)
+    paket_isi: number | null; // jumlah isi paket (1 / 3 / 6)
     paket_harga: number | null; // harga paket fix, bukan unit_price × qty
 }
 

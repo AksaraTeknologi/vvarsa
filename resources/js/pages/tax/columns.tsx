@@ -2,10 +2,10 @@
 
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { Badge } from '@/components/ui/badge';
-import { ColumnDef } from '@tanstack/react-table';
 import { formatDate, formatRupiah } from '@/lib/utils-mrp';
 import { type TaxReport } from '@/types/mrp';
-import { FileText, Calendar } from 'lucide-react';
+import { ColumnDef } from '@tanstack/react-table';
+import { Calendar, FileText } from 'lucide-react';
 
 const STATUS_STYLES: Record<string, string> = {
     draft: 'bg-slate-100 text-slate-700 hover:bg-slate-150',
@@ -13,10 +13,10 @@ const STATUS_STYLES: Record<string, string> = {
     paid: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200',
 };
 
-const STATUS_LABELS: Record<string, string> = { 
-    draft: 'Draft', 
-    submitted: 'Dilaporkan', 
-    paid: 'Lunas' 
+const STATUS_LABELS: Record<string, string> = {
+    draft: 'Draft',
+    submitted: 'Dilaporkan',
+    paid: 'Lunas',
 };
 
 export const columns: ColumnDef<TaxReport>[] = [
@@ -26,10 +26,10 @@ export const columns: ColumnDef<TaxReport>[] = [
         cell: ({ row }) => {
             return (
                 <div className="flex items-center gap-2">
-                    <div className="bg-slate-100 p-1.5 rounded-lg text-slate-500">
+                    <div className="rounded-lg bg-slate-100 p-1.5 text-slate-500">
                         <FileText size={16} />
                     </div>
-                    <div className="font-semibold text-sm text-foreground">{row.original.period}</div>
+                    <div className="text-foreground text-sm font-semibold">{row.original.period}</div>
                 </div>
             );
         },
@@ -52,7 +52,7 @@ export const columns: ColumnDef<TaxReport>[] = [
         accessorKey: 'tax_amount',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Jumlah Pajak" />,
         cell: ({ row }) => {
-            return <div className="text-right text-sm font-bold text-foreground">{formatRupiah(row.original.tax_amount)}</div>;
+            return <div className="text-foreground text-right text-sm font-bold">{formatRupiah(row.original.tax_amount)}</div>;
         },
     },
     {
@@ -62,7 +62,7 @@ export const columns: ColumnDef<TaxReport>[] = [
             const status = row.original.status;
             return (
                 <div className="text-center">
-                    <Badge variant="outline" className={`capitalize border-transparent ${STATUS_STYLES[status]}`}>
+                    <Badge variant="outline" className={`border-transparent capitalize ${STATUS_STYLES[status]}`}>
                         {STATUS_LABELS[status] || status}
                     </Badge>
                 </div>
@@ -75,11 +75,9 @@ export const columns: ColumnDef<TaxReport>[] = [
         cell: ({ row }) => {
             const dueDate = row.original.due_date;
             return (
-                <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
+                <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
                     <Calendar size={14} className="opacity-60" />
-                    <span>
-                        {dueDate ? formatDate(dueDate, { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
-                    </span>
+                    <span>{dueDate ? formatDate(dueDate, { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</span>
                 </div>
             );
         },

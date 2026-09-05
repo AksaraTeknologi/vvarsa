@@ -1,9 +1,9 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { formatRupiah, MONTHS_ID } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Keuangan', href: '/finance' },
@@ -37,30 +37,28 @@ export default function ExpenseReport({ monthly_data, by_category, year, month, 
                         <p className="text-muted-foreground text-sm">Pantau dan kelola pengeluaran bisnis Anda</p>
                     </div>
                     <div className="flex gap-2">
-                        <Select
-                            value={String(month)}
-                            onValueChange={(val) => router.get('/finance/expense-report', { year, month: val })}
-                        >
+                        <Select value={String(month)} onValueChange={(val) => router.get('/finance/expense-report', { year, month: val })}>
                             <SelectTrigger className="w-[140px] rounded-xl">
                                 <SelectValue placeholder="Bulan" />
                             </SelectTrigger>
                             <SelectContent>
                                 {MONTHS_ID.map((m, i) => (
-                                    <SelectItem key={i} value={String(i + 1)}>{m}</SelectItem>
+                                    <SelectItem key={i} value={String(i + 1)}>
+                                        {m}
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
 
-                        <Select
-                            value={String(year)}
-                            onValueChange={(val) => router.get('/finance/expense-report', { year: val, month })}
-                        >
+                        <Select value={String(year)} onValueChange={(val) => router.get('/finance/expense-report', { year: val, month })}>
                             <SelectTrigger className="w-[100px] rounded-xl">
                                 <SelectValue placeholder="Tahun" />
                             </SelectTrigger>
                             <SelectContent>
                                 {[2024, 2025, 2026].map((y) => (
-                                    <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                                    <SelectItem key={y} value={String(y)}>
+                                        {y}
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
@@ -69,11 +67,11 @@ export default function ExpenseReport({ monthly_data, by_category, year, month, 
 
                 {/* Summary */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-rose-50 dark:bg-rose-900/20 rounded-2xl p-4">
+                    <div className="rounded-2xl bg-rose-50 p-4 dark:bg-rose-900/20">
                         <p className="text-muted-foreground text-xs">Pengeluaran Hari Ini</p>
                         <p className="mt-1 text-xl font-bold text-rose-600 dark:text-rose-400">{formatRupiah(today_expense)}</p>
                     </div>
-                    <div className="bg-orange-50 dark:bg-orange-900/20 rounded-2xl p-4">
+                    <div className="rounded-2xl bg-orange-50 p-4 dark:bg-orange-900/20">
                         <p className="text-muted-foreground text-xs">Pengeluaran Bulan Ini</p>
                         <p className="mt-1 text-xl font-bold text-orange-600 dark:text-orange-400">{formatRupiah(month_expense)}</p>
                     </div>
@@ -82,7 +80,9 @@ export default function ExpenseReport({ monthly_data, by_category, year, month, 
                 <div className="grid gap-6 lg:grid-cols-2">
                     {/* Daily chart */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <h2 className="mb-4 font-semibold">Pengeluaran Harian — {MONTHS_ID[month - 1]} {year}</h2>
+                        <h2 className="mb-4 font-semibold">
+                            Pengeluaran Harian — {MONTHS_ID[month - 1]} {year}
+                        </h2>
                         {monthly_data.length === 0 ? (
                             <p className="text-muted-foreground py-8 text-center text-sm">Tidak ada pengeluaran bulan ini.</p>
                         ) : (
@@ -107,8 +107,18 @@ export default function ExpenseReport({ monthly_data, by_category, year, month, 
                             <div className="flex flex-col items-center gap-4">
                                 <ResponsiveContainer width="100%" height={180}>
                                     <PieChart>
-                                        <Pie data={pieData} cx="50%" cy="50%" outerRadius={75} dataKey="value" label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`} labelLine={false}>
-                                            {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                                        <Pie
+                                            data={pieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={75}
+                                            dataKey="value"
+                                            label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                                            labelLine={false}
+                                        >
+                                            {pieData.map((_, i) => (
+                                                <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                                            ))}
                                         </Pie>
                                         <Tooltip formatter={(v: any) => formatRupiah(Number(v))} />
                                     </PieChart>
@@ -117,7 +127,10 @@ export default function ExpenseReport({ monthly_data, by_category, year, month, 
                                     {by_category.map((c, i) => (
                                         <div key={i} className="flex items-center justify-between text-sm">
                                             <div className="flex items-center gap-2">
-                                                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
+                                                <div
+                                                    className="h-3 w-3 rounded-full"
+                                                    style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }}
+                                                />
                                                 <span>{c.expense_category?.name || 'Lainnya'}</span>
                                             </div>
                                             <span className="font-semibold text-rose-600">{formatRupiah(c.total, true)}</span>
