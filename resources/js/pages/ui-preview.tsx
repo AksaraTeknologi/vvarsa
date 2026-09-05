@@ -36,9 +36,13 @@ export default function UiPreview() {
                                 <Plus />
                                 Default
                             </Button>
+                            <Button variant="admin">Admin</Button>
+                            <Button variant="owner">Owner</Button>
+                            <Button variant="supervisor">Supervisor</Button>
+                            <Button variant="staff">Staff</Button>
                             <Button variant="secondary">Secondary</Button>
-                            <Button variant="save">save</Button>
-                            <Button variant="edit">edit</Button>
+                            <Button variant="save">Save</Button>
+                            <Button variant="edit">Edit</Button>
                             <Button variant="dark">Dark</Button>
                             <Button variant="destructive">Delete</Button>
                             <Button variant="outline">Outline</Button>
