@@ -91,7 +91,7 @@ class TenantDemoSeeder extends Seeder
             'tenant_id' => $tenant2->id,
             'is_active' => true,
         ]);
-        $owner2->assignRole('owner');
+        $owner2->assignRole('supervisor');
 
         TenantSubscription::create([
             'tenant_id'   => $tenant2->id,

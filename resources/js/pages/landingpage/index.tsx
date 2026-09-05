@@ -90,7 +90,7 @@ export default function LandingPage() {
                 .animate-glow { animation: glowPulse 4s ease-in-out infinite; }
                 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
             `}</style>
-            
+
             <div className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,#FDFBFF_0%,#F5F2EE_28%,#F0EEE9_100%)] font-['Plus_Jakarta_Sans'] text-[#17182A] selection:bg-[#D8F380] selection:text-[#17182A]">
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
                     <div className="bg-drift absolute -left-16 top-20 h-[26rem] w-[26rem] rounded-full bg-[#C9C2FF]/35 blur-3xl" />
@@ -104,7 +104,7 @@ export default function LandingPage() {
                         }}
                     />
                 </div>
-                
+
                 <div className="relative z-10">
                     <Header auth={auth} goToDashboard={goToDashboard} />
                     <main>

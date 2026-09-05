@@ -6,7 +6,7 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { CheckCircle2, CreditCard, Edit3, Plus, Trash2 } from 'lucide-react';
+import { CheckCircle2, CreditCard, Edit3, Plus, Sparkles, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { CreatePlanDialog } from './create-dialog';
 import { EditPlanDialog } from './edit-dialog';
@@ -60,6 +60,7 @@ export default function PlansIndex({ plans }: Props) {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
+    const featuredPlanId = plans.length > 1 ? plans[Math.floor(plans.length / 2)]?.id : null;
 
     const handleOpenEdit = (plan: Plan) => {
         setEditingPlan(plan);
@@ -81,7 +82,7 @@ export default function PlansIndex({ plans }: Props) {
             <Head title="Paket Langganan SaaS" />
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
-                <div className="relative overflow-hidden bg-[#0d0d0d] px-6 pt-6 pb-5 md:px-8">
+                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -91,15 +92,15 @@ export default function PlansIndex({ plans }: Props) {
                                     Platform Admin
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">Paket Langganan SaaS</h1>
-                            <p className="mt-0.5 text-sm text-white/50">
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Paket Langganan SaaS</h1>
+                            <p className="mt-0.5 text-sm text-[#5F6073]">
                                 Konfigurasi penawaran paket, batasan resource produk &amp; user, serta fitur aktif untuk tenant.
                             </p>
                         </div>
                         <Button
                             size="sm"
                             onClick={() => setIsCreateOpen(true)}
-                            className="gap-1.5 bg-[#1a56ff] text-white shadow-lg shadow-[#1a56ff]/20 hover:bg-[#1a56ff]/90"
+                            className="admin-primary-button gap-1.5 text-white"
                         >
                             <Plus size={14} /> Buat Paket Baru
                         </Button>
@@ -107,53 +108,71 @@ export default function PlansIndex({ plans }: Props) {
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col gap-6 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Plans List Grid */}
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {plans.map((plan) => (
+                        {plans.map((plan) => {
+                            const isFeatured = plan.id === featuredPlanId;
+
+                            return (
                             <Card
                                 key={plan.id}
-                                className="border-border relative flex flex-col overflow-hidden rounded-2xl shadow-sm transition-shadow hover:shadow-md"
+                                className={`relative flex flex-col overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_8px_24px_rgba(35,30,70,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(35,30,70,0.1)] ${
+                                    isFeatured
+                                        ? 'border-[#BDB5FF] shadow-[0_12px_32px_rgba(94,75,242,0.14)]'
+                                        : 'border-[#E9E5F0]'
+                                }`}
                             >
+                                <div className={`h-1.5 w-full ${isFeatured ? 'bg-[#5E4BF2]' : 'bg-[#F0EEFF]'}`} />
+                                {isFeatured && (
+                                    <div className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-[#F0EEFF] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#5E4BF2]">
+                                        <Sparkles className="size-3" />
+                                        Paling populer
+                                    </div>
+                                )}
                                 {!plan.is_active && (
-                                    <div className="absolute top-0 right-0 left-0 bg-slate-500 py-1 text-center text-xs font-semibold text-white">
+                                    <div className="absolute left-5 top-5 rounded-full bg-[#F7EFF0] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#A96A73]">
                                         Nonaktif
                                     </div>
                                 )}
-                                <CardHeader className={!plan.is_active ? 'pt-8' : ''}>
-                                    <div className="flex items-center justify-between">
-                                        <CardTitle className="text-xl">{plan.name}</CardTitle>
-                                        <Badge variant="outline">{plan.billing_cycle === 'monthly' ? 'Bulanan' : 'Tahunan'}</Badge>
+                                <CardHeader className="gap-4 px-6 pt-6 pb-3">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="mb-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#9693AA]">Paket bisnis</p>
+                                            <CardTitle className="text-2xl font-black text-[#17182A]">{plan.name}</CardTitle>
+                                        </div>
+                                        {!isFeatured && <Badge variant="outline" className="rounded-full border-[#E4E0F1] px-2.5 py-1 text-[10px] font-bold text-[#686673]">{plan.billing_cycle === 'monthly' ? 'Bulanan' : 'Tahunan'}</Badge>}
                                     </div>
-                                    <CardDescription className="pt-2 text-2xl font-bold text-slate-900 dark:text-slate-50">
+                                    <CardDescription className="text-3xl font-black tracking-[-0.04em] text-[#17182A]">
                                         {plan.price === 0 || Number(plan.price) === 0 ? 'Gratis' : formatRupiah(plan.price)}
+                                        <span className="ml-1 text-xs font-semibold tracking-normal text-[#9693AA]">/{plan.billing_cycle === 'monthly' ? 'bulan' : 'tahun'}</span>
                                     </CardDescription>
                                 </CardHeader>
 
-                                <CardContent className="flex-1 space-y-4">
-                                    <div className="space-y-1.5 rounded-xl bg-slate-50 p-3 text-sm dark:bg-slate-800/50">
+                                <CardContent className="flex-1 space-y-5 px-6 pb-5">
+                                    <div className={`grid grid-cols-3 divide-x rounded-xl border p-3 text-center ${isFeatured ? 'border-[#DCD8FF] bg-[#F4F2FF]' : 'border-[#EEEAF3] bg-[#F8F7FC]'}`}>
                                         <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Maks. Pengguna:</span>
-                                            <span className="font-semibold">{plan.max_users >= 99 ? 'Tak Terbatas' : plan.max_users}</span>
+                                            <span className="sr-only">Maks. Pengguna:</span>
+                                            <span className="w-full"><strong className="block text-base font-black text-[#17182A]">{plan.max_users >= 99 ? '∞' : plan.max_users}</strong><small className="text-[10px] font-semibold text-[#9693AA]">Pengguna</small></span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Maks. Produk:</span>
-                                            <span className="font-semibold">{plan.max_products >= 9999 ? 'Tak Terbatas' : plan.max_products}</span>
+                                            <span className="sr-only">Maks. Produk:</span>
+                                            <span className="w-full"><strong className="block text-base font-black text-[#17182A]">{plan.max_products >= 9999 ? '∞' : plan.max_products}</strong><small className="text-[10px] font-semibold text-[#9693AA]">Produk</small></span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Digunakan Oleh:</span>
-                                            <span className="font-semibold">{plan.tenants_count} tenant</span>
+                                            <span className="sr-only">Digunakan Oleh:</span>
+                                            <span className="w-full"><strong className="block text-base font-black text-[#17182A]">{plan.tenants_count}</strong><small className="text-[10px] font-semibold text-[#9693AA]">Tenant</small></span>
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <p className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-                                            Fitur Aktif ({plan.features?.length || 0}):
+                                        <p className="text-xs font-extrabold tracking-[0.12em] text-[#777583] uppercase">
+                                            Termasuk ({plan.features?.length || 0} fitur)
                                         </p>
-                                        <div className="space-y-1.5 pr-2">
+                                        <div className="grid gap-2 pr-2">
                                             {AVAILABLE_FEATURES.filter((f) => plan.features?.includes(f.id)).map((feat) => (
-                                                <div key={feat.id} className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
-                                                    <CheckCircle2 size={13} className="shrink-0 text-emerald-500" />
+                                                <div key={feat.id} className="flex items-center gap-2 text-xs font-semibold text-[#53556A]">
+                                                    <CheckCircle2 size={14} className="shrink-0 text-[#4C9A78]" />
                                                     <span>{feat.label}</span>
                                                 </div>
                                             ))}
@@ -161,17 +180,22 @@ export default function PlansIndex({ plans }: Props) {
                                     </div>
                                 </CardContent>
 
-                                <div className="border-border dark:bg-slate-850/20 flex justify-end gap-2 border-t bg-slate-50/50 px-6 py-4">
-                                    <Button variant="outline" size="sm" onClick={() => handleOpenEdit(plan)} className="rounded-xl">
+                                <div className="border-border grid grid-cols-2 gap-2 border-t bg-[#FCFBFE] px-5 py-3">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleOpenEdit(plan)}
+                                        className="admin-plan-edit h-10 rounded-xl px-3 text-xs font-extrabold"
+                                    >
                                         <Edit3 size={14} className="mr-1" />
                                         Edit
                                     </Button>
                                     <Button
-                                        variant="outline"
+                                        variant="ghost"
                                         size="sm"
                                         onClick={() => handleDelete(plan)}
                                         disabled={plan.tenants_count > 0}
-                                        className="text-destructive hover:bg-destructive/10 hover:text-destructive rounded-xl"
+                                        className="admin-plan-delete h-10 rounded-xl px-3 text-xs font-extrabold"
                                         title={plan.tenants_count > 0 ? 'Paket sedang digunakan oleh tenant' : 'Hapus Paket'}
                                     >
                                         <Trash2 size={14} className="mr-1" />
@@ -179,7 +203,8 @@ export default function PlansIndex({ plans }: Props) {
                                     </Button>
                                 </div>
                             </Card>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>

@@ -23,7 +23,7 @@ export default function SupplierIndex({ suppliers }: Props) {
 
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
-                <div className="relative overflow-hidden bg-[#0d0d0d] px-6 pt-6 pb-5 md:px-8">
+                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 py-6 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -33,13 +33,13 @@ export default function SupplierIndex({ suppliers }: Props) {
                                     Platform Admin
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">Kelola Supplier</h1>
-                            <p className="mt-0.5 text-sm text-white/50">
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Kelola Supplier</h1>
+                            <p className="mt-0.5 text-sm text-[#5F6073]">
                                 Kelola semua data supplier, kontak, dan status operasional mereka untuk sistem ini.
                             </p>
                         </div>
                         <Link href="/admin/supplier/create">
-                            <Button size="sm" className="gap-1.5 bg-[#1a56ff] text-white shadow-lg shadow-[#1a56ff]/20 hover:bg-[#1a56ff]/90">
+                            <Button size="sm" className="admin-primary-button gap-1.5 text-white">
                                 <Plus size={14} /> Tambah Supplier
                             </Button>
                         </Link>
@@ -47,7 +47,7 @@ export default function SupplierIndex({ suppliers }: Props) {
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col gap-6 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     <DataTable columns={columns} data={suppliers} />
                 </div>
             </div>

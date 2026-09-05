@@ -11,6 +11,14 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-purple text-white shadow-[0_4px_14px_0_rgba(94,75,242,0.3)] hover:opacity-90",
+        admin:
+          "bg-admin-accent text-white hover:opacity-90 shadow-[0_4px_14px_0_rgba(94,75,242,0.3)]",
+        owner:
+          "bg-owner-accent text-white hover:opacity-90 shadow-sm",
+        supervisor:
+          "bg-supervisor-accent text-white hover:opacity-90 shadow-sm",
+        staff:
+          "bg-staff-accent text-white hover:opacity-90 shadow-sm",
         save:
           "bg-lime text-white shadow-[0_4px_14px_0_rgba(114,225,92,0.35)] hover:opacity-95",
         edit:

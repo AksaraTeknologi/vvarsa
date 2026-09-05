@@ -410,7 +410,7 @@ function SidebarContent({ className, onScroll, ...props }: React.ComponentProps<
       data-sidebar="content"
       onScroll={handleScroll}
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden [overflow-anchor:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         className
       )}
       {...props}
