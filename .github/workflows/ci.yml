@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, dom, fileinfo, sqlite, pdo_sqlite, bcmath
+          coverage: none
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Install Node Dependencies
+        run: npm ci
+
+      # Step 1: PHP Syntax & Linting
+      - name: Step 1 - PHP Syntax & Linting (Pint)
+        run: ./vendor/bin/pint --test
+
+      # Step 2: TypeScript & ESLint Check
+      - name: Step 2 - TypeScript & ESLint Check
+        run: |
+          npm run types
+          npm run lint
+
+      # Step 3: PestPHP Test Suite execution with in-memory SQLite database
+      - name: Step 3 - PestPHP Test Suite (In-Memory SQLite)
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:pQ85UNz6Iic+GhYiXLJnjYR76utN4vbEJxJhiAb3Zwk=
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
+        run: php artisan test

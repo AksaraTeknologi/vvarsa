@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user() ? array_merge($request->user()->toArray(), [
-                    'roles'       => $request->user()->getRoleNames(),
+                    'roles' => $request->user()->getRoleNames(),
                     'permissions' => $request->user()->getAllPermissions()->pluck('name'),
                 ]) : null,
             ],
@@ -55,11 +55,11 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [
-                'success'          => $request->session()->get('success'),
-                'error'            => $request->session()->get('error'),
-                'warning'          => $request->session()->get('warning'),
-                'info'             => $request->session()->get('info'),
-                'last_order_id'    => $request->session()->get('last_order_id'),
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+                'warning' => $request->session()->get('warning'),
+                'info' => $request->session()->get('info'),
+                'last_order_id' => $request->session()->get('last_order_id'),
                 'last_order_email' => $request->session()->get('last_order_email'),
             ],
         ];

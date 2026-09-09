@@ -31,11 +31,11 @@ class StockMovementController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'product_id'    => 'required|exists:products,id',
-            'qty'           => 'required|integer|min:1',
-            'unit_cost'     => 'nullable|numeric|min:0',
-            'reference'     => 'nullable|string|max:100',
-            'note'          => 'nullable|string',
+            'product_id' => 'required|exists:products,id',
+            'qty' => 'required|integer|min:1',
+            'unit_cost' => 'nullable|numeric|min:0',
+            'reference' => 'nullable|string|max:100',
+            'note' => 'nullable|string',
             'movement_date' => 'required|date',
         ]);
 
@@ -45,19 +45,19 @@ class StockMovementController extends Controller
 
         DB::transaction(function () use ($product, $validated, $tenant) {
             $qtyBefore = $product->current_stock;
-            $qtyAfter  = $qtyBefore + $validated['qty'];
+            $qtyAfter = $qtyBefore + $validated['qty'];
 
             StockMovement::create([
-                'tenant_id'     => $tenant->id,
-                'product_id'    => $product->id,
-                'type'          => 'in',
-                'qty'           => $validated['qty'],
-                'qty_before'    => $qtyBefore,
-                'qty_after'     => $qtyAfter,
-                'unit_cost'     => $validated['unit_cost'] ?? $product->cost_price,
-                'reference'     => $validated['reference'] ?? null,
-                'note'          => $validated['note'] ?? null,
-                'user_id'       => auth()->id(),
+                'tenant_id' => $tenant->id,
+                'product_id' => $product->id,
+                'type' => 'in',
+                'qty' => $validated['qty'],
+                'qty_before' => $qtyBefore,
+                'qty_after' => $qtyAfter,
+                'unit_cost' => $validated['unit_cost'] ?? $product->cost_price,
+                'reference' => $validated['reference'] ?? null,
+                'note' => $validated['note'] ?? null,
+                'user_id' => auth()->id(),
                 'movement_date' => $validated['movement_date'],
             ]);
 
@@ -88,10 +88,10 @@ class StockMovementController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'product_id'    => 'required|exists:products,id',
-            'qty'           => 'required|integer|min:1',
-            'reference'     => 'nullable|string|max:100',
-            'note'          => 'nullable|string',
+            'product_id' => 'required|exists:products,id',
+            'qty' => 'required|integer|min:1',
+            'reference' => 'nullable|string|max:100',
+            'note' => 'nullable|string',
             'movement_date' => 'required|date',
         ]);
 
@@ -105,18 +105,18 @@ class StockMovementController extends Controller
 
         DB::transaction(function () use ($product, $validated, $tenant) {
             $qtyBefore = $product->current_stock;
-            $qtyAfter  = $qtyBefore - $validated['qty'];
+            $qtyAfter = $qtyBefore - $validated['qty'];
 
             StockMovement::create([
-                'tenant_id'     => $tenant->id,
-                'product_id'    => $product->id,
-                'type'          => 'out',
-                'qty'           => $validated['qty'],
-                'qty_before'    => $qtyBefore,
-                'qty_after'     => $qtyAfter,
-                'reference'     => $validated['reference'] ?? null,
-                'note'          => $validated['note'] ?? null,
-                'user_id'       => auth()->id(),
+                'tenant_id' => $tenant->id,
+                'product_id' => $product->id,
+                'type' => 'out',
+                'qty' => $validated['qty'],
+                'qty_before' => $qtyBefore,
+                'qty_after' => $qtyAfter,
+                'reference' => $validated['reference'] ?? null,
+                'note' => $validated['note'] ?? null,
+                'user_id' => auth()->id(),
                 'movement_date' => $validated['movement_date'],
             ]);
 
@@ -150,11 +150,11 @@ class StockMovementController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'items'                => 'required|array|min:1',
-            'items.*.product_id'   => 'required|exists:products,id',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
             'items.*.actual_stock' => 'required|integer|min:0',
-            'items.*.note'         => 'nullable|string',
-            'opname_date'          => 'required|date',
+            'items.*.note' => 'nullable|string',
+            'opname_date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($validated, $tenant) {
@@ -163,23 +163,27 @@ class StockMovementController extends Controller
                     ->where('tenant_id', $tenant->id)
                     ->first();
 
-                if (!$product) continue;
+                if (! $product) {
+                    continue;
+                }
 
-                $qtyBefore  = $product->current_stock;
-                $qtyAfter   = $item['actual_stock'];
+                $qtyBefore = $product->current_stock;
+                $qtyAfter = $item['actual_stock'];
                 $difference = $qtyAfter - $qtyBefore;
 
-                if ($difference === 0) continue;
+                if ($difference === 0) {
+                    continue;
+                }
 
                 StockMovement::create([
-                    'tenant_id'     => $tenant->id,
-                    'product_id'    => $product->id,
-                    'type'          => 'opname',
-                    'qty'           => abs($difference),
-                    'qty_before'    => $qtyBefore,
-                    'qty_after'     => $qtyAfter,
-                    'note'          => $item['note'] ?? 'Stok opname',
-                    'user_id'       => auth()->id(),
+                    'tenant_id' => $tenant->id,
+                    'product_id' => $product->id,
+                    'type' => 'opname',
+                    'qty' => abs($difference),
+                    'qty_before' => $qtyBefore,
+                    'qty_after' => $qtyAfter,
+                    'note' => $item['note'] ?? 'Stok opname',
+                    'user_id' => auth()->id(),
                     'movement_date' => $validated['opname_date'],
                 ]);
 
@@ -210,8 +214,8 @@ class StockMovementController extends Controller
 
         return Inertia::render('inventory/history', [
             'movements' => $movements,
-            'products'  => $products,
-            'filters'   => $request->only(['type', 'product']),
+            'products' => $products,
+            'filters' => $request->only(['type', 'product']),
         ]);
     }
 }

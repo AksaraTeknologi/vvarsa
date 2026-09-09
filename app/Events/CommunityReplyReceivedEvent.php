@@ -14,9 +14,7 @@ class CommunityReplyReceivedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public CommunityReply $reply)
-    {
-    }
+    public function __construct(public CommunityReply $reply) {}
 
     public function broadcastOn(): array
     {
@@ -25,7 +23,7 @@ class CommunityReplyReceivedEvent implements ShouldBroadcastNow
             ->where('id', '!=', $this->reply->user_id)
             ->whereHas('communityMemberships', fn ($query) => $query->where('post_id', $this->reply->post_id))
             ->pluck('id')
-            ->map(fn (string $userId) => new PrivateChannel('user.' . $userId))
+            ->map(fn (string $userId) => new PrivateChannel('user.'.$userId))
             ->all();
     }
 
@@ -41,7 +39,7 @@ class CommunityReplyReceivedEvent implements ShouldBroadcastNow
         $data = [
             'reply_id' => $this->reply->id,
             'post_id' => $this->reply->post_id,
-            'url' => '/community/' . $this->reply->post_id,
+            'url' => '/community/'.$this->reply->post_id,
         ];
 
         User::query()

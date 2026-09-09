@@ -11,13 +11,13 @@ class SubscriptionPlanSeeder extends Seeder
     {
         $plans = [
             [
-                'name'         => 'Free',
-                'slug'         => 'free',
-                'price'        => 0,
-                'billing_cycle'=> 'monthly',
-                'max_users'    => 1,
+                'name' => 'Free',
+                'slug' => 'free',
+                'price' => 0,
+                'billing_cycle' => 'monthly',
+                'max_users' => 1,
                 'max_products' => 100,
-                'features'     => [
+                'features' => [
                     'inventory',
                     'stock_in',
                     'stock_out',
@@ -32,13 +32,13 @@ class SubscriptionPlanSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'name'         => 'Pro',
-                'slug'         => 'pro',
-                'price'        => 149000,
-                'billing_cycle'=> 'monthly',
-                'max_users'    => 5,
+                'name' => 'Pro',
+                'slug' => 'pro',
+                'price' => 149000,
+                'billing_cycle' => 'monthly',
+                'max_users' => 5,
                 'max_products' => 1000,
-                'features'     => [
+                'features' => [
                     'inventory',
                     'stock_in',
                     'stock_out',
@@ -60,13 +60,13 @@ class SubscriptionPlanSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'name'         => 'Enterprise',
-                'slug'         => 'enterprise',
-                'price'        => 499000,
-                'billing_cycle'=> 'monthly',
-                'max_users'    => 99,
+                'name' => 'Enterprise',
+                'slug' => 'enterprise',
+                'price' => 499000,
+                'billing_cycle' => 'monthly',
+                'max_users' => 99,
                 'max_products' => 99999,
-                'features'     => [
+                'features' => [
                     'inventory',
                     'stock_in',
                     'stock_out',

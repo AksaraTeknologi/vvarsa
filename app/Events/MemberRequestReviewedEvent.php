@@ -13,13 +13,11 @@ class MemberRequestReviewedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public MemberRequest $memberRequest)
-    {
-    }
+    public function __construct(public MemberRequest $memberRequest) {}
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('tenant.' . $this->memberRequest->tenant_id)];
+        return [new PrivateChannel('tenant.'.$this->memberRequest->tenant_id)];
     }
 
     public function broadcastAs(): string
@@ -45,6 +43,6 @@ class MemberRequestReviewedEvent implements ShouldBroadcastNow
             ]
         );
 
-        return ['member_request' => $this->memberRequest->only(['id', 'name', 'email', 'role', 'status']), 'message' => $message ];
+        return ['member_request' => $this->memberRequest->only(['id', 'name', 'email', 'role', 'status']), 'message' => $message];
     }
 }

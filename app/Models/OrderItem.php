@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,11 +23,11 @@ class OrderItem extends Model
     ];
 
     protected $casts = [
-        'qty'         => 'integer',
-        'unit_price'  => 'decimal:2',
-        'unit_hpp'    => 'decimal:2',
-        'total'       => 'decimal:2',
-        'paket_isi'   => 'integer',
+        'qty' => 'integer',
+        'unit_price' => 'decimal:2',
+        'unit_hpp' => 'decimal:2',
+        'total' => 'decimal:2',
+        'paket_isi' => 'integer',
         'paket_harga' => 'integer',
     ];
 

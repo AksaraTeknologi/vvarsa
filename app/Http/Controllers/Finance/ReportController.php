@@ -15,8 +15,8 @@ class ReportController extends Controller
     {
         $tenant = app('tenant');
         $period = $request->get('period', 'monthly'); // daily, monthly, yearly
-        $year   = $request->get('year', now()->year);
-        $month  = $request->get('month', now()->month);
+        $year = $request->get('year', now()->year);
+        $month = $request->get('month', now()->month);
 
         $query = Transaction::where('tenant_id', $tenant->id)->where('type', 'income');
 
@@ -35,16 +35,16 @@ class ReportController extends Controller
                 ->groupBy('year')->orderBy('year')->get();
         }
 
-        $totalSales = (clone $query)->when($period === 'monthly', fn($q) => $q->whereYear('date', $year))
-            ->when($period === 'daily', fn($q) => $q->whereYear('date', $year)->whereMonth('date', $month))
+        $totalSales = (clone $query)->when($period === 'monthly', fn ($q) => $q->whereYear('date', $year))
+            ->when($period === 'daily', fn ($q) => $q->whereYear('date', $year)->whereMonth('date', $month))
             ->sum('amount');
 
         return Inertia::render('finance/sales-report', [
-            'data'        => $data,
+            'data' => $data,
             'total_sales' => (float) $totalSales,
-            'period'      => $period,
-            'year'        => (int) $year,
-            'month'       => (int) $month,
+            'period' => $period,
+            'year' => (int) $year,
+            'month' => (int) $month,
             'today_sales' => (float) Transaction::where('tenant_id', $tenant->id)
                 ->where('type', 'income')->whereDate('date', today())->sum('amount'),
             'month_sales' => (float) Transaction::where('tenant_id', $tenant->id)
@@ -55,8 +55,8 @@ class ReportController extends Controller
     public function expenseReport(Request $request): Response
     {
         $tenant = app('tenant');
-        $year   = $request->get('year', now()->year);
-        $month  = $request->get('month', now()->month);
+        $year = $request->get('year', now()->year);
+        $month = $request->get('month', now()->month);
 
         $monthlyData = Transaction::where('tenant_id', $tenant->id)
             ->where('type', 'expense')
@@ -72,13 +72,13 @@ class ReportController extends Controller
             ->groupBy('expense_category_id')->get();
 
         return Inertia::render('finance/expense-report', [
-            'monthly_data'   => $monthlyData,
-            'by_category'    => $byCategory,
-            'year'           => (int) $year,
-            'month'          => (int) $month,
-            'today_expense'  => (float) Transaction::where('tenant_id', $tenant->id)
+            'monthly_data' => $monthlyData,
+            'by_category' => $byCategory,
+            'year' => (int) $year,
+            'month' => (int) $month,
+            'today_expense' => (float) Transaction::where('tenant_id', $tenant->id)
                 ->where('type', 'expense')->whereDate('date', today())->sum('amount'),
-            'month_expense'  => (float) Transaction::where('tenant_id', $tenant->id)
+            'month_expense' => (float) Transaction::where('tenant_id', $tenant->id)
                 ->where('type', 'expense')->whereYear('date', $year)->whereMonth('date', $month)->sum('amount'),
         ]);
     }
@@ -90,32 +90,32 @@ class ReportController extends Controller
         // 12-month revenue vs expense
         $twelveMonths = [];
         for ($i = 11; $i >= 0; $i--) {
-            $date  = now()->subMonths($i);
-            $y     = $date->year;
-            $m     = $date->month;
+            $date = now()->subMonths($i);
+            $y = $date->year;
+            $m = $date->month;
             $label = $date->format('M Y');
 
-            $income  = Transaction::where('tenant_id', $tenant->id)->where('type', 'income')
+            $income = Transaction::where('tenant_id', $tenant->id)->where('type', 'income')
                 ->whereYear('date', $y)->whereMonth('date', $m)->sum('amount');
             $expense = Transaction::where('tenant_id', $tenant->id)->where('type', 'expense')
                 ->whereYear('date', $y)->whereMonth('date', $m)->sum('amount');
 
             $twelveMonths[] = [
-                'label'   => $label,
-                'income'  => (float) $income,
+                'label' => $label,
+                'income' => (float) $income,
                 'expense' => (float) $expense,
-                'profit'  => (float) ($income - $expense),
+                'profit' => (float) ($income - $expense),
             ];
         }
 
         return Inertia::render('finance/index', [
             'twelve_months' => $twelveMonths,
-            'today'         => [
-                'income'  => (float) Transaction::where('tenant_id', $tenant->id)->where('type', 'income')->whereDate('date', today())->sum('amount'),
+            'today' => [
+                'income' => (float) Transaction::where('tenant_id', $tenant->id)->where('type', 'income')->whereDate('date', today())->sum('amount'),
                 'expense' => (float) Transaction::where('tenant_id', $tenant->id)->where('type', 'expense')->whereDate('date', today())->sum('amount'),
             ],
-            'this_month'    => [
-                'income'  => (float) Transaction::where('tenant_id', $tenant->id)->where('type', 'income')->whereYear('date', now()->year)->whereMonth('date', now()->month)->sum('amount'),
+            'this_month' => [
+                'income' => (float) Transaction::where('tenant_id', $tenant->id)->where('type', 'income')->whereYear('date', now()->year)->whereMonth('date', now()->month)->sum('amount'),
                 'expense' => (float) Transaction::where('tenant_id', $tenant->id)->where('type', 'expense')->whereYear('date', now()->year)->whereMonth('date', now()->month)->sum('amount'),
             ],
         ]);

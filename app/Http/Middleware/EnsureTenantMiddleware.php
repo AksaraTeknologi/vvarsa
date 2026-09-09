@@ -16,29 +16,31 @@ class EnsureTenantMiddleware
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             return $next($request);
         }
 
         // Platform admin tidak butuh tenant context
         if ($user->hasRole('admin')) {
             $request->session()->reflash();
+
             return redirect()->route('admin.dashboard');
         }
 
-        if (!$user->tenant_id) {
+        if (! $user->tenant_id) {
             // User belum setup bisnis — arahkan ke halaman pilih bisnis
             if ($request->routeIs('choose-business') || $request->routeIs('choose-business.store')) {
                 return $next($request);
             }
             $request->session()->reflash();
+
             return redirect()->route('choose-business');
         }
 
         // Load tenant dengan plan dan subscription aktif
         $tenant = $user->tenant()->with(['plan', 'activeSubscription'])->first();
 
-        if (!$tenant || !$tenant->is_active) {
+        if (! $tenant || ! $tenant->is_active) {
             abort(403, 'Akun bisnis Anda tidak aktif. Hubungi administrator.');
         }
 
@@ -48,15 +50,15 @@ class EnsureTenantMiddleware
         // Share tenant data ke Inertia (max_products/max_users dari plan)
         inertia()->share([
             'tenant' => [
-                'id'            => $tenant->id,
-                'name'          => $tenant->name,
+                'id' => $tenant->id,
+                'name' => $tenant->name,
                 'business_type' => $tenant->business_type,
-                'plan'          => $tenant->plan ? [
-                    'name'         => $tenant->plan->name,
-                    'slug'         => $tenant->plan->slug,
-                    'features'     => $tenant->plan->features,
+                'plan' => $tenant->plan ? [
+                    'name' => $tenant->plan->name,
+                    'slug' => $tenant->plan->slug,
+                    'features' => $tenant->plan->features,
                     'max_products' => $tenant->plan->max_products,
-                    'max_users'    => $tenant->plan->max_users,
+                    'max_users' => $tenant->plan->max_users,
                 ] : null,
             ],
         ]);

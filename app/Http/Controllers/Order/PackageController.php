@@ -25,14 +25,14 @@ class PackageController extends Controller
 
         return Inertia::render('packages/index', [
             'packages' => $packages,
-            'filters'  => $request->only(['search']),
+            'filters' => $request->only(['search']),
         ]);
     }
 
     public function create(): Response
     {
         $tenant = app('tenant');
-        
+
         // Load all 1 pcs variants to let the user select which ones are allowed
         $variants = ProductVariant::where('tenant_id', $tenant->id)
             ->where('is_active', true)
@@ -50,25 +50,25 @@ class PackageController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'capacity'    => 'required|integer|min:1',
-            'price'       => 'required|numeric|min:0',
-            'is_active'   => 'required|boolean',
+            'name' => 'required|string|max:255',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'is_active' => 'required|boolean',
             'description' => 'nullable|string',
             'variant_ids' => 'nullable|array',
             'variant_ids.*' => 'exists:product_variants,id',
         ]);
 
         $package = Package::create([
-            'tenant_id'   => $tenant->id,
-            'name'        => $validated['name'],
-            'capacity'    => $validated['capacity'],
-            'price'       => $validated['price'],
-            'is_active'   => $validated['is_active'],
+            'tenant_id' => $tenant->id,
+            'name' => $validated['name'],
+            'capacity' => $validated['capacity'],
+            'price' => $validated['price'],
+            'is_active' => $validated['is_active'],
             'description' => $validated['description'] ?? null,
         ]);
 
-        if (!empty($validated['variant_ids'])) {
+        if (! empty($validated['variant_ids'])) {
             $package->variants()->sync($validated['variant_ids']);
         }
 
@@ -91,7 +91,7 @@ class PackageController extends Controller
             ->get();
 
         return Inertia::render('packages/edit', [
-            'package'  => $package,
+            'package' => $package,
             'variants' => $variants,
         ]);
     }
@@ -102,20 +102,20 @@ class PackageController extends Controller
         abort_if($package->tenant_id !== $tenant->id, 403);
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'capacity'    => 'required|integer|min:1',
-            'price'       => 'required|numeric|min:0',
-            'is_active'   => 'required|boolean',
+            'name' => 'required|string|max:255',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'is_active' => 'required|boolean',
             'description' => 'nullable|string',
             'variant_ids' => 'nullable|array',
             'variant_ids.*' => 'exists:product_variants,id',
         ]);
 
         $package->update([
-            'name'        => $validated['name'],
-            'capacity'    => $validated['capacity'],
-            'price'       => $validated['price'],
-            'is_active'   => $validated['is_active'],
+            'name' => $validated['name'],
+            'capacity' => $validated['capacity'],
+            'price' => $validated['price'],
+            'is_active' => $validated['is_active'],
             'description' => $validated['description'] ?? null,
         ]);
 

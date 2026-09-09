@@ -16,11 +16,11 @@ class SubscriptionController extends Controller
         $plans = SubscriptionPlan::where('is_active', true)->get();
 
         return Inertia::render('owner/subscription/index', [
-            'plans'          => $plans,
-            'current_plan'   => $tenant->plan,
-            'subscription'   => $tenant->activeSubscription,
-            'product_count'  => $tenant->products()->count(),
-            'user_count'     => $tenant->users()->count(),
+            'plans' => $plans,
+            'current_plan' => $tenant->plan,
+            'subscription' => $tenant->activeSubscription,
+            'product_count' => $tenant->products()->count(),
+            'user_count' => $tenant->users()->count(),
         ]);
     }
 

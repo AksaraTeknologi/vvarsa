@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,7 +49,9 @@ class Recipe extends Model
     {
         $totalCost = $this->total_cost;
         $portionQty = (float) ($this->portion_qty ?? 1.0);
-        if ($portionQty <= 0) return $totalCost;
+        if ($portionQty <= 0) {
+            return $totalCost;
+        }
 
         return (float) ($totalCost / $portionQty);
     }

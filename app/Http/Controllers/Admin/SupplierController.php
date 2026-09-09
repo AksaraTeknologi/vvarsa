@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Supplier;
 
 class SupplierController extends Controller
 {
     public function index()
     {
         $suppliers = Supplier::latest()->get();
+
         return Inertia::render('admin/supplier/index', [
             'suppliers' => $suppliers,
         ]);
@@ -45,6 +46,7 @@ class SupplierController extends Controller
         // Redirect kembali ke index dengan pesan sukses
         return redirect()->route('admin.supplier.index')->with('success', 'Supplier berhasil ditambahkan.');
     }
+
     public function edit(Supplier $supplier)
     {
         return Inertia::render('admin/supplier/edit', [
@@ -75,10 +77,11 @@ class SupplierController extends Controller
         // Redirect kembali ke index dengan pesan sukses
         return redirect()->route('admin.supplier.index')->with('success', 'Supplier berhasil diupdate.');
     }
-    public function destroy(Supplier $supplier)
-{
-    $supplier->delete();
 
-    return redirect()->route('admin.supplier.index')->with('success', 'Supplier berhasil dihapus.');
-}
+    public function destroy(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return redirect()->route('admin.supplier.index')->with('success', 'Supplier berhasil dihapus.');
+    }
 }

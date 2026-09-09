@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
+use Database\Factories\UserFactory;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,8 +14,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles, HasUuids;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, HasRoles, HasUuids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -49,8 +49,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'is_active'         => 'boolean',
+            'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -130,10 +130,19 @@ class User extends Authenticatable
      */
     public function primaryRole(): string
     {
-        if ($this->hasRole('admin'))       return 'admin';
-        if ($this->hasRole('owner'))       return 'owner';
-        if ($this->hasRole('supervisor'))  return 'supervisor';
-        if ($this->hasRole('staff'))       return 'staff';
+        if ($this->hasRole('admin')) {
+            return 'admin';
+        }
+        if ($this->hasRole('owner')) {
+            return 'owner';
+        }
+        if ($this->hasRole('supervisor')) {
+            return 'supervisor';
+        }
+        if ($this->hasRole('staff')) {
+            return 'staff';
+        }
+
         return 'guest';
     }
 }

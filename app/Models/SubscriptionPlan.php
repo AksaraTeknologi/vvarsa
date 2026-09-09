@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -23,9 +22,9 @@ class SubscriptionPlan extends Model
     ];
 
     protected $casts = [
-        'price'      => 'decimal:2',
-        'features'   => 'array',
-        'is_active'  => 'boolean',
+        'price' => 'decimal:2',
+        'features' => 'array',
+        'is_active' => 'boolean',
     ];
 
     public function tenants(): HasMany

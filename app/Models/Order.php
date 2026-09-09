@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -36,13 +34,13 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'subtotal'       => 'decimal:2',
-        'discount'       => 'decimal:2',
-        'total'          => 'decimal:2',
-        'cash_received'  => 'decimal:2',
-        'change_amount'  => 'decimal:2',
+        'subtotal' => 'decimal:2',
+        'discount' => 'decimal:2',
+        'total' => 'decimal:2',
+        'cash_received' => 'decimal:2',
+        'change_amount' => 'decimal:2',
         'stock_deducted' => 'boolean',
-        'ordered_at'     => 'datetime',
+        'ordered_at' => 'datetime',
     ];
 
     public function getChangeAttribute(): ?float
@@ -96,11 +94,11 @@ class Order extends Model
      */
     public static function generateOrderNumber(string|int $tenantId): string
     {
-        $date   = Carbon::now()->format('Ymd');
+        $date = Carbon::now()->format('Ymd');
         $prefix = "ORD-{$date}-";
 
         $lastOrder = self::where('tenant_id', $tenantId)
-            ->where('order_number', 'like', $prefix . '%')
+            ->where('order_number', 'like', $prefix.'%')
             ->lockForUpdate()
             ->orderByDesc('id')
             ->first();
@@ -109,7 +107,7 @@ class Order extends Model
             ? ((int) substr($lastOrder->order_number, -4)) + 1
             : 1;
 
-        return $prefix . str_pad($nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad($nextSeq, 4, '0', STR_PAD_LEFT);
     }
 
     public function isPaid(): bool

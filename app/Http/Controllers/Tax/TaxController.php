@@ -30,18 +30,18 @@ class TaxController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'period'       => 'required|string|max:20',
-            'tax_type'     => 'required|string|max:50',
+            'period' => 'required|string|max:20',
+            'tax_type' => 'required|string|max:50',
             'gross_amount' => 'required|numeric|min:0',
-            'tax_amount'   => 'required|numeric|min:0',
-            'status'       => 'required|in:draft,submitted,paid',
-            'notes'        => 'nullable|string',
-            'due_date'     => 'nullable|date',
+            'tax_amount' => 'required|numeric|min:0',
+            'status' => 'required|in:draft,submitted,paid',
+            'notes' => 'nullable|string',
+            'due_date' => 'nullable|date',
         ]);
 
         TaxReport::create(array_merge($validated, [
             'tenant_id' => $tenant->id,
-            'user_id'   => auth()->id(),
+            'user_id' => auth()->id(),
         ]));
 
         return back()->with('success', 'Laporan pajak berhasil disimpan.');

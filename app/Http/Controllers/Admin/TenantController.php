@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tenant;
 use App\Models\SubscriptionPlan;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,9 +33,9 @@ class TenantController extends Controller
 
         return Inertia::render('admin/tenants/index', [
             'tenants' => $tenants,
-            'plans'   => $plans,
+            'plans' => $plans,
             'filters' => [
-                'search'  => $search,
+                'search' => $search,
                 'plan_id' => $planFilter,
             ],
         ]);
@@ -58,13 +58,13 @@ class TenantController extends Controller
         return Inertia::render('admin/tenants/show', [
             'tenant' => array_merge($tenant->toArray(), [
                 'max_products' => $tenant->max_products,
-                'max_users'    => $tenant->max_users,
+                'max_users' => $tenant->max_users,
             ]),
             'stats' => [
-                'product_count'     => $productCount,
-                'user_count'        => $userCount,
+                'product_count' => $productCount,
+                'user_count' => $userCount,
                 'transaction_count' => $transactionCount,
-                'total_sales'       => $totalSales,
+                'total_sales' => $totalSales,
             ],
             'plans' => $plans,
         ]);
@@ -72,10 +72,11 @@ class TenantController extends Controller
 
     public function toggleActive(Tenant $tenant)
     {
-        $tenant->is_active = !$tenant->is_active;
+        $tenant->is_active = ! $tenant->is_active;
         $tenant->save();
 
         $status = $tenant->is_active ? 'diaktifkan' : 'dinonaktifkan';
+
         return back()->with('success', "Tenant {$tenant->name} berhasil {$status}.");
     }
 
@@ -94,7 +95,7 @@ class TenantController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:tenants,slug,' . $tenant->id,
+            'slug' => 'required|string|max:255|unique:tenants,slug,'.$tenant->id,
             'business_type' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',

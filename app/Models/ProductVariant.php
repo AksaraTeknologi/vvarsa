@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -28,7 +27,7 @@ class ProductVariant extends Model
     protected $casts = [
         'recipe_qty' => 'decimal:3',
         'sell_price' => 'decimal:2',
-        'is_active'  => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function tenant(): BelongsTo
@@ -56,10 +55,14 @@ class ProductVariant extends Model
      */
     public function getRecipesAttribute()
     {
-        if (!$this->recipe) return collect();
+        if (! $this->recipe) {
+            return collect();
+        }
+
         return $this->recipe->ingredients->map(function ($ing) {
             $item = clone $ing;
             $item->qty = (float) $ing->qty * (float) $this->recipe_qty;
+
             return $item;
         });
     }
@@ -70,7 +73,10 @@ class ProductVariant extends Model
      */
     public function getHppAttribute(): float
     {
-        if (!$this->recipe) return 0.0;
+        if (! $this->recipe) {
+            return 0.0;
+        }
+
         return (float) $this->recipe->hpp * (float) $this->recipe_qty;
     }
 
@@ -80,7 +86,10 @@ class ProductVariant extends Model
     public function getMarginAttribute(): float
     {
         $hpp = $this->hpp;
-        if ($this->sell_price == 0) return 0;
+        if ($this->sell_price == 0) {
+            return 0;
+        }
+
         return round((($this->sell_price - $hpp) / $this->sell_price) * 100, 2);
     }
 

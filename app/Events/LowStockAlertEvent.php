@@ -13,13 +13,11 @@ class LowStockAlertEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public Product $product)
-    {
-    }
+    public function __construct(public Product $product) {}
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('tenant.' . $this->product->tenant_id)];
+        return [new PrivateChannel('tenant.'.$this->product->tenant_id)];
     }
 
     public function broadcastAs(): string
@@ -36,7 +34,7 @@ class LowStockAlertEvent implements ShouldBroadcastNow
             'product_name' => $this->product->name,
             'current_stock' => $this->product->current_stock,
             'min_stock' => $this->product->min_stock,
-            'url' => '/inventory?low_stock=1&product_id=' . $this->product->id,
+            'url' => '/inventory?low_stock=1&product_id='.$this->product->id,
         ];
 
         RealtimeNotification::createForTenantRoles(

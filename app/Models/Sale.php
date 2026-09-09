@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,8 +23,8 @@ class Sale extends Model
 
     protected $casts = [
         'unit_price' => 'decimal:2',
-        'discount'   => 'decimal:2',
-        'total'      => 'decimal:2',
+        'discount' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
     public function tenant(): BelongsTo

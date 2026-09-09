@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\RedirectResponse; 
 
 class SupplierController extends Controller
 {
@@ -20,14 +20,14 @@ class SupplierController extends Controller
         $query = Supplier::where('is_active', true)
             ->where(function ($q) use ($tenant) {
                 $q->whereNull('tenant_id')
-                  ->orWhere('tenant_id', $tenant->id);
+                    ->orWhere('tenant_id', $tenant->id);
             });
 
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('city', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -51,11 +51,11 @@ class SupplierController extends Controller
             ->values();
 
         return Inertia::render('suppliers/index', [
-            'suppliers'     => $suppliers,
-            'cities'        => $cities,
-            'filters'       => [
+            'suppliers' => $suppliers,
+            'cities' => $cities,
+            'filters' => [
                 'search' => $request->get('search', ''),
-                'city'   => $request->get('city', ''),
+                'city' => $request->get('city', ''),
             ],
             'business_type' => $tenant->business_type,
         ]);
@@ -71,23 +71,23 @@ class SupplierController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'name'               => 'required|string|max:255',
-            'contact_name'       => 'nullable|string|max:255',
-            'phone'              => 'nullable|string|max:20',
-            'email'              => 'nullable|email|max:255',
-            'website'            => 'nullable|url|max:255',
-            'address'            => 'nullable|string',
-            'city'               => 'nullable|string|max:100',
-            'business_type'      => 'nullable|string|in:fnb,retail,fashion,services,general',
+            'name' => 'required|string|max:255',
+            'contact_name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'website' => 'nullable|url|max:255',
+            'address' => 'nullable|string',
+            'city' => 'nullable|string|max:100',
+            'business_type' => 'nullable|string|in:fnb,retail,fashion,services,general',
             'product_categories' => 'nullable|array',
-            'description'        => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
-        $validated['tenant_id']   = $tenant->id;
-        $validated['is_active']   = true;
-        $validated['is_verified'] = false; 
-        $validated['rating']      = 0.0;
-        $validated['review_count']= 0;
+        $validated['tenant_id'] = $tenant->id;
+        $validated['is_active'] = true;
+        $validated['is_verified'] = false;
+        $validated['rating'] = 0.0;
+        $validated['review_count'] = 0;
 
         Supplier::create($validated);
 
@@ -105,7 +105,7 @@ class SupplierController extends Controller
         }
 
         return Inertia::render('suppliers/edit', [
-            'supplier' => $supplier
+            'supplier' => $supplier,
         ]);
     }
 
@@ -119,16 +119,16 @@ class SupplierController extends Controller
         }
 
         $validated = $request->validate([
-            'name'               => 'required|string|max:255',
-            'contact_name'       => 'nullable|string|max:255',
-            'phone'              => 'nullable|string|max:20',
-            'email'              => 'nullable|email|max:255',
-            'website'            => 'nullable|url|max:255',
-            'address'            => 'nullable|string',
-            'city'               => 'nullable|string|max:100',
-            'business_type'      => 'nullable|string|in:fnb,retail,fashion,services,general',
+            'name' => 'required|string|max:255',
+            'contact_name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'website' => 'nullable|url|max:255',
+            'address' => 'nullable|string',
+            'city' => 'nullable|string|max:100',
+            'business_type' => 'nullable|string|in:fnb,retail,fashion,services,general',
             'product_categories' => 'nullable|array',
-            'description'        => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
         $supplier->update($validated);

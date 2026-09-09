@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\SubscriptionPlan;
 use App\Models\Tenant;
 use App\Models\User;
-use App\Models\SubscriptionPlan;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -38,14 +38,14 @@ class DashboardController extends Controller
 
         return Inertia::render('admin/dashboard', [
             'stats' => [
-                'total_tenants'   => $totalTenants,
-                'active_tenants'  => $activeTenants,
-                'total_users'     => $totalUsers,
-                'total_plans'     => $totalPlans,
+                'total_tenants' => $totalTenants,
+                'active_tenants' => $activeTenants,
+                'total_users' => $totalUsers,
+                'total_plans' => $totalPlans,
                 'monthly_revenue' => $monthlyRevenue,
             ],
             'recent_tenants' => $recentTenants,
-            'recent_users'   => $recentUsers,
+            'recent_users' => $recentUsers,
         ]);
     }
 }

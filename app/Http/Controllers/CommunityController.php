@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\CommunityReplyReceivedEvent;
-use App\Models\CommunityPost;
 use App\Models\CommunityMembership;
+use App\Models\CommunityPost;
 use App\Models\CommunityPostLike;
 use App\Models\CommunityReply;
 use Illuminate\Http\Request;
@@ -35,9 +35,9 @@ class CommunityController extends Controller
             ->pluck('post_id')->toArray();
 
         return Inertia::render('community/index', [
-            'posts'                => $posts,
-            'liked_post_ids'       => $likedPostIds,
-            'filters'              => $request->only(['category', 'search']),
+            'posts' => $posts,
+            'liked_post_ids' => $likedPostIds,
+            'filters' => $request->only(['category', 'search']),
             'tenant_business_type' => $tenant->business_type,
         ]);
     }
@@ -92,17 +92,18 @@ class CommunityController extends Controller
             ->exists();
 
         return Inertia::render('community/show', [
-            'post'                 => $post,
-            'replies'              => $replies,
-            'is_liked'             => $isLiked,
+            'post' => $post,
+            'replies' => $replies,
+            'is_liked' => $isLiked,
             'tenant_business_type' => $tenant->business_type,
-            'is_member'           => $isMember,
+            'is_member' => $isMember,
         ]);
     }
 
     public function create(): Response
     {
         $tenant = app('tenant');
+
         return Inertia::render('community/create', [
             'tenant_business_type' => $tenant->business_type,
         ]);
@@ -112,15 +113,15 @@ class CommunityController extends Controller
     {
         $tenant = app('tenant');
         $validated = $request->validate([
-            'title'    => 'required|string|max:255',
-            'content'  => 'required|string|min:10',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string|min:10',
             'category' => 'required|in:discussion,question,tips,announcement',
         ]);
 
         $post = CommunityPost::create(array_merge($validated, [
-            'tenant_id'    => $tenant->id,
-            'user_id'      => auth()->id(),
-            'business_type'=> $tenant->business_type,
+            'tenant_id' => $tenant->id,
+            'user_id' => auth()->id(),
+            'business_type' => $tenant->business_type,
         ]));
 
         CommunityMembership::firstOrCreate([

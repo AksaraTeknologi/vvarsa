@@ -14,9 +14,7 @@ class NewOrderReceivedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 
     public function broadcastOn(): array
     {
@@ -25,7 +23,7 @@ class NewOrderReceivedEvent implements ShouldBroadcastNow
             ->where('is_active', true)
             ->whereHas('roles', fn ($query) => $query->whereIn('name', ['supervisor', 'staff']))
             ->pluck('id')
-            ->map(fn (string $userId) => new PrivateChannel('user.' . $userId))
+            ->map(fn (string $userId) => new PrivateChannel('user.'.$userId))
             ->all();
     }
 
@@ -42,7 +40,7 @@ class NewOrderReceivedEvent implements ShouldBroadcastNow
             'order_id' => $this->order->id,
             'order_number' => $this->order->order_number,
             'status' => $this->order->status,
-            'url' => '/orders/' . $this->order->id,
+            'url' => '/orders/'.$this->order->id,
         ];
 
         RealtimeNotification::createForTenantRoles(

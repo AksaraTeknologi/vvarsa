@@ -13,13 +13,11 @@ class MemberRequestSubmittedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public MemberRequest $memberRequest)
-    {
-    }
+    public function __construct(public MemberRequest $memberRequest) {}
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('tenant.' . $this->memberRequest->tenant_id)];
+        return [new PrivateChannel('tenant.'.$this->memberRequest->tenant_id)];
     }
 
     public function broadcastAs(): string

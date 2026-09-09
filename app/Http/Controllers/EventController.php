@@ -40,10 +40,10 @@ class EventController extends Controller
         $cities = Event::distinct()->pluck('city')->filter()->values();
 
         return Inertia::render('events/index', [
-            'events'               => $events,
+            'events' => $events,
             'registered_event_ids' => $registeredEventIds,
-            'cities'               => $cities,
-            'filters'              => $request->only(['search', 'city', 'business_type', 'only_registered']),
+            'cities' => $cities,
+            'filters' => $request->only(['search', 'city', 'business_type', 'only_registered']),
         ]);
     }
 
@@ -59,7 +59,7 @@ class EventController extends Controller
             ->get();
 
         return Inertia::render('events/show', [
-            'event'         => $event,
+            'event' => $event,
             'is_registered' => $isRegistered,
             'recent_registrations' => $registrations,
         ]);
@@ -69,7 +69,7 @@ class EventController extends Controller
     {
         $tenant = app('tenant');
 
-        if (!$event->isRegistrationOpen()) {
+        if (! $event->isRegistrationOpen()) {
             return back()->withErrors(['event' => 'Pendaftaran untuk event ini sudah ditutup.']);
         }
 
@@ -81,10 +81,10 @@ class EventController extends Controller
         }
 
         EventRegistration::create([
-            'event_id'      => $event->id,
-            'user_id'       => auth()->id(),
-            'tenant_id'     => $tenant->id,
-            'status'        => 'registered',
+            'event_id' => $event->id,
+            'user_id' => auth()->id(),
+            'tenant_id' => $tenant->id,
+            'status' => 'registered',
             'registered_at' => now(),
         ]);
 
@@ -99,7 +99,7 @@ class EventController extends Controller
         $registration = EventRegistration::where('event_id', $event->id)
             ->where('user_id', auth()->id())->first();
 
-        if (!$registration) {
+        if (! $registration) {
             return back()->withErrors(['event' => 'Anda belum terdaftar untuk event ini.']);
         }
 
