@@ -8,7 +8,7 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
-import { Head, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import {
     Banknote,
     Check,
@@ -72,8 +72,6 @@ interface Props {
 }
 
 export default function PosPage({ variants, packages, paymentMethods = [] }: Props) {
-    const { props } = usePage<{ flash: { success?: string; last_order_id?: string; last_order_email?: string } }>();
-
     const [cart, setCart] = useState<CartItem[]>([]);
     const [activeCartItemId, setActiveCartItemId] = useState<number | null>(null);
     const [customerName, setCustomerName] = useState('');

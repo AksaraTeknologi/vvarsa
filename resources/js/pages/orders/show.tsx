@@ -109,8 +109,6 @@ export default function OrderShow({ order, paymentMethods = [] }: Props) {
 
     console.log('items raw:', JSON.stringify(order.items));
     const paketGroups = groupByPaket(order.items ?? []);
-    const totalHpp = paketGroups.reduce((s, g) => s + g.hpp, 0);
-    const totalProfit = order.total - totalHpp;
 
     const handleAdvanceStatus = () => {
         if (!statusConfig?.next) return;

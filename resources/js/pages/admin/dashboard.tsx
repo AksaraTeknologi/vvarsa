@@ -5,7 +5,6 @@ import {
     CreditCard,
     DollarSign,
     Plus,
-    ShieldCheck,
     TrendingUp,
     Users,
 } from 'lucide-react';

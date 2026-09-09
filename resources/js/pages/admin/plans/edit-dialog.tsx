@@ -39,7 +39,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
             });
             form.clearErrors();
         }
-    }, [plan]);
+    }, [plan, form]);
 
     const handleFeatureChange = (featureId: string, checked: boolean) => {
         const currentFeatures = [...form.data.features];

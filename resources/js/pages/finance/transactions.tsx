@@ -10,7 +10,7 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ExpenseCategory, type PaginatedData, type Transaction } from '@/types/mrp';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { ArrowDownRight, ArrowUpRight, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
@@ -29,7 +29,7 @@ interface Props {
     transactions: PaginatedData<Transaction>;
     summary: TransactionSummary;
     expense_categories: ExpenseCategory[];
-    filters: { type?: string; from?: string; to?: string };
+    filters?: { type?: string; from?: string; to?: string };
 }
 
 const transactionSchema = z.object({
@@ -43,11 +43,11 @@ const transactionSchema = z.object({
     payment_method: z.enum(['cash', 'transfer', 'credit']),
 });
 
-export default function Transactions({ transactions, summary, expense_categories = [], filters }: Props) {
+export default function Transactions({ transactions, summary, expense_categories = [] }: Props) {
     const [showForm, setShowForm] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, processing, errors, reset } = useForm({
         type: 'income' as 'income' | 'expense',
         amount: 0,
         description: '',

@@ -44,8 +44,6 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
     };
 
     const handleToggleActive = (product: Product) => {
-        const isActive = product.is_active;
-
         handleAsyncAction(() => routerPromise('patch', `/inventory/${product.id}/toggle-active`, {}, { preserveScroll: true }), {
             loading: `Mengubah status produk "${product.name}"...`,
             success: `Status produk "${product.name}" berhasil diubah!`,

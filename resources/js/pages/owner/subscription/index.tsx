@@ -79,7 +79,7 @@ const COMPARISON_FEATURES = [
     'dedicated_support',
 ];
 
-export default function SubscriptionIndex({ plans, current_plan, subscription, product_count, user_count }: Props) {
+export default function SubscriptionIndex({ plans, current_plan, product_count, user_count }: Props) {
     const currentSlug = current_plan?.slug || 'free';
     const [loadingPlanId, setLoadingPlanId] = useState<number | null>(null);
 

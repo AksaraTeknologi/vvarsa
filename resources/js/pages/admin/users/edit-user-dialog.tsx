@@ -69,7 +69,7 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
             setValidationErrors({});
             form.clearErrors();
         }
-    }, [user]);
+    }, [user, form]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

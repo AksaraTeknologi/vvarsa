@@ -61,7 +61,7 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
             setValidationErrors({});
             form.clearErrors();
         }
-    }, [tenant]);
+    }, [tenant, form]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
