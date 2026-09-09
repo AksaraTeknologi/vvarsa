@@ -10,6 +10,7 @@ use App\Http\Controllers\Inventory\ProductController;
 use App\Http\Controllers\Inventory\ProductVariantController;
 use App\Http\Controllers\Inventory\RecipeController;
 use App\Http\Controllers\Inventory\StockMovementController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\PackageController;
 use App\Http\Controllers\Order\PosController;
@@ -111,11 +112,19 @@ Route::middleware(['auth', 'verified', \App\Http\Middleware\EnsureTenantMiddlewa
         // Community
         Route::prefix('community')->name('community.')->group(function () {
             Route::get('/', [CommunityController::class, 'index'])->name('index');
+            Route::post('/{post}/join', [CommunityController::class, 'join'])->name('join');
+            Route::delete('/{post}/leave', [CommunityController::class, 'leave'])->name('leave');
             Route::get('/create', [CommunityController::class, 'create'])->name('create');
             Route::post('/', [CommunityController::class, 'store'])->name('store');
             Route::get('/{post}', [CommunityController::class, 'show'])->name('show');
             Route::post('/{post}/reply', [CommunityController::class, 'reply'])->name('reply');
             Route::post('/{post}/like', [CommunityController::class, 'toggleLike'])->name('like');
+        });
+
+        Route::prefix('notifications')->name('notifications.')->group(function () {
+            Route::get('/', [NotificationController::class, 'index'])->name('index');
+            Route::patch('/{notification}/read', [NotificationController::class, 'markAsRead'])->name('read');
+            Route::patch('/read-all', [NotificationController::class, 'markAllRead'])->name('read-all');
         });
 
         // Suppliers

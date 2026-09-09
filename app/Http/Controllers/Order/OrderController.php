@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Events\LowStockAlertEvent;
+use App\Events\NewOrderReceivedEvent;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderReceiptMail;
 use App\Models\Order;
@@ -266,6 +268,8 @@ class OrderController extends Controller
             if (in_array($orderStatus, ['processing', 'done'])) {
                 $this->deductStock($order, $tenant);
             }
+
+            DB::afterCommit(fn () => broadcast(new NewOrderReceivedEvent($order->fresh())));
         });
 
         return redirect()->route('pos.index')
@@ -393,6 +397,10 @@ class OrderController extends Controller
                 ]);
 
                 $product->update(['current_stock' => $qtyAfter]);
+
+                if ($product->current_stock <= $product->min_stock) {
+                    DB::afterCommit(fn () => broadcast(new LowStockAlertEvent($product->fresh())));
+                }
             }
         }
 

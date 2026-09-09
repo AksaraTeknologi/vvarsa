@@ -81,6 +81,11 @@ class User extends Authenticatable
         return $this->hasMany(CommunityReply::class);
     }
 
+    public function communityMemberships(): HasMany
+    {
+        return $this->hasMany(CommunityMembership::class);
+    }
+
     public function eventRegistrations(): HasMany
     {
         return $this->hasMany(EventRegistration::class);

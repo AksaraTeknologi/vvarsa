@@ -5,8 +5,8 @@ import { BUSINESS_TYPE_LABELS, formatDate } from '@/lib/utils-mrp';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { type BreadcrumbItem } from '@/types';
 import { type CommunityPost, type CommunityReply } from '@/types/mrp';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { ArrowLeft, Heart, MessageCircle, Send } from 'lucide-react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, Heart, LogIn, LogOut, MessageCircle, Send } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -15,6 +15,7 @@ interface Props {
     replies: CommunityReply[];
     is_liked: boolean;
     tenant_business_type: string;
+    is_member: boolean;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -71,7 +72,7 @@ const replySchema = z.object({
     content: z.string().min(1, 'Balasan tidak boleh kosong'),
 });
 
-export default function CommunityShow({ post, replies, is_liked, tenant_business_type }: Props) {
+export default function CommunityShow({ post, replies, is_liked, tenant_business_type, is_member }: Props) {
     const { auth } = usePage().props as any;
 
     const {
@@ -152,6 +153,15 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                         <Heart size={15} className={is_liked ? 'fill-current' : ''} />
                         <span>{post.likes_count}</span>
                     </button>
+                    {is_member ? (
+                        <Button variant="outline" size="sm" onClick={() => router.delete(`/community/${post.id}/leave`, { preserveScroll: true })}>
+                            <LogOut className="size-4" /> Keluar
+                        </Button>
+                    ) : (
+                        <Button size="sm" onClick={() => router.post(`/community/${post.id}/join`, {}, { preserveScroll: true })}>
+                            <LogIn className="size-4" /> Gabung
+                        </Button>
+                    )}
                 </div>
 
                 {/* Messages area */}
@@ -218,7 +228,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                 {/* Reply input — pinned at bottom like chat */}
                 <div className="border-border bg-card shrink-0 border-t px-4 py-3">
                     <div className="mx-auto max-w-3xl">
-                        <form onSubmit={handleReply} className="flex items-end gap-3">
+                        {is_member ? <form onSubmit={handleReply} className="flex items-end gap-3">
                             <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold">
                                 {getInitials(auth?.user?.name || '?')}
                             </div>
@@ -248,7 +258,9 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             >
                                 <Send size={15} />
                             </Button>
-                        </form>
+                        </form> : <div className="text-muted-foreground flex items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-3 text-sm">
+                            <LogIn className="size-4" /> Gabung komunitas untuk ikut chat.
+                        </div>}
                     </div>
                 </div>
             </div>

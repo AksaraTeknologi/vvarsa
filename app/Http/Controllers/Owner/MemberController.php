@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Owner;
 
+use App\Events\MemberRequestReviewedEvent;
+use App\Events\MemberRequestSubmittedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\MemberRequest;
 use App\Models\User;
@@ -65,7 +67,7 @@ class MemberController extends Controller
                 'role'     => 'required|in:staff',
             ]);
 
-            MemberRequest::create([
+            $memberRequest = MemberRequest::create([
                 'tenant_id'    => $tenant->id,
                 'requested_by' => $user->id,
                 'name'         => $validated['name'],
@@ -74,6 +76,8 @@ class MemberController extends Controller
                 'role'         => $validated['role'],
                 'status'       => 'pending',
             ]);
+
+            broadcast(new MemberRequestSubmittedEvent($memberRequest));
 
             return back()->with('success', 'Permintaan penambahan anggota berhasil dikirim. Menunggu persetujuan owner.');
         }
@@ -150,6 +154,8 @@ class MemberController extends Controller
             'reviewed_at' => now(),
         ]);
 
+        broadcast(new MemberRequestReviewedEvent($memberRequest->fresh()));
+
         return back()->with('success', "Permintaan disetujui. {$memberRequest->name} berhasil ditambahkan ke tim.");
     }
 
@@ -172,6 +178,8 @@ class MemberController extends Controller
             'reviewed_by' => auth()->id(),
             'reviewed_at' => now(),
         ]);
+
+        broadcast(new MemberRequestReviewedEvent($memberRequest->fresh()));
 
         return back()->with('success', "Permintaan penambahan {$memberRequest->name} telah ditolak.");
     }

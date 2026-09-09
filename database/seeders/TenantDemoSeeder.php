@@ -26,6 +26,7 @@ class TenantDemoSeeder extends Seeder
         // ── 1. Plans must exist ──────────────────────────────────────────────
         $freePlan = SubscriptionPlan::where('slug', 'free')->first();
         $proPlan  = SubscriptionPlan::where('slug', 'pro')->first();
+        $enterprisePlan = SubscriptionPlan::where('slug', 'enterprise')->first();
 
         // ── 2. Platform Admin User (tidak terikat tenant) ────────────────────
         $adminUser = User::create([
@@ -44,7 +45,7 @@ class TenantDemoSeeder extends Seeder
             'business_type' => 'fnb',
             'phone'         => '0812-1111-2222',
             'address'       => 'Jl. Kebon Jeruk No. 45, Jakarta Barat',
-            'plan_id'       => $freePlan->id,
+            'plan_id'       => $enterprisePlan?->id ?? $freePlan->id,
         ]);
 
         $owner1 = User::create([
@@ -67,11 +68,11 @@ class TenantDemoSeeder extends Seeder
 
         TenantSubscription::create([
             'tenant_id'   => $tenant1->id,
-            'plan_id'     => $freePlan->id,
+            'plan_id'     => $enterprisePlan?->id ?? $freePlan->id,
             'status'      => 'active',
             'starts_at'   => now(),
             'ends_at'     => null,
-            'amount_paid' => 0,
+            'amount_paid' => $enterprisePlan?->price ?? $freePlan->price,
         ]);
 
         // ── 4. Demo Tenant #2 — Retail (Pro Plan) ────────────────────────────

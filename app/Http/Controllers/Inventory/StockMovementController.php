@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Inventory;
 
+use App\Events\LowStockAlertEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\StockMovement;
@@ -61,6 +62,7 @@ class StockMovementController extends Controller
             ]);
 
             $product->update(['current_stock' => $qtyAfter]);
+
         });
 
         return redirect()->route('inventory.index')
@@ -119,6 +121,10 @@ class StockMovementController extends Controller
             ]);
 
             $product->update(['current_stock' => $qtyAfter]);
+
+            if ($product->current_stock <= $product->min_stock) {
+                DB::afterCommit(fn () => broadcast(new LowStockAlertEvent($product->fresh())));
+            }
         });
 
         return redirect()->route('inventory.index')

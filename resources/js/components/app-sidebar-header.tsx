@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { NotificationDropdown } from '@/components/notification-dropdown';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import { usePage } from '@inertiajs/react';
@@ -18,13 +19,14 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 {isAdminRoute && breadcrumbs.length > 0 && <div className="mx-1 h-4 w-px bg-[#E7E3FA]" />}
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
-            {isAdminRoute && (
-                <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+                {isAdminRoute && (
                     <span className="rounded-md border border-[#5E4BF2]/20 bg-[#F1EFFD] px-2 py-0.5 text-[11px] font-semibold tracking-widest text-[#5E4BF2] uppercase">
                         Admin
                     </span>
-                </div>
-            )}
+                )}
+                <NotificationDropdown />
+            </div>
         </header>
     );
 }
