@@ -279,7 +279,7 @@ export function AppSidebar() {
     }
 
     return (
-        <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border}`}>
+        <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border} ${isOwner ? 'owner-sidebar' : ''}`}>
             <SidebarHeader className="pb-0 pt-4">
                 <SidebarLogo href="/dashboard" theme={theme} />
                 <div className={`mx-3 mt-3 h-px ${theme.dividerBg}`} />

@@ -11,6 +11,7 @@ export function AppShell({ children, variant = 'header' }: AppShellProps) {
     const page = usePage<SharedData>();
     const isOpen = page.props.sidebarOpen;
     const isAdminRoute = page.url.startsWith('/admin');
+    const isOwner = page.props.auth.user?.roles?.includes('owner');
 
     if (variant === 'header') {
         return <div className="flex min-h-screen w-full flex-col">{children}</div>;
@@ -19,7 +20,7 @@ export function AppShell({ children, variant = 'header' }: AppShellProps) {
     return (
         <SidebarProvider
             defaultOpen={isOpen}
-            className={isAdminRoute ? 'admin-theme' : undefined}
+            className={isAdminRoute ? 'admin-theme' : isOwner ? 'owner-theme' : undefined}
         >
             {children}
         </SidebarProvider>

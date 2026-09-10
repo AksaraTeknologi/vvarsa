@@ -1,4 +1,6 @@
 import { SidebarInset } from '@/components/ui/sidebar';
+import { type SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
 import * as React from 'react';
 
 interface AppContentProps extends React.ComponentProps<'main'> {
@@ -6,8 +8,15 @@ interface AppContentProps extends React.ComponentProps<'main'> {
 }
 
 export function AppContent({ variant = 'header', children, ...props }: AppContentProps) {
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner');
+
     if (variant === 'sidebar') {
-        return <SidebarInset {...props}>{children}</SidebarInset>;
+        return (
+            <SidebarInset className={isOwner ? 'owner-content' : undefined} {...props}>
+                {children}
+            </SidebarInset>
+        );
     }
 
     return (

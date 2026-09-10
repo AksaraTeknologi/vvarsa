@@ -7,6 +7,8 @@ import { Head } from '@inertiajs/react';
 import { CheckCircle, Crown, Package, Users, XCircle, Zap } from 'lucide-react';
 import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Langganan', href: '/subscription' }];
 
 interface TenantPlan {
@@ -30,7 +32,7 @@ const PLAN_ICONS: Record<string, React.ElementType> = {
 };
 
 const PLAN_COLORS: Record<string, string> = {
-    free: 'border-slate-200 dark:border-slate-700',
+    free: 'border-slate-300 dark:border-slate-600',
     pro: 'border-blue-400 shadow-blue-100 dark:border-blue-500 dark:shadow-blue-900/20',
     enterprise: 'border-purple-400 shadow-purple-100 dark:border-purple-500 dark:shadow-purple-900/20',
 };
@@ -115,7 +117,7 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
 
                 {/* Current status */}
                 {current_plan && (
-                    <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border p-4 shadow-sm">
+                    <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border-[1.5px] p-4 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm">Paket Aktif</p>
@@ -207,18 +209,12 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                                     })}
                                 </div>
 
-                                <button
+                                <Button
+                                    variant={isCurrent ? 'secondary' : 'owner'}
+                                    size="default"
                                     disabled={isCurrent || isLoading}
                                     onClick={() => handleUpgrade(plan.id)}
-                                    className={`w-full rounded-xl py-3 text-sm font-semibold transition-colors ${
-                                        isCurrent
-                                            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                                            : plan.slug === 'pro'
-                                              ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                              : plan.slug === 'enterprise'
-                                                ? 'bg-purple-600 text-white hover:bg-purple-700'
-                                                : 'border-border hover:bg-muted border'
-                                    }`}
+                                    className="w-full text-sm font-semibold"
                                 >
                                     {isLoading
                                         ? 'Memproses...'
@@ -227,14 +223,14 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                                           : plan.price === 0 || Number(plan.price) === 0
                                             ? 'Mulai Gratis'
                                             : 'Upgrade Sekarang'}
-                                </button>
+                                </Button>
                             </div>
                         );
                     })}
                 </div>
 
                 {/* FAQ */}
-                <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border p-6 shadow-sm">
+                <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border-[1.5px] p-6 shadow-sm">
                     <h2 className="mb-4 font-semibold">Pertanyaan Umum</h2>
                     <div className="space-y-4">
                         {[
@@ -251,7 +247,7 @@ export default function SubscriptionIndex({ plans, current_plan, subscription, p
                                 a: 'Paket Free sudah bisa digunakan selamanya tanpa biaya. Anda bisa upgrade kapan saja saat bisnis Anda berkembang.',
                             },
                         ].map((item, i) => (
-                            <div key={i} className="border-border border-b pb-4 last:border-0 last:pb-0">
+                            <div key={i} className="border-border border-b-[1.5px] pb-4 last:border-0 last:pb-0">
                                 <p className="mb-1 text-sm font-semibold">{item.q}</p>
                                 <p className="text-muted-foreground text-sm">{item.a}</p>
                             </div>

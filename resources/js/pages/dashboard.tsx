@@ -48,14 +48,14 @@ function StatCard({
     color: string;
 }) {
     return (
-        <div className="bg-card border-border rounded-2xl border p-5 shadow-sm transition-shadow hover:shadow-md">
-            <div className="mb-4 flex items-center justify-between">
+        <div className="bg-card border-border rounded-2xl border p-4 shadow-sm transition-shadow hover:shadow-md">
+            <div className="mb-3 flex items-center justify-between">
                 <p className="text-muted-foreground text-sm font-medium">{title}</p>
                 <div className={`rounded-xl p-2.5 ${color}`}>
                     <Icon size={18} className="text-white" />
                 </div>
             </div>
-            <div className="flex items-end justify-between">
+            <div className="flex items-end justify-between gap-2">
                 <div>
                     <p className="text-2xl font-bold tracking-tight">{value}</p>
                     {subtitle && <p className="text-muted-foreground mt-1 text-xs">{subtitle}</p>}
@@ -76,7 +76,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-card border-border rounded-xl border px-4 py-3 shadow-lg">
-                <p className="text-muted-foreground mb-1 text-xs">{label}</p>
+                <p className="text-muted-foreground mb-1 text-sm">{label}</p>
                 <p className="text-sm font-semibold text-emerald-500">{formatRupiah(payload[0].value)}</p>
             </div>
         );
@@ -90,11 +90,11 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="dashboard-page flex flex-col gap-5 p-4 md:p-5">
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">Ringkasan performa bisnis Anda hari ini</p>
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Dashboard</h1>
+                    <p className="text-muted-foreground mt-2 text-base">Ringkasan performa bisnis Anda hari ini</p>
                 </div>
 
                 {/* ── Stats Cards ─────────────────────────────────────── */}
@@ -133,16 +133,16 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                 </div>
 
                 {/* ── Chart + Low Stock ────────────────────────────────── */}
-                <div className="grid gap-6 lg:grid-cols-3">
+                <div className="grid gap-5 lg:grid-cols-3">
                     {/* Chart */}
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm lg:col-span-2">
-                        <div className="mb-5 flex items-center justify-between">
+                    <div className="bg-card border-border rounded-2xl border p-4 shadow-sm lg:col-span-2">
+                        <div className="mb-4 flex items-center justify-between">
                             <div>
                                 <h2 className="font-semibold">Penjualan 7 Hari Terakhir</h2>
-                                <p className="text-muted-foreground text-xs">Tren pendapatan mingguan</p>
+                                <p className="text-muted-foreground text-sm">Tren pendapatan mingguan</p>
                             </div>
                         </div>
-                        <ResponsiveContainer width="100%" height={220}>
+                        <ResponsiveContainer width="100%" height={205}>
                             <AreaChart data={chart_data}>
                                 <defs>
                                     <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
@@ -160,10 +160,10 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     </div>
 
                     {/* Low Stock */}
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <div className="mb-4 flex items-center justify-between">
+                    <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
                             <h2 className="font-semibold">Stok Kritis</h2>
-                            <Link href="/inventory?low_stock=1" className="text-primary text-xs hover:underline">
+                            <Link href="/inventory?low_stock=1" className="text-emerald-600 text-sm font-medium hover:text-emerald-700 hover:underline">
                                 Lihat semua
                             </Link>
                         </div>
@@ -178,11 +178,11 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                     <div key={p.id} className="flex items-center justify-between gap-2">
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm font-medium">{p.name}</p>
-                                            <p className="text-muted-foreground text-xs">{p.category?.name}</p>
+                                            <p className="text-muted-foreground text-sm">{p.category?.name}</p>
                                         </div>
                                         <div className="shrink-0 text-right">
                                             <span
-                                                className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${p.current_stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}
+                                                className={`inline-flex rounded-full px-2 py-0.5 text-sm font-semibold ${p.current_stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}
                                             >
                                                 {p.current_stock} {p.unit}
                                             </span>
@@ -195,19 +195,19 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                 </div>
 
                 {/* ── Recent Transactions + Events ─────────────────────── */}
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div className="grid gap-5 lg:grid-cols-2">
                     {/* Recent Transactions */}
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <div className="mb-4 flex items-center justify-between">
+                    <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
                             <h2 className="font-semibold">Transaksi Terbaru</h2>
-                            <Link href="/finance/transactions" className="text-primary text-xs hover:underline">
+                            <Link href="/finance/transactions" className="text-emerald-600 text-sm font-medium hover:text-emerald-700 hover:underline">
                                 Lihat semua
                             </Link>
                         </div>
                         {recent_transactions.length === 0 ? (
                             <p className="text-muted-foreground py-6 text-center text-sm">Belum ada transaksi.</p>
                         ) : (
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                                 {recent_transactions.map((t) => (
                                     <div key={t.id} className="flex items-center gap-3">
                                         <div
@@ -223,7 +223,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                             <p className="truncate text-sm font-medium">
                                                 {t.description || (t.type === 'income' ? 'Penjualan' : 'Pengeluaran')}
                                             </p>
-                                            <p className="text-muted-foreground text-xs">{t.date}</p>
+                                            <p className="text-muted-foreground text-sm">{t.date}</p>
                                         </div>
                                         <span
                                             className={`shrink-0 text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
@@ -238,10 +238,10 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     </div>
 
                     {/* Upcoming Events */}
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <div className="mb-4 flex items-center justify-between">
+                    <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
                             <h2 className="font-semibold">Event Mendatang</h2>
-                            <Link href="/events" className="text-primary text-xs hover:underline">
+                            <Link href="/events" className="text-emerald-600 text-sm font-medium hover:text-emerald-700 hover:underline">
                                 Lihat semua
                             </Link>
                         </div>
@@ -263,7 +263,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm font-medium">{e.title}</p>
-                                            <div className="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
+                                            <div className="text-muted-foreground mt-0.5 flex items-center gap-1 text-sm">
                                                 <CalendarDays size={11} />
                                                 <span>{e.city}</span>
                                                 {e.registration_fee === 0 && (
@@ -281,42 +281,52 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                 </div>
 
                 {/* ── Quick Actions ─────────────────────────────────────── */}
-                <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                    <h2 className="mb-4 font-semibold">Aksi Cepat</h2>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div>
+                    <div className="mb-4 flex items-end justify-between gap-4">
+                        <div>
+                            <h2 className="text-lg font-semibold">Aksi Cepat</h2>
+                            <p className="text-muted-foreground mt-1 text-sm">Akses fitur yang paling sering digunakan</p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                         {[
                             {
                                 label: 'Tambah Produk',
                                 href: '/inventory/create',
-                                color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-400',
+                                color: 'bg-blue-500',
                                 icon: Package,
                             },
                             {
                                 label: 'Stok Masuk',
                                 href: '/inventory/stock-in',
-                                color: 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400',
+                                color: 'bg-emerald-500',
                                 icon: TrendingUp,
                             },
                             {
                                 label: 'Catat Transaksi',
                                 href: '/finance/transactions',
-                                color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-400',
+                                color: 'bg-rose-500',
                                 icon: Wallet,
                             },
                             {
                                 label: 'Lihat Event',
                                 href: '/events',
-                                color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 dark:text-amber-400',
+                                color: 'bg-amber-500',
                                 icon: CalendarDays,
                             },
                         ].map(({ label, href, color, icon: Icon }) => (
                             <Link
                                 key={href}
                                 href={href}
-                                className={`flex flex-col items-center justify-center gap-2 rounded-xl p-4 text-center transition-colors ${color}`}
+                                className="bg-card border-border flex min-h-[132px] flex-col justify-between rounded-2xl border p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md"
                             >
-                                <Icon size={20} />
-                                <span className="text-xs font-medium">{label}</span>
+                                <div className="flex items-center justify-between">
+                                    <div className={`rounded-xl p-2.5 text-white ${color}`}>
+                                        <Icon size={18} />
+                                    </div>
+                                    <ArrowUpRight size={16} className="text-emerald-600/60" />
+                                </div>
+                                <span className="text-sm font-semibold">{label}</span>
                             </Link>
                         ))}
                     </div>

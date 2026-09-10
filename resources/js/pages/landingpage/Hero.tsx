@@ -4,15 +4,15 @@ import { type LandingProps } from './types';
 
 export function Hero({ goToDashboard }: LandingProps) {
     return (
-                    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(216,243,128,0.22),transparent_20%),linear-gradient(180deg,#F9F7F4_0%,#F3F0EC_100%)] px-5 pb-28 pt-16 sm:px-6 lg:px-10 lg:pb-36 lg:pt-40">
+                    <section className="hero-gradient relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(105,190,125,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(222,248,229,0.9),transparent_28%),linear-gradient(180deg,#f8fff9_0%,#ffffff_52%,#eaf8ed_100%)] px-5 pb-28 pt-16 sm:px-6 lg:px-10 lg:pb-36 lg:pt-40">
 
-                        <div className="absolute left-[-120px] top-[120px] size-[340px] rounded-full bg-[#D8F380]/70 blur-[110px]" />
+                        <div className="hero-orb absolute left-[-120px] top-[120px] size-[340px] rounded-full bg-[#a8e3b5]/70 blur-[110px]" />
 
-                        <div className="absolute right-[-100px] top-[-100px] size-[420px] rounded-full bg-[#BDB5FF]/70 blur-[110px]" />
+                        <div className="hero-orb absolute right-[-100px] top-[-100px] size-[420px] rounded-full bg-[#d8f3e0]/90 blur-[110px]" />
 
-                        <div className="absolute left-1/2 top-[18%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#5E4BF2]/15 blur-[120px]" />
+                        <div className="absolute left-1/2 top-[18%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#bde8c7]/35 blur-[120px]" />
 
-                        <div className="absolute bottom-[4%] left-[10%] h-[240px] w-[240px] rounded-full bg-[#FF8C67]/15 blur-[90px]" />
+                        <div className="absolute bottom-[4%] left-[10%] h-[240px] w-[240px] rounded-full bg-[#ffffff]/80 blur-[90px]" />
 
                         <div className="absolute inset-0 opacity-[0.4] hero-grid" />
 
@@ -142,9 +142,9 @@ export function Hero({ goToDashboard }: LandingProps) {
                             >
                                 <div className="absolute left-[8%] top-[5%] size-24 rotate-12 rounded-[2rem] bg-[#D8F380] opacity-80 blur-[1px] animate-float-slow animate-glow" />
 
-                                <div className="absolute right-[2%] top-[20%] size-20 rounded-full bg-[#FF8C67] opacity-70 animate-float animate-glow" />
+                                <div className="absolute right-[2%] top-[20%] size-20 rounded-full bg-[#8bd39b] opacity-80 animate-float animate-glow" />
 
-                                <div className="absolute bottom-[8%] left-[3%] size-16 rounded-full bg-[#79D7FF] opacity-80 animate-float-slow animate-glow" />
+                                <div className="absolute bottom-[8%] left-[3%] size-16 rounded-full bg-[#c8efd1] opacity-90 animate-float-slow animate-glow" />
 
                                 <div className="absolute right-[4%] top-[5%] h-[88%] w-[88%] rotate-[5deg] rounded-[3rem] border-2 border-[#D8F380] bg-[#D8F380]/80 shadow-[0_25px_60px_rgba(122,145,28,0.25)] animate-sway" />
 

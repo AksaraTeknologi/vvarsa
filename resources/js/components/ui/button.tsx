@@ -5,12 +5,12 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-base font-bold transition-all duration-200 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-5 [&_svg]:shrink-0 outline-none focus-visible:ring-4 focus-visible:ring-black/10 dark:focus-visible:ring-white/10",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-200 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:ring-4 focus-visible:ring-black/10 dark:focus-visible:ring-white/10",
   {
     variants: {
       variant: {
         default:
-          "bg-purple text-white shadow-[0_4px_14px_0_rgba(94,75,242,0.3)] hover:opacity-90",
+          "bg-owner-accent text-white shadow-[0_4px_14px_0_rgba(63,149,103,0.24)] hover:opacity-90",
         admin:
           "bg-admin-accent text-white hover:opacity-90 shadow-[0_4px_14px_0_rgba(94,75,242,0.3)]",
         owner:
@@ -25,7 +25,7 @@ const buttonVariants = cva(
           "bg-cyber-yellow text-white shadow-[0_4px_14px_0_rgba(255,210,0,0.3)] hover:opacity-95",
         secondary:
           "bg-white-lavender text-black hover:bg-gray-100 shadow-[0_2px_8px_0_rgba(0,0,0,0.04)]",
-        dark: 
+        dark:
           "bg-black text-white hover:bg-black/90 shadow-[0_4px_14px_0_rgba(31,34,43,0.2)]",
         destructive:
           "bg-coral-red text-white shadow-[0_4px_14px_0_rgba(255,82,82,0.3)] hover:opacity-90",
@@ -35,10 +35,10 @@ const buttonVariants = cva(
         link: "text-purple underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-14 px-8 py-3",
-        sm: "h-10 px-5 text-sm",
-        lg: "h-16 px-10 text-lg tracking-wide",
-        icon: "size-14",
+        default: "h-10 px-4 py-2",
+        sm: "h-9 px-3.5 text-xs",
+        lg: "h-11 px-6 text-base",
+        icon: "size-10",
       },
     },
     defaultVariants: {
