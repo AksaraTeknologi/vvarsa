@@ -63,18 +63,6 @@ export default function OrderCreate({ variants, packages }: Props) {
         return v;
     };
 
-    // ── Helper: Hitung HPP untuk satu baris cart ──────────────────────────────
-    const getCartItemHpp = (item: CartItem) => {
-        let total = 0;
-        Object.entries(item.quantities).forEach(([vId, qty]) => {
-            const v = findVariant(vId, item.package_id);
-            if (v) {
-                total += (v.hpp ?? 0) * qty;
-            }
-        });
-        return total;
-    };
-
     const getVariantSummary = (item: CartItem) => {
         const selected = Object.entries(item.quantities)
             .filter(([_, qty]) => qty > 0)
@@ -88,9 +76,7 @@ export default function OrderCreate({ variants, packages }: Props) {
         return selected.join(', ');
     };
 
-    // ── Ringkasan ──────────────────────────────────────────────────────────────
     const subtotal = cart.reduce((sum, item) => sum + item.harga, 0);
-    const totalHpp = cart.reduce((sum, item) => sum + getCartItemHpp(item), 0);
 
     // Paket lengkap jika total qty rasa terpilih === kapasitas paket
     const cartComplete = cart.every((item) => {
@@ -227,7 +213,7 @@ export default function OrderCreate({ variants, packages }: Props) {
             return result;
         });
         setData('items', items);
-    }, [cart]);
+    }, [cart, setData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

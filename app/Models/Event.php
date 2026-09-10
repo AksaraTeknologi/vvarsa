@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -31,12 +30,12 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'business_types'              => 'array',
-        'start_date'                  => 'datetime',
-        'end_date'                    => 'datetime',
-        'registration_fee'            => 'decimal:2',
+        'business_types' => 'array',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'registration_fee' => 'decimal:2',
         'allow_platform_registration' => 'boolean',
-        'is_featured'                 => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function registrations(): HasMany
@@ -46,8 +45,13 @@ class Event extends Model
 
     public function isRegistrationOpen(): bool
     {
-        if (!$this->allow_platform_registration) return false;
-        if ($this->max_participants && $this->registered_count >= $this->max_participants) return false;
+        if (! $this->allow_platform_registration) {
+            return false;
+        }
+        if ($this->max_participants && $this->registered_count >= $this->max_participants) {
+            return false;
+        }
+
         return $this->status === 'upcoming';
     }
 

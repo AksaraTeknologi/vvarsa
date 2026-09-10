@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Product;
-use App\Models\StockMovement;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +20,7 @@ class DashboardController extends Controller
         $thisMonthStart = now()->startOfMonth()->toDateString();
 
         // ── Stats Cards ─────────────────────────────────────────────────────
-        $totalProducts    = Product::where('tenant_id', $tenantId)->where('is_active', true)->count();
+        $totalProducts = Product::where('tenant_id', $tenantId)->where('is_active', true)->count();
         $lowStockProducts = Product::where('tenant_id', $tenantId)
             ->whereColumn('current_stock', '<=', 'min_stock')
             ->where('is_active', true)->count();
@@ -52,7 +51,7 @@ class DashboardController extends Controller
         for ($i = 6; $i >= 0; $i--) {
             $date = now()->subDays($i)->toDateString();
             $chartData[] = [
-                'date'  => now()->subDays($i)->format('D'),
+                'date' => now()->subDays($i)->format('D'),
                 'sales' => (float) ($weeklyData[$date]->total ?? 0),
             ];
         }
@@ -78,19 +77,19 @@ class DashboardController extends Controller
 
         return Inertia::render('dashboard', [
             'stats' => [
-                'total_products'     => $totalProducts,
+                'total_products' => $totalProducts,
                 'low_stock_products' => $lowStockProducts,
-                'sales_today'        => (float) $salesToday,
-                'sales_month'        => (float) $salesMonth,
-                'expense_today'      => (float) $expenseToday,
-                'expense_month'      => (float) $expenseMonth,
-                'net_today'          => (float) ($salesToday - $expenseToday),
-                'net_month'          => (float) ($salesMonth - $expenseMonth),
+                'sales_today' => (float) $salesToday,
+                'sales_month' => (float) $salesMonth,
+                'expense_today' => (float) $expenseToday,
+                'expense_month' => (float) $expenseMonth,
+                'net_today' => (float) ($salesToday - $expenseToday),
+                'net_month' => (float) ($salesMonth - $expenseMonth),
             ],
-            'chart_data'          => $chartData,
+            'chart_data' => $chartData,
             'recent_transactions' => $recentTransactions,
-            'upcoming_events'     => $upcomingEvents,
-            'low_stock_list'      => $lowStockList,
+            'upcoming_events' => $upcomingEvents,
+            'low_stock_list' => $lowStockList,
         ]);
     }
 }

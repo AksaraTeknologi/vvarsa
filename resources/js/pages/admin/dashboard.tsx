@@ -5,7 +5,6 @@ import {
     CreditCard,
     DollarSign,
     Plus,
-    ShieldCheck,
     TrendingUp,
     Users,
 } from 'lucide-react';
@@ -26,7 +25,7 @@ import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Admin Dashboard',
+        title: 'Dashboard',
         href: '/admin',
     },
 ];
@@ -76,74 +75,57 @@ export default function AdminDashboard({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin Dashboard" />
 
-            <main className="min-h-full bg-[radial-gradient(circle_at_top_left,#E6E1FF_0%,#F8F5F1_42%,#FFFFFF_100%)] font-['Plus_Jakarta_Sans'] text-[#191827]">
+            <main className="min-h-full bg-[radial-gradient(circle_at_top_left,#E6E1FF_0%,#F8F5F1_42%,#FFFFFF_100%)] font-['Plus_Jakarta_Sans'] text-[#191827] p-4 md:p-6 flex flex-col gap-6">
+
+                {/* Soft decorative background */}
+                <div className="pointer-events-none absolute -left-32 -top-32 h-72 w-72 rounded-full bg-[#E9E5FF] opacity-55 blur-3xl" />
+                <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#F0EDFF] opacity-65 blur-3xl" />
+                <div className="pointer-events-none absolute bottom-[-100px] left-[42%] h-56 w-56 rounded-full bg-[#F3F0E9] opacity-75 blur-3xl" />
 
                 {/* =========================================================
                     HERO
                 ========================================================== */}
-                <section className="relative overflow-hidden bg-transparent">
+                <section className="relative z-10">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-                    {/* Soft decorative background */}
-                    <div className="pointer-events-none absolute -left-32 -top-32 h-72 w-72 rounded-full bg-[#E9E5FF] opacity-55 blur-3xl" />
-                    <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#F0EDFF] opacity-65 blur-3xl" />
-                    <div className="pointer-events-none absolute bottom-[-100px] left-[42%] h-56 w-56 rounded-full bg-[#F3F0E9] opacity-75 blur-3xl" />
+                        {/* LEFT */}
+                        <div>
+                          
 
-                    <div className="relative px-5 py-7 md:px-8 md:py-8">
-                        <div className="mx-auto max-w-[1500px]">
+                            {/* Heading */}
+                            <h1 className="text-2xl font-bold tracking-tight">
+                                Dashboard
+                            </h1>
 
-                            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                            <p className="mt-1 text-sm font-medium text-[#777584]">
+                                Kelola infrastruktur platform, tenant bisnis, dan rencana langganan SaaS.
+                            </p>
+                        </div>
 
-                                {/* LEFT */}
-                                <div className="max-w-3xl">
-
-                                    {/* Label */}
-                                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#E3DFF2] bg-white px-3 py-1.5 shadow-[0_3px_10px_rgba(35,30,70,0.04)]">
-                                        <span className="flex size-7 items-center justify-center rounded-full bg-[#5E4BF2] text-white">
-                                            <ShieldCheck className="size-3.5" />
-                                        </span>
-
-                                        <span className="text-xs font-bold uppercase tracking-wide text-[#5E4BF2]">
-                                            Platform Admin
-                                        </span>
-                                    </div>
-
-                                    {/* Heading */}
-                                    <h1 className="text-[2.35rem] font-black leading-[1.08] tracking-[-0.045em] text-[#171725] sm:text-[2.6rem] lg:text-[2.8rem]">
-                                        Selamat datang kembali
-                                    </h1>
-
-                                    <p className="mt-2.5 max-w-2xl text-[15px] font-medium leading-6 text-[#777584]">
-                                        Kelola infrastruktur platform, tenant bisnis,
-                                        dan rencana langganan SaaS.
-                                    </p>
-                                </div>
-
-                                {/* ACTIONS */}
-                                <div className="flex shrink-0 flex-row gap-2 rounded-[18px] border border-[#E8E3F3] bg-white/85 p-1.5 shadow-[0_8px_25px_rgba(35,30,70,0.055)] backdrop-blur-sm">
-                                    <Button
-                                        asChild
-                                        size="sm"
-                                        className="h-10.5 rounded-xl px-4 text-sm font-bold shadow-[0_7px_18px_rgba(94,75,242,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_9px_22px_rgba(94,75,242,0.24)]"
-                                    >
-                                        <Link href="/admin/tenants/create">
-                                            <Plus className="size-4" />
-                                            Tambah Tenant
-                                        </Link>
-                                    </Button>
-
-                                    <Button
-                                        asChild
-                                        size="sm"
-                                        variant="secondary"
-                                        className="h-10.5 rounded-xl border border-[#DDD9E9] bg-white px-4 text-sm font-bold text-[#4D4B5A] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#CFC8F6] hover:bg-[#FDFCFF] hover:text-[#5E4BF2]"
-                                    >
-                                        <Link href="/admin/plans">
-                                            <CreditCard className="size-4" />
-                                            Kelola Paket
-                                        </Link>
-                                    </Button>
-                                </div>
-                            </div>
+                        {/* ACTIONS */}
+                        <div className="flex shrink-0 flex-row gap-4 rounded-xl bg-transparent">
+                            <Button
+                                asChild
+                                size="sm"
+                                variant="secondary"
+                                className="h-9 rounded-lg border border-[#DDD9E9] bg-white px-3 text-xs font-bold text-[#4D4B5A] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#CFC8F6] hover:bg-[#FDFCFF] hover:text-[#5E4BF2]"
+                            >
+                                <Link href="/admin/plans">
+                                    <CreditCard className="size-3.5 mr-1" />
+                                    Kelola Paket
+                                </Link>
+                            </Button>
+                            
+                            <Button
+                                asChild
+                                size="sm"
+                                className="h-9 rounded-lg px-3 text-xs font-bold shadow-[0_7px_18px_rgba(94,75,242,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_9px_22px_rgba(94,75,242,0.24)] bg-[#5E4BF2] text-white"
+                            >
+                                <Link href="/admin/tenants/create">
+                                    <Plus className="size-3.5 mr-1" />
+                                    Tambah Tenant
+                                </Link>
+                            </Button>
                         </div>
                     </div>
                 </section>
@@ -151,23 +133,14 @@ export default function AdminDashboard({
                 {/* =========================================================
                     MAIN CONTENT
                 ========================================================== */}
-                <div className="px-5 py-6 md:px-8 md:py-7">
-                    <div className="mx-auto max-w-[1500px] space-y-7">
+                <div className="relative z-10 space-y-6">
 
                         {/* =================================================
                             RINGKASAN PLATFORM
                         ================================================== */}
                         <section>
 
-                            <div className="mb-4">
-                                <h2 className="text-[19px] font-extrabold tracking-[-0.02em] text-[#242332]">
-                                    Ringkasan platform
-                                </h2>
-
-                                <p className="mt-1 text-sm font-medium text-[#92909D]">
-                                    Gambaran singkat kondisi VVARSA saat ini.
-                                </p>
-                            </div>
+                           
 
                             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
 
@@ -177,8 +150,7 @@ export default function AdminDashboard({
                                 <Card
                                     className="
                                         group
-                                        min-h-[132px]
-                                        rounded-[18px]
+                                        rounded-2xl
                                         border-[#CFC7F5]
                                         bg-[#E2DDFF]
                                         shadow-[0_5px_20px_rgba(35,30,70,0.035)]
@@ -188,25 +160,25 @@ export default function AdminDashboard({
                                         hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
                                     "
                                 >
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-3 pb-1">
-                                        <CardTitle className="text-sm font-bold text-[#777583]">
+                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
+                                        <CardTitle className="text-sm font-medium text-[#777583]">
                                             Total Tenant
                                         </CardTitle>
 
-                                        <div className="flex size-9 items-center justify-center rounded-xl bg-white/80 text-[#5E4BF2] transition-transform duration-300 group-hover:scale-105">
-                                            <Building2 className="size-4" />
+                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#5E4BF2] transition-transform duration-300 group-hover:scale-105">
+                                            <Building2 className="size-3.5" />
                                         </div>
                                     </CardHeader>
 
-                                    <CardContent className="px-5 pb-3">
-                                        <p className="text-[27px] font-black leading-none tracking-[-0.035em] text-[#181725]">
+                                    <CardContent className="px-5 pb-2.5 pt-1">
+                                        <p className="text-xl font-bold tracking-tight leading-none text-[#181725]">
                                             {stats.total_tenants}
                                         </p>
 
-                                        <div className="mt-2.5 flex items-center gap-1.5">
-                                            <TrendingUp className="size-3.5 text-[#5E4BF2]" />
+                                        <div className="mt-1 flex items-center gap-1.5">
+                                            <TrendingUp className="size-3 text-[#5E4BF2]" />
 
-                                            <span className="text-xs font-semibold text-[#85838F]">
+                                            <span className="text-[10px] font-medium text-[#85838F]">
                                                 <span className="font-bold text-[#5E4BF2]">
                                                     {stats.active_tenants}
                                                 </span>{' '}
@@ -222,8 +194,7 @@ export default function AdminDashboard({
                                 <Card
                                     className="
                                         group
-                                        min-h-[132px]
-                                        rounded-[18px]
+                                        rounded-2xl
                                         border-[#C5E3D5]
                                         bg-[#E1F2EA]
                                         shadow-[0_5px_20px_rgba(35,30,70,0.035)]
@@ -233,22 +204,22 @@ export default function AdminDashboard({
                                         hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
                                     "
                                 >
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-3 pb-1">
-                                        <CardTitle className="text-sm font-bold text-[#777583]">
+                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
+                                        <CardTitle className="text-sm font-medium text-[#777583]">
                                             Total Pengguna
                                         </CardTitle>
 
-                                        <div className="flex size-9 items-center justify-center rounded-xl bg-white/80 text-[#4C9A78] transition-transform duration-300 group-hover:scale-105">
-                                            <Users className="size-4" />
+                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#4C9A78] transition-transform duration-300 group-hover:scale-105">
+                                            <Users className="size-3.5" />
                                         </div>
                                     </CardHeader>
 
-                                    <CardContent className="px-5 pb-3">
-                                        <p className="text-[27px] font-black leading-none tracking-[-0.035em] text-[#181725]">
+                                    <CardContent className="px-5 pb-2.5 pt-1">
+                                        <p className="text-xl font-bold tracking-tight leading-none text-[#181725]">
                                             {stats.total_users}
                                         </p>
 
-                                        <p className="mt-2.5 text-xs font-semibold leading-4.5 text-[#85838F]">
+                                        <p className="mt-1 text-[10px] font-medium text-[#85838F]">
                                             Pengguna terdaftar di seluruh tenant
                                         </p>
                                     </CardContent>
@@ -260,8 +231,7 @@ export default function AdminDashboard({
                                 <Card
                                     className="
                                         group
-                                        min-h-[132px]
-                                        rounded-[18px]
+                                        rounded-2xl
                                         border-[#F0D69A]
                                         bg-[#FFF0C9]
                                         shadow-[0_5px_20px_rgba(35,30,70,0.035)]
@@ -271,22 +241,22 @@ export default function AdminDashboard({
                                         hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
                                     "
                                 >
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-3 pb-1">
-                                        <CardTitle className="text-sm font-bold text-[#777583]">
+                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
+                                        <CardTitle className="text-sm font-medium text-[#777583]">
                                             Paket Aktif
                                         </CardTitle>
 
-                                        <div className="flex size-9 items-center justify-center rounded-xl bg-white/80 text-[#C18A2E] transition-transform duration-300 group-hover:scale-105">
-                                            <CreditCard className="size-4" />
+                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#C18A2E] transition-transform duration-300 group-hover:scale-105">
+                                            <CreditCard className="size-3.5" />
                                         </div>
                                     </CardHeader>
 
-                                    <CardContent className="px-5 pb-3">
-                                        <p className="text-[27px] font-black leading-none tracking-[-0.035em] text-[#181725]">
+                                    <CardContent className="px-5 pb-2.5 pt-1">
+                                        <p className="text-xl font-bold tracking-tight leading-none text-[#181725]">
                                             {stats.total_plans}
                                         </p>
 
-                                        <p className="mt-2.5 text-xs font-semibold leading-4.5 text-[#85838F]">
+                                        <p className="mt-1 text-[10px] font-medium text-[#85838F]">
                                             Pilihan paket langganan SaaS
                                         </p>
                                     </CardContent>
@@ -298,8 +268,7 @@ export default function AdminDashboard({
                                 <Card
                                     className="
                                         group
-                                        min-h-[132px]
-                                        rounded-[18px]
+                                        rounded-2xl
                                         border-[#EBC5D0]
                                         bg-[#F8E1E7]
                                         shadow-[0_5px_20px_rgba(35,30,70,0.035)]
@@ -309,25 +278,25 @@ export default function AdminDashboard({
                                         hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
                                     "
                                 >
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-3 pb-1">
-                                        <CardTitle className="text-sm font-bold text-[#777583]">
+                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
+                                        <CardTitle className="text-sm font-medium text-[#777583]">
                                             Estimasi MRR
                                         </CardTitle>
 
-                                        <div className="flex size-9 items-center justify-center rounded-xl bg-white/80 text-[#C06D82] transition-transform duration-300 group-hover:scale-105">
-                                            <DollarSign className="size-4" />
+                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#C06D82] transition-transform duration-300 group-hover:scale-105">
+                                            <DollarSign className="size-3.5" />
                                         </div>
                                     </CardHeader>
 
-                                    <CardContent className="px-5 pb-3">
-                                        <p className="text-[24px] font-black leading-none tracking-[-0.035em] text-[#5E4BF2]">
+                                    <CardContent className="px-5 pb-2.5 pt-1">
+                                        <p className="text-xl font-bold tracking-tight leading-none text-[#5E4BF2]">
                                             {formatRupiah(stats.monthly_revenue)}
                                         </p>
 
-                                        <div className="mt-2.5 flex items-center gap-1.5">
-                                            <TrendingUp className="size-3.5 text-[#5E4BF2]" />
+                                        <div className="mt-1 flex items-center gap-1.5">
+                                            <TrendingUp className="size-3 text-[#5E4BF2]" />
 
-                                            <span className="text-xs font-semibold text-[#85838F]">
+                                            <span className="text-[10px] font-medium text-[#85838F]">
                                                 Monthly Recurring Revenue
                                             </span>
                                         </div>
@@ -342,7 +311,7 @@ export default function AdminDashboard({
                         <section>
 
                             <div className="mb-4">
-                                <h2 className="text-[19px] font-extrabold tracking-[-0.02em] text-[#242332]">
+                                <h2 className="text-xl font-bold tracking-tight">
                                     Aktivitas terbaru
                                 </h2>
 
@@ -578,7 +547,6 @@ export default function AdminDashboard({
                             </div>
                         </section>
                     </div>
-                </div>
             </main>
         </AppLayout>
     );

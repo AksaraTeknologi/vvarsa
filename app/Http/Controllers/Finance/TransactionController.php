@@ -42,10 +42,10 @@ class TransactionController extends Controller
         $expenseCategories = ExpenseCategory::where('tenant_id', $tenant->id)->get(['id', 'name']);
 
         return Inertia::render('finance/transactions', [
-            'transactions'      => $transactions,
-            'summary'           => $summary,
-            'expense_categories'=> $expenseCategories,
-            'filters'           => $request->only(['type', 'from', 'to']),
+            'transactions' => $transactions,
+            'summary' => $summary,
+            'expense_categories' => $expenseCategories,
+            'filters' => $request->only(['type', 'from', 'to']),
         ]);
     }
 
@@ -54,19 +54,19 @@ class TransactionController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'type'               => 'required|in:income,expense',
-            'amount'             => 'required|numeric|min:0.01',
-            'description'        => 'nullable|string|max:255',
-            'category'           => 'nullable|string|max:100',
-            'expense_category_id'=> 'nullable|exists:expense_categories,id',
-            'reference'          => 'nullable|string|max:100',
-            'date'               => 'required|date',
-            'payment_method'     => 'required|in:cash,transfer,credit',
+            'type' => 'required|in:income,expense',
+            'amount' => 'required|numeric|min:0.01',
+            'description' => 'nullable|string|max:255',
+            'category' => 'nullable|string|max:100',
+            'expense_category_id' => 'nullable|exists:expense_categories,id',
+            'reference' => 'nullable|string|max:100',
+            'date' => 'required|date',
+            'payment_method' => 'required|in:cash,transfer,credit',
         ]);
 
         Transaction::create(array_merge($validated, [
             'tenant_id' => $tenant->id,
-            'user_id'   => auth()->id(),
+            'user_id' => auth()->id(),
         ]));
 
         return back()->with('success', 'Transaksi berhasil dicatat.');

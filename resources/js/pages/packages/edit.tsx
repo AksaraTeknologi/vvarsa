@@ -31,7 +31,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
         price: pkg.price.toString(),
         is_active: pkg.is_active,
         description: pkg.description ?? '',
-        variant_ids: (pkg.variants ?? []).map((v) => v.id),
+        variant_ids: (pkg.variants ?? []).map((v) => v.id as string | number),
     });
 
     const [allVariantsAllowed, setAllVariantsAllowed] = useState(!pkg.variants || pkg.variants.length === 0);
@@ -52,13 +52,13 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
         put(`/packages/${pkg.id}`);
     };
 
-    const handleCheckboxChange = (id: number, checked: boolean) => {
+    const handleCheckboxChange = (id: string | number, checked: boolean) => {
         if (checked) {
             setData('variant_ids', [...data.variant_ids, id]);
         } else {
             setData(
                 'variant_ids',
-                data.variant_ids.filter((vId) => vId !== id),
+                data.variant_ids.filter((vId) => String(vId) !== String(id)),
             );
         }
     };
@@ -193,7 +193,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                         <input
                                             id={`var-${v.id}`}
                                             type="checkbox"
-                                            checked={data.variant_ids.includes(v.id)}
+                                            checked={data.variant_ids.some((vId) => String(vId) === String(v.id))}
                                             onChange={(e) => handleCheckboxChange(v.id, e.target.checked)}
                                             className="rounded text-indigo-600 focus:ring-indigo-500"
                                         />

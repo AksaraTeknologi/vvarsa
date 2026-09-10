@@ -24,12 +24,12 @@ export interface SubscriptionPlan {
 }
 
 export interface Product {
-    id: number;
-    tenant_id: number;
+    id: string | number;
+    tenant_id: string | number;
     sku: string | null;
     name: string;
-    category_id: number | null;
-    category?: { id: number; name: string };
+    category_id: string | number | null;
+    category?: { id: string | number; name: string };
     unit: string;
     min_stock: number;
     current_stock: number;
@@ -44,15 +44,15 @@ export interface Product {
 }
 
 export interface ProductCategory {
-    id: number;
+    id: string | number;
     name: string;
-    parent_id: number | null;
+    parent_id: string | number | null;
 }
 
 export interface StockMovement {
-    id: number;
-    product_id: number;
-    product?: { id: number; name: string; unit: string };
+    id: string | number;
+    product_id: string | number;
+    product?: { id: string | number; name: string; unit: string };
     type: 'in' | 'out' | 'opname';
     qty: number;
     qty_before: number;
@@ -60,26 +60,28 @@ export interface StockMovement {
     unit_cost: number | null;
     reference: string | null;
     note: string | null;
-    user?: { id: number; name: string };
+    user?: { id: string | number; name: string };
     movement_date: string;
     created_at: string;
 }
 
 export interface Transaction {
-    id: number;
+    id: string | number;
     type: 'income' | 'expense';
     amount: number;
     category: string | null;
+    expense_category_id?: string | number | null;
     description: string | null;
     reference: string | null;
     date: string;
     payment_method: string;
-    user?: { id: number; name: string };
-    expense_category?: { id: number; name: string };
+    user?: { id: string | number; name: string };
+    expense_category?: { id: string | number; name: string; type?: string };
+    expenseCategory?: { id: string | number; name: string; type?: string };
 }
 
 export interface ExpenseCategory {
-    id: number;
+    id: string | number;
     name: string;
     type: 'opex' | 'capex';
 }
@@ -183,19 +185,19 @@ export interface InventoryFilters {
 // ─── Resep & BOM ────────────────────────────────────────────────────────────
 
 export interface RecipeIngredient {
-    id: number;
-    recipe_id: number;
-    ingredient_id: number | null;
+    id: string | number;
+    recipe_id: string | number;
+    ingredient_id: string | number | null;
     ingredient_name: string;
-    ingredient?: { id: number; name: string; unit: string; cost_price: number; current_stock: number };
+    ingredient?: { id: string | number; name: string; unit: string; cost_price: number; current_stock: number };
     qty: number;
     unit: string;
     ingredient_cost: number;
 }
 
 export interface Recipe {
-    id: number;
-    tenant_id: number;
+    id: string | number;
+    tenant_id: string | number;
     name: string;
     description: string | null;
     portion_qty: number;
@@ -206,11 +208,11 @@ export interface Recipe {
 }
 
 export interface VariantRecipe {
-    id: number;
-    variant_id: number;
-    ingredient_id: number | null;
+    id: string | number;
+    variant_id: string | number;
+    ingredient_id: string | number | null;
     ingredient_name: string;
-    ingredient?: { id: number; name: string; unit: string; cost_price: number; current_stock: number };
+    ingredient?: { id: string | number; name: string; unit: string; cost_price: number; current_stock: number };
     qty: number;
     unit: string;
     ingredient_cost: number;
@@ -218,9 +220,9 @@ export interface VariantRecipe {
 }
 
 export interface ProductVariant {
-    id: number;
-    tenant_id: number;
-    recipe_id: number | null;
+    id: string | number;
+    tenant_id: string | number;
+    recipe_id: string | number | null;
     recipe_qty: number;
     sku: string | null;
     name: string;
@@ -264,6 +266,8 @@ export interface Order {
     subtotal: number;
     discount: number;
     total: number;
+    cash_received?: number | null;
+    change_amount?: number | null;
     notes: string | null;
     transaction_id: number | null;
     transaction?: Transaction;

@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Events\LowStockAlertEvent;
+use App\Events\NewOrderReceivedEvent;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderReceiptMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Package;
+use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\PaymentMethod;
-use App\Models\Recipe;
+use App\Models\Sale;
 use App\Models\StockMovement;
 use App\Models\Transaction;
-use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -47,18 +52,18 @@ class OrderController extends Controller
 
         // Order Summary: total per varian dari order yang masih "processing" atau "pending"
         $summary = OrderItem::whereHas('order', function ($q) use ($tenant) {
-                $q->forTenant($tenant->id)
-                  ->whereNotIn('status', ['done', 'cancelled']);
-            })
+            $q->forTenant($tenant->id)
+                ->whereNotIn('status', ['done', 'cancelled']);
+        })
             ->select('variant_id', 'variant_name', DB::raw('SUM(qty) as total_qty'))
             ->groupBy('variant_id', 'variant_name')
             ->orderByDesc('total_qty')
             ->get();
 
         return Inertia::render('orders/index', [
-            'orders'   => $orders,
-            'summary'  => $summary,
-            'filters'  => $request->only(['status', 'payment_status', 'from', 'to']),
+            'orders' => $orders,
+            'summary' => $summary,
+            'filters' => $request->only(['status', 'payment_status', 'from', 'to']),
             'paymentMethods' => PaymentMethod::where('tenant_id', $tenant->id)
                 ->where('is_active', true)
                 ->orderBy('id')
@@ -76,6 +81,7 @@ class OrderController extends Controller
             ->get()
             ->map(function ($v) {
                 $v->append(['hpp', 'margin', 'recipes']);
+
                 return $v;
             });
 
@@ -96,20 +102,28 @@ class OrderController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'customer_name'          => 'required|string|max:255',
-            'customer_phone'         => 'nullable|string|max:20',
-            'notes'                  => 'nullable|string',
-            'payment_method'         => 'nullable|string|max:255',
-            'items'                  => 'required|array|min:1',
-            'items.*.variant_id'     => 'required|exists:product_variants,id',
-            'items.*.qty'            => 'required|integer|min:1',
+            'customer_name' => 'nullable|string|max:255',
+            'customer_phone' => 'nullable|string|max:20',
+            'customer_email' => 'nullable|email|max:255',
+            'status' => 'nullable|in:pending,processing,done',
+            'discount' => 'nullable|numeric|min:0',
+            'cash_received' => 'nullable|numeric|min:0',
+            'notes' => 'nullable|string',
+            'payment_method' => 'nullable|string|max:255',
+            'items' => 'required|array|min:1',
+            'items.*.variant_id' => 'required|exists:product_variants,id',
+            'items.*.qty' => 'required|integer|min:1',
             // Paket fields — wajib ada dari frontend baru
-            'items.*.paket_isi'      => 'required|integer|in:1,3,6',
-            'items.*.paket_harga'    => 'required|integer|min:1',
+            'items.*.paket_isi' => 'required|integer|in:1,3,6',
+            'items.*.paket_harga' => 'required|integer|min:1',
         ]);
 
-        DB::transaction(function () use ($validated, $tenant) {
+        $order = null;
+
+        DB::transaction(function () use ($validated, $tenant, &$order) {
             $orderNumber = Order::generateOrderNumber($tenant->id);
+            $customerName = ! empty(trim($validated['customer_name'] ?? '')) ? trim($validated['customer_name']) : 'Pelanggan Umum';
+            $orderStatus = $validated['status'] ?? 'done';
 
             // ── Kelompokkan item per paket ────────────────────────────────────
             // Frontend mengirim tiap slot sebagai 1 baris dengan paket_isi & paket_harga.
@@ -117,34 +131,34 @@ class OrderController extends Controller
             // per grup — bukan per slot — sehingga total tidak membengkak.
 
             $itemsData = [];
-            $subtotal  = 0;
-            $buffer    = [];         // slot-slot dalam satu paket
+            $subtotal = 0;
+            $buffer = [];         // slot-slot dalam satu paket
             $currentPaketHarga = 0;
-            $currentPaketIsi   = 0;
+            $currentPaketIsi = 0;
 
             foreach ($validated['items'] as $raw) {
                 $variant = ProductVariant::with('recipe.ingredients')->findOrFail($raw['variant_id']);
                 abort_if($variant->tenant_id !== $tenant->id, 403);
 
-                $paketIsi   = (int) $raw['paket_isi'];
+                $paketIsi = (int) $raw['paket_isi'];
                 $paketHarga = (int) $raw['paket_harga'];
 
                 // Mulai grup baru jika buffer kosong
                 if (empty($buffer)) {
-                    $currentPaketIsi   = $paketIsi;
+                    $currentPaketIsi = $paketIsi;
                     $currentPaketHarga = $paketHarga;
                 }
 
                 $buffer[] = [
-                    'variant'     => $variant,
-                    'paket_isi'   => $paketIsi,
+                    'variant' => $variant,
+                    'paket_isi' => $paketIsi,
                     'paket_harga' => $paketHarga,
                 ];
 
                 // Saat buffer penuh (jumlah slot = paket_isi), flush ke itemsData
                 if (count($buffer) >= $currentPaketIsi) {
                     // Harga paket dibagi rata ke tiap slot agar total = paket_harga
-                    $perSlot  = (int) round($currentPaketHarga / count($buffer));
+                    $perSlot = (int) round($currentPaketHarga / count($buffer));
                     $subtotal += $currentPaketHarga;
 
                     foreach ($buffer as $idx => $slot) {
@@ -154,14 +168,14 @@ class OrderController extends Controller
                             : $perSlot;
 
                         $itemsData[] = [
-                            'variant_id'   => $slot['variant']->id,
+                            'variant_id' => $slot['variant']->id,
                             'variant_name' => $slot['variant']->name,
-                            'qty'          => 1,
-                            'unit_price'   => $slotHarga,   // harga proporsional per slot
-                            'unit_hpp'     => $slot['variant']->hpp,
-                            'total'        => $slotHarga,
-                            'paket_isi'    => $currentPaketIsi,
-                            'paket_harga'  => $currentPaketHarga,
+                            'qty' => 1,
+                            'unit_price' => $slotHarga,   // harga proporsional per slot
+                            'unit_hpp' => $slot['variant']->hpp,
+                            'total' => $slotHarga,
+                            'paket_isi' => $currentPaketIsi,
+                            'paket_harga' => $currentPaketHarga,
                         ];
                     }
 
@@ -172,59 +186,111 @@ class OrderController extends Controller
             // Sisa buffer (data tidak lengkap dari frontend — fallback aman)
             foreach ($buffer as $slot) {
                 $itemsData[] = [
-                    'variant_id'   => $slot['variant']->id,
+                    'variant_id' => $slot['variant']->id,
                     'variant_name' => $slot['variant']->name,
-                    'qty'          => 1,
-                    'unit_price'   => 0,
-                    'unit_hpp'     => $slot['variant']->hpp,
-                    'total'        => 0,
-                    'paket_isi'    => $slot['paket_isi'],
-                    'paket_harga'  => $slot['paket_harga'],
+                    'qty' => 1,
+                    'unit_price' => 0,
+                    'unit_hpp' => $slot['variant']->hpp,
+                    'total' => 0,
+                    'paket_isi' => $slot['paket_isi'],
+                    'paket_harga' => $slot['paket_harga'],
                 ];
+            }
+
+            // Hitung diskon dan total akhir
+            $discount = (float) ($validated['discount'] ?? 0);
+            $discount = min($discount, $subtotal);
+            $total = max(0, $subtotal - $discount);
+
+            // Validasi dan hitung uang diterima & kembalian
+            $isCash = ! empty($validated['payment_method']) && (
+                str_contains(strtolower($validated['payment_method']), 'tunai') ||
+                str_contains(strtolower($validated['payment_method']), 'cash')
+            );
+
+            $cashReceived = isset($validated['cash_received']) && $validated['cash_received'] !== ''
+                ? (float) $validated['cash_received']
+                : 0;
+
+            if ($isCash) {
+                if ($cashReceived < $total) {
+                    throw ValidationException::withMessages([
+                        'cash_received' => 'Uang yang diterima (Rp '.number_format($cashReceived, 0, ',', '.').') kurang dari total belanja (Rp '.number_format($total, 0, ',', '.').').',
+                    ]);
+                }
+                $changeAmount = max(0, $cashReceived - $total);
+            } else {
+                $cashReceived = 0;
+                $changeAmount = 0;
             }
 
             // ── Buat transaksi jika langsung bayar ───────────────────────────
             $transactionId = null;
-            if (!empty($validated['payment_method'])) {
+            if (! empty($validated['payment_method'])) {
                 $transaction = Transaction::create([
-                    'tenant_id'      => $tenant->id,
-                    'type'           => 'income',
-                    'category'       => 'sales',
-                    'amount'         => $subtotal,
-                    'description'    => "Penjualan Kasir POS order #{$orderNumber} - {$validated['customer_name']}",
-                    'reference'      => $orderNumber,
-                    'date'           => now()->toDateString(),
+                    'tenant_id' => $tenant->id,
+                    'type' => 'income',
+                    'category' => 'sales',
+                    'amount' => $total,
+                    'description' => "Penjualan Kasir POS order #{$orderNumber} - {$customerName}",
+                    'reference' => $orderNumber,
+                    'date' => now()->toDateString(),
                     'payment_method' => $validated['payment_method'],
-                    'user_id'        => auth()->id(),
+                    'user_id' => auth()->id(),
                 ]);
                 $transactionId = $transaction->id;
             }
 
             // ── Simpan order ─────────────────────────────────────────────────
             $order = Order::create([
-                'tenant_id'      => $tenant->id,
-                'order_number'   => $orderNumber,
-                'customer_name'  => $validated['customer_name'],
+                'tenant_id' => $tenant->id,
+                'order_number' => $orderNumber,
+                'customer_name' => $customerName,
                 'customer_phone' => $validated['customer_phone'] ?? null,
-                'status'         => 'pending',
-                'payment_status' => !empty($validated['payment_method']) ? 'paid' : 'unpaid',
+                'customer_email' => $validated['customer_email'] ?? null,
+                'status' => $orderStatus,
+                'payment_status' => ! empty($validated['payment_method']) ? 'paid' : 'unpaid',
                 'payment_method' => $validated['payment_method'] ?? null,
-                'subtotal'       => $subtotal,
-                'discount'       => 0,
-                'total'          => $subtotal,
-                'notes'          => $validated['notes'] ?? null,
+                'subtotal' => $subtotal,
+                'discount' => $discount,
+                'total' => $total,
+                'cash_received' => $cashReceived,
+                'change_amount' => $changeAmount,
+                'notes' => $validated['notes'] ?? null,
                 'transaction_id' => $transactionId,
-                'user_id'        => auth()->id(),
-                'ordered_at'     => now(),
+                'stock_deducted' => false,
+                'user_id' => auth()->id(),
+                'ordered_at' => now(),
             ]);
 
             foreach ($itemsData as $item) {
                 OrderItem::create(array_merge($item, ['order_id' => $order->id]));
+
+                if ($transactionId) {
+                    Sale::create([
+                        'tenant_id' => $tenant->id,
+                        'transaction_id' => $transactionId,
+                        'product_id' => null,
+                        'product_name' => $item['variant_name'],
+                        'qty' => $item['qty'],
+                        'unit_price' => $item['unit_price'],
+                        'discount' => 0,
+                        'total' => $item['total'],
+                    ]);
+                }
             }
+
+            if (in_array($orderStatus, ['processing', 'done'])) {
+                $this->deductStock($order, $tenant);
+            }
+
+            DB::afterCommit(fn () => broadcast(new NewOrderReceivedEvent($order->fresh())));
         });
 
-        return redirect()->route('orders.index')
-            ->with('success', 'Pesanan berhasil dibuat.');
+        return redirect()->route('pos.index')
+            ->with('success', 'Pesanan berhasil dibuat.')
+            ->with('last_order_id', $order?->id)
+            ->with('last_order_email', $order?->customer_email);
     }
 
     public function show(Order $order): Response
@@ -272,7 +338,7 @@ class OrderController extends Controller
         $tenant = app('tenant');
         abort_if($order->tenant_id !== $tenant->id, 403);
 
-        if (!$order->canBePaid()) {
+        if (! $order->canBePaid()) {
             return back()->withErrors(['payment' => 'Pesanan tidak dapat dibayar.']);
         }
 
@@ -282,15 +348,15 @@ class OrderController extends Controller
 
         DB::transaction(function () use ($order, $validated, $tenant) {
             $transaction = Transaction::create([
-                'tenant_id'      => $tenant->id,
-                'type'           => 'income',
-                'category'       => 'sales',
-                'amount'         => $order->total,
-                'description'    => "Penjualan order #{$order->order_number} - {$order->customer_name}",
-                'reference'      => $order->order_number,
-                'date'           => now()->toDateString(),
+                'tenant_id' => $tenant->id,
+                'type' => 'income',
+                'category' => 'sales',
+                'amount' => $order->total,
+                'description' => "Penjualan order #{$order->order_number} - {$order->customer_name}",
+                'reference' => $order->order_number,
+                'date' => now()->toDateString(),
                 'payment_method' => $validated['payment_method'],
-                'user_id'        => auth()->id(),
+                'user_id' => auth()->id(),
             ]);
 
             $order->update([
@@ -298,6 +364,19 @@ class OrderController extends Controller
                 'payment_method' => $validated['payment_method'],
                 'transaction_id' => $transaction->id,
             ]);
+
+            foreach ($order->items as $item) {
+                Sale::create([
+                    'tenant_id' => $tenant->id,
+                    'transaction_id' => $transaction->id,
+                    'product_id' => null,
+                    'product_name' => $item->variant_name,
+                    'qty' => $item->qty,
+                    'unit_price' => $item->unit_price,
+                    'discount' => 0,
+                    'total' => $item->total,
+                ]);
+            }
 
             $this->deductStock($order, $tenant);
         });
@@ -316,36 +395,46 @@ class OrderController extends Controller
         }
 
         foreach ($order->items()->with('variant.recipe.ingredients.ingredient')->get() as $item) {
-            if (!$item->variant) continue;
+            if (! $item->variant) {
+                continue;
+            }
 
             foreach ($item->variant->recipes as $recipe) {
-                if (!$recipe->ingredient_id) continue;
+                if (! $recipe->ingredient_id) {
+                    continue;
+                }
 
                 $product = Product::where('id', $recipe->ingredient_id)
                     ->where('tenant_id', $tenant->id)
                     ->lockForUpdate()
                     ->first();
 
-                if (!$product) continue;
+                if (! $product) {
+                    continue;
+                }
 
                 $consumedQty = (float) $recipe->qty * $item->qty;
-                $qtyBefore   = $product->current_stock;
-                $qtyAfter    = max(0, $qtyBefore - $consumedQty);
+                $qtyBefore = $product->current_stock;
+                $qtyAfter = max(0, $qtyBefore - $consumedQty);
 
                 StockMovement::create([
-                    'tenant_id'     => $tenant->id,
-                    'product_id'    => $product->id,
-                    'type'          => 'out',
-                    'qty'           => $consumedQty,
-                    'qty_before'    => $qtyBefore,
-                    'qty_after'     => $qtyAfter,
-                    'reference'     => $order->order_number,
-                    'note'          => "Penjualan: {$item->qty}× {$item->variant_name} (order #{$order->order_number})",
-                    'user_id'       => auth()->id() ?? $order->user_id,
+                    'tenant_id' => $tenant->id,
+                    'product_id' => $product->id,
+                    'type' => 'out',
+                    'qty' => $consumedQty,
+                    'qty_before' => $qtyBefore,
+                    'qty_after' => $qtyAfter,
+                    'reference' => $order->order_number,
+                    'note' => "Penjualan: {$item->qty}× {$item->variant_name} (order #{$order->order_number})",
+                    'user_id' => auth()->id() ?? $order->user_id,
                     'movement_date' => now(),
                 ]);
 
                 $product->update(['current_stock' => $qtyAfter]);
+
+                if ($product->current_stock <= $product->min_stock) {
+                    DB::afterCommit(fn () => broadcast(new LowStockAlertEvent($product->fresh())));
+                }
             }
         }
 
@@ -357,12 +446,64 @@ class OrderController extends Controller
         $tenant = app('tenant');
         abort_if($order->tenant_id !== $tenant->id, 403);
 
-        if (!$order->canBeCancelled()) {
+        if (! $order->canBeCancelled()) {
             return back()->withErrors(['order' => 'Pesanan yang sudah lunas tidak dapat dibatalkan.']);
         }
 
         $order->update(['status' => 'cancelled']);
 
         return back()->with('success', 'Pesanan berhasil dibatalkan.');
+    }
+
+    /**
+     * Generate PDF receipt and send it to the customer's email.
+     */
+    public function sendReceipt(Order $order)
+    {
+        $tenant = app('tenant');
+        abort_if($order->tenant_id !== $tenant->id, 403);
+
+        if (empty($order->customer_email)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pesanan ini tidak memiliki alamat email pelanggan.',
+            ], 422);
+        }
+
+        $order->load(['items', 'user:id,name']);
+
+        try {
+            Mail::to($order->customer_email)
+                ->send(new OrderReceiptMail($order));
+
+            return response()->json([
+                'success' => true,
+                'message' => "Struk berhasil dikirim ke {$order->customer_email}",
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim email: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Stream or download PDF receipt.
+     */
+    public function receipt(Order $order)
+    {
+        $tenant = app('tenant');
+        abort_if($order->tenant_id !== $tenant->id, 403);
+
+        $order->load(['items', 'user:id,name']);
+
+        $pdf = Pdf::loadView('pdf.order-receipt', [
+            'order' => $order,
+        ]);
+
+        return $pdf->stream("struk-{$order->order_number}.pdf");
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,8 +21,8 @@ class Package extends Model
     ];
 
     protected $casts = [
-        'capacity'  => 'integer',
-        'price'     => 'decimal:2',
+        'capacity' => 'integer',
+        'price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
 

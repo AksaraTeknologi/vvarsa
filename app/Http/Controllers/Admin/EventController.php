@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Event;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
@@ -17,8 +17,8 @@ class EventController extends Controller
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('organizer', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%");
+                    ->orWhere('organizer', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%");
             });
         }
 
@@ -44,21 +44,21 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'title'                       => 'required|string|max:255',
-            'organizer'                   => 'required|string|max:255',
-            'business_types'              => 'nullable|array',
-            'business_types.*'            => 'string|max:50',
-            'location'                    => 'required|string|max:255',
-            'city'                        => 'nullable|string|max:255',
-            'description'                 => 'nullable|string',
-            'start_date'                  => 'required|date',
-            'end_date'                    => 'required|date|after_or_equal:start_date',
-            'max_participants'            => 'nullable|integer|min:1',
-            'registration_fee'            => 'required|numeric|min:0',
-            'registration_url'            => 'nullable|string|max:500',
+            'title' => 'required|string|max:255',
+            'organizer' => 'required|string|max:255',
+            'business_types' => 'nullable|array',
+            'business_types.*' => 'string|max:50',
+            'location' => 'required|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'max_participants' => 'nullable|integer|min:1',
+            'registration_fee' => 'required|numeric|min:0',
+            'registration_url' => 'nullable|string|max:500',
             'allow_platform_registration' => 'sometimes|boolean',
-            'status'                      => 'required|in:upcoming,ongoing,completed,cancelled',
-            'is_featured'                 => 'sometimes|boolean',
+            'status' => 'required|in:upcoming,ongoing,completed,cancelled',
+            'is_featured' => 'sometimes|boolean',
         ];
 
         if ($request->hasFile('image')) {
@@ -71,7 +71,7 @@ class EventController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('events', 'public');
-            $validated['image'] = '/storage/' . $path;
+            $validated['image'] = '/storage/'.$path;
         } else {
             $validated['image'] = null;
         }
@@ -99,21 +99,21 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $rules = [
-            'title'                       => 'required|string|max:255',
-            'organizer'                   => 'required|string|max:255',
-            'business_types'              => 'nullable|array',
-            'business_types.*'            => 'string|max:50',
-            'location'                    => 'required|string|max:255',
-            'city'                        => 'nullable|string|max:255',
-            'description'                 => 'nullable|string',
-            'start_date'                  => 'required|date',
-            'end_date'                    => 'required|date|after_or_equal:start_date',
-            'max_participants'            => 'nullable|integer|min:1',
-            'registration_fee'            => 'required|numeric|min:0',
-            'registration_url'            => 'nullable|string|max:500',
+            'title' => 'required|string|max:255',
+            'organizer' => 'required|string|max:255',
+            'business_types' => 'nullable|array',
+            'business_types.*' => 'string|max:50',
+            'location' => 'required|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'max_participants' => 'nullable|integer|min:1',
+            'registration_fee' => 'required|numeric|min:0',
+            'registration_url' => 'nullable|string|max:500',
             'allow_platform_registration' => 'sometimes|boolean',
-            'status'                      => 'required|in:upcoming,ongoing,completed,cancelled',
-            'is_featured'                 => 'sometimes|boolean',
+            'status' => 'required|in:upcoming,ongoing,completed,cancelled',
+            'is_featured' => 'sometimes|boolean',
         ];
 
         if ($request->hasFile('image')) {
@@ -131,7 +131,7 @@ class EventController extends Controller
                 Storage::disk('public')->delete($oldPath);
             }
             $path = $request->file('image')->store('events', 'public');
-            $validated['image'] = '/storage/' . $path;
+            $validated['image'] = '/storage/'.$path;
         } else {
             $validated['image'] = $event->image;
         }

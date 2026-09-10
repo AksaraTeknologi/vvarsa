@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -26,8 +25,8 @@ class TaxReport extends Model
 
     protected $casts = [
         'gross_amount' => 'decimal:2',
-        'tax_amount'   => 'decimal:2',
-        'due_date'     => 'date',
+        'tax_amount' => 'decimal:2',
+        'due_date' => 'date',
         'submitted_at' => 'date',
     ];
 

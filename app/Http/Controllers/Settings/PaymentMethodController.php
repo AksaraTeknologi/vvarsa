@@ -28,8 +28,8 @@ class PaymentMethodController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'name'           => 'required|string|max:255',
-            'account_name'   => 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'account_name' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
         ]);
 
@@ -47,10 +47,10 @@ class PaymentMethodController extends Controller
         abort_if($paymentMethod->tenant_id !== $tenant->id, 403);
 
         $validated = $request->validate([
-            'name'           => 'required|string|max:255',
-            'account_name'   => 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'account_name' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
-            'is_active'      => 'required|boolean',
+            'is_active' => 'required|boolean',
         ]);
 
         $paymentMethod->update($validated);

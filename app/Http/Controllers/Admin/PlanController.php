@@ -23,13 +23,13 @@ class PlanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'          => 'required|string|max:100|unique:subscription_plans,name',
-            'price'         => 'required|numeric|min:0',
+            'name' => 'required|string|max:100|unique:subscription_plans,name',
+            'price' => 'required|numeric|min:0',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'max_users'     => 'required|integer|min:1',
-            'max_products'  => 'required|integer|min:1',
-            'features'      => 'nullable|array',
-            'is_active'     => 'boolean',
+            'max_users' => 'required|integer|min:1',
+            'max_products' => 'required|integer|min:1',
+            'features' => 'nullable|array',
+            'is_active' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
@@ -43,13 +43,13 @@ class PlanController extends Controller
     public function update(Request $request, SubscriptionPlan $plan)
     {
         $validated = $request->validate([
-            'name'          => 'required|string|max:100|unique:subscription_plans,name,' . $plan->id,
-            'price'         => 'required|numeric|min:0',
+            'name' => 'required|string|max:100|unique:subscription_plans,name,'.$plan->id,
+            'price' => 'required|numeric|min:0',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'max_users'     => 'required|integer|min:1',
-            'max_products'  => 'required|integer|min:1',
-            'features'      => 'nullable|array',
-            'is_active'     => 'boolean',
+            'max_users' => 'required|integer|min:1',
+            'max_products' => 'required|integer|min:1',
+            'features' => 'nullable|array',
+            'is_active' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);

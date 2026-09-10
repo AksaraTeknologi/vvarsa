@@ -12,14 +12,17 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete();
             $table->string('order_number')->unique();
-            $table->string('customer_name');
+            $table->string('customer_name')->nullable();
             $table->string('customer_phone')->nullable();
+            $table->string('customer_email')->nullable();
             $table->string('status')->default('pending');
             $table->string('payment_status')->default('unpaid');
             $table->string('payment_method')->nullable();
             $table->decimal('subtotal', 14, 2)->default(0);
             $table->decimal('discount', 14, 2)->default(0);
             $table->decimal('total', 14, 2)->default(0);
+            $table->decimal('cash_received', 14, 2)->default(0);
+            $table->decimal('change_amount', 14, 2)->default(0);
             $table->text('notes')->nullable();
             $table->foreignUuid('transaction_id')->nullable()->constrained('transactions')->nullOnDelete();
             $table->boolean('stock_deducted')->default(false);

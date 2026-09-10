@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,10 +30,10 @@ class Product extends Model
 
     protected $casts = [
         'purchase_price' => 'decimal:2',
-        'purchase_qty'   => 'decimal:2',
-        'cost_price'     => 'decimal:2',
-        'sell_price'     => 'decimal:2',
-        'is_active'      => 'boolean',
+        'purchase_qty' => 'decimal:2',
+        'cost_price' => 'decimal:2',
+        'sell_price' => 'decimal:2',
+        'is_active' => 'boolean',
     ];
 
     protected static function booted()
@@ -80,7 +79,10 @@ class Product extends Model
 
     public function getMarginAttribute(): float
     {
-        if ($this->sell_price == 0) return 0;
+        if ($this->sell_price == 0) {
+            return 0;
+        }
+
         return round((($this->sell_price - $this->cost_price) / $this->sell_price) * 100, 2);
     }
 }

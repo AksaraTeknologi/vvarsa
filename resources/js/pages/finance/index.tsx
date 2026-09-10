@@ -55,7 +55,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                         { title: 'Pengeluaran Hari Ini', value: today.expense, color: 'text-rose-600', bg: 'bg-rose-500/10' },
                         { title: 'Penjualan Bulan Ini', value: this_month.income, color: 'text-blue-600', bg: 'bg-blue-500/10' },
                         { title: 'Pengeluaran Bulan Ini', value: this_month.expense, color: 'text-orange-600', bg: 'bg-orange-500/10' },
-                    ].map(({ title, value, color, bg }) => (
+                    ].map(({ title, value, color }) => (
                         <div key={title} className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                             <p className="text-muted-foreground mb-2 text-sm">{title}</p>
                             <p className={`text-xl font-bold ${color}`}>{formatRupiah(value, true)}</p>

@@ -23,19 +23,6 @@ interface Props {
     business_type: string; // Business type dari tenant
 }
 
-function StarRating({ rating }: { rating: number }) {
-    return (
-        <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <div key={star} className={star <= Math.round(rating) ? 'text-amber-400' : 'text-slate-200'}>
-                    ★
-                </div>
-            ))}
-            <span className="text-muted-foreground ml-1 text-xs">{rating.toFixed(1)}</span>
-        </div>
-    );
-}
-
 export default function SuppliersIndex({ suppliers, cities, filters, business_type }: Props) {
     const [search, setSearch] = useState(filters.search || '');
     const [city, setCity] = useState(filters.city || '');

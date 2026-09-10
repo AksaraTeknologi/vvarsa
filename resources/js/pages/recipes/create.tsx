@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface RecipeIngredientRow {
-    ingredient_id: number | null;
+    ingredient_id: string | number | null;
     ingredient_name: string;
     qty: number;
     unit: string;
@@ -65,7 +65,7 @@ export default function RecipeCreate({ ingredients }: Props) {
             updateRecipe(index, 'ingredient_cost', 0);
             updateRecipe(index, 'unit', 'gram');
         } else {
-            const product = ingredients.find((p) => p.id === parseInt(productId));
+            const product = ingredients.find((p) => String(p.id) === productId);
             if (product) {
                 updateRecipe(index, 'ingredient_id', product.id);
                 updateRecipe(index, 'ingredient_name', product.name);

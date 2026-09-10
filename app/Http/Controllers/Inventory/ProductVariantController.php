@@ -22,7 +22,7 @@ class ProductVariantController extends Controller
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('sku', 'like', "%{$search}%");
+                    ->orWhere('sku', 'like', "%{$search}%");
             });
         }
 
@@ -31,12 +31,13 @@ class ProductVariantController extends Controller
         // Append computed attributes to each variant
         $variants->through(function ($variant) {
             $variant->append(['hpp', 'margin', 'profit', 'recipes']);
+
             return $variant;
         });
 
         return Inertia::render('variants/index', [
             'variants' => $variants,
-            'filters'  => $request->only(['search']),
+            'filters' => $request->only(['search']),
         ]);
     }
 
@@ -49,6 +50,7 @@ class ProductVariantController extends Controller
             ->get()
             ->map(function ($r) {
                 $r->append('hpp');
+
                 return $r;
             });
 
@@ -62,13 +64,13 @@ class ProductVariantController extends Controller
         $tenant = app('tenant');
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'sku'         => ['nullable', 'string', 'max:100', Rule::unique('product_variants')->where('tenant_id', $tenant->id)],
-            'sell_price'  => 'required|numeric|min:0',
-            'recipe_id'   => 'nullable|exists:recipes,id',
-            'recipe_qty'  => 'required|numeric|min:0.001',
+            'name' => 'required|string|max:255',
+            'sku' => ['nullable', 'string', 'max:100', Rule::unique('product_variants')->where('tenant_id', $tenant->id)],
+            'sell_price' => 'required|numeric|min:0',
+            'recipe_id' => 'nullable|exists:recipes,id',
+            'recipe_qty' => 'required|numeric|min:0.001',
             'description' => 'nullable|string',
-            'is_active'   => 'boolean',
+            'is_active' => 'boolean',
         ]);
 
         ProductVariant::create(array_merge($validated, [
@@ -93,6 +95,7 @@ class ProductVariantController extends Controller
             ->get()
             ->map(function ($r) {
                 $r->append('hpp');
+
                 return $r;
             });
 
@@ -108,13 +111,13 @@ class ProductVariantController extends Controller
         abort_if($variant->tenant_id !== $tenant->id, 403);
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'sku'         => ['nullable', 'string', 'max:100', Rule::unique('product_variants')->ignore($variant->id)->where('tenant_id', $tenant->id)],
-            'sell_price'  => 'required|numeric|min:0',
-            'recipe_id'   => 'nullable|exists:recipes,id',
-            'recipe_qty'  => 'required|numeric|min:0.001',
+            'name' => 'required|string|max:255',
+            'sku' => ['nullable', 'string', 'max:100', Rule::unique('product_variants')->ignore($variant->id)->where('tenant_id', $tenant->id)],
+            'sell_price' => 'required|numeric|min:0',
+            'recipe_id' => 'nullable|exists:recipes,id',
+            'recipe_qty' => 'required|numeric|min:0.001',
             'description' => 'nullable|string',
-            'is_active'   => 'boolean',
+            'is_active' => 'boolean',
         ]);
 
         $variant->update($validated);

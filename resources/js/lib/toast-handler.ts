@@ -19,7 +19,7 @@ interface RouterPromiseOptions {
  *   { loading: "Menyimpan...", success: "Resep berhasil disimpan!", error: "Gagal Menyimpan" }
  * )
  */
-export function routerPromise(method: InertiaMethod, url: string, data: object = {}, options: RouterPromiseOptions = {}): Promise<any> {
+export function routerPromise(method: InertiaMethod, url: string, data: any = {}, options: RouterPromiseOptions = {}): Promise<any> {
     const { onSuccess, onError, ...restOptions } = options;
 
     return new Promise((resolve, reject) => {

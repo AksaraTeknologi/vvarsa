@@ -10,7 +10,6 @@ interface ToastMessages {
 
 export async function handleAsyncAction<T>(apiCall: () => Promise<T>, messages?: ToastMessages): Promise<T | null> {
     const loadingMessage = messages?.loading || 'Sedang memproses data...';
-    const successMessage = messages?.success || 'Aksi berhasil diselesaikan!';
     const errorMessage = messages?.error || 'Terjadi kesalahan, silakan coba lagi.';
 
     const toastId = Math.random().toString(36).substring(2, 9);

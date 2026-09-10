@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,7 +21,7 @@ class UserController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                        ->orWhere('email', 'like', "%{$search}%");
                 });
             })
             ->when($tenantFilter, function ($query, $tenantFilter) {
@@ -34,10 +34,10 @@ class UserController extends Controller
         $tenants = Tenant::select('id', 'name')->get();
 
         return Inertia::render('admin/users/index', [
-            'users'   => $users,
+            'users' => $users,
             'tenants' => $tenants,
             'filters' => [
-                'search'    => $search,
+                'search' => $search,
                 'tenant_id' => $tenantFilter,
             ],
         ]);
@@ -69,7 +69,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'password' => 'nullable|string|min:8',
             'role' => 'required|in:admin,owner,staff',
             'tenant_id' => 'required_if:role,owner,staff|nullable|exists:tenants,id',
@@ -81,7 +81,7 @@ class UserController extends Controller
             'tenant_id' => $validated['role'] === 'admin' ? null : $validated['tenant_id'],
         ];
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $data['password'] = bcrypt($validated['password']);
         }
 

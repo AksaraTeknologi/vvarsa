@@ -149,12 +149,6 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                         <p className="text-muted-foreground mt-1 text-sm">
                             Jadilah yang pertama memulai diskusi di komunitas {businessLabel}!
                         </p>
-                        <Link
-                            href="/community/create"
-                            className="bg-primary text-primary-foreground hover:bg-primary/90 mt-5 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium"
-                        >
-                            <Plus size={14} /> Buat Diskusi Pertama
-                        </Link>
                     </div>
                 ) : (
                     <div className="space-y-2.5">

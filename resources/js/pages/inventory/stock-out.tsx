@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -23,14 +24,14 @@ interface Props {
 
 const stockOutSchema = z.object({
     product_id: z.string().min(1, 'Produk wajib dipilih'),
-    qty: z.number().min(1, 'Jumlah keluar minimal 1'),
+    qty: z.coerce.number().min(1, 'Jumlah keluar minimal 1'),
     reference: z.string().optional(),
     note: z.string().optional(),
     movement_date: z.string().min(1, 'Tanggal wajib diisi'),
 });
 
 export default function StockOut({ products }: Props) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, errors } = useForm({
         product_id: '',
         qty: 1,
         reference: '',
@@ -38,9 +39,10 @@ export default function StockOut({ products }: Props) {
         movement_date: new Date().toISOString().split('T')[0],
     });
 
+    const [processing, setProcessing] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const selectedProduct = products.find((p) => p.id === parseInt(data.product_id));
+    const selectedProduct = products.find((p) => String(p.id) === data.product_id);
     const isInsufficientStock = selectedProduct && data.qty > selectedProduct.current_stock;
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -63,7 +65,18 @@ export default function StockOut({ products }: Props) {
             return;
         }
 
-        post('/inventory/stock-out');
+        setProcessing(true);
+        handleAsyncAction(
+            () =>
+                routerPromise('post', '/inventory/stock-out', data, {
+                    onFinish: () => setProcessing(false),
+                }),
+            {
+                loading: 'Mencatat stok keluar...',
+                success: 'Stok keluar berhasil dicatat!',
+                error: 'Gagal Mencatat Stok Keluar',
+            },
+        ).finally(() => setProcessing(false));
     };
 
     const displayError = (field: keyof typeof errors) => clientErrors[field] || errors[field];

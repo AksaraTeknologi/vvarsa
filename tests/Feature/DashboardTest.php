@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
-use App\Models\Tenant;
-use App\Models\SubscriptionPlan;
-use App\Models\TenantSubscription;
 use App\Models\Role;
+use App\Models\SubscriptionPlan;
+use App\Models\Tenant;
+use App\Models\TenantSubscription;
+use App\Models\User;
 
 test('guests are redirected to the login page', function () {
     $this->get('/dashboard')->assertRedirect('/login');

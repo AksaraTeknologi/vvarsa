@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -22,8 +21,8 @@ class TenantSubscription extends Model
     ];
 
     protected $casts = [
-        'starts_at'   => 'datetime',
-        'ends_at'     => 'datetime',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
         'amount_paid' => 'decimal:2',
     ];
 

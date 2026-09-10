@@ -55,7 +55,7 @@ const ROLE_LABELS: Record<string, string> = {
     staff: 'Staff',
 };
 
-export default function MembersIndex({ members, roles, limit, member_count, pending_requests, is_supervisor, is_owner }: Props) {
+export default function MembersIndex({ members, limit, member_count, pending_requests, is_supervisor, is_owner }: Props) {
     const { auth } = usePage<SharedData>().props;
     const authUserId = auth.user.id;
     const authRole = is_owner ? 'owner' : is_supervisor ? 'supervisor' : 'staff';

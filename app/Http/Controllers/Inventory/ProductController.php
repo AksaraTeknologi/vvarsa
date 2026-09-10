@@ -21,7 +21,7 @@ class ProductController extends Controller
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('sku', 'like', "%{$search}%");
+                    ->orWhere('sku', 'like', "%{$search}%");
             });
         }
 
@@ -44,11 +44,11 @@ class ProductController extends Controller
             ->get();
 
         return Inertia::render('inventory/index', [
-            'products'     => $products,
-            'categories'   => $categories,
-            'filters'      => $request->only(['search', 'category', 'low_stock']),
+            'products' => $products,
+            'categories' => $categories,
+            'filters' => $request->only(['search', 'category', 'low_stock']),
             'low_stock_list' => $lowStockList,
-            'total_count'  => Product::where('tenant_id', $tenant->id)->count(),
+            'total_count' => Product::where('tenant_id', $tenant->id)->count(),
             'max_products' => $tenant->max_products,
         ]);
     }
@@ -67,26 +67,26 @@ class ProductController extends Controller
     {
         $tenant = app('tenant');
 
-        if (!$tenant->canAddProduct()) {
+        if (! $tenant->canAddProduct()) {
             return back()->withErrors(['limit' => "Batas maksimal produk ({$tenant->max_products}) sudah tercapai. Upgrade paket untuk menambah lebih banyak produk."]);
         }
 
         $validated = $request->validate([
-            'sku'            => ['nullable', 'string', Rule::unique('products')->where('tenant_id', $tenant->id)],
-            'name'           => 'required|string|max:255',
-            'category_id'    => 'nullable|exists:product_categories,id',
-            'unit'           => 'required|string|max:50',
-            'min_stock'      => 'required|integer|min:0',
+            'sku' => ['nullable', 'string', Rule::unique('products')->where('tenant_id', $tenant->id)],
+            'name' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:product_categories,id',
+            'unit' => 'required|string|max:50',
+            'min_stock' => 'required|integer|min:0',
             'purchase_price' => 'required|numeric|min:0',
-            'purchase_qty'   => 'required|numeric|min:0.001',
-            'sell_price'     => 'nullable|numeric|min:0',
-            'description'    => 'nullable|string',
+            'purchase_qty' => 'required|numeric|min:0.001',
+            'sell_price' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string',
         ]);
 
         $product = Product::create(array_merge($validated, [
-            'tenant_id'     => $tenant->id,
+            'tenant_id' => $tenant->id,
             'current_stock' => 0,
-            'sell_price'    => $validated['sell_price'] ?? 0,
+            'sell_price' => $validated['sell_price'] ?? 0,
         ]));
 
         return redirect()->route('inventory.index')
@@ -101,7 +101,7 @@ class ProductController extends Controller
         $categories = ProductCategory::where('tenant_id', $tenant->id)->get(['id', 'name']);
 
         return Inertia::render('inventory/edit', [
-            'product'    => $product->load('category'),
+            'product' => $product->load('category'),
             'categories' => $categories,
         ]);
     }
@@ -112,15 +112,15 @@ class ProductController extends Controller
         abort_if($product->tenant_id !== $tenant->id, 403);
 
         $validated = $request->validate([
-            'name'           => 'required|string|max:255',
-            'category_id'    => 'nullable|exists:product_categories,id',
-            'unit'           => 'required|string|max:50',
-            'min_stock'      => 'required|integer|min:0',
+            'name' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:product_categories,id',
+            'unit' => 'required|string|max:50',
+            'min_stock' => 'required|integer|min:0',
             'purchase_price' => 'required|numeric|min:0',
-            'purchase_qty'   => 'required|numeric|min:0.001',
-            'sell_price'     => 'nullable|numeric|min:0',
-            'description'    => 'nullable|string',
-            'is_active'      => 'boolean',
+            'purchase_qty' => 'required|numeric|min:0.001',
+            'sell_price' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean',
         ]);
 
         $product->update(array_merge($validated, [
@@ -139,7 +139,7 @@ class ProductController extends Controller
         $tenant = app('tenant');
         abort_if($product->tenant_id !== $tenant->id, 403);
 
-        $product->update(['is_active' => !$product->is_active]);
+        $product->update(['is_active' => ! $product->is_active]);
 
         $status = $product->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
@@ -147,14 +147,14 @@ class ProductController extends Controller
     }
 
     public function destroy(Product $product)
-{
-    $tenant = app('tenant');
-    abort_if($product->tenant_id !== $tenant->id, 403);
+    {
+        $tenant = app('tenant');
+        abort_if($product->tenant_id !== $tenant->id, 403);
 
-    $name = $product->name;
+        $name = $product->name;
 
-    $product->delete();
+        $product->delete();
 
-    return back()->with('success', "Produk \"{$name}\" berhasil dihapus.");
-}
+        return back()->with('success', "Produk \"{$name}\" berhasil dihapus.");
+    }
 }

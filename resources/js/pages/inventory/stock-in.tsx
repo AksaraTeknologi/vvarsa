@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
@@ -32,7 +33,7 @@ const stockInSchema = z.object({
 });
 
 export default function StockIn({ products }: Props) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, errors } = useForm({
         product_id: '',
         qty: 1,
         unit_cost: 0,
@@ -41,9 +42,10 @@ export default function StockIn({ products }: Props) {
         movement_date: new Date().toISOString().split('T')[0],
     });
 
+    const [processing, setProcessing] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const selectedProduct = products.find((p) => p.id === parseInt(data.product_id));
+    const selectedProduct = products.find((p) => String(p.id) === data.product_id);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,7 +62,18 @@ export default function StockIn({ products }: Props) {
             return;
         }
 
-        post('/inventory/stock-in');
+        setProcessing(true);
+        handleAsyncAction(
+            () =>
+                routerPromise('post', '/inventory/stock-in', data, {
+                    onFinish: () => setProcessing(false),
+                }),
+            {
+                loading: 'Mencatat stok masuk...',
+                success: 'Stok masuk berhasil dicatat!',
+                error: 'Gagal Mencatat Stok Masuk',
+            },
+        ).finally(() => setProcessing(false));
     };
 
     const displayError = (field: keyof typeof errors) => clientErrors[field] || errors[field];
@@ -92,7 +105,7 @@ export default function StockIn({ products }: Props) {
                                     value={data.product_id}
                                     onValueChange={(val) => {
                                         setData('product_id', val);
-                                        const p = products.find((x) => x.id === parseInt(val));
+                                        const p = products.find((x) => String(x.id) === val);
                                         if (p) setData('unit_cost', p.cost_price);
                                     }}
                                 >

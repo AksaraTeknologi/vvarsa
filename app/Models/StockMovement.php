@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -26,7 +25,7 @@ class StockMovement extends Model
     ];
 
     protected $casts = [
-        'unit_cost'     => 'decimal:2',
+        'unit_cost' => 'decimal:2',
         'movement_date' => 'datetime',
     ];
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -21,7 +20,7 @@ class RecipeIngredient extends Model
     ];
 
     protected $casts = [
-        'qty'             => 'decimal:3',
+        'qty' => 'decimal:3',
         'ingredient_cost' => 'decimal:2',
     ];
 
