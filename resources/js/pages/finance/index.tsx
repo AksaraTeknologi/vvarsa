@@ -2,9 +2,8 @@ import AppLayout from '@/layouts/app-layout';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Keuangan', href: '/finance' }];
 
 interface MonthData {
     label: string;
@@ -36,25 +35,27 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function FinanceIndex({ twelve_months, today, this_month }: Props) {
+    const { t } = useTranslation();
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('finance.title', 'Keuangan & Laporan'), href: '/finance' }];
     const netToday = today.income - today.expense;
     const netMonth = this_month.income - this_month.expense;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Ringkasan Keuangan" />
+            <Head title={t('finance.title')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Ringkasan Keuangan</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">Pantau arus kas dan performa finansial bisnis Anda</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t('finance.title')}</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">{t('finance.subtitle')}</p>
                 </div>
 
                 {/* Today & Month Stats */}
                 <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                     {[
-                        { title: 'Penjualan Hari Ini', value: today.income, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
-                        { title: 'Pengeluaran Hari Ini', value: today.expense, color: 'text-rose-600', bg: 'bg-rose-500/10' },
-                        { title: 'Penjualan Bulan Ini', value: this_month.income, color: 'text-blue-600', bg: 'bg-blue-500/10' },
-                        { title: 'Pengeluaran Bulan Ini', value: this_month.expense, color: 'text-orange-600', bg: 'bg-orange-500/10' },
+                        { title: t('dashboard.salesToday'), value: today.income, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
+                        { title: t('dashboard.expenseToday'), value: today.expense, color: 'text-rose-600', bg: 'bg-rose-500/10' },
+                        { title: `${t('navigation.sales')} (${t('dashboard.thisMonth')})`, value: this_month.income, color: 'text-blue-600', bg: 'bg-blue-500/10' },
+                        { title: `${t('dashboard.expense')} (${t('dashboard.thisMonth')})`, value: this_month.expense, color: 'text-orange-600', bg: 'bg-orange-500/10' },
                     ].map(({ title, value, color }) => (
                         <div key={title} className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                             <p className="text-muted-foreground mb-2 text-sm">{title}</p>
@@ -66,7 +67,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 {/* Net profit highlight */}
                 <div className="grid gap-4 sm:grid-cols-2">
                     <div className={`rounded-2xl p-5 ${netToday >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
-                        <p className="text-sm font-medium">Net Profit Hari Ini</p>
+                        <p className="text-sm font-medium">{t('finance.netProfitToday')}</p>
                         <p
                             className={`text-2xl font-bold ${netToday >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
                         >
@@ -75,7 +76,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                         </p>
                     </div>
                     <div className={`rounded-2xl p-5 ${netMonth >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
-                        <p className="text-sm font-medium">Net Profit Bulan Ini</p>
+                        <p className="text-sm font-medium">{t('finance.netProfitMonth')}</p>
                         <p
                             className={`text-2xl font-bold ${netMonth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
                         >
@@ -89,8 +90,8 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                     <div className="mb-5 flex items-center justify-between">
                         <div>
-                            <h2 className="font-semibold">Tren 12 Bulan Terakhir</h2>
-                            <p className="text-muted-foreground text-xs">Perbandingan pendapatan vs pengeluaran</p>
+                            <h2 className="font-semibold">{t('finance.twelveMonthTrend')}</h2>
+                            <p className="text-muted-foreground text-xs">{t('finance.incomeVsExpense')}</p>
                         </div>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
@@ -100,8 +101,8 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                             <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                             <Tooltip content={<CustomTooltip />} />
                             <Legend />
-                            <Bar dataKey="income" name="Pendapatan" fill="#10b981" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="expense" name="Pengeluaran" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="income" name={t('finance.income')} fill="#10b981" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="expense" name={t('finance.expense')} fill="#f43f5e" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -109,13 +110,13 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 {/* Quick links */}
                 <div className="grid grid-cols-3 gap-4">
                     {[
-                        { label: 'Transaksi', href: '/finance/transactions', color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400' },
+                        { label: t('finance.transactions'), href: '/finance/transactions', color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400' },
                         {
-                            label: 'Laporan Penjualan',
+                            label: t('finance.salesReport'),
                             href: '/finance/sales-report',
                             color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
                         },
-                        { label: 'Laporan Pengeluaran', href: '/finance/expense-report', color: 'bg-rose-500/10 text-rose-700 dark:text-rose-400' },
+                        { label: t('finance.expenseReport'), href: '/finance/expense-report', color: 'bg-rose-500/10 text-rose-700 dark:text-rose-400' },
                     ].map(({ label, href, color }) => (
                         <Link
                             key={href}

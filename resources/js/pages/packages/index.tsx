@@ -6,6 +6,7 @@ import { type PaginatedData, type ProductVariant } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { Package, PlusCircle, Search } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 
@@ -24,10 +25,11 @@ interface Props {
     filters: { search?: string };
 }
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Paket Produk', href: '/packages' }];
-
 export default function PackagesIndex({ packages, filters }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search ?? '');
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('packages.title', 'Manajemen Paket Produk'), href: '/packages' }];
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,7 +38,7 @@ export default function PackagesIndex({ packages, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Manajemen Paket Produk" />
+            <Head title={t('packages.title', 'Manajemen Paket Produk')} />
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
@@ -44,16 +46,16 @@ export default function PackagesIndex({ packages, filters }: Props) {
                     <div>
                         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                             <Package className="text-indigo-500" size={26} />
-                            Manajemen Paket Produk
+                            {t('packages.title', 'Manajemen Paket Produk')}
                         </h1>
                         <p className="text-muted-foreground mt-0.5 text-sm">
-                            Konfigurasi paket isi mochi (kapasitas, harga bundle, dan batas varian)
+                            {t('packages.subtitle', 'Konfigurasi paket isi mochi (kapasitas, harga bundle, dan batas varian)')}
                         </p>
                     </div>
                     <Button asChild className="gap-1.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">
                         <Link href="/packages/create">
                             <PlusCircle size={16} />
-                            Tambah Paket
+                            {t('packages.addPackage', 'Tambah Paket')}
                         </Link>
                     </Button>
                 </div>
@@ -65,14 +67,14 @@ export default function PackagesIndex({ packages, filters }: Props) {
                         <Input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Cari paket..."
+                            placeholder={t('packages.searchPlaceholder', 'Cari paket...')}
                             className="h-9 rounded-xl pl-9 text-sm"
                         />
                     </div>
                 </form>
 
                 {/* Data Table */}
-                <DataTable columns={columns} data={packages.data} />
+                <DataTable columns={columns(t)} data={packages.data} />
 
                 {/* Pagination */}
                 {packages.last_page > 1 && (

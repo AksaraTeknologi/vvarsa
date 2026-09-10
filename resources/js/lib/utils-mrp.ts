@@ -1,19 +1,26 @@
 /**
- * Format number as Indonesian Rupiah
+ * Format a number using a tenant currency.
  */
-export function formatRupiah(amount: number, compact = false): string {
+export function formatCurrency(amount: number, currencyCode?: string, compact = false): string {
+    const currency = currencyCode ?? (typeof window !== 'undefined' ? window.localStorage.getItem('vvarsa.currency') : null) ?? 'IDR';
+    const locale = currency === 'IDR' ? 'id-ID' : currency === 'SGD' ? 'en-SG' : 'en-US';
     if (compact) {
-        if (amount >= 1_000_000_000) return `Rp ${(amount / 1_000_000_000).toFixed(1)}M`;
-        if (amount >= 1_000_000) return `Rp ${(amount / 1_000_000).toFixed(1)}Jt`;
-        if (amount >= 1_000) return `Rp ${(amount / 1_000).toFixed(0)}rb`;
+        const symbol = currency === 'IDR' ? 'Rp' : currency === 'SGD' ? 'S$' : '$';
+        if (amount >= 1_000_000_000) return `${symbol} ${(amount / 1_000_000_000).toFixed(1)}B`;
+        if (amount >= 1_000_000) return `${symbol} ${(amount / 1_000_000).toFixed(1)}M`;
+        if (amount >= 1_000) return `${symbol} ${(amount / 1_000).toFixed(currency === 'IDR' ? 0 : 1)}K`;
     }
-    return new Intl.NumberFormat('id-ID', {
+    const formatted = new Intl.NumberFormat(locale, {
         style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
+        currency,
+        minimumFractionDigits: currency === 'IDR' ? 0 : 2,
+        maximumFractionDigits: currency === 'IDR' ? 0 : 2,
     }).format(amount);
+
+    return currency === 'SGD' ? formatted.replace('$', 'S$') : formatted;
 }
+
+export const formatRupiah = (amount: number, compact = false): string => formatCurrency(amount, undefined, compact);
 
 /**
  * Format date to Indonesian locale

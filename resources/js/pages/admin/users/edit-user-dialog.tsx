@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { type UserItem } from './columns';
 
@@ -47,6 +48,7 @@ const editUserSchema = z
     );
 
 export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDialogProps) {
+    const { t } = useTranslation();
     const form = useForm({
         name: '',
         email: '',
@@ -101,18 +103,18 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
             <DialogContent className="sm:max-w-[450px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Edit Pengguna</DialogTitle>
-                        <DialogDescription>Perbarui detail informasi, peran, atau tenant bisnis untuk pengguna ini.</DialogDescription>
+                        <DialogTitle>{t('admin.users.editTitle')}</DialogTitle>
+                        <DialogDescription>{t('admin.users.editDescription')}</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="edit-name">Nama Lengkap</Label>
+                            <Label htmlFor="edit-name">{t('admin.users.fullName')}</Label>
                             <Input
                                 id="edit-name"
                                 value={form.data.name}
                                 onChange={(e) => form.setData('name', e.target.value)}
-                                placeholder="Contoh: John Doe"
+                                placeholder={t('admin.users.fullNamePlaceholder')}
                                 required
                             />
                             {(validationErrors.name || form.errors.name) && (
@@ -121,13 +123,13 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="edit-email">Alamat Email</Label>
+                            <Label htmlFor="edit-email">{t('common.email')}</Label>
                             <Input
                                 id="edit-email"
                                 type="email"
                                 value={form.data.email}
                                 onChange={(e) => form.setData('email', e.target.value)}
-                                placeholder="Contoh: john@example.com"
+                                placeholder={t('admin.users.emailPlaceholder')}
                                 required
                             />
                             {(validationErrors.email || form.errors.email) && (
@@ -136,13 +138,13 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="edit-password">Kata Sandi Baru (Opsional)</Label>
+                            <Label htmlFor="edit-password">{t('admin.users.newPasswordOptional')}</Label>
                             <Input
                                 id="edit-password"
                                 type="password"
                                 value={form.data.password}
                                 onChange={(e) => form.setData('password', e.target.value)}
-                                placeholder="Kosongkan jika tidak ingin mengubah"
+                                placeholder={t('admin.users.passwordLeaveBlank')}
                             />
                             {(validationErrors.password || form.errors.password) && (
                                 <p className="text-destructive text-xs">{validationErrors.password || form.errors.password}</p>
@@ -150,7 +152,7 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="edit-role">Peran (Role)</Label>
+                            <Label htmlFor="edit-role">{t('admin.users.role')}</Label>
                             <Select
                                 value={form.data.role}
                                 onValueChange={(val) => {
@@ -161,12 +163,12 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
                                 }}
                             >
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Pilih Peran" />
+                                    <SelectValue placeholder={t('admin.users.selectRole')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="owner">Owner (Pemilik Bisnis)</SelectItem>
-                                    <SelectItem value="staff">Staff (Karyawan Tenant)</SelectItem>
-                                    <SelectItem value="admin">Platform Admin</SelectItem>
+                                    <SelectItem value="owner">{t('admin.users.roleOwner')}</SelectItem>
+                                    <SelectItem value="staff">{t('admin.users.roleStaff')}</SelectItem>
+                                    <SelectItem value="admin">{t('admin.users.roleAdmin')}</SelectItem>
                                 </SelectContent>
                             </Select>
                             {(validationErrors.role || form.errors.role) && (
@@ -176,10 +178,10 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
 
                         {form.data.role !== 'admin' && (
                             <div className="grid gap-2">
-                                <Label htmlFor="edit-tenant_id">Bisnis / Tenant</Label>
+                                <Label htmlFor="edit-tenant_id">{t('admin.users.colTenant')}</Label>
                                 <Select value={form.data.tenant_id || ''} onValueChange={(val) => form.setData('tenant_id', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
-                                        <SelectValue placeholder="Pilih Bisnis" />
+                                        <SelectValue placeholder={t('admin.users.selectBusiness')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {tenants.map((t) => (
@@ -198,10 +200,10 @@ export function EditUserDialog({ user, open, onOpenChange, tenants }: EditUserDi
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            Batal
+                            {t('common.cancel')}
                         </Button>
                         <Button type="submit" disabled={form.processing}>
-                            {form.processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                            {form.processing ? t('common.saving') : t('common.save')}
                         </Button>
                     </DialogFooter>
                 </form>

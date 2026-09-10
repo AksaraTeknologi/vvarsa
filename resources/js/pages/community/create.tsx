@@ -8,19 +8,10 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Users } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Komunitas', href: '/community' },
-    { title: 'Buat Diskusi', href: '/community/create' },
-];
-
-const CATEGORIES = [
-    { value: 'discussion', label: 'Diskusi Umum', desc: 'Topik umum seputar bisnis' },
-    { value: 'question', label: 'Pertanyaan', desc: 'Tanya jawab dengan komunitas' },
-    { value: 'tips', label: 'Tips & Trik', desc: 'Bagikan pengalaman & ilmu' },
-    { value: 'announcement', label: 'Pengumuman', desc: 'Info penting untuk komunitas' },
-];
+const CATEGORY_KEYS = ['discussion', 'question', 'tips', 'announcement'] as const;
 
 const BUSINESS_TYPE_COLORS: Record<string, string> = {
     fnb: 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800',
@@ -30,17 +21,24 @@ const BUSINESS_TYPE_COLORS: Record<string, string> = {
     service: 'bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800',
 };
 
-const discussionSchema = z.object({
-    title: z.string().min(5, 'Judul minimal 5 karakter'),
-    content: z.string().min(10, 'Konten minimal 10 karakter'),
-    category: z.enum(['discussion', 'question', 'tips', 'announcement']),
-});
-
 interface Props {
     tenant_business_type: string;
 }
 
 export default function CommunityCreate({ tenant_business_type }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('community.title'), href: '/community' },
+        { title: t('community.createDiscussion'), href: '/community/create' },
+    ];
+
+    const discussionSchema = z.object({
+        title: z.string().min(5, t('community.validation.titleMin')),
+        content: z.string().min(10, t('community.validation.contentMin')),
+        category: z.enum(['discussion', 'question', 'tips', 'announcement']),
+    });
+
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         content: '',
@@ -49,7 +47,9 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
 
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const businessLabel = BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type;
+    const businessLabel = t(`community.businessTypes.${tenant_business_type}`, {
+        defaultValue: BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type,
+    });
     const businessColor = BUSINESS_TYPE_COLORS[tenant_business_type] || BUSINESS_TYPE_COLORS.general;
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -74,7 +74,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat Diskusi" />
+            <Head title={t('community.createDiscussion')} />
             <div className="mx-auto max-w-2xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
@@ -83,8 +83,8 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Buat Diskusi</h1>
-                        <p className="text-muted-foreground text-sm">Bagikan pertanyaan atau pengalaman Anda dengan komunitas</p>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('community.createDiscussion')}</h1>
+                        <p className="text-muted-foreground text-sm">{t('community.createSubtitle')}</p>
                     </div>
                 </div>
 
@@ -92,40 +92,44 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                 <div className={`mb-5 flex items-center gap-2.5 rounded-2xl border px-4 py-3 ${businessColor}`}>
                     <Users size={16} />
                     <p className="text-sm font-medium">
-                        Diskusi ini akan diposting ke komunitas <strong>{businessLabel}</strong>
+                        {t('community.contextBadge')} <strong>{businessLabel}</strong>
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Category picker */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <Label className="mb-3 block font-semibold">Jenis Diskusi *</Label>
+                        <Label className="mb-3 block font-semibold">{t('community.form.categoryLabel')}</Label>
                         <div className="grid grid-cols-2 gap-3">
-                            {CATEGORIES.map((cat) => (
-                                <button
-                                    key={cat.value}
-                                    type="button"
-                                    onClick={() => setData('category', cat.value as any)}
-                                    className={`rounded-xl border p-3 text-left transition-all ${data.category === cat.value ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
-                                >
-                                    <p className={`text-sm font-medium ${data.category === cat.value ? 'text-primary' : ''}`}>{cat.label}</p>
-                                    <p className="text-muted-foreground mt-0.5 text-xs">{cat.desc}</p>
-                                </button>
-                            ))}
+                            {CATEGORY_KEYS.map((catKey) => {
+                                const catLabel = t(`community.form.categories.${catKey}.label`);
+                                const catDesc = t(`community.form.categories.${catKey}.desc`);
+                                return (
+                                    <button
+                                        key={catKey}
+                                        type="button"
+                                        onClick={() => setData('category', catKey as any)}
+                                        className={`rounded-xl border p-3 text-left transition-all ${data.category === catKey ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                                    >
+                                        <p className={`text-sm font-medium ${data.category === catKey ? 'text-primary' : ''}`}>{catLabel}</p>
+                                        <p className="text-muted-foreground mt-0.5 text-xs">{catDesc}</p>
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
 
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div>
                             <Label htmlFor="title" className="mb-1.5 block">
-                                Judul Diskusi *
+                                {t('community.form.titleLabel')}
                             </Label>
                             <Input
                                 id="title"
                                 type="text"
                                 value={data.title}
                                 onChange={(e) => setData('title', e.target.value)}
-                                placeholder="Tulis judul yang jelas dan deskriptif..."
+                                placeholder={t('community.form.titlePlaceholder')}
                                 className={displayError('title') ? 'border-rose-500' : ''}
                             />
                             {displayError('title') && <p className="mt-1 text-xs text-rose-500">{displayError('title')}</p>}
@@ -133,14 +137,14 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
 
                         <div>
                             <Label htmlFor="content" className="mb-1.5 block">
-                                Isi Diskusi *
+                                {t('community.form.contentLabel')}
                             </Label>
                             <Textarea
                                 id="content"
                                 rows={8}
                                 value={data.content}
                                 onChange={(e) => setData('content', e.target.value)}
-                                placeholder="Jelaskan topik, pertanyaan, atau pengalaman Anda secara detail..."
+                                placeholder={t('community.form.contentPlaceholder')}
                                 className={displayError('content') ? 'border-rose-500' : ''}
                             />
                             {displayError('content') && <p className="mt-1 text-xs text-rose-500">{displayError('content')}</p>}
@@ -149,10 +153,10 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/community">Batal</Link>
+                            <Link href="/community">{t('community.cancel')}</Link>
                         </Button>
                         <Button type="submit" disabled={processing || !data.title || !data.content} className="rounded-xl px-5">
-                            {processing ? 'Memposting...' : 'Posting Diskusi'}
+                            {processing ? t('community.posting') : t('community.postDiscussion')}
                         </Button>
                     </div>
                 </form>
@@ -160,4 +164,3 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
         </AppLayout>
     );
 }
-

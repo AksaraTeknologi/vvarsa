@@ -6,6 +6,8 @@ import { type SubscriptionPlan } from '@/types/mrp';
 import { Head } from '@inertiajs/react';
 import { CheckCircle, Crown, Package, Users, XCircle, Zap } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { getFeatureLabel } from '@/pages/admin/plans/index';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Langganan', href: '/subscription' }];
 
@@ -80,8 +82,11 @@ const COMPARISON_FEATURES = [
 ];
 
 export default function SubscriptionIndex({ plans, current_plan, product_count, user_count }: Props) {
+    const { t } = useTranslation();
     const currentSlug = current_plan?.slug || 'free';
     const [loadingPlanId, setLoadingPlanId] = useState<number | null>(null);
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.subscription'), href: '/subscription' }];
 
     const handleUpgrade = (planId: number) => {
         setLoadingPlanId(planId);
@@ -96,21 +101,36 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                     },
                 ),
             {
-                loading: 'Memproses upgrade paket...',
-                success: 'Paket berhasil diperbarui!',
-                error: 'Gagal Upgrade Paket',
+                loading: t('subscription.upgradeNotice'),
+                success: t('subscription.upgradeSuccess'),
+                error: t('subscription.upgradeError'),
             },
         ).finally(() => setLoadingPlanId(null));
     };
 
+    const faqItems = [
+        {
+            q: t('subscription.faq1Q'),
+            a: t('subscription.faq1A'),
+        },
+        {
+            q: t('subscription.faq2Q'),
+            a: t('subscription.faq2A'),
+        },
+        {
+            q: t('subscription.faq3Q'),
+            a: t('subscription.faq3A'),
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Langganan" />
+            <Head title={t('navigation.subscription')} />
             <div className="flex flex-col gap-8 p-4 md:p-6">
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold tracking-tight">Pilih Paket yang Tepat</h1>
-                    <p className="text-muted-foreground mt-2">Mulai gratis, upgrade kapan saja sesuai kebutuhan bisnis Anda</p>
+                    <h1 className="text-3xl font-bold tracking-tight">{t('subscription.title')}</h1>
+                    <p className="text-muted-foreground mt-2">{t('subscription.subtitle')}</p>
                 </div>
 
                 {/* Current status */}
@@ -118,18 +138,18 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                     <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border p-4 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm">Paket Aktif</p>
+                                <p className="text-muted-foreground text-sm">{t('subscription.activePlan')}</p>
                                 <p className="text-lg font-bold">{current_plan.name}</p>
                             </div>
                             <div className="text-right">
                                 <div className="flex items-center gap-3 text-sm">
                                     <span className="text-muted-foreground flex items-center gap-1">
                                         <Package size={14} />
-                                        {product_count} produk
+                                        {t('subscription.productsCount', { count: product_count })}
                                     </span>
                                     <span className="text-muted-foreground flex items-center gap-1">
                                         <Users size={14} />
-                                        {user_count} pengguna
+                                        {t('subscription.usersCount', { count: user_count })}
                                     </span>
                                 </div>
                             </div>
@@ -152,7 +172,7 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                             >
                                 {isPopular && (
                                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">Paling Populer</span>
+                                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">{t('subscription.popular')}</span>
                                     </div>
                                 )}
 
@@ -170,23 +190,23 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                     <h2 className="text-xl font-bold">{plan.name}</h2>
                                     <div className="mt-2">
                                         <span className="text-3xl font-bold">
-                                            {plan.price === 0 || Number(plan.price) === 0 ? 'Gratis' : formatRupiah(plan.price)}
+                                            {plan.price === 0 || Number(plan.price) === 0 ? t('subscription.freePrice') : formatRupiah(plan.price)}
                                         </span>
-                                        {Number(plan.price) > 0 && <span className="text-muted-foreground text-sm">/bulan</span>}
+                                        {Number(plan.price) > 0 && <span className="text-muted-foreground text-sm">{t('subscription.perMonth')}</span>}
                                     </div>
                                 </div>
 
                                 {/* Limits */}
                                 <div className="mb-4 space-y-1 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
                                     <div className="flex items-center justify-between text-sm">
-                                        <span className="text-muted-foreground">Pengguna</span>
+                                        <span className="text-muted-foreground">{t('subscription.usersLimit')}</span>
                                         <span className="font-semibold">
-                                            {plan.max_users === 99 || plan.max_users >= 99 ? 'Tak Terbatas' : plan.max_users}
+                                            {plan.max_users === 99 || plan.max_users >= 99 ? t('subscription.unlimited') : plan.max_users}
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between text-sm">
-                                        <span className="text-muted-foreground">Produk</span>
-                                        <span className="font-semibold">{plan.max_products >= 9999 ? 'Tak Terbatas' : plan.max_products}</span>
+                                        <span className="text-muted-foreground">{t('subscription.productsLimit')}</span>
+                                        <span className="font-semibold">{plan.max_products >= 9999 ? t('subscription.unlimited') : plan.max_products}</span>
                                     </div>
                                 </div>
 
@@ -201,7 +221,7 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                                 ) : (
                                                     <XCircle size={14} className="text-muted-foreground/30 shrink-0" />
                                                 )}
-                                                <span className={hasFeature ? '' : 'text-muted-foreground/50'}>{FEATURE_LABELS[feat] || feat}</span>
+                                                <span className={hasFeature ? '' : 'text-muted-foreground/50'}>{getFeatureLabel(feat, t)}</span>
                                             </div>
                                         );
                                     })}
@@ -214,19 +234,19 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                         isCurrent
                                             ? 'bg-muted text-muted-foreground cursor-not-allowed'
                                             : plan.slug === 'pro'
-                                              ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                              : plan.slug === 'enterprise'
-                                                ? 'bg-purple-600 text-white hover:bg-purple-700'
-                                                : 'border-border hover:bg-muted border'
+                                               ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                               : plan.slug === 'enterprise'
+                                                 ? 'bg-purple-600 text-white hover:bg-purple-700'
+                                                 : 'border-border hover:bg-muted border'
                                     }`}
                                 >
                                     {isLoading
-                                        ? 'Memproses...'
+                                        ? t('subscription.processing')
                                         : isCurrent
-                                          ? '✓ Paket Aktif'
+                                          ? t('subscription.activePlanBadge')
                                           : plan.price === 0 || Number(plan.price) === 0
-                                            ? 'Mulai Gratis'
-                                            : 'Upgrade Sekarang'}
+                                            ? t('subscription.startFree')
+                                            : t('subscription.upgradeNow')}
                                 </button>
                             </div>
                         );
@@ -235,22 +255,9 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
 
                 {/* FAQ */}
                 <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border p-6 shadow-sm">
-                    <h2 className="mb-4 font-semibold">Pertanyaan Umum</h2>
+                    <h2 className="mb-4 font-semibold">{t('subscription.faqTitle')}</h2>
                     <div className="space-y-4">
-                        {[
-                            {
-                                q: 'Apakah bisa upgrade/downgrade kapan saja?',
-                                a: 'Ya, Anda bisa upgrade atau downgrade paket kapan saja. Perubahan berlaku di periode tagihan berikutnya.',
-                            },
-                            {
-                                q: 'Metode pembayaran apa yang diterima?',
-                                a: 'Kami menerima transfer bank, kartu kredit/debit, dan dompet digital (GoPay, OVO, DANA).',
-                            },
-                            {
-                                q: 'Apakah ada uji coba gratis untuk paket berbayar?',
-                                a: 'Paket Free sudah bisa digunakan selamanya tanpa biaya. Anda bisa upgrade kapan saja saat bisnis Anda berkembang.',
-                            },
-                        ].map((item, i) => (
+                        {faqItems.map((item, i) => (
                             <div key={i} className="border-border border-b pb-4 last:border-0 last:pb-0">
                                 <p className="mb-1 text-sm font-semibold">{item.q}</p>
                                 <p className="text-muted-foreground text-sm">{item.a}</p>

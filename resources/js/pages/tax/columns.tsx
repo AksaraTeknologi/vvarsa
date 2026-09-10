@@ -13,16 +13,10 @@ const STATUS_STYLES: Record<string, string> = {
     paid: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200',
 };
 
-const STATUS_LABELS: Record<string, string> = {
-    draft: 'Draft',
-    submitted: 'Dilaporkan',
-    paid: 'Lunas',
-};
-
-export const columns: ColumnDef<TaxReport>[] = [
+export const columns = (t: (key: string, options?: any) => string): ColumnDef<TaxReport>[] => [
     {
         accessorKey: 'period',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Periode" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.period')} />,
         cell: ({ row }) => {
             return (
                 <div className="flex items-center gap-2">
@@ -36,34 +30,42 @@ export const columns: ColumnDef<TaxReport>[] = [
     },
     {
         accessorKey: 'tax_type',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Jenis Pajak" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.taxType')} />,
         cell: ({ row }) => {
             return <span className="text-sm font-medium">{row.original.tax_type}</span>;
         },
     },
     {
         accessorKey: 'gross_amount',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Omzet Bruto" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.grossAmountLabel')} />,
         cell: ({ row }) => {
             return <div className="text-right text-sm">{formatRupiah(row.original.gross_amount)}</div>;
         },
     },
     {
         accessorKey: 'tax_amount',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Jumlah Pajak" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.taxAmountLabel')} />,
         cell: ({ row }) => {
             return <div className="text-foreground text-right text-sm font-bold">{formatRupiah(row.original.tax_amount)}</div>;
         },
     },
     {
         accessorKey: 'status',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.status')} />,
         cell: ({ row }) => {
             const status = row.original.status;
+            const statusLabel =
+                status === 'draft'
+                    ? t('tax.status.draft')
+                    : status === 'submitted'
+                      ? t('tax.status.submitted')
+                      : status === 'paid'
+                        ? t('tax.status.paid')
+                        : status;
             return (
                 <div className="text-center">
                     <Badge variant="outline" className={`border-transparent capitalize ${STATUS_STYLES[status]}`}>
-                        {STATUS_LABELS[status] || status}
+                        {statusLabel}
                     </Badge>
                 </div>
             );
@@ -71,7 +73,7 @@ export const columns: ColumnDef<TaxReport>[] = [
     },
     {
         accessorKey: 'due_date',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Jatuh Tempo" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.dueDate')} />,
         cell: ({ row }) => {
             const dueDate = row.original.due_date;
             return (

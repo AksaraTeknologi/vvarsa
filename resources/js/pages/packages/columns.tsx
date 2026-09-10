@@ -22,12 +22,12 @@ interface PackageModel {
     variants?: ProductVariant[];
 }
 
-function PackageActions({ pkg }: { pkg: PackageModel }) {
+function PackageActions({ pkg, t }: { pkg: PackageModel; t: any }) {
     const handleDelete = () => {
         handleAsyncAction(() => routerPromise('delete', `/packages/${pkg.id}`, {}, { preserveScroll: true }), {
-            loading: `Menghapus paket "${pkg.name}"...`,
-            success: `Paket "${pkg.name}" berhasil dihapus!`,
-            error: 'Gagal Menghapus',
+            loading: t('packages.deleting', { name: pkg.name, defaultValue: `Menghapus paket "${pkg.name}"...` }),
+            success: t('packages.deleteSuccess', { name: pkg.name, defaultValue: `Paket "${pkg.name}" berhasil dihapus!` }),
+            error: t('common.failed', 'Gagal Menghapus'),
         });
     };
 
@@ -42,7 +42,7 @@ function PackageActions({ pkg }: { pkg: PackageModel }) {
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Edit Paket</p>
+                    <p>{t('packages.editPackage', 'Edit Paket')}</p>
                 </TooltipContent>
             </Tooltip>
 
@@ -53,24 +53,24 @@ function PackageActions({ pkg }: { pkg: PackageModel }) {
                             trigger={
                                 <Button variant="link" size="icon" className="size-8 text-red-500 hover:cursor-pointer">
                                     <Trash className="size-4" />
-                                    <span className="sr-only">Hapus Paket</span>
+                                    <span className="sr-only">{t('packages.deletePackage', 'Hapus Paket')}</span>
                                 </Button>
                             }
-                            title="Apakah Anda yakin ingin menghapus paket produk ini?"
+                            title={t('packages.deleteConfirm', 'Apakah Anda yakin ingin menghapus paket produk ini?')}
                             itemName={pkg.name}
                             onConfirm={handleDelete}
                         />
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Hapus Paket</p>
+                    <p>{t('packages.deletePackage', 'Hapus Paket')}</p>
                 </TooltipContent>
             </Tooltip>
         </div>
     );
 }
 
-export const columns: ColumnDef<PackageModel>[] = [
+export const columns = (t: any): ColumnDef<PackageModel>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -81,7 +81,7 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nama Paket" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.packageName', 'Nama Paket')} />,
         cell: ({ row }) => {
             const pkg = row.original;
             return (
@@ -99,26 +99,30 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         accessorKey: 'capacity',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Kapasitas (Isi)" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.capacity', 'Kapasitas (Isi)')} />,
         cell: ({ row }) => {
-            return <div className="font-semibold">{row.original.capacity} Pcs</div>;
+            return (
+                <div className="font-semibold">
+                    {t('packages.capacityPcs', { count: row.original.capacity, defaultValue: `${row.original.capacity} Pcs` })}
+                </div>
+            );
         },
     },
     {
         accessorKey: 'price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Bundle" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.bundlePrice', 'Harga Bundle')} />,
         cell: ({ row }) => {
             return <div className="font-bold text-indigo-600">{formatRupiah(Number(row.original.price))}</div>;
         },
     },
     {
         accessorKey: 'variants',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Batasan Rasa" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.flavorLimit', 'Batasan Rasa')} />,
         cell: ({ row }) => {
             const pkg = row.original;
             return !pkg.variants || pkg.variants.length === 0 ? (
                 <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-                    Bebas Mix
+                    {t('packages.freeMix', 'Bebas Mix')}
                 </span>
             ) : (
                 <div className="flex max-w-xs flex-wrap gap-1">
@@ -136,13 +140,13 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         accessorKey: 'is_active',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.status', 'Status')} />,
         cell: ({ row }) => {
             const active = row.original.is_active;
             return (
                 <div className="text-center">
                     <Badge variant={active ? 'default' : 'secondary'} className="text-xs">
-                        {active ? 'Aktif' : 'Nonaktif'}
+                        {active ? t('packages.active', 'Aktif') : t('packages.inactive', 'Nonaktif')}
                     </Badge>
                 </div>
             );
@@ -150,7 +154,7 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
-        cell: ({ row }) => <PackageActions pkg={row.original} />,
+        header: () => <div className="text-center">{t('packages.actions', 'Aksi')}</div>,
+        cell: ({ row }) => <PackageActions pkg={row.original} t={t} />,
     },
 ];

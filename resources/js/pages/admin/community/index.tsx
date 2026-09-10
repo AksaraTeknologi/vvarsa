@@ -8,10 +8,11 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { MessageCircle, Pin, PinOff, Search, Shield, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin Dashboard', href: '/admin' },
-    { title: 'Komunitas', href: '/admin/community' },
+    { title: 'navigation.dashboard', href: '/admin' },
+    { title: 'navigation.community', href: '/admin/community' },
 ];
 
 interface CommunityPost {
@@ -45,13 +46,6 @@ interface Props {
     };
 }
 
-const categoryLabels: Record<string, string> = {
-    discussion: 'Diskusi',
-    question: 'Pertanyaan',
-    tips: 'Tips',
-    announcement: 'Pengumuman',
-};
-
 const categoryColors: Record<string, string> = {
     discussion: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800',
     question: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800',
@@ -60,10 +54,18 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function AdminCommunityIndex({ posts, filters }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [category, setCategory] = useState(filters.category || 'all');
     const [status, setStatus] = useState(filters.status || 'all');
     const [businessType, setBusinessType] = useState(filters.business_type || 'all');
+
+    const categoryLabels: Record<string, string> = {
+        discussion: 'Diskusi',
+        question: 'Pertanyaan',
+        tips: 'Tips',
+        announcement: 'Pengumuman',
+    };
 
     const handleFilter = () => {
         router.get(
@@ -130,7 +132,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Manajemen Komunitas" />
+            <Head title={t('admin.community.title')} />
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
                 <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
@@ -140,11 +142,11 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                             <div className="mb-1.5 flex items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1a56ff]/20 bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest text-[#1a56ff] uppercase">
                                     <MessageCircle size={11} />
-                                    Platform Admin
+                                    {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Manajemen Komunitas</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">Kelola semua post dari seluruh tenant di platform.</p>
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.community.title')}</h1>
+                            <p className="mt-0.5 text-sm text-[#5F6073]">{t('admin.community.subtitle')}</p>
                         </div>
                     </div>
                 </div>
@@ -157,7 +159,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                             <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                             <Input
                                 type="text"
-                                placeholder="Cari judul post..."
+                                placeholder={t('admin.community.searchPlaceholder')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleFilter()}
@@ -168,15 +170,15 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                         <div className="w-full sm:w-44">
                             <Select value={businessType} onValueChange={(val) => setBusinessType(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Tipe Bisnis" />
+                                    <SelectValue placeholder={t('admin.supplier.businessType')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Tipe Bisnis</SelectItem>
+                                    <SelectItem value="all">{t('admin.community.allBusinessTypes')}</SelectItem>
                                     <SelectItem value="fnb">F&B</SelectItem>
                                     <SelectItem value="retail">Retail</SelectItem>
                                     <SelectItem value="fashion">Fashion</SelectItem>
-                                    <SelectItem value="jasa">Jasa</SelectItem>
-                                    <SelectItem value="general">General</SelectItem>
+                                    <SelectItem value="jasa">{t('admin.tenants.service')}</SelectItem>
+                                    <SelectItem value="general">{t('admin.tenants.general')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -184,10 +186,10 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                         <div className="w-full sm:w-40">
                             <Select value={category} onValueChange={(val) => setCategory(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Kategori" />
+                                    <SelectValue placeholder={t('admin.community.colCategory')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Kategori</SelectItem>
+                                    <SelectItem value="all">{t('admin.community.allCategories')}</SelectItem>
                                     <SelectItem value="discussion">Diskusi</SelectItem>
                                     <SelectItem value="question">Pertanyaan</SelectItem>
                                     <SelectItem value="tips">Tips</SelectItem>
@@ -199,18 +201,18 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                         <div className="w-full sm:w-36">
                             <Select value={status} onValueChange={(val) => setStatus(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Status" />
+                                    <SelectValue placeholder={t('common.status')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Status</SelectItem>
-                                    <SelectItem value="active">Aktif</SelectItem>
-                                    <SelectItem value="inactive">Nonaktif</SelectItem>
+                                    <SelectItem value="all">{t('admin.community.allStatuses')}</SelectItem>
+                                    <SelectItem value="active">{t('admin.active')}</SelectItem>
+                                    <SelectItem value="inactive">{t('admin.inactive')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
-                            Filter
+                            {t('common.filter')}
                         </Button>
                     </div>
 
@@ -219,21 +221,21 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                         <table className="w-full min-w-[800px] border-collapse text-left text-sm">
                             <thead>
                                 <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
-                                    <th className="px-6 py-4">Judul</th>
-                                    <th className="px-6 py-4">Penulis</th>
-                                    <th className="px-6 py-4">Tenant</th>
-                                    <th className="px-6 py-4">Kategori</th>
-                                    <th className="px-6 py-4">Bisnis</th>
-                                    <th className="px-6 py-4 text-center">Status</th>
-                                    <th className="px-6 py-4 text-center">Dilihat</th>
-                                    <th className="px-6 py-4 text-right">Aksi</th>
+                                    <th className="px-6 py-4">{t('admin.community.colTitle')}</th>
+                                    <th className="px-6 py-4">{t('admin.community.colAuthor')}</th>
+                                    <th className="px-6 py-4">{t('admin.community.colTenant')}</th>
+                                    <th className="px-6 py-4">{t('admin.community.colCategory')}</th>
+                                    <th className="px-6 py-4">{t('admin.community.colBusiness')}</th>
+                                    <th className="px-6 py-4 text-center">{t('admin.community.colStatus')}</th>
+                                    <th className="px-6 py-4 text-center">{t('admin.community.colViews')}</th>
+                                    <th className="px-6 py-4 text-right">{t('admin.community.colActions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-border divide-y">
                                 {posts.data.length === 0 ? (
                                     <tr>
                                         <td colSpan={8} className="text-muted-foreground h-32 text-center text-sm">
-                                            Tidak ada post ditemukan.
+                                            {t('admin.community.noData')}
                                         </td>
                                     </tr>
                                 ) : (
@@ -268,7 +270,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                             </td>
                                             <td className="px-6 py-4 text-center">
                                                 <Badge variant={post.is_active ? 'default' : 'secondary'} className="px-1.5 py-0">
-                                                    {post.is_active ? 'Aktif' : 'Nonaktif'}
+                                                    {post.is_active ? t('admin.active') : t('admin.inactive')}
                                                 </Badge>
                                             </td>
                                             <td className="px-6 py-4 text-center text-muted-foreground">{post.views_count}</td>
@@ -295,7 +297,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                                     <Button
                                                         size="icon"
                                                         variant="ghost"
-                                                        title="Hapus"
+                                                        title={t('common.delete')}
                                                         onClick={() => handleDelete(post)}
                                                         className="text-destructive hover:bg-destructive/10 hover:text-destructive h-8 w-8 rounded-lg"
                                                     >
@@ -314,8 +316,8 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                     {posts.last_page > 1 && (
                         <div className="border-border bg-card flex items-center justify-between rounded-xl border border-t px-4 py-3 shadow-sm">
                             <p className="text-muted-foreground text-sm">
-                                Menampilkan {(posts.current_page - 1) * posts.per_page + 1}–
-                                {Math.min(posts.current_page * posts.per_page, posts.total)} dari {posts.total} post
+                                {t('admin.community.showing')} {(posts.current_page - 1) * posts.per_page + 1}–
+                                {Math.min(posts.current_page * posts.per_page, posts.total)} {t('admin.event.from')} {posts.total} post
                             </p>
                             <div className="flex gap-1">
                                 {posts.links.map((link, i) => (

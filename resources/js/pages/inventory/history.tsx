@@ -4,11 +4,7 @@ import { type BreadcrumbItem } from '@/types';
 import { type PaginatedData, type Product, type StockMovement } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowDownRight, ArrowUpRight, RefreshCw } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Inventori', href: '/inventory' },
-    { title: 'Riwayat Stok', href: '/inventory/history' },
-];
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     movements: PaginatedData<StockMovement>;
@@ -16,23 +12,23 @@ interface Props {
     filters: { type?: string; product?: string };
 }
 
-const TYPE_CONFIG = {
+const TYPE_CONFIG_BASE = {
     in: {
-        label: 'Masuk',
+        key: 'stockInLabel',
         icon: ArrowUpRight,
         badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
         iconClass: 'text-emerald-600 dark:text-emerald-400',
         bg: 'bg-emerald-100 dark:bg-emerald-900/30',
     },
     out: {
-        label: 'Keluar',
+        key: 'stockOutLabel',
         icon: ArrowDownRight,
         badge: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400',
         iconClass: 'text-rose-600 dark:text-rose-400',
         bg: 'bg-rose-100 dark:bg-rose-900/30',
     },
     opname: {
-        label: 'Opname',
+        key: 'stockOpnameLabel',
         icon: RefreshCw,
         badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
         iconClass: 'text-blue-600 dark:text-blue-400',
@@ -41,31 +37,38 @@ const TYPE_CONFIG = {
 };
 
 export default function StockHistory({ movements, products, filters }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.inventory'), href: '/inventory' },
+        { title: t('inventory.history'), href: '/inventory/history' },
+    ];
+
     const applyFilter = (newFilters: Record<string, string>) => {
         router.get('/inventory/history', { ...filters, ...newFilters }, { preserveState: true, replace: true });
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Riwayat Stok" />
+            <Head title={t('inventory.history')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Riwayat Pergerakan Stok</h1>
-                        <p className="text-muted-foreground text-sm">Semua catatan stok masuk, keluar, dan opname</p>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('inventory.historyTitle')}</h1>
+                        <p className="text-muted-foreground text-sm">{t('inventory.historySubtitle')}</p>
                     </div>
                     <div className="flex gap-2">
                         <Link
                             href="/inventory/stock-in"
                             className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
                         >
-                            <ArrowUpRight size={16} /> Stok Masuk
+                            <ArrowUpRight size={16} /> {t('inventory.stockInTitle')}
                         </Link>
                         <Link
                             href="/inventory/stock-out"
                             className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-rose-700"
                         >
-                            <ArrowDownRight size={16} /> Stok Keluar
+                            <ArrowDownRight size={16} /> {t('inventory.stockOutTitle')}
                         </Link>
                     </div>
                 </div>
@@ -75,17 +78,17 @@ export default function StockHistory({ movements, products, filters }: Props) {
                     {/* Type filter */}
                     <div className="flex gap-2">
                         {[
-                            { value: '', label: 'Semua' },
-                            { value: 'in', label: 'Masuk' },
-                            { value: 'out', label: 'Keluar' },
-                            { value: 'opname', label: 'Opname' },
-                        ].map((t) => (
+                            { value: '', label: t('common.all') },
+                            { value: 'in', label: t('inventory.stockInLabel') },
+                            { value: 'out', label: t('inventory.stockOutLabel') },
+                            { value: 'opname', label: t('inventory.stockOpnameLabel') },
+                        ].map((tItem) => (
                             <button
-                                key={t.value}
-                                onClick={() => applyFilter({ type: t.value })}
-                                className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors ${(filters.type || '') === t.value ? 'bg-primary text-primary-foreground' : 'border-border hover:bg-muted border'}`}
+                                key={tItem.value}
+                                onClick={() => applyFilter({ type: tItem.value })}
+                                className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors ${(filters.type || '') === tItem.value ? 'bg-primary text-primary-foreground' : 'border-border hover:bg-muted border'}`}
                             >
-                                {t.label}
+                                {tItem.label}
                             </button>
                         ))}
                     </div>
@@ -97,7 +100,7 @@ export default function StockHistory({ movements, products, filters }: Props) {
                             onChange={(e) => applyFilter({ product: e.target.value })}
                             className="border-border bg-background w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         >
-                            <option value="">Semua Produk</option>
+                            <option value="">{t('inventory.allProducts')}</option>
                             {products.map((p) => (
                                 <option key={p.id} value={p.id}>
                                     {p.name}
@@ -113,26 +116,27 @@ export default function StockHistory({ movements, products, filters }: Props) {
                         <table className="w-full">
                             <thead>
                                 <tr className="border-border border-b">
-                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">Tanggal</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">Produk</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">Jenis</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">Jumlah</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">Sebelum → Sesudah</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">Referensi</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">Petugas</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">{t('common.date')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">{t('inventory.product')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">{t('inventory.type')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">{t('inventory.qty')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">{t('inventory.beforeAfter')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">{t('inventory.reference')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">{t('inventory.officer')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-border divide-y">
                                 {movements.data.length === 0 ? (
                                     <tr>
                                         <td colSpan={7} className="text-muted-foreground py-12 text-center text-sm">
-                                            Belum ada riwayat pergerakan stok.
+                                            {t('inventory.noHistory')}
                                         </td>
                                     </tr>
                                 ) : (
                                     movements.data.map((m) => {
-                                        const config = TYPE_CONFIG[m.type] || TYPE_CONFIG.in;
+                                        const config = TYPE_CONFIG_BASE[m.type] || TYPE_CONFIG_BASE.in;
                                         const Icon = config.icon;
+                                        const label = t(`inventory.${config.key}`);
                                         return (
                                             <tr key={m.id} className="hover:bg-muted/30 transition-colors">
                                                 <td className="text-muted-foreground px-4 py-3 text-sm">
@@ -147,7 +151,7 @@ export default function StockHistory({ movements, products, filters }: Props) {
                                                             <Icon size={12} className={config.iconClass} />
                                                         </div>
                                                         <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${config.badge}`}>
-                                                            {config.label}
+                                                            {label}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -176,8 +180,11 @@ export default function StockHistory({ movements, products, filters }: Props) {
                     {movements.last_page > 1 && (
                         <div className="border-border flex items-center justify-between border-t px-4 py-3">
                             <p className="text-muted-foreground text-sm">
-                                {(movements.current_page - 1) * movements.per_page + 1}–
-                                {Math.min(movements.current_page * movements.per_page, movements.total)} dari {movements.total} data
+                                {t('inventory.showingHistoryPagination', {
+                                    start: (movements.current_page - 1) * movements.per_page + 1,
+                                    end: Math.min(movements.current_page * movements.per_page, movements.total),
+                                    total: movements.total,
+                                })}
                             </p>
                             <div className="flex gap-1">
                                 {movements.links.map((link, i) => (

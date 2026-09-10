@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight, ChefHat, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import AppLogoIcon from '@/components/app-logo-icon';
 import { type LandingProps } from './types';
 
 const navItems = [
@@ -22,11 +23,8 @@ export function Header({ auth }: LandingProps) {
                         href={route('home')}
                         className="group flex items-center gap-3"
                     >
-                        <span className="flex size-11 items-center justify-center rounded-2xl bg-[#5E4BF2] text-white shadow-lg shadow-[#5E4BF2]/25 transition duration-300 group-hover:rotate-6 group-hover:scale-110">
-                            <ChefHat
-                                className="size-6"
-                                strokeWidth={2.5}
-                            />
+                        <span className="flex size-11 items-center justify-center rounded-2xl bg-[#5E4BF2] p-2 text-white shadow-lg shadow-[#5E4BF2]/25 transition duration-300 group-hover:rotate-6 group-hover:scale-110">
+                            <AppLogoIcon className="size-full object-contain" />
                         </span>
 
                         <div>

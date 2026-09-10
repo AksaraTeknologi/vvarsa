@@ -31,11 +31,12 @@ import {
     X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Pesanan', href: '/orders' },
-    { title: 'POS Kasir', href: '/pos' },
+    { title: 'navigation.orders', href: '/orders' },
+    { title: 'navigation.pos', href: '/pos' },
 ];
 
 interface PackageModel {
@@ -72,6 +73,7 @@ interface Props {
 }
 
 export default function PosPage({ variants, packages, paymentMethods = [] }: Props) {
+    const { t } = useTranslation();
     const [cart, setCart] = useState<CartItem[]>([]);
     const [activeCartItemId, setActiveCartItemId] = useState<number | null>(null);
     const [customerName, setCustomerName] = useState('');
@@ -180,7 +182,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                 return `${qty}x ${name}`;
             });
 
-        if (selected.length === 0) return 'Belum ada rasa dipilih';
+        if (selected.length === 0) return t('orders.noFlavorSelected');
         return selected.join(', ');
     };
 
@@ -262,10 +264,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         }),
                     );
                 } else {
-                    toast.warning('Paket terpilih sudah penuh! Silakan buat atau klik paket lain di keranjang.');
+                    toast.warning(t('pos.packageFullNotice'));
                 }
             } else {
-                toast.warning('Silakan pilih/klik paket di keranjang terlebih dahulu untuk mengisi rasa!');
+                toast.warning(t('pos.selectPackageNotice'));
             }
         } else {
             // Direct mode: No packages exist, direct add variant
@@ -396,7 +398,13 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
         if (cart.length === 0 || !isCartComplete) return;
 
         if (isCash && cashReceived < finalTotal) {
-            toast.error(`Uang diterima (${formatRupiah(cashReceived)}) kurang dari total belanja (${formatRupiah(finalTotal)})!`);
+            toast.error(
+                t('pos.insufficientCashToast', {
+                    cash: formatRupiah(cashReceived),
+                    total: formatRupiah(finalTotal),
+                    defaultValue: `Uang diterima (${formatRupiah(cashReceived)}) kurang dari total belanja (${formatRupiah(finalTotal)})!`,
+                })
+            );
             return;
         }
 
@@ -427,7 +435,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                     'post',
                     '/orders',
                     {
-                        customer_name: customerName.trim() || 'Pelanggan Umum',
+                        customer_name: customerName.trim() || t('pos.generalCustomer', 'Pelanggan Umum'),
                         customer_phone: customerPhone,
                         customer_email: customerEmail,
                         status: currentStatus,
@@ -506,12 +514,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                 <div className="border-border flex items-center justify-between border-b p-3.5 sm:p-4 shrink-0">
                     <h2 className="flex items-center gap-2 font-semibold text-foreground">
                         <ShoppingCart size={16} className="text-indigo-600 dark:text-indigo-400" />
-                        <span>Keranjang</span>
+                        <span>{t('pos.cart')}</span>
                         {cart.length > 0 && (
                             <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-xs font-bold text-white">
                                 {packages.length > 0
-                                    ? `${cart.length} paket`
-                                    : `${cart.reduce((s, i) => s + (i.quantities[Object.keys(i.quantities)[0]] ?? 0), 0)} item`}
+                                    ? t('pos.packageCount', { count: cart.length })
+                                    : t('pos.itemCount', { count: cartItemCount })}
                             </span>
                         )}
                     </h2>
@@ -524,15 +532,15 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         className="flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50/70 px-2.5 py-1 text-xs font-semibold text-rose-600 shadow-2xs transition-all hover:border-rose-300 hover:bg-rose-100 hover:text-rose-700 active:scale-95 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-400 dark:hover:bg-rose-900/60 cursor-pointer"
                                     >
                                         <Trash2 size={12} className="shrink-0 text-rose-500" />
-                                        <span>Kosongkan</span>
+                                        <span>{t('pos.clear')}</span>
                                     </button>
                                 }
-                                title="Apakah Anda yakin ingin mengosongkan keranjang?"
-                                description="Semua item dan pilihan rasa yang ada di keranjang belanja saat ini akan dihapus."
+                                title={t('pos.confirmClearTitle')}
+                                description={t('pos.confirmClearDesc')}
                                 itemName={
                                     packages.length > 0
-                                        ? `${cart.length} paket (${formatRupiah(subtotal)})`
-                                        : `${cartItemCount} item (${formatRupiah(subtotal)})`
+                                        ? `${t('pos.packageCount', { count: cart.length })} (${formatRupiah(subtotal)})`
+                                        : `${t('pos.itemCount', { count: cartItemCount })} (${formatRupiah(subtotal)})`
                                 }
                                 onConfirm={clearCart}
                             />
@@ -548,11 +556,11 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 <div className="bg-emerald-100 text-emerald-600 dark:bg-emerald-900/60 dark:text-emerald-400 mx-auto flex h-14 w-14 items-center justify-center rounded-full shadow-sm">
                                     <Check size={28} className="stroke-[2.5]" />
                                 </div>
-                                <h3 className="text-foreground text-lg font-bold">Pesanan Berhasil!</h3>
+                                <h3 className="text-foreground text-lg font-bold">{t('pos.orderSuccess')}</h3>
                                 <p className="text-muted-foreground text-sm">{successOrder}</p>
                                 {lastOrderStatus && (
                                     <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
-                                        Status: {lastOrderStatus === 'done' ? 'Selesai' : lastOrderStatus === 'processing' ? 'Diproses' : 'Menunggu'}
+                                        {t('common.status')}: {lastOrderStatus === 'done' ? t('pos.statusDone') : lastOrderStatus === 'processing' ? t('pos.statusProcessing') : t('pos.statusPending')}
                                     </div>
                                 )}
                             </div>
@@ -561,11 +569,11 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             {lastCashReceived !== null && lastCashReceived > 0 && (
                                 <div className="bg-card border border-emerald-200 dark:border-emerald-800 rounded-2xl p-3.5 space-y-2 text-xs shadow-xs">
                                     <div className="flex justify-between text-muted-foreground">
-                                        <span>Uang Diterima (Tunai)</span>
+                                        <span>{t('pos.cashReceived')}</span>
                                         <span className="font-semibold text-foreground">{formatRupiah(lastCashReceived)}</span>
                                     </div>
                                     <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-bold border-t border-border/50 pt-1.5 text-sm">
-                                        <span>Kembalian</span>
+                                        <span>{t('pos.change')}</span>
                                         <span>{formatRupiah(lastChange ?? 0)}</span>
                                     </div>
                                 </div>
@@ -577,10 +585,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     <div className="space-y-1">
                                         <Label className="text-foreground flex items-center gap-1.5 text-xs font-semibold">
                                             <Mail size={14} className="text-indigo-500" />
-                                            Struk Digital (Email)
+                                            {t('pos.digitalReceipt')}
                                         </Label>
                                         <p className="text-muted-foreground text-xs">
-                                            Kirimkan file PDF struk pembelian ke: <span className="text-foreground font-semibold">{lastOrderEmail}</span>
+                                            {t('pos.sendReceiptTo', { email: lastOrderEmail })}
                                         </p>
                                     </div>
                                     <button
@@ -596,15 +604,15 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     >
                                         {sendingReceipt ? (
                                             <>
-                                                <Loader2 size={14} className="animate-spin" /> Sedang Mengirim Struk PDF...
+                                                <Loader2 size={14} className="animate-spin" /> {t('pos.sendingReceipt')}
                                             </>
                                         ) : receiptSent ? (
                                             <>
-                                                <Check size={14} /> Struk Berhasil Terkirim ke Email
+                                                <Check size={14} /> {t('pos.receiptSent')}
                                             </>
                                         ) : (
                                             <>
-                                                <Mail size={14} /> Kirim Struk ke Email
+                                                <Mail size={14} /> {t('pos.sendReceipt')}
                                             </>
                                         )}
                                     </button>
@@ -619,7 +627,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     rel="noopener noreferrer"
                                     className="border-indigo-200 text-indigo-600 dark:border-indigo-800 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 flex w-full items-center justify-center gap-2 rounded-xl border py-2.5 px-4 text-xs font-semibold shadow-xs transition-all"
                                 >
-                                    <Package size={14} /> Download Struk PDF
+                                    <Package size={14} /> {t('pos.downloadPdf')}
                                 </a>
                             )}
                         </div>
@@ -635,7 +643,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 }}
                                 className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold shadow-xs cursor-pointer"
                             >
-                                <ShoppingCart size={16} /> Buat Transaksi Baru
+                                <ShoppingCart size={16} /> {t('pos.newTransaction')}
                             </Button>
                         </div>
                     </div>
@@ -648,9 +656,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/60 mb-2">
                                         <ShoppingCart size={22} className="opacity-40" />
                                     </div>
-                                    <span className="font-semibold text-foreground">Keranjang masih kosong</span>
+                                    <span className="font-semibold text-foreground">{t('pos.emptyCart')}</span>
                                     <span className="text-xs text-muted-foreground mt-1 max-w-[15rem]">
-                                        {packages.length > 0 ? 'Pilih paket box di menu untuk mulai mengisi varian rasa.' : 'Pilih varian produk di menu untuk memulai pesanan.'}
+                                        {packages.length > 0 ? t('orders.selectPackageFirst') : t('orders.selectFlavorFirst')}
                                     </span>
                                     {options?.isMobile && (
                                         <Button
@@ -660,7 +668,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             onClick={options.onClose}
                                             className="mt-4 rounded-xl text-xs cursor-pointer"
                                         >
-                                            Pilih Menu Sekarang
+                                            {t('orders.selectFlavorTitle')}
                                         </Button>
                                     )}
                                 </div>
@@ -690,7 +698,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                     removeItem(item.id);
                                                                 }}
                                                                 className="shrink-0 p-1 text-rose-400 hover:text-rose-600 transition-colors cursor-pointer"
-                                                                title="Hapus item"
+                                                                title={t('pos.removeItem', 'Hapus item')}
                                                             >
                                                                 <Trash2 size={14} />
                                                             </button>
@@ -768,7 +776,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                     removeItem(item.id);
                                                                 }}
                                                                 className="shrink-0 p-1 text-rose-400 transition-colors hover:text-rose-600 cursor-pointer"
-                                                                title="Hapus paket"
+                                                                title={t('pos.removePackage', 'Hapus paket')}
                                                             >
                                                                 <Trash2 size={14} />
                                                             </button>
@@ -778,7 +786,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     {/* Detail Varian Summary Badge */}
                                                     <div className="bg-muted/50 dark:bg-muted/30 border-border/40 rounded-lg border p-2 text-xs">
                                                         <span className="text-muted-foreground mb-0.5 block text-[10px] font-bold tracking-wider uppercase">
-                                                            Detail Rasa Terpilih:
+                                                            {t('pos.selectedFlavorDetail')}
                                                         </span>
                                                         <span
                                                             className={`text-xs font-semibold ${totalSelected > 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground/70 font-normal italic'}`}
@@ -807,7 +815,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                                 adjustQty(item.id, v.id, -1);
                                                                             }}
                                                                             className="bg-background hover:bg-muted border-border flex h-6 w-6 items-center justify-center rounded border text-[11px] font-bold cursor-pointer"
-                                                                            title="Kurangi 1"
+                                                                            title={t('pos.minusOne', 'Kurangi 1')}
                                                                         >
                                                                             <Minus size={11} />
                                                                         </button>
@@ -820,7 +828,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                             }}
                                                                             disabled={isComplete}
                                                                             className="bg-background hover:bg-muted border-border flex h-6 w-6 items-center justify-center rounded border text-[11px] font-bold disabled:opacity-30 cursor-pointer"
-                                                                            title="Tambah 1"
+                                                                            title={t('pos.addOne', 'Tambah 1')}
                                                                         >
                                                                             <Plus size={11} />
                                                                         </button>
@@ -831,7 +839,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                                 removeVariantFromPackage(item.id, v.id);
                                                                             }}
                                                                             className="text-muted-foreground ml-1 p-0.5 hover:text-rose-500 cursor-pointer"
-                                                                            title="Hapus rasa ini"
+                                                                            title={t('pos.removeFlavor', 'Hapus rasa ini')}
                                                                         >
                                                                             <Trash2 size={12} />
                                                                         </button>
@@ -844,15 +852,15 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     {/* Progress / Status Footer */}
                                                     <div className="border-border/60 flex items-center justify-between border-t pt-2 text-xs">
                                                         <span className="text-muted-foreground text-[11px]">
-                                                            Terisi: <b className="text-foreground">{totalSelected}</b> / {item.isi} pcs
+                                                            <b className="text-foreground">{totalSelected}</b> / {item.isi} pcs
                                                         </span>
                                                         {isComplete ? (
                                                             <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400 text-[11px]">
-                                                                <Check size={12} /> Lengkap
+                                                                <Check size={12} /> {t('orders.complete')}
                                                             </span>
                                                         ) : (
                                                             <span className="font-semibold text-amber-500 text-[11px]">
-                                                                Kurang {item.isi - totalSelected} pcs
+                                                                {t('orders.missingPcs', { count: item.isi - totalSelected })}
                                                             </span>
                                                         )}
                                                     </div>
@@ -861,11 +869,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         })}
                                     </div>
 
-                                    {/* Status Pesanan Selector */}
+                                     {/* Status Pesanan Selector */}
                                     <div className="space-y-1.5 pt-1">
                                         <div className="flex items-center justify-between">
-                                            <Label className="text-muted-foreground text-xs font-medium">Status Pesanan</Label>
-                                            <span className="text-[11px] text-muted-foreground">Default: Selesai</span>
+                                            <Label className="text-muted-foreground text-xs font-medium">{t('pos.orderStatus')}</Label>
                                         </div>
                                         <div className="grid grid-cols-3 gap-1 rounded-xl border border-border bg-muted/40 p-1">
                                             <button
@@ -877,7 +884,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                                 }`}
                                             >
-                                                <Check size={13} /> Selesai
+                                                <Check size={13} /> {t('pos.statusDone')}
                                             </button>
                                             <button
                                                 type="button"
@@ -888,7 +895,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                                 }`}
                                             >
-                                                <Loader2 size={13} /> Diproses
+                                                <Loader2 size={13} /> {t('pos.statusProcessing')}
                                             </button>
                                             <button
                                                 type="button"
@@ -899,7 +906,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                                 }`}
                                             >
-                                                <Clock size={13} /> Menunggu
+                                                <Clock size={13} /> {t('pos.statusPending')}
                                             </button>
                                         </div>
                                     </div>
@@ -913,8 +920,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         >
                                             <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
                                                 <User size={14} className="text-indigo-500" />
-                                                <span>Data Pelanggan & Catatan</span>
-                                                <span className="text-[10px] text-muted-foreground font-normal">(Opsional)</span>
+                                                <span>{t('pos.customerInfo')}</span>
                                             </div>
                                             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                                                 {(customerName || customerPhone || customerEmail || notes) && (
@@ -929,26 +935,26 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 <Input
                                                     value={customerName}
                                                     onChange={(e) => setCustomerName(e.target.value)}
-                                                    placeholder="Nama pelanggan (opsional)"
+                                                    placeholder={t('pos.customerNamePlaceholder')}
                                                     className="h-9 rounded-xl text-sm"
                                                 />
                                                 <Input
                                                     value={customerPhone}
                                                     onChange={(e) => setCustomerPhone(e.target.value)}
-                                                    placeholder="No. HP (opsional)"
+                                                    placeholder={t('pos.customerPhonePlaceholder')}
                                                     className="h-9 rounded-xl text-sm"
                                                 />
                                                 <Input
                                                     type="email"
                                                     value={customerEmail}
                                                     onChange={(e) => setCustomerEmail(e.target.value)}
-                                                    placeholder="Email pelanggan (opsional)"
+                                                    placeholder={t('pos.customerEmailPlaceholder')}
                                                     className="h-9 rounded-xl text-sm"
                                                 />
                                                 <Input
                                                     value={notes}
                                                     onChange={(e) => setNotes(e.target.value)}
-                                                    placeholder="Catatan pesanan (opsional)"
+                                                    placeholder={t('pos.orderNotesPlaceholder')}
                                                     className="h-9 rounded-xl text-sm"
                                                 />
                                             </div>
@@ -960,7 +966,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         <div className="flex items-center justify-between">
                                             <Label className="text-foreground text-xs font-semibold flex items-center gap-1.5">
                                                 <Tag size={13} className="text-indigo-500" />
-                                                Potongan / Diskon
+                                                {t('pos.discount')}
                                             </Label>
                                             {/* Toggle Tipe Diskon: Nominal vs Persen */}
                                             <div className="inline-flex rounded-lg border border-border bg-muted/80 p-0.5 text-[11px]">
@@ -1026,7 +1032,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                                         {discountAmount > 0 && (
                                             <div className="flex items-center justify-between text-xs text-emerald-600 dark:text-emerald-400 font-medium pt-0.5">
-                                                <span>Potongan Diterapkan:</span>
+                                                <span>{t('pos.discount')}:</span>
                                                 <span className="font-semibold">-{formatRupiah(discountAmount)}</span>
                                             </div>
                                         )}
@@ -1034,7 +1040,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                                     {/* Payment Method */}
                                     <div>
-                                        <Label className="text-muted-foreground mb-1.5 block text-xs">Metode Pembayaran</Label>
+                                        <Label className="text-muted-foreground mb-1.5 block text-xs">{t('pos.paymentMethod')}</Label>
                                         <div className="grid max-h-44 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3">
                                             {paymentMethods.length > 0
                                                 ? paymentMethods.map((pm) => {
@@ -1098,14 +1104,14 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         </div>
                                     </div>
 
-                                    {/* Cash Received (if cash) */}
+                                     {/* Cash Received (if cash) */}
                                     {isCash && (
                                         <div className="space-y-2 rounded-xl border border-border/80 bg-muted/20 p-3">
                                             <div className="flex items-center justify-between">
-                                                <Label className="text-muted-foreground text-xs font-medium">Uang Diterima (Rp)</Label>
+                                                <Label className="text-muted-foreground text-xs font-medium">{t('pos.cashReceived')} (Rp)</Label>
                                                 {cashReceived > 0 && cashReceived < finalTotal && (
                                                     <span className="text-[11px] font-semibold text-rose-500">
-                                                        Kurang {formatRupiah(finalTotal - cashReceived)}
+                                                        {t('pos.insufficientCash', { amount: formatRupiah(finalTotal - cashReceived) })}
                                                     </span>
                                                 )}
                                             </div>
@@ -1132,7 +1138,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                             : 'bg-background hover:bg-muted text-foreground border-border'
                                                     }`}
                                                 >
-                                                    Uang Pas
+                                                    Exact
                                                 </button>
                                                 {[10000, 20000, 50000, 100000].map((nominal) => (
                                                     <button
@@ -1152,7 +1158,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                                             {cashReceived >= finalTotal && cashReceived > 0 && (
                                                 <div className="border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-800/50 dark:bg-emerald-950/30 flex items-center justify-between rounded-xl border px-3 py-1.5 text-sm font-semibold">
-                                                    <span className="text-xs">Kembalian:</span>
+                                                    <span className="text-xs">{t('pos.change')}:</span>
                                                     <span>{formatRupiah(change)}</span>
                                                 </div>
                                             )}
@@ -1162,25 +1168,16 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     {/* Cost Breakdown Details */}
                                     <div className="bg-muted/40 space-y-1.5 rounded-xl p-3 text-xs border border-border/50">
                                         <div className="text-muted-foreground flex justify-between">
-                                            <span>Subtotal ({cartItemCount} item)</span>
+                                            <span>{t('pos.subtotal')} ({cartItemCount} item)</span>
                                             <span className="font-medium text-foreground">{formatRupiah(subtotal)}</span>
                                         </div>
 
                                         {discountAmount > 0 && (
                                             <div className="text-rose-500 dark:text-rose-400 flex justify-between font-medium">
                                                 <span>
-                                                    Diskon {discountType === 'percent' ? `(${discountInput}%)` : ''}
+                                                    {t('pos.discount')} {discountType === 'percent' ? `(${discountInput}%)` : ''}
                                                 </span>
                                                 <span>-{formatRupiah(discountAmount)}</span>
-                                            </div>
-                                        )}
-
-                                        {totalHpp > 0 && (
-                                            <div className="flex justify-between pt-0.5 text-muted-foreground">
-                                                <span>Est. Untung</span>
-                                                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                                                    +{formatRupiah(finalTotal - totalHpp)}
-                                                </span>
                                             </div>
                                         )}
                                     </div>
@@ -1192,7 +1189,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         {cart.length > 0 && (
                             <div className="shrink-0 border-t border-border bg-card p-3.5 sm:p-4 space-y-2.5">
                                 <div className="flex items-baseline justify-between">
-                                    <span className="text-xs text-muted-foreground">Total Pembayaran</span>
+                                    <span className="text-xs text-muted-foreground">{t('pos.total')}</span>
                                     <div className="text-right">
                                         <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
                                             {formatRupiah(finalTotal)}
@@ -1211,14 +1208,14 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     className="h-11 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 shadow-xs cursor-pointer"
                                 >
                                     {processing
-                                        ? 'Memproses Pesanan...'
+                                        ? t('common.saving')
                                         : !isCartComplete
-                                            ? 'Lengkapi Isi Paket Dahulu'
+                                            ? t('pos.subtitleWithPackages')
                                             : isCash && cashReceived > 0 && cashReceived < finalTotal
-                                                ? `Uang Kurang (${formatRupiah(finalTotal - cashReceived)})`
+                                                ? t('pos.insufficientCash', { amount: formatRupiah(finalTotal - cashReceived) })
                                                 : isCash && cashReceived === 0
-                                                    ? 'Masukkan Uang Diterima'
-                                                    : `Buat Pesanan — ${formatRupiah(finalTotal)}`}
+                                                    ? t('pos.enterCashReceived')
+                                                    : t('pos.createOrderTotal', { total: formatRupiah(finalTotal) })}
                                 </Button>
                             </div>
                         )}
@@ -1230,7 +1227,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="POS Kasir" />
+            <Head title={t('pos.title')} />
 
             <div className="relative flex h-[calc(100vh-4rem)] w-full overflow-hidden">
                 {/* Left: Product & Package Grid */}
@@ -1240,10 +1237,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         <div>
                             <h1 className="flex items-center gap-2 text-lg sm:text-xl font-bold">
                                 <ShoppingBag className="text-indigo-500" size={20} />
-                                POS Kasir
+                                {t('pos.title')}
                             </h1>
                             <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">
-                                {packages.length > 0 ? 'Pilih paket di bawah, lalu isi varian rasanya' : 'Pilih varian rasa langsung untuk memesan'}
+                                {packages.length > 0 ? t('pos.subtitleWithPackages') : t('pos.subtitleDirect')}
                             </p>
                         </div>
 
@@ -1255,7 +1252,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             className="relative flex items-center gap-2 rounded-xl border-indigo-200 bg-indigo-50/60 text-indigo-700 hover:bg-indigo-100 dark:border-indigo-900 dark:bg-indigo-950/60 dark:text-indigo-300 lg:hidden shrink-0 h-9 px-3 cursor-pointer"
                         >
                             <ShoppingCart size={15} />
-                            <span className="font-semibold text-xs">Keranjang</span>
+                            <span className="font-semibold text-xs">{t('pos.cart')}</span>
                             {cart.length > 0 && (
                                 <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-indigo-600 px-1 text-[10px] font-bold text-white">
                                     {cartItemCount}
@@ -1270,9 +1267,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             <div className="mb-2.5 flex items-center justify-between">
                                 <h2 className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-foreground">
                                     <Package size={15} className="text-indigo-600 dark:text-indigo-400" />
-                                    Pilih Paket Box
+                                    {t('pos.selectPackage')}
                                 </h2>
-                                <span className="text-muted-foreground text-[11px]">Klik untuk tambah paket ke keranjang</span>
+                                <span className="text-muted-foreground text-[11px]">{t('pos.clickToAddPackage')}</span>
                             </div>
 
                             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-4">
@@ -1292,7 +1289,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             <div>
                                                 <div className="mb-2 flex items-center justify-between">
                                                     <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-[11px] font-bold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
-                                                        Isi {pkg.capacity} Pcs
+                                                        {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                                     </span>
                                                     <div className="rounded-full bg-indigo-50 p-1 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white dark:bg-indigo-950">
                                                         <Plus size={13} />
@@ -1324,16 +1321,16 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             <div className="flex items-center justify-between text-xs">
                                 <span className="font-semibold text-indigo-900 dark:text-indigo-200 flex items-center gap-1.5">
                                     <Package size={13} className="text-indigo-600 dark:text-indigo-400" />
-                                    Paket yang Sedang Diisi:
+                                    {t('pos.packageBeingFilled')}
                                 </span>
                                 <span className="text-[11px]">
                                     {activePackageRemaining === 0 ? (
                                         <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                                            <Check size={12} /> Lengkap ({activePackageTotal}/{activePackageItem?.isi})
+                                            <Check size={12} /> {t('orders.complete')} ({activePackageTotal}/{activePackageItem?.isi})
                                         </span>
                                     ) : (
                                         <span className="text-amber-600 dark:text-amber-400 font-medium">
-                                            Kurang {activePackageRemaining} pcs ({activePackageTotal}/{activePackageItem?.isi})
+                                            {t('orders.missingPcs', { count: activePackageRemaining })} ({activePackageTotal}/{activePackageItem?.isi})
                                         </span>
                                     )}
                                 </span>
@@ -1380,12 +1377,14 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             <div className="flex items-center gap-2">
                                 <h2 className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-foreground">
                                     <ShoppingBag size={15} className="text-indigo-600 dark:text-indigo-400" />
-                                    {packages.length > 0 ? 'Pilih Varian Rasa' : 'Daftar Varian Produk'}
+                                    {packages.length > 0 ? t('orders.selectFlavorTitle') : t('pos.variantListTitle')}
                                 </h2>
                                 {packages.length > 0 && activeCartItemId !== null && (
                                     <span className="hidden sm:inline-block rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-300">
-                                        Mengisi: {cart.find((c) => c.id === activeCartItemId)?.name} #
-                                        {cart.findIndex((c) => c.id === activeCartItemId) + 1}
+                                        {t('pos.fillingPackage', {
+                                            name: cart.find((c) => c.id === activeCartItemId)?.name,
+                                            num: cart.findIndex((c) => c.id === activeCartItemId) + 1,
+                                        })}
                                     </span>
                                 )}
                             </div>
@@ -1397,7 +1396,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Cari rasa mochi..."
+                                    placeholder={t('pos.searchMochiPlaceholder')}
                                     className="h-8 rounded-xl text-xs pl-8 pr-7"
                                 />
                                 {searchQuery && (
@@ -1415,7 +1414,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         {filteredVariants.length === 0 ? (
                             <div className="text-muted-foreground flex flex-col items-center justify-center py-10 text-center text-xs">
                                 <ShoppingBag size={32} className="mb-2 opacity-30" />
-                                <p>{searchQuery ? `Tidak ada varian cocok dengan "${searchQuery}"` : 'Belum ada varian produk aktif.'}</p>
+                                <p>{searchQuery ? t('pos.noVariantMatch', { query: searchQuery }) : t('pos.noActiveVariants')}</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-2 gap-2 sm:gap-2.5 sm:grid-cols-3 xl:grid-cols-4">
@@ -1466,7 +1465,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                 }
                                                             }}
                                                             className="flex h-6 w-6 items-center justify-center rounded text-xs font-bold transition-colors hover:bg-indigo-700 active:bg-indigo-800 cursor-pointer"
-                                                            title="Kurangi varian"
+                                                            title={t('pos.variantCard.reduceVariant', 'Kurangi varian')}
                                                         >
                                                             <Minus size={11} />
                                                         </button>
@@ -1476,7 +1475,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                             onClick={() => handleVariantClick(v)}
                                                             disabled={isPackageFull}
                                                             className="flex h-6 w-6 items-center justify-center rounded text-xs font-bold transition-colors hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-40 cursor-pointer"
-                                                            title="Tambah varian"
+                                                            title={t('pos.variantCard.addVariant', 'Tambah varian')}
                                                         >
                                                             <Plus size={11} />
                                                         </button>
@@ -1492,10 +1491,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 {v.name.replace('Mochi ', '')}
                                             </div>
                                             <div className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
-                                                {packages.length === 0 ? formatRupiah(Number(v.sell_price)) : `${v.recipe_qty ?? 1} pcs/resep`}
+                                                {packages.length === 0
+                                                    ? formatRupiah(Number(v.sell_price))
+                                                    : `${v.recipe_qty ?? 1} ${t('pos.variantCard.pcsPerRecipe', 'pcs/resep')}`}
                                             </div>
                                             <div className="text-muted-foreground mt-1 flex items-center justify-between text-[10px]">
-                                                <span>HPP: {formatRupiah(Number(v.hpp ?? 0))}</span>
+                                                <span>{t('pos.variantCard.hpp', 'HPP')}: {formatRupiah(Number(v.hpp ?? 0))}</span>
                                             </div>
                                         </div>
                                     );
@@ -1531,10 +1532,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                                 <span className="truncate">
                                     {cart.length === 0
-                                        ? 'Keranjang Kosong'
+                                        ? t('pos.emptyCart', 'Keranjang Kosong')
                                         : packages.length > 0
-                                            ? `${cart.length} Paket`
-                                            : `${cartItemCount} Item`}
+                                            ? `${cart.length} ${t('pos.packageUnit', 'Paket')}`
+                                            : `${cartItemCount} ${t('pos.itemUnit', 'Item')}`}
                                 </span>
                                 {cart.length > 0 && (
                                     <span
@@ -1544,7 +1545,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
                                         }`}
                                     >
-                                        {isCartComplete ? 'Lengkap' : 'Belum Lengkap'}
+                                        {isCartComplete ? t('pos.complete', 'Lengkap') : t('pos.incomplete', 'Belum Lengkap')}
                                     </span>
                                 )}
                             </div>
@@ -1560,7 +1561,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         disabled={cart.length === 0}
                         className="h-10 px-4 rounded-xl font-semibold bg-indigo-600 text-white hover:bg-indigo-700 shrink-0 shadow-xs cursor-pointer"
                     >
-                        {isCartComplete ? 'Bayar / Periksa' : 'Lihat Keranjang'}
+                        {isCartComplete ? t('pos.payOrCheck', 'Bayar / Periksa') : t('pos.viewCart', 'Lihat Keranjang')}
                     </Button>
                 </div>
             </div>
@@ -1572,8 +1573,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                     className="w-full sm:max-w-md p-0 flex flex-col h-full z-50 border-l border-border bg-card"
                 >
                     <SheetHeader className="sr-only">
-                        <SheetTitle>Keranjang dan Pembayaran Kasir</SheetTitle>
-                        <SheetDescription>Daftar pesanan dan form pembayaran kasir POS</SheetDescription>
+                        <SheetTitle>{t('pos.cartAndCheckout', 'Keranjang dan Pembayaran Kasir')}</SheetTitle>
+                        <SheetDescription>{t('pos.mobileCartDescription', 'Daftar pesanan dan form pembayaran kasir POS')}</SheetDescription>
                     </SheetHeader>
                     {renderCartContent({
                         isMobile: true,

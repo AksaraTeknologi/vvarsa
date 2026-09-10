@@ -12,14 +12,14 @@ import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Package, ToggleLeft, ToggleRight, Trash } from 'lucide-react';
 
-const getStockBadge = (product: Product) => {
+const getStockBadge = (product: Product, t: (key: string, options?: any) => string) => {
     const isOutOfStock = product.current_stock <= 0;
     const isLowStock = product.current_stock <= product.min_stock;
 
     if (isOutOfStock) {
         return (
             <Badge variant="destructive" className="bg-rose-150 hover:bg-rose-150/80 text-rose-700">
-                Habis ({product.current_stock} {product.unit})
+                {t('inventory.outOfStock')} ({product.current_stock} {product.unit})
             </Badge>
         );
     }
@@ -27,19 +27,19 @@ const getStockBadge = (product: Product) => {
     if (isLowStock) {
         return (
             <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100">
-                Menipis ({product.current_stock} {product.unit})
+                {t('inventory.lowStock')} ({product.current_stock} {product.unit})
             </Badge>
         );
     }
 
     return (
         <Badge variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100">
-            Aman ({product.current_stock} {product.unit})
+            {t('inventory.safeStock')} ({product.current_stock} {product.unit})
         </Badge>
     );
 };
 
-function ProductActions({ product, onToggleActive }: { product: Product; onToggleActive: (product: Product) => void }) {
+function ProductActions({ product, onToggleActive, t }: { product: Product; onToggleActive: (product: Product) => void; t: (key: string, options?: any) => string }) {
     const handleDelete = () => {
         handleAsyncAction(() => routerPromise('delete', `/inventory/${product.id}`, {}, { preserveScroll: true }), {
             loading: `Menghapus produk "${product.name}"...`,
@@ -60,11 +60,11 @@ function ProductActions({ product, onToggleActive }: { product: Product; onToggl
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Edit Produk</p>
+                    <p>{t('inventory.editProduct')}</p>
                 </TooltipContent>
             </Tooltip>
 
-            {/* Toggle Aktif / Nonaktif (SAMAKAN STYLE DENGAN TENANT) */}
+            {/* Toggle Aktif / Nonaktif */}
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
@@ -78,7 +78,7 @@ function ProductActions({ product, onToggleActive }: { product: Product; onToggl
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    <p>{product.is_active ? 'Nonaktifkan' : 'Aktifkan'} Produk</p>
+                    <p>{product.is_active ? t('common.inactive') : t('admin.active')}</p>
                 </TooltipContent>
             </Tooltip>
 
@@ -90,24 +90,24 @@ function ProductActions({ product, onToggleActive }: { product: Product; onToggl
                             trigger={
                                 <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:bg-red-50 hover:text-red-600">
                                     <Trash size={16} />
-                                    <span className="sr-only">Hapus Produk</span>
+                                    <span className="sr-only">{t('inventory.deleteProduct')}</span>
                                 </Button>
                             }
-                            title="Apakah Anda yakin ingin menghapus produk ini?"
+                            title={t('common.confirmDelete')}
                             itemName={product.name}
                             onConfirm={handleDelete}
                         />
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Hapus Produk</p>
+                    <p>{t('inventory.deleteProduct')}</p>
                 </TooltipContent>
             </Tooltip>
         </div>
     );
 }
 
-export const columns = (onToggleActive: (product: Product) => void): ColumnDef<Product>[] => [
+export const getColumns = (t: (key: string, options?: any) => string, onToggleActive: (product: Product) => void): ColumnDef<Product>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -115,7 +115,7 @@ export const columns = (onToggleActive: (product: Product) => void): ColumnDef<P
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Produk" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.product')} />,
         cell: ({ row }) => {
             const product = row.original;
             return (
@@ -131,7 +131,7 @@ export const columns = (onToggleActive: (product: Product) => void): ColumnDef<P
                     </div>
                     {!product.is_active && (
                         <Badge variant="outline" className="ml-1 border-slate-200 text-[10px] text-slate-400">
-                            Nonaktif
+                            {t('common.inactive')}
                         </Badge>
                     )}
                 </div>
@@ -140,12 +140,12 @@ export const columns = (onToggleActive: (product: Product) => void): ColumnDef<P
     },
     {
         accessorKey: 'category',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Kategori" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.category')} />,
         cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.category?.name || '—'}</span>,
     },
     {
         accessorKey: 'purchase_price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Beli Kemasan" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.purchasePrice')} />,
         cell: ({ row }) => {
             const product = row.original;
             return (
@@ -160,17 +160,19 @@ export const columns = (onToggleActive: (product: Product) => void): ColumnDef<P
     },
     {
         accessorKey: 'sell_price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Jual" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.sellPrice')} />,
         cell: ({ row }) => <div className="text-right font-semibold text-slate-900 dark:text-slate-50">{formatRupiah(row.original.sell_price)}</div>,
     },
     {
         accessorKey: 'current_stock',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Stok" />,
-        cell: ({ row }) => <div className="text-center">{getStockBadge(row.original)}</div>,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.stock')} />,
+        cell: ({ row }) => <div className="text-center">{getStockBadge(row.original, t)}</div>,
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
-        cell: ({ row }) => <ProductActions product={row.original} onToggleActive={onToggleActive} />,
+        header: () => <div className="text-center">{t('common.actions')}</div>,
+        cell: ({ row }) => <ProductActions product={row.original} onToggleActive={onToggleActive} t={t} />,
     },
 ];
+
+export const columns = (onToggleActive: (product: Product) => void) => getColumns((k) => k, onToggleActive);

@@ -11,12 +11,12 @@ import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { BookOpen, Edit, Trash } from 'lucide-react';
 
-function RecipeActions({ recipe }: { recipe: Recipe }) {
+function RecipeActions({ recipe, t }: { recipe: Recipe; t: any }) {
     const handleDelete = () => {
         handleAsyncAction(() => routerPromise('delete', `/recipes/${recipe.id}`, {}, { preserveScroll: true }), {
-            loading: `Menghapus resep "${recipe.name}"...`,
-            success: `Resep "${recipe.name}" berhasil dihapus!`,
-            error: 'Gagal Menghapus',
+            loading: t('recipes.deleting', { name: recipe.name, defaultValue: `Menghapus resep "${recipe.name}"...` }),
+            success: t('recipes.deleteSuccess', { name: recipe.name, defaultValue: `Resep "${recipe.name}" berhasil dihapus!` }),
+            error: t('common.failed', 'Gagal Menghapus'),
         });
     };
 
@@ -31,7 +31,7 @@ function RecipeActions({ recipe }: { recipe: Recipe }) {
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Edit Resep</p>
+                    <p>{t('recipes.editRecipe', 'Edit Resep')}</p>
                 </TooltipContent>
             </Tooltip>
 
@@ -42,24 +42,24 @@ function RecipeActions({ recipe }: { recipe: Recipe }) {
                             trigger={
                                 <Button variant="link" size="icon" className="size-8 text-red-500 hover:cursor-pointer">
                                     <Trash className="size-4" />
-                                    <span className="sr-only">Hapus Resep</span>
+                                    <span className="sr-only">{t('recipes.deleteRecipe', 'Hapus Resep')}</span>
                                 </Button>
                             }
-                            title="Apakah Anda yakin ingin menghapus resep ini?"
+                            title={t('recipes.deleteConfirm', 'Apakah Anda yakin ingin menghapus resep ini?')}
                             itemName={recipe.name}
                             onConfirm={handleDelete}
                         />
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Hapus Resep</p>
+                    <p>{t('recipes.deleteRecipe', 'Hapus Resep')}</p>
                 </TooltipContent>
             </Tooltip>
         </div>
     );
 }
 
-export const columns: ColumnDef<Recipe>[] = [
+export const columns = (t: any): ColumnDef<Recipe>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -70,7 +70,7 @@ export const columns: ColumnDef<Recipe>[] = [
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nama Resep" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.recipeName', 'Nama Resep')} />,
         cell: ({ row }) => {
             const recipe = row.original;
             return (
@@ -88,7 +88,7 @@ export const columns: ColumnDef<Recipe>[] = [
     },
     {
         accessorKey: 'ingredients',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Bahan-bahan" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.ingredients', 'Bahan-bahan')} />,
         cell: ({ row }) => {
             const ingredients = row.original.ingredients ?? [];
             return (
@@ -104,28 +104,32 @@ export const columns: ColumnDef<Recipe>[] = [
     },
     {
         accessorKey: 'total_cost',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="HPP 1 Adonan" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.batchHpp', 'HPP 1 Adonan')} />,
         cell: ({ row }) => {
             return <div className="text-muted-foreground text-right font-medium">{formatRupiah(row.original.total_cost ?? 0)}</div>;
         },
     },
     {
         accessorKey: 'portion_qty',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Porsi Hasil" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.portionQty', 'Porsi Hasil')} />,
         cell: ({ row }) => {
-            return <div className="text-muted-foreground text-right font-medium">{Number(row.original.portion_qty)} pcs</div>;
+            return (
+                <div className="text-muted-foreground text-right font-medium">
+                    {t('recipes.portionUnit', { count: Number(row.original.portion_qty), defaultValue: `${Number(row.original.portion_qty)} pcs` })}
+                </div>
+            );
         },
     },
     {
         accessorKey: 'hpp',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="HPP per Pcs" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.hppPerPcs', 'HPP per Pcs')} />,
         cell: ({ row }) => {
             return <div className="text-right font-bold text-emerald-600 dark:text-emerald-400">{formatRupiah(row.original.hpp ?? 0)}</div>;
         },
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
-        cell: ({ row }) => <RecipeActions recipe={row.original} />,
+        header: () => <div className="text-center">{t('recipes.actions', 'Aksi')}</div>,
+        cell: ({ row }) => <RecipeActions recipe={row.original} t={t} />,
     },
 ];

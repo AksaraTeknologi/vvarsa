@@ -1,8 +1,7 @@
 'use client';
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-
-// Pastikan komponen Table bawaan UI (misal: shadcn/ui) sudah ada di folder ini
+import { useTranslation } from 'react-i18next';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface DataTableProps<TData, TValue> {
@@ -11,6 +10,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+    const { t } = useTranslation();
     const table = useReactTable({
         data,
         columns,
@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     ) : (
                         <TableRow>
                             <TableCell colSpan={columns.length} className="text-muted-foreground h-24 text-center text-sm">
-                                Tidak ada data supplier ditemukan.
+                                {t('admin.supplier.noData')}
                             </TableCell>
                         </TableRow>
                     )}

@@ -44,6 +44,7 @@ export const getColumns = (
     onDeleteMember: (memberId: number, name: string) => void,
     isUpdateProcessing: boolean,
     isDeleteProcessing: boolean,
+    t: (key: string, options?: any) => string,
 ): ColumnDef<Member>[] => [
     {
         accessorKey: 'no',
@@ -55,7 +56,7 @@ export const getColumns = (
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nama & Email" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.nameAndEmail')} />,
         cell: ({ row }) => {
             const member = row.original;
             return (
@@ -68,7 +69,7 @@ export const getColumns = (
                             {member.name}
                             {member.id === authUserId && (
                                 <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
-                                    Anda
+                                    {t('members.you')}
                                 </Badge>
                             )}
                         </div>
@@ -80,7 +81,7 @@ export const getColumns = (
     },
     {
         accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Kontak" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.contact')} />,
         cell: ({ row }) => {
             return (
                 <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
@@ -92,7 +93,7 @@ export const getColumns = (
     },
     {
         accessorKey: 'role',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Peran (Role)" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.role')} />,
         cell: ({ row }) => {
             const role = row.original.roles[0]?.name || 'staff';
             const meta = ROLE_BADGE[role] ?? ROLE_BADGE.staff;
@@ -108,7 +109,7 @@ export const getColumns = (
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
+        header: () => <div className="text-center">{t('common.actions')}</div>,
         cell: ({ row }) => {
             const member = row.original;
             const role = member.roles[0]?.name || 'staff';
@@ -127,7 +128,7 @@ export const getColumns = (
                                     onClick={() => onUpdateRole(member.id, role)}
                                     disabled={isUpdateProcessing}
                                     className="hover:bg-muted text-xs"
-                                    title={`Ubah ke ${nextRoleMeta?.label ?? nextRole}`}
+                                    title={t('members.changeTo', { role: nextRoleMeta?.label ?? nextRole })}
                                 >
                                     → {nextRoleMeta?.label ?? nextRole}
                                 </Button>
@@ -142,7 +143,7 @@ export const getColumns = (
                                 </Button>
                             </>
                         ) : (
-                            <span className="text-muted-foreground text-xs">Hanya owner</span>
+                            <span className="text-muted-foreground text-xs">{t('members.onlyOwner')}</span>
                         )
                     ) : (
                         <span className="text-muted-foreground text-xs">—</span>

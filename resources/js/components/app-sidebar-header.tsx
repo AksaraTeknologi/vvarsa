@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { NotificationDropdown } from '@/components/notification-dropdown';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
@@ -20,6 +21,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className="flex items-center gap-2">
+                <LanguageSwitcher />
                 {isAdminRoute && (
                     <span className="rounded-md border border-[#5E4BF2]/20 bg-[#F1EFFD] px-2 py-0.5 text-[11px] font-semibold tracking-widest text-[#5E4BF2] uppercase">
                         Admin

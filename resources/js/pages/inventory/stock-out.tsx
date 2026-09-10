@@ -11,12 +11,8 @@ import { type Product } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Inventori', href: '/inventory' },
-    { title: 'Stok Keluar', href: '/inventory/stock-out' },
-];
 
 interface Props {
     products: Product[];
@@ -31,6 +27,13 @@ const stockOutSchema = z.object({
 });
 
 export default function StockOut({ products }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.inventory'), href: '/inventory' },
+        { title: t('inventory.stockOutTitle'), href: '/inventory/stock-out' },
+    ];
+
     const { data, setData, errors } = useForm({
         product_id: '',
         qty: 1,
@@ -61,7 +64,7 @@ export default function StockOut({ products }: Props) {
         }
 
         if (isInsufficientStock) {
-            setClientErrors((prev) => ({ ...prev, qty: 'Stok tidak mencukupi!' }));
+            setClientErrors((prev) => ({ ...prev, qty: t('inventory.insufficientStock') }));
             return;
         }
 
@@ -72,9 +75,9 @@ export default function StockOut({ products }: Props) {
                     onFinish: () => setProcessing(false),
                 }),
             {
-                loading: 'Mencatat stok keluar...',
-                success: 'Stok keluar berhasil dicatat!',
-                error: 'Gagal Mencatat Stok Keluar',
+                loading: t('inventory.savingStockOut'),
+                success: t('inventory.stockOutSuccess'),
+                error: t('inventory.stockOutError'),
             },
         ).finally(() => setProcessing(false));
     };
@@ -83,7 +86,7 @@ export default function StockOut({ products }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Stok Keluar" />
+            <Head title={t('inventory.stockOutTitle')} />
             <div className="mx-auto max-w-xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
@@ -92,8 +95,8 @@ export default function StockOut({ products }: Props) {
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Stok Keluar</h1>
-                        <p className="text-muted-foreground text-sm">Catat penggunaan atau pengeluaran stok</p>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('inventory.stockOutTitle')}</h1>
+                        <p className="text-muted-foreground text-sm">{t('inventory.stockOutSubtitle')}</p>
                     </div>
                 </div>
 
@@ -101,16 +104,16 @@ export default function StockOut({ products }: Props) {
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div>
                             <Label htmlFor="product_id" className="mb-1.5 block">
-                                Produk *
+                                {t('inventory.product')} *
                             </Label>
                             <Select value={data.product_id} onValueChange={(val) => setData('product_id', val)}>
                                 <SelectTrigger id="product_id" className={`h-10 rounded-xl ${displayError('product_id') ? 'border-rose-500' : ''}`}>
-                                    <SelectValue placeholder="Pilih produk..." />
+                                    <SelectValue placeholder={t('inventory.selectProductPlaceholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {products.map((p) => (
                                         <SelectItem key={p.id} value={String(p.id)}>
-                                            {p.name} (Stok: {p.current_stock} {p.unit})
+                                            {p.name} ({t('inventory.stock')}: {p.current_stock} {p.unit})
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -131,8 +134,8 @@ export default function StockOut({ products }: Props) {
                                     {selectedProduct.name}
                                 </p>
                                 <p className={`mt-0.5 text-xs ${isInsufficientStock ? 'text-rose-600 dark:text-rose-300' : 'text-muted-foreground'}`}>
-                                    Stok tersedia: {selectedProduct.current_stock} {selectedProduct.unit}
-                                    {isInsufficientStock && ' — Stok tidak mencukupi!'}
+                                    {t('inventory.availableStock')}: {selectedProduct.current_stock} {selectedProduct.unit}
+                                    {isInsufficientStock && ` — ${t('inventory.insufficientStock')}`}
                                 </p>
                             </div>
                         )}
@@ -140,7 +143,7 @@ export default function StockOut({ products }: Props) {
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <Label htmlFor="qty" className="mb-1.5 block">
-                                    Jumlah Keluar *
+                                    {t('inventory.qtyOut')} *
                                 </Label>
                                 <Input
                                     id="qty"
@@ -153,14 +156,14 @@ export default function StockOut({ products }: Props) {
                                 />
                                 {selectedProduct && (
                                     <p className="text-muted-foreground mt-1 text-xs">
-                                        Stok setelah: {Math.max(0, selectedProduct.current_stock - (data.qty || 0))} {selectedProduct.unit}
+                                        {t('inventory.stockAfter')}: {Math.max(0, selectedProduct.current_stock - (data.qty || 0))} {selectedProduct.unit}
                                     </p>
                                 )}
                                 {displayError('qty') && <p className="mt-1 text-xs text-rose-500">{displayError('qty')}</p>}
                             </div>
                             <div className="space-y-1.5">
                                 <Label htmlFor="movement_date" className="block">
-                                    Tanggal *
+                                    {t('common.date')} *
                                 </Label>
                                 <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
                                 {displayError('movement_date') && <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>}
@@ -169,41 +172,41 @@ export default function StockOut({ products }: Props) {
 
                         <div>
                             <Label htmlFor="reference" className="mb-1.5 block">
-                                No. Referensi
+                                {t('inventory.reference')}
                             </Label>
                             <Input
                                 id="reference"
                                 type="text"
                                 value={data.reference}
                                 onChange={(e) => setData('reference', e.target.value)}
-                                placeholder="No. pesanan / keperluan (opsional)"
+                                placeholder={t('inventory.referencePlaceholder')}
                             />
                         </div>
 
                         <div>
                             <Label htmlFor="note" className="mb-1.5 block">
-                                Catatan
+                                {t('common.notes')}
                             </Label>
                             <Textarea
                                 id="note"
                                 rows={2}
                                 value={data.note}
                                 onChange={(e) => setData('note', e.target.value)}
-                                placeholder="Alasan pengeluaran stok (opsional)"
+                                placeholder={t('inventory.stockOutNotePlaceholder')}
                             />
                         </div>
                     </div>
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">Batal</Link>
+                            <Link href="/inventory">{t('common.cancel')}</Link>
                         </Button>
                         <Button
                             type="submit"
                             disabled={processing || !data.product_id || !!isInsufficientStock}
                             className="rounded-xl bg-rose-600 px-5 text-white hover:bg-rose-700 disabled:opacity-70"
                         >
-                            {processing ? 'Menyimpan...' : 'Simpan Stok Keluar'}
+                            {processing ? t('common.saving') : t('inventory.saveStockOut')}
                         </Button>
                     </div>
                 </form>

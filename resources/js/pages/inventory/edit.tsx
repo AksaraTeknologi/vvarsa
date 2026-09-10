@@ -11,6 +11,7 @@ import { type Product, type ProductCategory } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 interface Props {
@@ -34,8 +35,10 @@ const productSchema = z.object({
 });
 
 export default function InventoryEdit({ product, categories }: Props) {
+    const { t } = useTranslation();
+
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Inventori', href: '/inventory' },
+        { title: t('navigation.inventory'), href: '/inventory' },
         { title: product.name, href: `/inventory/${product.id}/edit` },
     ];
 
@@ -79,7 +82,7 @@ export default function InventoryEdit({ product, categories }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Edit — ${product.name}`} />
+            <Head title={`${t('common.edit')} — ${product.name}`} />
             <div className="mx-auto max-w-2xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="outline" size="icon" asChild className="h-9 w-9 rounded-xl">
@@ -88,20 +91,15 @@ export default function InventoryEdit({ product, categories }: Props) {
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Edit Produk</h1>
+                        <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('inventory.editProduct')}</h1>
                         <p className="text-muted-foreground mt-0.5 text-sm">
-                            Stok saat ini:{' '}
-                            <strong>
-                                {product.current_stock} {product.unit}
-                            </strong>{' '}
-                            &mdash; ubah stok via{' '}
+                            {t('inventory.stock')}: <strong>{product.current_stock} {product.unit}</strong> &mdash;{' '}
                             <Link href="/inventory/stock-in" className="text-primary hover:underline">
-                                Stok Masuk
+                                {t('inventory.stockInTitle')}
                             </Link>{' '}
-                            /
+                            /{' '}
                             <Link href="/inventory/stock-out" className="text-primary hover:underline">
-                                {' '}
-                                Stok Keluar
+                                {t('inventory.stockOutTitle')}
                             </Link>
                         </p>
                     </div>
@@ -109,10 +107,10 @@ export default function InventoryEdit({ product, categories }: Props) {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-foreground text-sm font-semibold">Informasi Dasar</h2>
+                        <h2 className="text-foreground text-sm font-semibold">{t('inventory.basicInfo')}</h2>
 
                         <div className="space-y-2">
-                            <Label htmlFor="name">Nama Produk *</Label>
+                            <Label htmlFor="name">{t('inventory.productName')} *</Label>
                             <Input
                                 id="name"
                                 type="text"
@@ -131,14 +129,14 @@ export default function InventoryEdit({ product, categories }: Props) {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="sku">SKU</Label>
+                                <Label htmlFor="sku">{t('inventory.sku')}</Label>
                                 <Input id="sku" type="text" value={data.sku} onChange={(e) => setData('sku', e.target.value)} />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="category_id">Kategori</Label>
+                                <Label htmlFor="category_id">{t('inventory.category')}</Label>
                                 <Select value={data.category_id || undefined} onValueChange={(val) => setData('category_id', val)}>
                                     <SelectTrigger id="category_id" className="rounded-xl">
-                                        <SelectValue placeholder="Pilih kategori" />
+                                        <SelectValue placeholder={t('inventory.selectCategoryPlaceholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((c) => (
@@ -153,10 +151,10 @@ export default function InventoryEdit({ product, categories }: Props) {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="unit">Satuan *</Label>
+                                <Label htmlFor="unit">{t('inventory.unit')} *</Label>
                                 <Select value={data.unit} onValueChange={(val) => setData('unit', val)}>
                                     <SelectTrigger id="unit" className="rounded-xl">
-                                        <SelectValue placeholder="Pilih satuan" />
+                                        <SelectValue placeholder={t('inventory.selectUnitPlaceholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {UNITS.map((u) => (
@@ -168,7 +166,7 @@ export default function InventoryEdit({ product, categories }: Props) {
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="min_stock">Stok Minimum</Label>
+                                <Label htmlFor="min_stock">{t('inventory.minStock')}</Label>
                                 <Input
                                     id="min_stock"
                                     type="number"
@@ -181,10 +179,10 @@ export default function InventoryEdit({ product, categories }: Props) {
                     </div>
 
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-foreground text-sm font-semibold">Harga & Kemasan</h2>
+                        <h2 className="text-foreground text-sm font-semibold">{t('inventory.pricingAndPackaging')}</h2>
                         <div className="grid grid-cols-3 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="purchase_price">Harga Beli Kemasan (Rp) *</Label>
+                                <Label htmlFor="purchase_price">{t('inventory.purchasePricePkg')} *</Label>
                                 <Input
                                     id="purchase_price"
                                     type="text"
@@ -196,7 +194,7 @@ export default function InventoryEdit({ product, categories }: Props) {
                                 {displayError('purchase_price') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_price')}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="purchase_qty">Isi Kemasan *</Label>
+                                <Label htmlFor="purchase_qty">{t('inventory.purchaseQty')} *</Label>
                                 <Input
                                     id="purchase_qty"
                                     type="number"
@@ -210,7 +208,7 @@ export default function InventoryEdit({ product, categories }: Props) {
                                 {displayError('purchase_qty') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_qty')}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="sell_price">Harga Jual (Rp) (Opsional)</Label>
+                                <Label htmlFor="sell_price">{t('inventory.sellPriceOptional')}</Label>
                                 <Input
                                     id="sell_price"
                                     type="text"
@@ -223,47 +221,47 @@ export default function InventoryEdit({ product, categories }: Props) {
                         </div>
                         {data.purchase_qty > 0 && data.purchase_price > 0 && (
                             <div className="text-muted-foreground bg-muted/30 rounded-xl p-3 text-sm">
-                                Estimasi Harga Modal per {data.unit}: <strong>{formatRupiah(data.purchase_price / data.purchase_qty)}</strong>
+                                {t('inventory.costPriceEstimate', { unit: data.unit, price: formatRupiah(data.purchase_price / data.purchase_qty) })}
                             </div>
                         )}
                         {data.sell_price > 0 && costPrice > 0 && (
                             <div
                                 className={`rounded-xl p-3 text-sm ${margin >= 20 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'}`}
                             >
-                                Margin keuntungan: <strong>{margin}%</strong>
-                                {margin < 20 && ' — margin rendah, pertimbangkan kembali harga jual'}
+                                {t('inventory.marginProfit', { margin })}
+                                {margin < 20 && t('inventory.lowMarginWarning')}
                             </div>
                         )}
                     </div>
 
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-foreground text-sm font-semibold">Pengaturan</h2>
+                        <h2 className="text-foreground text-sm font-semibold">{t('inventory.settings')}</h2>
 
                         <div className="space-y-2">
-                            <Label htmlFor="description">Deskripsi</Label>
+                            <Label htmlFor="description">{t('inventory.description')}</Label>
                             <Textarea
                                 id="description"
                                 rows={3}
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                placeholder="Deskripsi produk (opsional)"
+                                placeholder={t('inventory.descriptionPlaceholder')}
                             />
                         </div>
 
                         <div className="flex items-center gap-2 pt-2">
                             <Checkbox id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', !!checked)} />
                             <Label htmlFor="is_active" className="cursor-pointer">
-                                Produk Aktif
+                                {t('inventory.productActive')}
                             </Label>
                         </div>
                     </div>
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">Batal</Link>
+                            <Link href="/inventory">{t('common.cancel')}</Link>
                         </Button>
                         <Button type="submit" disabled={processing} className="rounded-xl px-6">
-                            {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                            {processing ? t('common.saving') : t('inventory.saveChanges')}
                         </Button>
                     </div>
                 </form>

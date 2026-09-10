@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { type Tenant } from './columns';
 
@@ -28,6 +29,7 @@ const editTenantSchema = z.object({
         .min(1, 'Slug wajib diisi')
         .regex(/^[a-z0-9-]+$/, 'Slug hanya boleh berisi huruf kecil, angka, dan tanda hubung'),
     business_type: z.string().min(1, 'Jenis bisnis wajib diisi'),
+    currency: z.enum(['IDR', 'USD', 'SGD']),
     phone: z.string().nullable().optional(),
     address: z.string().nullable().optional(),
     plan_id: z.string().min(1, 'Paket langganan wajib dipilih'),
@@ -35,10 +37,12 @@ const editTenantSchema = z.object({
 });
 
 export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTenantDialogProps) {
+    const { t } = useTranslation();
     const form = useForm({
         name: '',
         slug: '',
         business_type: 'general',
+        currency: 'IDR' as 'IDR' | 'USD' | 'SGD',
         phone: '' as string | null,
         address: '' as string | null,
         plan_id: '',
@@ -53,6 +57,7 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                 name: tenant.name,
                 slug: tenant.slug,
                 business_type: tenant.business_type || 'general',
+                currency: tenant.currency || 'IDR',
                 phone: tenant.phone || '',
                 address: tenant.address || '',
                 plan_id: tenant.plan?.id ? tenant.plan.id.toString() : '',
@@ -93,18 +98,18 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
             <DialogContent className="sm:max-w-[450px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Edit Tenant / Bisnis</DialogTitle>
-                        <DialogDescription>Perbarui detail bisnis tenant, paket langganan, dan status keaktifan mereka.</DialogDescription>
+                        <DialogTitle>{t('admin.tenants.editTenant')}</DialogTitle>
+                        <DialogDescription>{t('admin.tenants.editDescription')}</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="tenant-name">Nama Tenant</Label>
+                            <Label htmlFor="tenant-name">{t('admin.tenants.tenantName')}</Label>
                             <Input
                                 id="tenant-name"
                                 value={form.data.name}
                                 onChange={(e) => form.setData('name', e.target.value)}
-                                placeholder="Contoh: Toko Kopi Sejahtera"
+                                placeholder={t('admin.tenants.tenantNamePlaceholder')}
                                 required
                             />
                             {(validationErrors.name || form.errors.name) && (
@@ -113,13 +118,13 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="tenant-slug">Domain Slug</Label>
+                            <Label htmlFor="tenant-slug">{t('admin.tenants.domainSlug')}</Label>
                             <div className="flex items-center gap-1.5">
                                 <Input
                                     id="tenant-slug"
                                     value={form.data.slug}
                                     onChange={(e) => form.setData('slug', e.target.value)}
-                                    placeholder="Contoh: kopi-sejahtera"
+                                    placeholder={t('admin.tenants.domainSlugPlaceholder')}
                                     required
                                 />
                                 <span className="text-muted-foreground text-xs font-medium">.vvarsa.com</span>
@@ -131,16 +136,16 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="tenant-business-type">Jenis Bisnis</Label>
+                                <Label htmlFor="tenant-business-type">{t('admin.tenants.businessType')}</Label>
                                 <Select value={form.data.business_type} onValueChange={(val) => form.setData('business_type', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
-                                        <SelectValue placeholder="Pilih Jenis" />
+                                        <SelectValue placeholder={t('admin.tenants.selectType')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="general">Umum (General)</SelectItem>
-                                        <SelectItem value="fnb">Kuliner (FnB)</SelectItem>
-                                        <SelectItem value="retail">Ritel (Retail)</SelectItem>
-                                        <SelectItem value="fashion">Pakaian (Fashion)</SelectItem>
+                                        <SelectItem value="general">{t('admin.tenants.general')}</SelectItem>
+                                        <SelectItem value="fnb">{t('admin.tenants.fnb')}</SelectItem>
+                                        <SelectItem value="retail">{t('admin.tenants.retail')}</SelectItem>
+                                        <SelectItem value="fashion">{t('admin.tenants.fashion')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 {(validationErrors.business_type || form.errors.business_type) && (
@@ -149,10 +154,10 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="tenant-plan">Paket Langganan</Label>
+                                <Label htmlFor="tenant-plan">{t('admin.tenants.colPlan')}</Label>
                                 <Select value={form.data.plan_id} onValueChange={(val) => form.setData('plan_id', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
-                                        <SelectValue placeholder="Pilih Paket" />
+                                        <SelectValue placeholder={t('admin.tenants.selectPlan')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {plans.map((p) => (
@@ -169,12 +174,29 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="tenant-phone">Nomor Telepon</Label>
+                            <Label htmlFor="tenant-currency">{t('admin.tenants.currency')}</Label>
+                            <Select value={form.data.currency} onValueChange={(value) => form.setData('currency', value as 'IDR' | 'USD' | 'SGD')}>
+                                <SelectTrigger id="tenant-currency" className="w-full rounded-xl">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="IDR">{t('currency.IDR')}</SelectItem>
+                                    <SelectItem value="USD">{t('currency.USD')}</SelectItem>
+                                    <SelectItem value="SGD">{t('currency.SGD')}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            {(validationErrors.currency || form.errors.currency) && (
+                                <p className="text-destructive text-xs">{validationErrors.currency || form.errors.currency}</p>
+                            )}
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="tenant-phone">{t('common.phone')}</Label>
                             <Input
                                 id="tenant-phone"
                                 value={form.data.phone || ''}
                                 onChange={(e) => form.setData('phone', e.target.value)}
-                                placeholder="Contoh: 08123456789"
+                                placeholder={t('admin.tenants.phonePlaceholder')}
                             />
                             {(validationErrors.phone || form.errors.phone) && (
                                 <p className="text-destructive text-xs">{validationErrors.phone || form.errors.phone}</p>
@@ -182,12 +204,12 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="tenant-address">Alamat Bisnis</Label>
+                            <Label htmlFor="tenant-address">{t('common.address')}</Label>
                             <Input
                                 id="tenant-address"
                                 value={form.data.address || ''}
                                 onChange={(e) => form.setData('address', e.target.value)}
-                                placeholder="Contoh: Jl. Sudirman No. 12"
+                                placeholder={t('admin.tenants.addressPlaceholder')}
                             />
                             {(validationErrors.address || form.errors.address) && (
                                 <p className="text-destructive text-xs">{validationErrors.address || form.errors.address}</p>
@@ -201,17 +223,17 @@ export function EditTenantDialog({ tenant, open, onOpenChange, plans }: EditTena
                                 onCheckedChange={(checked) => form.setData('is_active', checked === true)}
                             />
                             <Label htmlFor="tenant-is-active" className="cursor-pointer text-sm">
-                                Tenant Aktif (Dapat Mengakses Sistem)
+                                {t('admin.tenants.activeStatus')}
                             </Label>
                         </div>
                     </div>
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            Batal
+                            {t('common.cancel')}
                         </Button>
                         <Button type="submit" disabled={form.processing}>
-                            {form.processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                            {form.processing ? t('common.saving') : t('common.save')}
                         </Button>
                     </DialogFooter>
                 </form>

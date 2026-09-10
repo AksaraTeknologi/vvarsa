@@ -4,9 +4,10 @@ import { type BreadcrumbItem } from '@/types';
 import { type Event, type Product, type Transaction } from '@/types/mrp';
 import { Head, Link } from '@inertiajs/react';
 import { AlertTriangle, ArrowDownRight, ArrowUpRight, CalendarDays, Package, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'navigation.dashboard', href: '/dashboard' }];
 
 interface DashboardStats {
     total_products: number;
@@ -85,48 +86,49 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Dashboard({ stats, chart_data, recent_transactions, upcoming_events, low_stock_list }: Props) {
+    const { t } = useTranslation();
     const netPositive = stats.net_today >= 0;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title={t('dashboard.title')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">Ringkasan performa bisnis Anda hari ini</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t('dashboard.title')}</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">{t('dashboard.subtitle')}</p>
                 </div>
 
                 {/* ── Stats Cards ─────────────────────────────────────── */}
                 <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                     <StatCard
-                        title="Penjualan Hari Ini"
+                        title={t('dashboard.salesToday')}
                         value={formatRupiah(stats.sales_today, true)}
-                        subtitle={`Bulan ini: ${formatRupiah(stats.sales_month, true)}`}
+                        subtitle={`${t('dashboard.thisMonth')}: ${formatRupiah(stats.sales_month, true)}`}
                         icon={TrendingUp}
                         color="bg-emerald-500"
                         trend="up"
                     />
                     <StatCard
-                        title="Pengeluaran Hari Ini"
+                        title={t('dashboard.expenseToday')}
                         value={formatRupiah(stats.expense_today, true)}
-                        subtitle={`Bulan ini: ${formatRupiah(stats.expense_month, true)}`}
+                        subtitle={`${t('dashboard.thisMonth')}: ${formatRupiah(stats.expense_month, true)}`}
                         icon={TrendingDown}
                         color="bg-rose-500"
                         trend="down"
                     />
                     <StatCard
-                        title="Net Profit Hari Ini"
+                        title={t('dashboard.netProfitToday')}
                         value={formatRupiah(Math.abs(stats.net_today), true)}
-                        subtitle={netPositive ? 'Untung' : 'Rugi'}
+                        subtitle={netPositive ? t('dashboard.profit') : t('dashboard.loss')}
                         icon={Wallet}
                         color={netPositive ? 'bg-blue-500' : 'bg-orange-500'}
                         trend={netPositive ? 'up' : 'down'}
                     />
                     <StatCard
-                        title="Stok Kritis"
+                        title={t('dashboard.criticalStock')}
                         value={String(stats.low_stock_products)}
-                        subtitle={`dari ${stats.total_products} produk`}
+                        subtitle={t('dashboard.fromProducts', { total: stats.total_products })}
                         icon={stats.low_stock_products > 0 ? AlertTriangle : Package}
                         color={stats.low_stock_products > 0 ? 'bg-amber-500' : 'bg-slate-500'}
                     />
@@ -138,8 +140,8 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm lg:col-span-2">
                         <div className="mb-5 flex items-center justify-between">
                             <div>
-                                <h2 className="font-semibold">Penjualan 7 Hari Terakhir</h2>
-                                <p className="text-muted-foreground text-xs">Tren pendapatan mingguan</p>
+                                <h2 className="font-semibold">{t('dashboard.salesTrend')}</h2>
+                                <p className="text-muted-foreground text-xs">{t('dashboard.salesTrendSubtitle')}</p>
                             </div>
                         </div>
                         <ResponsiveContainer width="100%" height={220}>
@@ -162,15 +164,15 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     {/* Low Stock */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                         <div className="mb-4 flex items-center justify-between">
-                            <h2 className="font-semibold">Stok Kritis</h2>
+                            <h2 className="font-semibold">{t('dashboard.criticalStock')}</h2>
                             <Link href="/inventory?low_stock=1" className="text-primary text-xs hover:underline">
-                                Lihat semua
+                                {t('common.viewAll')}
                             </Link>
                         </div>
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
                                 <Package size={32} className="mb-2 text-emerald-500" />
-                                <p className="text-muted-foreground text-sm">Semua stok aman!</p>
+                                <p className="text-muted-foreground text-sm">{t('dashboard.allStockSafe')}</p>
                             </div>
                         ) : (
                             <div className="space-y-3">
@@ -199,21 +201,21 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     {/* Recent Transactions */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                         <div className="mb-4 flex items-center justify-between">
-                            <h2 className="font-semibold">Transaksi Terbaru</h2>
+                            <h2 className="font-semibold">{t('dashboard.recentTransactions')}</h2>
                             <Link href="/finance/transactions" className="text-primary text-xs hover:underline">
-                                Lihat semua
+                                {t('common.viewAll')}
                             </Link>
                         </div>
                         {recent_transactions.length === 0 ? (
-                            <p className="text-muted-foreground py-6 text-center text-sm">Belum ada transaksi.</p>
+                            <p className="text-muted-foreground py-6 text-center text-sm">{t('dashboard.noRecentTransactions')}</p>
                         ) : (
                             <div className="space-y-3">
-                                {recent_transactions.map((t) => (
-                                    <div key={t.id} className="flex items-center gap-3">
+                                {recent_transactions.map((tItem) => (
+                                    <div key={tItem.id} className="flex items-center gap-3">
                                         <div
-                                            className={`rounded-xl p-2 ${t.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
+                                            className={`rounded-xl p-2 ${tItem.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
                                         >
-                                            {t.type === 'income' ? (
+                                            {tItem.type === 'income' ? (
                                                 <ArrowUpRight size={14} className="text-emerald-600 dark:text-emerald-400" />
                                             ) : (
                                                 <ArrowDownRight size={14} className="text-rose-600 dark:text-rose-400" />
@@ -221,15 +223,15 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm font-medium">
-                                                {t.description || (t.type === 'income' ? 'Penjualan' : 'Pengeluaran')}
+                                                {tItem.description || (tItem.type === 'income' ? t('dashboard.income') : t('dashboard.expense'))}
                                             </p>
-                                            <p className="text-muted-foreground text-xs">{t.date}</p>
+                                            <p className="text-muted-foreground text-xs">{tItem.date}</p>
                                         </div>
                                         <span
-                                            className={`shrink-0 text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
+                                            className={`shrink-0 text-sm font-semibold ${tItem.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
                                         >
-                                            {t.type === 'income' ? '+' : '-'}
-                                            {formatRupiah(t.amount, true)}
+                                            {tItem.type === 'income' ? '+' : '-'}
+                                            {formatRupiah(tItem.amount, true)}
                                         </span>
                                     </div>
                                 ))}
@@ -240,13 +242,13 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     {/* Upcoming Events */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                         <div className="mb-4 flex items-center justify-between">
-                            <h2 className="font-semibold">Event Mendatang</h2>
+                            <h2 className="font-semibold">{t('dashboard.upcomingEvents')}</h2>
                             <Link href="/events" className="text-primary text-xs hover:underline">
-                                Lihat semua
+                                {t('common.viewAll')}
                             </Link>
                         </div>
                         {upcoming_events.length === 0 ? (
-                            <p className="text-muted-foreground py-6 text-center text-sm">Tidak ada event mendatang.</p>
+                            <p className="text-muted-foreground py-6 text-center text-sm">{t('dashboard.noUpcomingEvents')}</p>
                         ) : (
                             <div className="space-y-3">
                                 {upcoming_events.map((e) => (
@@ -268,7 +270,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                                 <span>{e.city}</span>
                                                 {e.registration_fee === 0 && (
                                                     <span className="ml-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
-                                                        GRATIS
+                                                        {t('dashboard.free')}
                                                     </span>
                                                 )}
                                             </div>
@@ -282,29 +284,29 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
 
                 {/* ── Quick Actions ─────────────────────────────────────── */}
                 <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                    <h2 className="mb-4 font-semibold">Aksi Cepat</h2>
+                    <h2 className="mb-4 font-semibold">{t('dashboard.quickActions')}</h2>
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                         {[
                             {
-                                label: 'Tambah Produk',
+                                label: t('dashboard.addProduct'),
                                 href: '/inventory/create',
                                 color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-400',
                                 icon: Package,
                             },
                             {
-                                label: 'Stok Masuk',
+                                label: t('dashboard.recordStockIn'),
                                 href: '/inventory/stock-in',
                                 color: 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400',
                                 icon: TrendingUp,
                             },
                             {
-                                label: 'Catat Transaksi',
+                                label: t('dashboard.recordTransaction'),
                                 href: '/finance/transactions',
                                 color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-400',
                                 icon: Wallet,
                             },
                             {
-                                label: 'Lihat Event',
+                                label: t('dashboard.viewEvents'),
                                 href: '/events',
                                 color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 dark:text-amber-400',
                                 icon: CalendarDays,

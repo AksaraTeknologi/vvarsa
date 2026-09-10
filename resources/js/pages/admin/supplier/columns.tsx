@@ -9,7 +9,6 @@ import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { CheckCircle2, Edit, Trash } from 'lucide-react';
 
-// Kita pindahkan interface kesini agar bisa di-import oleh index.tsx
 export interface Supplier {
     id: string;
     name: string;
@@ -26,9 +25,8 @@ export interface Supplier {
     description: string | null;
 }
 
-function SupplierActions({ supplier }: { supplier: Supplier }) {
+function SupplierActions({ supplier, t }: { supplier: Supplier; t: (key: string, options?: any) => string }) {
     const handleDelete = () => {
-        // Sesuaikan route delete dengan yang ada di web.php (jika sudah ada)
         handleAsyncAction(() => routerPromise('delete', `/admin/supplier/${supplier.id}`, {}, { preserveScroll: true }), {
             loading: `Menghapus supplier "${supplier.name}"...`,
             success: `Supplier "${supplier.name}" berhasil dihapus!`,
@@ -47,7 +45,7 @@ function SupplierActions({ supplier }: { supplier: Supplier }) {
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Edit Supplier</p>
+                    <p>{t('admin.supplier.editTitle')}</p>
                 </TooltipContent>
             </Tooltip>
 
@@ -58,24 +56,24 @@ function SupplierActions({ supplier }: { supplier: Supplier }) {
                             trigger={
                                 <Button variant="link" size="icon" className="size-8 text-red-500 hover:cursor-pointer">
                                     <Trash className="size-4" />
-                                    <span className="sr-only">Hapus Supplier</span>
+                                    <span className="sr-only">{t('common.delete')}</span>
                                 </Button>
                             }
-                            title="Apakah Anda yakin ingin menghapus supplier ini?"
+                            title={t('common.confirmDelete')}
                             itemName={supplier.name}
                             onConfirm={handleDelete}
                         />
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Hapus Supplier</p>
+                    <p>{t('common.delete')}</p>
                 </TooltipContent>
             </Tooltip>
         </div>
     );
 }
 
-export const columns: ColumnDef<Supplier>[] = [
+export const getColumns = (t: (key: string, options?: any) => string): ColumnDef<Supplier>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -86,7 +84,7 @@ export const columns: ColumnDef<Supplier>[] = [
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nama Supplier" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.supplier.supplierName')} />,
         cell: ({ row }) => {
             const supplier = row.original;
             return (
@@ -98,7 +96,7 @@ export const columns: ColumnDef<Supplier>[] = [
                                 <CheckCircle2 className="size-4 text-blue-500" />
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Supplier Terverifikasi</p>
+                                <p>{t('admin.supplier.verifiedSupplier')}</p>
                             </TooltipContent>
                         </Tooltip>
                     )}
@@ -108,7 +106,7 @@ export const columns: ColumnDef<Supplier>[] = [
     },
     {
         accessorKey: 'contact_name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Kontak" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.tenants.contact')} />,
         cell: ({ row }) => {
             const supplier = row.original;
             return (
@@ -121,11 +119,11 @@ export const columns: ColumnDef<Supplier>[] = [
     },
     {
         accessorKey: 'business_type',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Tipe Bisnis" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.supplier.businessType')} />,
         cell: ({ row }) => {
             return (
                 <span className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                    {row.original.business_type || 'Umum'}
+                    {row.original.business_type || t('admin.tenants.general')}
                 </span>
             );
         },
@@ -144,18 +142,18 @@ export const columns: ColumnDef<Supplier>[] = [
     },
     {
         accessorKey: 'is_active',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.status')} />,
         cell: ({ row }) => {
             const isActive = row.original.is_active;
             return (
                 <div className="text-center">
                     {isActive ? (
                         <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400">
-                            Aktif
+                            {t('admin.active')}
                         </span>
                     ) : (
                         <span className="rounded-full bg-rose-100 px-2 py-1 text-xs font-medium text-rose-700 dark:bg-rose-500/20 dark:text-rose-400">
-                            Nonaktif
+                            {t('admin.inactive')}
                         </span>
                     )}
                 </div>
@@ -164,7 +162,10 @@ export const columns: ColumnDef<Supplier>[] = [
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
-        cell: ({ row }) => <SupplierActions supplier={row.original} />,
+        header: () => <div className="text-center">{t('common.actions')}</div>,
+        cell: ({ row }) => <SupplierActions supplier={row.original} t={t} />,
     },
 ];
+
+export const columns = getColumns((key: string) => key);
+

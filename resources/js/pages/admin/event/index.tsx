@@ -9,10 +9,11 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Calendar, CalendarDays, Edit, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin Dashboard', href: '/admin' },
-    { title: 'Events', href: '/admin/events' },
+    { title: 'navigation.dashboard', href: '/admin' },
+    { title: 'navigation.events', href: '/admin/events' },
 ];
 
 export interface Event {
@@ -52,13 +53,6 @@ interface Props {
     };
 }
 
-const statusLabels: Record<string, string> = {
-    upcoming: 'Mendatang',
-    ongoing: 'Berjalan',
-    completed: 'Selesai',
-    cancelled: 'Dibatalkan',
-};
-
 const statusColors: Record<string, string> = {
     upcoming: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800',
     ongoing: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800',
@@ -67,8 +61,16 @@ const statusColors: Record<string, string> = {
 };
 
 export default function EventIndex({ events, filters }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [status, setStatus] = useState(filters.status || 'all');
+
+    const statusLabels: Record<string, string> = {
+        upcoming: t('admin.event.upcoming'),
+        ongoing: t('admin.event.ongoing'),
+        completed: t('admin.event.completed'),
+        cancelled: t('admin.event.cancelled'),
+    };
 
     const handleFilter = () => {
         router.get(
@@ -96,7 +98,7 @@ export default function EventIndex({ events, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Manajemen Event" />
+            <Head title={t('admin.event.title')} />
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
                 <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
@@ -106,15 +108,15 @@ export default function EventIndex({ events, filters }: Props) {
                             <div className="mb-1.5 flex items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1a56ff]/20 bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest text-[#1a56ff] uppercase">
                                     <CalendarDays size={11} />
-                                    Platform Admin
+                                    {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Manajemen Event</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">Kelola semua acara, webinar, dan pameran bisnis untuk member platform.</p>
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.event.title')}</h1>
+                            <p className="mt-0.5 text-sm text-[#5F6073]">{t('admin.event.subtitle')}</p>
                         </div>
                         <Link href="/admin/events/create">
                             <Button size="sm" className="admin-primary-button gap-1.5 text-white">
-                                <Plus size={14} /> Buat Event Baru
+                                <Plus size={14} /> {t('admin.event.add')}
                             </Button>
                         </Link>
                     </div>
@@ -128,7 +130,7 @@ export default function EventIndex({ events, filters }: Props) {
                             <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                             <Input
                                 type="text"
-                                placeholder="Cari judul event atau penyelenggara..."
+                                placeholder={t('common.search')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleFilter()}
@@ -139,20 +141,20 @@ export default function EventIndex({ events, filters }: Props) {
                         <div className="w-full sm:w-48">
                             <Select value={status} onValueChange={(val) => setStatus(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Semua Status" />
+                                    <SelectValue placeholder={t('common.status')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Status</SelectItem>
-                                    <SelectItem value="upcoming">Mendatang</SelectItem>
-                                    <SelectItem value="ongoing">Berjalan</SelectItem>
-                                    <SelectItem value="completed">Selesai</SelectItem>
-                                    <SelectItem value="cancelled">Dibatalkan</SelectItem>
+                                    <SelectItem value="all">{t('common.all')}</SelectItem>
+                                    <SelectItem value="upcoming">{t('admin.event.upcoming')}</SelectItem>
+                                    <SelectItem value="ongoing">{t('admin.event.ongoing')}</SelectItem>
+                                    <SelectItem value="completed">{t('admin.event.completed')}</SelectItem>
+                                    <SelectItem value="cancelled">{t('admin.event.cancelled')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
-                            Filter
+                            {t('common.filter')}
                         </Button>
                     </div>
 
@@ -162,12 +164,12 @@ export default function EventIndex({ events, filters }: Props) {
                             <thead>
                                 <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
                                     <th className="px-6 py-4">Event</th>
-                                    <th className="px-6 py-4">Tanggal</th>
-                                    <th className="px-6 py-4">Lokasi</th>
-                                    <th className="px-6 py-4 text-center">Peserta</th>
-                                    <th className="px-6 py-4">Biaya</th>
-                                    <th className="px-6 py-4 text-center">Status</th>
-                                    <th className="px-6 py-4 text-right">Aksi</th>
+                                    <th className="px-6 py-4">{t('common.date')}</th>
+                                    <th className="px-6 py-4">{t('common.address')}</th>
+                                    <th className="px-6 py-4 text-center">{t('admin.plans.users')}</th>
+                                    <th className="px-6 py-4">{t('common.amount')}</th>
+                                    <th className="px-6 py-4 text-center">{t('common.status')}</th>
+                                    <th className="px-6 py-4 text-right">{t('common.actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-border divide-y">
@@ -196,11 +198,11 @@ export default function EventIndex({ events, filters }: Props) {
                                                                     variant="secondary"
                                                                     className="border-amber-200 bg-amber-100 px-1.5 py-0 text-[10px] text-amber-800 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
                                                                 >
-                                                                    Pilihan
+                                                                    {t('admin.plans.mostPopular')}
                                                                 </Badge>
                                                             )}
                                                         </div>
-                                                        <span className="text-muted-foreground text-xs">Penyelenggara: {event.organizer}</span>
+                                                        <span className="text-muted-foreground text-xs">{t('admin.event.organizerLabel')}: {event.organizer}</span>
                                                         {event.business_types && event.business_types.length > 0 && (
                                                             <div className="mt-1 flex gap-1">
                                                                 {event.business_types.map((type) => (
@@ -217,7 +219,7 @@ export default function EventIndex({ events, filters }: Props) {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-foreground flex flex-col text-xs">
                                                     <span className="font-medium">{formatDateTime(event.start_date)}</span>
-                                                    <span className="text-muted-foreground">s.d. {formatDateTime(event.end_date)}</span>
+                                                    <span className="text-muted-foreground">{t('admin.event.until')} {formatDateTime(event.end_date)}</span>
                                                 </div>
                                             </td>
                                             {/* Location */}
@@ -232,14 +234,14 @@ export default function EventIndex({ events, filters }: Props) {
                                                 <div className="flex flex-col items-center">
                                                     <span className="text-foreground font-semibold">{event.registered_count}</span>
                                                     <span className="text-muted-foreground text-xs">
-                                                        dari {event.max_participants ? event.max_participants : '∞'}
+                                                        {t('admin.event.from')} {event.max_participants ? event.max_participants : '∞'}
                                                     </span>
                                                 </div>
                                             </td>
                                             {/* Fee */}
                                             <td className="text-foreground px-6 py-4 font-medium whitespace-nowrap">
                                                 {Number(event.registration_fee) === 0 ? (
-                                                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">Gratis</span>
+                                                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">{t('admin.plans.free')}</span>
                                                 ) : (
                                                     formatRupiah(Number(event.registration_fee))
                                                 )}
@@ -275,7 +277,7 @@ export default function EventIndex({ events, filters }: Props) {
                                 ) : (
                                     <tr>
                                         <td colSpan={7} className="text-muted-foreground h-32 text-center text-sm">
-                                            Tidak ada event ditemukan.
+                                            {t('common.noData')}
                                         </td>
                                     </tr>
                                 )}
@@ -287,8 +289,8 @@ export default function EventIndex({ events, filters }: Props) {
                     {events.last_page > 1 && (
                         <div className="border-border bg-card flex items-center justify-between rounded-xl border border-t px-4 py-3 shadow-sm">
                             <p className="text-muted-foreground text-sm">
-                                Menampilkan {(events.current_page - 1) * events.per_page + 1}–
-                                {Math.min(events.current_page * events.per_page, events.total)} dari {events.total} event
+                                {t('community.showing')} {(events.current_page - 1) * events.per_page + 1}–
+                                {Math.min(events.current_page * events.per_page, events.total)} {t('admin.event.from')} {events.total} event
                             </p>
                             <div className="flex gap-1">
                                 {events.links.map((link, i) => (

@@ -5,6 +5,7 @@ import { type BreadcrumbItem } from '@/types';
 import { type Event } from '@/types/mrp';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, CalendarDays, CheckCircle, Clock, MapPin, Users, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getCalculatedStatus } from './index';
 
 interface Registration {
@@ -21,42 +22,45 @@ interface Props {
     recent_registrations: Registration[];
 }
 
-const breadcrumbs = (event: Event): BreadcrumbItem[] => [
-    { title: 'Event', href: '/events' },
-    { title: event.title, href: `/events/${event.id}` },
-];
-
 export default function EventShow({ event, is_registered, recent_registrations }: Props) {
+    const { t, i18n } = useTranslation();
     const calculatedStatus = getCalculatedStatus(event);
     const isFull = event.max_participants !== null && event.registered_count >= event.max_participants;
     const canRegister = event.allow_platform_registration && calculatedStatus === 'upcoming' && !isFull;
 
+    const currentLocale = i18n.language === 'id' ? 'id-ID' : 'en-US';
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('events.title'), href: '/events' },
+        { title: event.title, href: `/events/${event.id}` },
+    ];
+
     const handleRegister = () => {
         handleAsyncAction(() => routerPromise('post', `/events/${event.id}/register`, {}, { preserveScroll: true }), {
-            loading: 'Mendaftarkan ke event...',
-            success: 'Berhasil terdaftar ke event!',
-            error: 'Gagal Mendaftar',
+            loading: t('events.toasts.registering'),
+            success: t('events.toasts.registeredSuccess'),
+            error: t('events.toasts.registerFailed'),
         });
     };
 
     const handleCancel = () => {
-        if (confirm('Batalkan pendaftaran event ini?')) {
+        if (confirm(t('events.confirmCancelRegistration'))) {
             handleAsyncAction(() => routerPromise('delete', `/events/${event.id}/register`, {}, { preserveScroll: true }), {
-                loading: 'Membatalkan pendaftaran...',
-                success: 'Pendaftaran berhasil dibatalkan!',
-                error: 'Gagal Membatalkan',
+                loading: t('events.toasts.cancelling'),
+                success: t('events.toasts.cancelSuccess'),
+                error: t('events.toasts.cancelFailed'),
             });
         }
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs(event)}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={event.title} />
             <div className="p-4 md:p-6">
                 <div className="mb-6">
                     <Link href="/events" className="hover:bg-muted inline-flex items-center gap-2 rounded-xl p-2 text-sm transition-colors">
                         <ArrowLeft size={16} />
-                        Kembali ke Daftar Event
+                        {t('events.backToList')}
                     </Link>
                 </div>
 
@@ -88,13 +92,13 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         <div className="flex items-start gap-2">
                                             <CalendarDays size={16} className="text-primary mt-0.5 shrink-0" />
                                             <div>
-                                                <p className="text-muted-foreground text-xs">Tanggal</p>
+                                                <p className="text-muted-foreground text-xs">{t('events.dateLabel')}</p>
                                                 <p className="text-sm font-medium">
                                                     {formatDate(event.start_date, { day: 'numeric', month: 'short', year: 'numeric' })}
                                                 </p>
                                                 {event.end_date !== event.start_date && (
                                                     <p className="text-muted-foreground text-xs">
-                                                        s/d {formatDate(event.end_date, { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                        {t('events.until')} {formatDate(event.end_date, { day: 'numeric', month: 'short', year: 'numeric' })}
                                                     </p>
                                                 )}
                                             </div>
@@ -102,16 +106,16 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         <div className="flex items-start gap-2">
                                             <Clock size={16} className="text-primary mt-0.5 shrink-0" />
                                             <div>
-                                                <p className="text-muted-foreground text-xs">Waktu</p>
+                                                <p className="text-muted-foreground text-xs">{t('events.timeLabel')}</p>
                                                 <p className="text-sm font-medium">
-                                                    {new Date(event.start_date).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                                                    {new Date(event.start_date).toLocaleTimeString(currentLocale, { hour: '2-digit', minute: '2-digit' })}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="flex items-start gap-2">
                                             <MapPin size={16} className="text-primary mt-0.5 shrink-0" />
                                             <div>
-                                                <p className="text-muted-foreground text-xs">Lokasi</p>
+                                                <p className="text-muted-foreground text-xs">{t('events.locationLabel')}</p>
                                                 <p className="text-sm font-medium">{event.location}</p>
                                                 <p className="text-muted-foreground text-xs">{event.city}</p>
                                             </div>
@@ -120,7 +124,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
 
                                     {event.description && (
                                         <div>
-                                            <h2 className="mb-2 font-semibold">Tentang Event</h2>
+                                            <h2 className="mb-2 font-semibold">{t('events.aboutEvent')}</h2>
                                             <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">{event.description}</p>
                                         </div>
                                     )}
@@ -130,7 +134,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                             {/* Recent Registrations */}
                             {recent_registrations.length > 0 && (
                                 <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                                    <h2 className="mb-4 font-semibold">Peserta Terbaru</h2>
+                                    <h2 className="mb-4 font-semibold">{t('events.recentParticipants')}</h2>
                                     <div className="space-y-3">
                                         {recent_registrations.map((reg) => (
                                             <div key={reg.id} className="flex items-center gap-3">
@@ -157,20 +161,20 @@ export default function EventShow({ event, is_registered, recent_registrations }
                             <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                                 <div className="mb-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-muted-foreground text-sm">Biaya Pendaftaran</span>
+                                        <span className="text-muted-foreground text-sm">{t('events.registrationFee')}</span>
                                     </div>
                                     <p
                                         className={`text-2xl font-bold ${event.registration_fee === 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}
                                     >
-                                        {event.registration_fee === 0 ? 'GRATIS' : formatRupiah(event.registration_fee)}
+                                        {event.registration_fee === 0 ? t('events.freeUpper') : formatRupiah(event.registration_fee)}
                                     </p>
                                 </div>
 
                                 <div className="mb-4 flex items-center gap-2 text-sm">
                                     <Users size={14} className="text-muted-foreground" />
                                     <span>
-                                        {event.registered_count} terdaftar
-                                        {event.max_participants && ` dari ${event.max_participants} slot`}
+                                        {t('events.registeredCount', { count: event.registered_count })}
+                                        {event.max_participants && t('events.fromMaxSlots', { max: event.max_participants })}
                                     </span>
                                 </div>
 
@@ -183,7 +187,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                                 style={{ width: `${Math.min((event.registered_count / event.max_participants) * 100, 100)}%` }}
                                             />
                                         </div>
-                                        {isFull && <p className="mt-1 text-xs text-rose-600">Pendaftaran sudah penuh</p>}
+                                        {isFull && <p className="mt-1 text-xs text-rose-600">{t('events.registrationFullMsg')}</p>}
                                     </div>
                                 )}
 
@@ -191,14 +195,14 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
                                             <CheckCircle size={16} />
-                                            <span className="font-medium">Anda sudah terdaftar!</span>
+                                            <span className="font-medium">{t('events.alreadyRegistered')}</span>
                                         </div>
                                         <button
                                             onClick={handleCancel}
                                             className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 py-2.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:hover:bg-rose-900/20"
                                         >
                                             <XCircle size={14} />
-                                            Batalkan Pendaftaran
+                                            {t('events.cancelRegistration')}
                                         </button>
                                     </div>
                                 ) : canRegister ? (
@@ -206,14 +210,14 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         onClick={handleRegister}
                                         className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-xl py-3 text-sm font-semibold transition-colors"
                                     >
-                                        Daftar Sekarang
+                                        {t('events.registerNow')}
                                     </button>
                                 ) : isFull ? (
                                     <button
                                         disabled
                                         className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700"
                                     >
-                                        Pendaftaran Penuh
+                                        {t('events.registrationFull')}
                                     </button>
                                 ) : event.registration_url ? (
                                     <a
@@ -222,14 +226,14 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         rel="noopener noreferrer"
                                         className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors"
                                     >
-                                        Daftar di Website Penyelenggara ↗
+                                        {t('events.registerExternal')}
                                     </a>
                                 ) : (
                                     <button
                                         disabled
                                         className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700"
                                     >
-                                        Pendaftaran Ditutup
+                                        {t('events.registrationClosed')}
                                     </button>
                                 )}
                             </div>

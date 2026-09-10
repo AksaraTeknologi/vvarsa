@@ -16,6 +16,7 @@ class Tenant extends Model
         'name',
         'slug',
         'business_type',
+        'currency',
         'phone',
         'address',
         'logo',
@@ -25,6 +26,7 @@ class Tenant extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'currency' => 'string',
     ];
 
     // ─── Relationships ───────────────────────────────────────────────────────

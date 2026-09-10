@@ -2,6 +2,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import {
     BarChart3,
@@ -131,11 +132,11 @@ function SidebarLogo({ href, theme }: { href: string; theme: RoleTheme }) {
         <SidebarMenu>
             <SidebarMenuItem>
                 <SidebarMenuButton size="lg" asChild className="hover:!bg-transparent active:!bg-transparent">
-                    <Link href={href} prefetch>
-                        <div className={`flex aspect-square size-8 items-center justify-center rounded-xl shadow-sm ${theme.bg}`}>
-                            <AppLogoIcon className="size-4 fill-current text-white" />
+                    <Link href={href} prefetch className="flex items-center gap-2.5">
+                        <div className={`flex aspect-square size-9 items-center justify-center rounded-xl p-1.5 shadow-xs shrink-0 ${theme.bg}`}>
+                            <AppLogoIcon className="size-full object-contain" />
                         </div>
-                        <div className="ml-1 grid flex-1 text-left text-sm">
+                        <div className="ml-0.5 grid flex-1 text-left text-sm">
                             <span className="mb-0.5 truncate leading-none font-bold text-[#2c2c2e]">VVARSA</span>
                             <span className={`text-[10px] font-semibold tracking-widest uppercase ${theme.text}`}>
                                 {theme.label}
@@ -154,6 +155,7 @@ let globalSidebarScrollPos = 0;
 
 export function AppSidebar() {
     const page = usePage<SharedData>();
+    const { t } = useTranslation();
     const { auth } = page.props;
     const user = auth.user;
     const currentUrl = page.url.split('?')[0];
@@ -204,13 +206,13 @@ export function AppSidebar() {
     // ── Admin Navigation ──
     if (isAdmin) {
         const adminItems: NavItem[] = [
-            { title: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-            { title: 'Daftar Tenant', href: '/admin/tenants', icon: Building2 },
-            { title: 'Daftar Pengguna', href: '/admin/users', icon: Users },
-            { title: 'Daftar Supplier', href: '/admin/supplier', icon: Store },
-            { title: 'Daftar Event', href: '/admin/events', icon: CalendarDays },
-            { title: 'Daftar Komunitas', href: '/admin/community', icon: Users },
-            { title: 'Paket Langganan', href: '/admin/plans', icon: CreditCard },
+            { title: t('navigation.dashboard'), href: '/admin', icon: LayoutDashboard },
+            { title: t('navigation.tenants'), href: '/admin/tenants', icon: Building2 },
+            { title: t('navigation.users'), href: '/admin/users', icon: Users },
+            { title: t('navigation.suppliers'), href: '/admin/supplier', icon: Store },
+            { title: t('navigation.events'), href: '/admin/events', icon: CalendarDays },
+            { title: t('navigation.community'), href: '/admin/community', icon: Users },
+            { title: t('navigation.plans'), href: '/admin/plans', icon: CreditCard },
         ];
 
         return (
@@ -237,45 +239,45 @@ export function AppSidebar() {
     }
 
     // ── Tenant Navigation (Owner, Supervisor, Staff) ──
-    const mainItems: NavItem[] = [{ title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard }];
+    const mainItems: NavItem[] = [{ title: t('navigation.dashboard'), href: '/dashboard', icon: LayoutDashboard }];
 
     const inventoryItems: NavItem[] = [
-        { title: 'Produk (Bahan)', href: '/inventory', icon: Package },
-        { title: 'Stok Masuk', href: '/inventory/stock-in', icon: ShoppingCart },
-        { title: 'Stok Keluar', href: '/inventory/stock-out', icon: Warehouse },
-        { title: 'Stok Opname', href: '/inventory/opname', icon: FileText },
+        { title: t('navigation.products'), href: '/inventory', icon: Package },
+        { title: t('navigation.stockIn'), href: '/inventory/stock-in', icon: ShoppingCart },
+        { title: t('navigation.stockOut'), href: '/inventory/stock-out', icon: Warehouse },
+        { title: t('navigation.stockOpname'), href: '/inventory/opname', icon: FileText },
     ];
 
     const salesItems: NavItem[] = [
-        { title: 'Varian Produk', href: '/variants', icon: FlaskConical },
-        { title: 'Pesanan', href: '/orders', icon: ClipboardList },
-        { title: 'POS Kasir', href: '/pos', icon: ShoppingBag },
+        { title: t('navigation.variants'), href: '/variants', icon: FlaskConical },
+        { title: t('navigation.orders'), href: '/orders', icon: ClipboardList },
+        { title: t('navigation.pos'), href: '/pos', icon: ShoppingBag },
     ];
 
     const financeItems: NavItem[] = isOwner
         ? [
-              { title: 'Ringkasan', href: '/finance', icon: BarChart3 },
-              { title: 'Transaksi', href: '/finance/transactions', icon: Receipt },
-              { title: 'Laporan Penjualan', href: '/finance/sales-report', icon: TrendingUp },
-              { title: 'Laporan Pengeluaran', href: '/finance/expense-report', icon: CreditCard },
+              { title: t('navigation.summary'), href: '/finance', icon: BarChart3 },
+              { title: t('navigation.transactions'), href: '/finance/transactions', icon: Receipt },
+              { title: t('navigation.salesReport'), href: '/finance/sales-report', icon: TrendingUp },
+              { title: t('navigation.expenseReport'), href: '/finance/expense-report', icon: CreditCard },
           ]
         : [];
 
     const businessItems: NavItem[] = [
-        { title: 'Event', href: '/events', icon: CalendarDays },
-        { title: 'Komunitas', href: '/community', icon: Users },
-        { title: 'Supplier', href: '/suppliers', icon: Store },
-        { title: 'Pajak', href: isOwner ? '/tax' : '/tax/consultation', icon: Building2 },
+        { title: t('navigation.events'), href: '/events', icon: CalendarDays },
+        { title: t('navigation.community'), href: '/community', icon: Users },
+        { title: t('navigation.suppliers'), href: '/suppliers', icon: Store },
+        { title: t('navigation.tax'), href: isOwner ? '/tax' : '/tax/consultation', icon: Building2 },
     ];
 
     if (isOwner || isSupervisor) {
-        businessItems.push({ title: 'Anggota Tim', href: '/members', icon: Users });
+        businessItems.push({ title: t('navigation.teamMembers'), href: '/members', icon: Users });
     }
 
     if (isOwner) {
-        businessItems.push({ title: 'Langganan', href: '/subscription', icon: CreditCard });
-        salesItems.unshift({ title: 'Resep (BOM)', href: '/recipes', icon: BookOpen });
-        salesItems.unshift({ title: 'Paket Produk', href: '/packages', icon: Package });
+        businessItems.push({ title: t('navigation.subscription'), href: '/subscription', icon: CreditCard });
+        salesItems.unshift({ title: t('navigation.recipes'), href: '/recipes', icon: BookOpen });
+        salesItems.unshift({ title: t('navigation.packages'), href: '/packages', icon: Package });
     }
 
     return (
@@ -291,10 +293,10 @@ export function AppSidebar() {
                     className="h-full overflow-y-auto py-3 [overflow-anchor:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 >
                     <NavSection items={mainItems} theme={theme} currentUrl={currentUrl} />
-                    <NavSection title="Inventori" items={inventoryItems} theme={theme} currentUrl={currentUrl} />
-                    <NavSection title="Penjualan" items={salesItems} theme={theme} currentUrl={currentUrl} />
-                    {isOwner && <NavSection title="Keuangan" items={financeItems} theme={theme} currentUrl={currentUrl} />}
-                    <NavSection title="Bisnis" items={businessItems} theme={theme} currentUrl={currentUrl} />
+                    <NavSection title={t('navigation.inventory')} items={inventoryItems} theme={theme} currentUrl={currentUrl} />
+                    <NavSection title={t('navigation.sales')} items={salesItems} theme={theme} currentUrl={currentUrl} />
+                    {isOwner && <NavSection title={t('navigation.finance')} items={financeItems} theme={theme} currentUrl={currentUrl} />}
+                    <NavSection title={t('navigation.business')} items={businessItems} theme={theme} currentUrl={currentUrl} />
                 </div>
             </SidebarContent>
 

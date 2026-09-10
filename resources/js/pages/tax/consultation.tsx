@@ -2,44 +2,66 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle, Clock, MessageSquare, Phone, Shield } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Pajak', href: '/tax' },
-    { title: 'Konsultasi Pajak', href: '/tax/consultation' },
-];
-
-const FAQ = [
-    {
-        q: 'Siapa yang wajib membayar pajak UMKM?',
-        a: 'Semua UMKM yang terdaftar sebagai Wajib Pajak dengan omzet di bawah Rp 4,8 miliar per tahun. Jika belum punya NPWP, daftarkan dulu ke KPP terdekat atau melalui pajak.go.id.',
-    },
-    {
-        q: 'Berapa tarif PPh Final UMKM?',
-        a: 'Tarif PPh Final untuk UMKM adalah 0,5% dari peredaran bruto (omzet) setiap bulan. Dibayarkan paling lambat tanggal 15 bulan berikutnya.',
-    },
-    {
-        q: 'Apakah saya perlu lapor SPT Tahunan?',
-        a: 'Ya, meskipun sudah bayar PPh Final setiap bulan, Anda tetap wajib lapor SPT Tahunan PPh Orang Pribadi setiap tahun (paling lambat 31 Maret).',
-    },
-    {
-        q: 'Bagaimana cara daftar NPWP untuk bisnis?',
-        a: 'Daftar NPWP bisa dilakukan secara online melalui pajak.go.id, atau datang langsung ke Kantor Pelayanan Pajak (KPP) terdekat. Siapkan KTP, Kartu Keluarga, dan dokumen bisnis.',
-    },
-    {
-        q: 'Apakah ada insentif pajak untuk UMKM?',
-        a: 'Ya! Pemerintah memberikan fasilitas tarif PPh Final 0,5% selama 7 tahun untuk UMKM orang pribadi. Manfaatkan insentif ini selagi masih berlaku.',
-    },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function TaxConsultation() {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.tax'), href: '/tax' },
+        { title: t('tax.consultation'), href: '/tax/consultation' },
+    ];
+
+    const quickContacts = [
+        {
+            icon: Phone,
+            title: t('tax.contactKringTitle'),
+            desc: t('tax.contactKringDesc'),
+            value: '1500200',
+            href: 'tel:1500200',
+            color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400',
+        },
+        {
+            icon: MessageSquare,
+            title: t('tax.contactLiveChatTitle'),
+            desc: t('tax.contactLiveChatDesc'),
+            value: t('tax.visitWebsite'),
+            href: 'https://www.pajak.go.id',
+            color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+        },
+        {
+            icon: Clock,
+            title: t('tax.contactServiceHoursTitle'),
+            desc: t('tax.contactServiceHoursDesc'),
+            value: t('tax.contactServiceHoursValue'),
+            href: null,
+            color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
+        },
+    ];
+
+    const taxObligations = [
+        { title: 'PPh Final 0,5%', desc: t('tax.obligationPphDesc'), period: t('tax.periodMonthly') },
+        { title: 'SPT Tahunan PPh OP', desc: t('tax.obligationSptDesc'), period: t('tax.periodAnnually') },
+        { title: 'PPN (jika PKP)', desc: t('tax.obligationPpnDesc'), period: t('tax.periodMonthly') },
+        { title: 'PPh 21 Karyawan', desc: t('tax.obligationPph21Desc'), period: t('tax.periodMonthly') },
+    ];
+
+    const faqItems = [
+        { q: t('tax.faq.q1'), a: t('tax.faq.a1') },
+        { q: t('tax.faq.q2'), a: t('tax.faq.a2') },
+        { q: t('tax.faq.q3'), a: t('tax.faq.a3') },
+        { q: t('tax.faq.q4'), a: t('tax.faq.a4') },
+        { q: t('tax.faq.q5'), a: t('tax.faq.a5') },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Konsultasi Pajak" />
+            <Head title={t('tax.consultation')} />
             <div className="p-4 md:p-6">
                 <div className="mb-6">
                     <Link href="/tax" className="hover:bg-muted inline-flex items-center gap-2 rounded-xl p-2 text-sm transition-colors">
                         <ArrowLeft size={16} />
-                        Kembali ke Laporan Pajak
+                        {t('tax.backToReports')}
                     </Link>
                 </div>
 
@@ -49,40 +71,15 @@ export default function TaxConsultation() {
                         <div className="flex items-center gap-3">
                             <Shield size={32} className="shrink-0 text-white/80" />
                             <div>
-                                <h1 className="text-2xl font-bold">Konsultasi Pajak UMKM</h1>
-                                <p className="mt-1 text-white/80">Informasi dan panduan perpajakan untuk bisnis Anda</p>
+                                <h1 className="text-2xl font-bold">{t('tax.consultationBannerTitle')}</h1>
+                                <p className="mt-1 text-white/80">{t('tax.consultationBannerDesc')}</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Quick Contacts */}
                     <div className="mb-6 grid gap-4 sm:grid-cols-3">
-                        {[
-                            {
-                                icon: Phone,
-                                title: 'Kring Pajak',
-                                desc: 'Hotline DJP',
-                                value: '1500200',
-                                href: 'tel:1500200',
-                                color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400',
-                            },
-                            {
-                                icon: MessageSquare,
-                                title: 'Live Chat DJP',
-                                desc: 'Chat online pajak.go.id',
-                                value: 'Kunjungi Website',
-                                href: 'https://www.pajak.go.id',
-                                color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-                            },
-                            {
-                                icon: Clock,
-                                title: 'Jam Layanan',
-                                desc: 'Senin–Jumat',
-                                value: '08.00–16.00 WIB',
-                                href: null,
-                                color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
-                            },
-                        ].map(({ icon: Icon, title, desc, value, href, color }) => (
+                        {quickContacts.map(({ icon: Icon, title, desc, value, href, color }) => (
                             <div key={title} className={`rounded-2xl p-4 ${color}`}>
                                 <Icon size={20} className="mb-2" />
                                 <p className="font-semibold">{title}</p>
@@ -100,14 +97,9 @@ export default function TaxConsultation() {
 
                     {/* Key Tax Obligations */}
                     <div className="bg-card border-border mb-6 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="mb-4 font-semibold">Kewajiban Pajak Utama UMKM</h2>
+                        <h2 className="mb-4 font-semibold">{t('tax.keyObligations')}</h2>
                         <div className="space-y-3">
-                            {[
-                                { title: 'PPh Final 0,5%', desc: 'Dibayar bulanan, paling lambat tanggal 15 bulan berikutnya', period: 'Bulanan' },
-                                { title: 'SPT Tahunan PPh OP', desc: 'Dilaporkan setiap tahun, paling lambat 31 Maret', period: 'Tahunan' },
-                                { title: 'PPN (jika PKP)', desc: 'Wajib jika omzet > Rp 4,8 miliar, tarif 11%', period: 'Bulanan' },
-                                { title: 'PPh 21 Karyawan', desc: 'Potong dan setor pajak penghasilan karyawan tiap bulan', period: 'Bulanan' },
-                            ].map((item) => (
+                            {taxObligations.map((item) => (
                                 <div key={item.title} className="flex items-start gap-3">
                                     <CheckCircle size={16} className="mt-0.5 shrink-0 text-emerald-500" />
                                     <div className="flex-1">
@@ -124,9 +116,9 @@ export default function TaxConsultation() {
 
                     {/* FAQ */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <h2 className="mb-4 font-semibold">Pertanyaan Umum</h2>
+                        <h2 className="mb-4 font-semibold">{t('tax.faqTitle')}</h2>
                         <div className="space-y-4">
-                            {FAQ.map((item, i) => (
+                            {faqItems.map((item, i) => (
                                 <div key={i} className="border-border border-b pb-4 last:border-0 last:pb-0">
                                     <p className="mb-1.5 text-sm font-semibold">{item.q}</p>
                                     <p className="text-muted-foreground text-sm">{item.a}</p>

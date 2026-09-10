@@ -32,6 +32,7 @@ export interface SharedData {
         id: number;
         name: string;
         business_type: string;
+        currency: 'IDR' | 'USD' | 'SGD';
         plan: { name: string; slug: string; features: string[] } | null;
         max_products: number;
         max_users: number;

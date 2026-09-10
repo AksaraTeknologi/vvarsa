@@ -8,6 +8,7 @@ import {
     TrendingUp,
     Users,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'navigation.dashboard',
         href: '/admin',
     },
 ];
@@ -71,9 +72,11 @@ export default function AdminDashboard({
     recent_tenants,
     recent_users,
 }: Props) {
+    const { t } = useTranslation();
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Admin Dashboard" />
+            <Head title={t('admin.dashboardTitle')} />
 
             <main className="min-h-full bg-[radial-gradient(circle_at_top_left,#E6E1FF_0%,#F8F5F1_42%,#FFFFFF_100%)] font-['Plus_Jakarta_Sans'] text-[#191827] p-4 md:p-6 flex flex-col gap-6">
 
@@ -82,23 +85,18 @@ export default function AdminDashboard({
                 <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#F0EDFF] opacity-65 blur-3xl" />
                 <div className="pointer-events-none absolute bottom-[-100px] left-[42%] h-56 w-56 rounded-full bg-[#F3F0E9] opacity-75 blur-3xl" />
 
-                {/* =========================================================
-                    HERO
-                ========================================================== */}
+                {/* HERO */}
                 <section className="relative z-10">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                         {/* LEFT */}
                         <div>
-                          
-
-                            {/* Heading */}
                             <h1 className="text-2xl font-bold tracking-tight">
-                                Dashboard
+                                {t('admin.dashboardTitle')}
                             </h1>
 
                             <p className="mt-1 text-sm font-medium text-[#777584]">
-                                Kelola infrastruktur platform, tenant bisnis, dan rencana langganan SaaS.
+                                {t('admin.dashboardSubtitle')}
                             </p>
                         </div>
 
@@ -112,7 +110,7 @@ export default function AdminDashboard({
                             >
                                 <Link href="/admin/plans">
                                     <CreditCard className="size-3.5 mr-1" />
-                                    Kelola Paket
+                                    {t('navigation.plans')}
                                 </Link>
                             </Button>
                             
@@ -123,46 +121,25 @@ export default function AdminDashboard({
                             >
                                 <Link href="/admin/tenants/create">
                                     <Plus className="size-3.5 mr-1" />
-                                    Tambah Tenant
+                                    {t('common.add')} Tenant
                                 </Link>
                             </Button>
                         </div>
                     </div>
                 </section>
 
-                {/* =========================================================
-                    MAIN CONTENT
-                ========================================================== */}
+                {/* MAIN CONTENT */}
                 <div className="relative z-10 space-y-6">
 
-                        {/* =================================================
-                            RINGKASAN PLATFORM
-                        ================================================== */}
+                        {/* RINGKASAN PLATFORM */}
                         <section>
-
-                           
-
                             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
 
-                                {/* =================================================
-                                    TOTAL TENANT
-                                ================================================== */}
-                                <Card
-                                    className="
-                                        group
-                                        rounded-2xl
-                                        border-[#CFC7F5]
-                                        bg-[#E2DDFF]
-                                        shadow-[0_5px_20px_rgba(35,30,70,0.035)]
-                                        transition-all
-                                        duration-300
-                                        hover:-translate-y-1
-                                        hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
-                                    "
-                                >
+                                {/* TOTAL TENANT */}
+                                <Card className="group rounded-2xl border-[#CFC7F5] bg-[#E2DDFF] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
                                     <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
                                         <CardTitle className="text-sm font-medium text-[#777583]">
-                                            Total Tenant
+                                            {t('admin.totalTenants')}
                                         </CardTitle>
 
                                         <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#5E4BF2] transition-transform duration-300 group-hover:scale-105">
@@ -182,31 +159,17 @@ export default function AdminDashboard({
                                                 <span className="font-bold text-[#5E4BF2]">
                                                     {stats.active_tenants}
                                                 </span>{' '}
-                                                aktif & running
+                                                {t('admin.active')}
                                             </span>
                                         </div>
                                     </CardContent>
                                 </Card>
 
-                                {/* =================================================
-                                    TOTAL PENGGUNA
-                                ================================================== */}
-                                <Card
-                                    className="
-                                        group
-                                        rounded-2xl
-                                        border-[#C5E3D5]
-                                        bg-[#E1F2EA]
-                                        shadow-[0_5px_20px_rgba(35,30,70,0.035)]
-                                        transition-all
-                                        duration-300
-                                        hover:-translate-y-1
-                                        hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
-                                    "
-                                >
+                                {/* TOTAL PENGGUNA */}
+                                <Card className="group rounded-2xl border-[#C5E3D5] bg-[#E1F2EA] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
                                     <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
                                         <CardTitle className="text-sm font-medium text-[#777583]">
-                                            Total Pengguna
+                                            {t('admin.totalUsers')}
                                         </CardTitle>
 
                                         <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#4C9A78] transition-transform duration-300 group-hover:scale-105">
@@ -220,30 +183,16 @@ export default function AdminDashboard({
                                         </p>
 
                                         <p className="mt-1 text-[10px] font-medium text-[#85838F]">
-                                            Pengguna terdaftar di seluruh tenant
+                                            {t('admin.registeredUsers')}
                                         </p>
                                     </CardContent>
                                 </Card>
 
-                                {/* =================================================
-                                    PAKET AKTIF
-                                ================================================== */}
-                                <Card
-                                    className="
-                                        group
-                                        rounded-2xl
-                                        border-[#F0D69A]
-                                        bg-[#FFF0C9]
-                                        shadow-[0_5px_20px_rgba(35,30,70,0.035)]
-                                        transition-all
-                                        duration-300
-                                        hover:-translate-y-1
-                                        hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
-                                    "
-                                >
+                                {/* PAKET AKTIF */}
+                                <Card className="group rounded-2xl border-[#F0D69A] bg-[#FFF0C9] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
                                     <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
                                         <CardTitle className="text-sm font-medium text-[#777583]">
-                                            Paket Aktif
+                                            {t('admin.activePlans')}
                                         </CardTitle>
 
                                         <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#C18A2E] transition-transform duration-300 group-hover:scale-105">
@@ -257,30 +206,16 @@ export default function AdminDashboard({
                                         </p>
 
                                         <p className="mt-1 text-[10px] font-medium text-[#85838F]">
-                                            Pilihan paket langganan SaaS
+                                            {t('admin.subscriptionOptions')}
                                         </p>
                                     </CardContent>
                                 </Card>
 
-                                {/* =================================================
-                                    MRR
-                                ================================================== */}
-                                <Card
-                                    className="
-                                        group
-                                        rounded-2xl
-                                        border-[#EBC5D0]
-                                        bg-[#F8E1E7]
-                                        shadow-[0_5px_20px_rgba(35,30,70,0.035)]
-                                        transition-all
-                                        duration-300
-                                        hover:-translate-y-1
-                                        hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]
-                                    "
-                                >
+                                {/* MRR */}
+                                <Card className="group rounded-2xl border-[#EBC5D0] bg-[#F8E1E7] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
                                     <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
                                         <CardTitle className="text-sm font-medium text-[#777583]">
-                                            Estimasi MRR
+                                            {t('admin.totalIncome')}
                                         </CardTitle>
 
                                         <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#C06D82] transition-transform duration-300 group-hover:scale-105">
@@ -297,7 +232,7 @@ export default function AdminDashboard({
                                             <TrendingUp className="size-3 text-[#5E4BF2]" />
 
                                             <span className="text-[10px] font-medium text-[#85838F]">
-                                                Monthly Recurring Revenue
+                                                {t('admin.mrrSubtitle')}
                                             </span>
                                         </div>
                                     </CardContent>
@@ -305,38 +240,23 @@ export default function AdminDashboard({
                             </div>
                         </section>
 
-                        {/* =================================================
-                            AKTIVITAS TERBARU
-                        ================================================== */}
+                        {/* AKTIVITAS TERBARU */}
                         <section>
 
                             <div className="mb-4">
                                 <h2 className="text-xl font-bold tracking-tight">
-                                    Aktivitas terbaru
+                                    {t('admin.recentActivity')}
                                 </h2>
 
                                 <p className="mt-1 text-sm font-medium text-[#92909D]">
-                                    Data tenant dan pengguna yang baru bergabung.
+                                    {t('admin.recentActivitySub')}
                                 </p>
                             </div>
 
                             <div className="grid items-start gap-4 xl:grid-cols-2">
 
-                                {/* =================================================
-                                    TENANT BARU
-                                ================================================== */}
-                                <Card
-                                    className="
-                                        overflow-hidden
-                                        rounded-[18px]
-                                        border-[#E7E3EC]
-                                        bg-white
-                                        shadow-[0_5px_22px_rgba(35,30,70,0.035)]
-                                        transition-shadow
-                                        duration-300
-                                        hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]
-                                    "
-                                >
+                                {/* TENANT BARU */}
+                                <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
                                     <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
                                         <div className="flex items-center justify-between gap-4">
 
@@ -347,11 +267,11 @@ export default function AdminDashboard({
 
                                                 <div className="min-w-0">
                                                     <CardTitle className="text-sm font-extrabold text-[#292737]">
-                                                        Tenant Baru
+                                                        {t('admin.newTenant')}
                                                     </CardTitle>
 
                                                     <CardDescription className="mt-0.5 text-xs font-medium text-[#9997A4]">
-                                                        Pendaftaran tenant bisnis terbaru
+                                                        {t('admin.newTenantSub')}
                                                     </CardDescription>
                                                 </div>
                                             </div>
@@ -362,7 +282,7 @@ export default function AdminDashboard({
                                                     size="sm"
                                                     className="h-8 rounded-lg px-2.5 text-xs font-bold text-[#5E4BF2] hover:bg-[#F3F1FF] hover:text-[#5140E2]"
                                                 >
-                                                    Semua
+                                                    {t('common.viewAll')}
                                                     <ArrowRight className="ml-1.5 size-3.5" />
                                                 </Button>
                                             </Link>
@@ -372,7 +292,7 @@ export default function AdminDashboard({
                                     <CardContent className="p-0">
                                         {recent_tenants.length === 0 ? (
                                             <p className="px-5 py-8 text-center text-sm text-[#9997A4]">
-                                                Belum ada tenant terdaftar.
+                                                {t('common.noData')}
                                             </p>
                                         ) : (
                                             <div className="divide-y divide-[#F0EDF4]">
@@ -428,8 +348,8 @@ export default function AdminDashboard({
                                                                 }
                                                             >
                                                                 {tenant.is_active
-                                                                    ? 'Aktif'
-                                                                    : 'Nonaktif'}
+                                                                    ? t('admin.active')
+                                                                    : t('admin.inactive')}
                                                             </Badge>
                                                         </div>
                                                     </div>
@@ -439,21 +359,8 @@ export default function AdminDashboard({
                                     </CardContent>
                                 </Card>
 
-                                {/* =================================================
-                                    PENGGUNA BARU
-                                ================================================== */}
-                                <Card
-                                    className="
-                                        overflow-hidden
-                                        rounded-[18px]
-                                        border-[#E7E3EC]
-                                        bg-white
-                                        shadow-[0_5px_22px_rgba(35,30,70,0.035)]
-                                        transition-shadow
-                                        duration-300
-                                        hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]
-                                    "
-                                >
+                                {/* PENGGUNA BARU */}
+                                <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
                                     <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
                                         <div className="flex items-center justify-between gap-4">
 
@@ -464,11 +371,11 @@ export default function AdminDashboard({
 
                                                 <div className="min-w-0">
                                                     <CardTitle className="text-sm font-extrabold text-[#292737]">
-                                                        Pengguna Baru
+                                                        {t('admin.newUser')}
                                                     </CardTitle>
 
                                                     <CardDescription className="mt-0.5 text-xs font-medium text-[#9997A4]">
-                                                        Pengguna terbaru di platform
+                                                        {t('admin.newUserSub')}
                                                     </CardDescription>
                                                 </div>
                                             </div>
@@ -479,7 +386,7 @@ export default function AdminDashboard({
                                                     size="sm"
                                                     className="h-8 rounded-lg px-2.5 text-xs font-bold text-[#5E4BF2] hover:bg-[#F3F1FF] hover:text-[#5140E2]"
                                                 >
-                                                    Semua
+                                                    {t('common.viewAll')}
                                                     <ArrowRight className="ml-1.5 size-3.5" />
                                                 </Button>
                                             </Link>
@@ -489,7 +396,7 @@ export default function AdminDashboard({
                                     <CardContent className="p-0">
                                         {recent_users.length === 0 ? (
                                             <p className="px-5 py-8 text-center text-sm text-[#9997A4]">
-                                                Belum ada pengguna terdaftar.
+                                                {t('common.noData')}
                                             </p>
                                         ) : (
                                             <div className="divide-y divide-[#F0EDF4]">
