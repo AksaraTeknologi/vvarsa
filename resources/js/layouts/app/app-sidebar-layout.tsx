@@ -5,11 +5,15 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { type PropsWithChildren } from 'react';
 
-export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
+export default function AppSidebarLayout({
+    children,
+    breadcrumbs = [],
+    className,
+}: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[]; className?: string }>) {
     return (
         <AppShell variant="sidebar">
             <AppSidebar />
-            <AppContent variant="sidebar">
+            <AppContent variant="sidebar" className={className}>
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}
             </AppContent>

@@ -32,7 +32,7 @@ const buttonVariants = cva(
         outline:
           "border-2 border-black bg-transparent text-black hover:bg-black hover:text-white",
         ghost: "hover:bg-white-lavender text-black",
-        link: "text-purple underline-offset-4 hover:underline",
+        link: "text-owner-accent underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

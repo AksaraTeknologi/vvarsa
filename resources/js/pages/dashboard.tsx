@@ -253,9 +253,9 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                     <Link
                                         key={e.id}
                                         href={`/events/${e.id}`}
-                                        className="hover:bg-muted/50 -mx-2 flex items-start gap-3 rounded-xl p-2 transition-colors"
+                                        className="hover:bg-emerald-50/80 -mx-2 flex items-start gap-3 rounded-xl p-2 transition-colors"
                                     >
-                                        <div className="bg-primary/10 text-primary flex flex-col items-center rounded-xl px-3 py-2 text-center">
+                                        <div className="flex flex-col items-center rounded-xl bg-emerald-100 px-3 py-2 text-center text-emerald-700">
                                             <span className="text-xs font-semibold">
                                                 {new Date(e.start_date).toLocaleString('id-ID', { month: 'short' })}
                                             </span>

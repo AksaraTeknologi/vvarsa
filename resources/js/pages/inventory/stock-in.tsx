@@ -81,7 +81,7 @@ export default function StockIn({ products }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Stok Masuk" />
-            <div className="mx-auto max-w-xl p-4 md:p-6">
+            <div className="w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
                         <Link href="/inventory">

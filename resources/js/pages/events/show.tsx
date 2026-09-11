@@ -52,7 +52,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
     return (
         <AppLayout breadcrumbs={breadcrumbs(event)}>
             <Head title={event.title} />
-            <div className="p-4 md:p-6">
+            <div className="w-full p-4 md:p-6">
                 <div className="mb-6">
                     <Link href="/events" className="hover:bg-muted inline-flex items-center gap-2 rounded-xl p-2 text-sm transition-colors">
                         <ArrowLeft size={16} />
@@ -60,33 +60,33 @@ export default function EventShow({ event, is_registered, recent_registrations }
                     </Link>
                 </div>
 
-                <div className="mx-auto max-w-4xl">
-                    <div className="grid gap-6 lg:grid-cols-3">
+                <div className="w-full">
+                    <div className="grid gap-6 xl:grid-cols-[minmax(0,2.2fr)_minmax(300px,420px)]">
                         {/* Main Content */}
-                        <div className="space-y-6 lg:col-span-2">
+                        <div className="space-y-6">
                             {/* Event Header */}
-                            <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
+                            <div className="overflow-hidden rounded-2xl border border-[#d7eadb] bg-white shadow-[0_10px_30px_rgba(63,149,103,0.08)]">
                                 <div
-                                    className="from-primary to-primary/70 flex items-end bg-gradient-to-br p-6 text-white"
+                                    className="flex items-end bg-gradient-to-br from-[#3f9567] via-[#4fa76f] to-[#eaf7ee] p-6 text-white shadow-inner"
                                     style={{ minHeight: '160px' }}
                                 >
                                     <div>
                                         <div className="mb-2 flex gap-2">
                                             {event.business_types?.map((type) => (
-                                                <span key={type} className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium uppercase">
+                                                <span key={type} className="rounded-full bg-white/18 px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide text-white">
                                                     {type}
                                                 </span>
                                             ))}
                                         </div>
-                                        <h1 className="text-2xl leading-tight font-bold">{event.title}</h1>
-                                        <p className="mt-1 text-white/80">{event.organizer}</p>
+                                        <h1 className="text-2xl leading-tight font-bold text-white">{event.title}</h1>
+                                        <p className="mt-1 text-[#eafff1]">{event.organizer}</p>
                                     </div>
                                 </div>
 
                                 <div className="p-6">
                                     <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
                                         <div className="flex items-start gap-2">
-                                            <CalendarDays size={16} className="text-primary mt-0.5 shrink-0" />
+                                            <CalendarDays size={16} className="mt-0.5 shrink-0 text-[#3f9567]" />
                                             <div>
                                                 <p className="text-muted-foreground text-xs">Tanggal</p>
                                                 <p className="text-sm font-medium">
@@ -100,7 +100,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                             </div>
                                         </div>
                                         <div className="flex items-start gap-2">
-                                            <Clock size={16} className="text-primary mt-0.5 shrink-0" />
+                                            <Clock size={16} className="mt-0.5 shrink-0 text-[#3f9567]" />
                                             <div>
                                                 <p className="text-muted-foreground text-xs">Waktu</p>
                                                 <p className="text-sm font-medium">
@@ -109,7 +109,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                             </div>
                                         </div>
                                         <div className="flex items-start gap-2">
-                                            <MapPin size={16} className="text-primary mt-0.5 shrink-0" />
+                                            <MapPin size={16} className="mt-0.5 shrink-0 text-[#3f9567]" />
                                             <div>
                                                 <p className="text-muted-foreground text-xs">Lokasi</p>
                                                 <p className="text-sm font-medium">{event.location}</p>
@@ -154,20 +154,20 @@ export default function EventShow({ event, is_registered, recent_registrations }
                         {/* Sidebar */}
                         <div className="space-y-4">
                             {/* Registration card */}
-                            <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                            <div className="rounded-2xl border border-[#d7eadb] bg-gradient-to-br from-[#f6fbf7] via-white to-[#eef9f2] p-5 shadow-[0_12px_28px_rgba(63,149,103,0.08)]">
                                 <div className="mb-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-muted-foreground text-sm">Biaya Pendaftaran</span>
+                                        <span className="text-sm font-medium text-[#2d6b49]">Biaya Pendaftaran</span>
                                     </div>
                                     <p
-                                        className={`text-2xl font-bold ${event.registration_fee === 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}
+                                        className={`mt-2 text-3xl font-black tracking-tight ${event.registration_fee === 0 ? 'text-[#3f9567]' : 'text-[#1f3c2d]'}`}
                                     >
                                         {event.registration_fee === 0 ? 'GRATIS' : formatRupiah(event.registration_fee)}
                                     </p>
                                 </div>
 
-                                <div className="mb-4 flex items-center gap-2 text-sm">
-                                    <Users size={14} className="text-muted-foreground" />
+                                <div className="mb-4 flex items-center gap-2 text-sm text-slate-600">
+                                    <Users size={14} className="text-[#3f9567]" />
                                     <span>
                                         {event.registered_count} terdaftar
                                         {event.max_participants && ` dari ${event.max_participants} slot`}
@@ -177,25 +177,25 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                 {/* Capacity bar */}
                                 {event.max_participants && (
                                     <div className="mb-4">
-                                        <div className="bg-muted h-2 overflow-hidden rounded-full">
+                                        <div className="h-2.5 overflow-hidden rounded-full bg-[#eaf4ee]">
                                             <div
-                                                className={`h-full rounded-full ${isFull ? 'bg-rose-500' : 'bg-primary'}`}
+                                                className={`h-full rounded-full ${isFull ? 'bg-rose-500' : 'bg-[#3f9567]'}`}
                                                 style={{ width: `${Math.min((event.registered_count / event.max_participants) * 100, 100)}%` }}
                                             />
                                         </div>
-                                        {isFull && <p className="mt-1 text-xs text-rose-600">Pendaftaran sudah penuh</p>}
+                                        {isFull && <p className="mt-1 text-xs font-medium text-rose-600">Pendaftaran sudah penuh</p>}
                                     </div>
                                 )}
 
                                 {is_registered ? (
                                     <div className="space-y-3">
-                                        <div className="flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
-                                            <CheckCircle size={16} />
-                                            <span className="font-medium">Anda sudah terdaftar!</span>
+                                        <div className="flex items-center gap-2 rounded-xl bg-[#eaf7ee] p-3 text-sm font-medium text-[#2d6b49]">
+                                            <CheckCircle size={16} className="text-[#3f9567]" />
+                                            <span>Anda sudah terdaftar!</span>
                                         </div>
                                         <button
                                             onClick={handleCancel}
-                                            className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 py-2.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:hover:bg-rose-900/20"
+                                            className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 bg-white py-2.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50"
                                         >
                                             <XCircle size={14} />
                                             Batalkan Pendaftaran
@@ -204,14 +204,14 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                 ) : canRegister ? (
                                     <button
                                         onClick={handleRegister}
-                                        className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-xl py-3 text-sm font-semibold transition-colors"
+                                        className="w-full rounded-xl bg-[#3f9567] py-3 text-sm font-bold text-white shadow-[0_10px_20px_rgba(63,149,103,0.25)] transition-transform hover:translate-y-[-1px] hover:shadow-[0_14px_24px_rgba(63,149,103,0.28)]"
                                     >
                                         Daftar Sekarang
                                     </button>
                                 ) : isFull ? (
                                     <button
                                         disabled
-                                        className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700"
+                                        className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500"
                                     >
                                         Pendaftaran Penuh
                                     </button>
@@ -220,14 +220,14 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         href={event.registration_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors"
+                                        className="block w-full rounded-xl bg-[#3f9567] py-3 text-center text-sm font-bold text-white shadow-[0_10px_20px_rgba(63,149,103,0.25)] transition-transform hover:translate-y-[-1px] hover:shadow-[0_14px_24px_rgba(63,149,103,0.28)]"
                                     >
                                         Daftar di Website Penyelenggara ↗
                                     </a>
                                 ) : (
                                     <button
                                         disabled
-                                        className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500 dark:bg-slate-700"
+                                        className="w-full cursor-not-allowed rounded-xl bg-slate-200 py-3 text-sm font-semibold text-slate-500"
                                     >
                                         Pendaftaran Ditutup
                                     </button>
