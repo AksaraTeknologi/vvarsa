@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { formatRupiah } from '@/lib/utils-mrp';
+import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -164,7 +164,7 @@ export default function StockIn({ products }: Props) {
                                 </div>
                                 <div>
                                     <Label htmlFor="unit_cost" className="mb-1.5 block">
-                                        {t('inventory.unitCost')} (Rp)
+                                        {t('inventory.unitCost')} ({getCurrencySymbol()})
                                     </Label>
                                     <Input
                                         id="unit_cost"

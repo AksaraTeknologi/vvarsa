@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { formatRupiah } from '@/lib/utils-mrp';
+import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ExpenseCategory, type PaginatedData, type Transaction } from '@/types/mrp';
 import { Head, useForm } from '@inertiajs/react';
@@ -143,7 +143,7 @@ export default function Transactions({ transactions, summary, expense_categories
                                         ))}
                                     </div>
                                     <div className="grid gap-1">
-                                        <Label htmlFor="amount">{t('finance.amountLabel', 'Jumlah (Rp) *')}</Label>
+                                        <Label htmlFor="amount">{t('finance.amountLabel', `Jumlah (${getCurrencySymbol()}) *`)}</Label>
                                         <Input
                                             id="amount"
                                             type="text"

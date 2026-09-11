@@ -7,6 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { getColumns, Supplier } from './columns';
 import { DataTable } from './data-table';
 
+interface Props {
+    suppliers: Supplier[];
+}
+
 export default function SupplierIndex({ suppliers }: Props) {
     const { t } = useTranslation();
     const columns = getColumns(t);

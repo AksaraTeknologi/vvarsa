@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { formatRupiah } from '@/lib/utils-mrp';
+import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
 import { Head } from '@inertiajs/react';
@@ -982,7 +982,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                             : 'text-muted-foreground hover:text-foreground'
                                                     }`}
                                                 >
-                                                    Nominal (Rp)
+                                                    Nominal ({getCurrencySymbol()})
                                                 </button>
                                                 <button
                                                     type="button"
@@ -1108,7 +1108,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     {isCash && (
                                         <div className="space-y-2 rounded-xl border border-border/80 bg-muted/20 p-3">
                                             <div className="flex items-center justify-between">
-                                                <Label className="text-muted-foreground text-xs font-medium">{t('pos.cashReceived')} (Rp)</Label>
+                                                <Label className="text-muted-foreground text-xs font-medium">{t('pos.cashReceived')} ({getCurrencySymbol()})</Label>
                                                 {cashReceived > 0 && cashReceived < finalTotal && (
                                                     <span className="text-[11px] font-semibold text-rose-500">
                                                         {t('pos.insufficientCash', { amount: formatRupiah(finalTotal - cashReceived) })}

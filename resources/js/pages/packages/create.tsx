@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -106,7 +107,7 @@ export default function PackageCreate({ variants }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="price">Harga Bundle (Rp) *</Label>
+                                <Label htmlFor="price">Harga Bundle ({getCurrencySymbol()}) *</Label>
                                 <Input
                                     id="price"
                                     type="number"

@@ -256,7 +256,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             }
                                             readOnly={recipe.isFromInventory}
                                             className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
-                                            placeholder="Rp0"
+                                            placeholder={formatRupiah(0)}
                                         />
                                     </div>
                                     {/* Total HPP */}
@@ -267,7 +267,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             value={recipe.qty * recipe.ingredient_cost > 0 ? formatRupiah(recipe.qty * recipe.ingredient_cost) : ''}
                                             readOnly
                                             className="bg-muted h-9 rounded-xl text-xs font-medium"
-                                            placeholder="Rp0"
+                                            placeholder={formatRupiah(0)}
                                         />
                                     </div>
                                     {/* Hapus */}

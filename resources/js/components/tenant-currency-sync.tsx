@@ -6,7 +6,10 @@ export function TenantCurrencySync() {
     const { tenant } = usePage<SharedData>().props;
 
     useEffect(() => {
-        if (tenant?.currency) window.localStorage.setItem('vvarsa.currency', tenant.currency);
+        const userLanguage = typeof window !== 'undefined' ? window.localStorage.getItem('vvarsa.language') : null;
+        if (!userLanguage && tenant?.currency) {
+            window.localStorage.setItem('vvarsa.currency', tenant.currency);
+        }
     }, [tenant?.currency]);
 
     return null;

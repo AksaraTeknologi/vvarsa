@@ -143,7 +143,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                                     type="text"
                                     value={sellPrice > 0 ? formatRupiah(sellPrice) : ''}
                                     onChange={(e) => setSellPrice(parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                    placeholder="Rp18.000"
+                                    placeholder={formatRupiah(18000)}
                                     required
                                     className={formErrors.sell_price ? 'border-rose-500' : ''}
                                 />

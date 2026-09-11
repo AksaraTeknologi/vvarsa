@@ -1,21 +1,101 @@
+import i18n from '@/lib/i18n';
+
 /**
- * Format a number using a tenant currency.
+ * Fallback exchange rate constant for converting IDR to USD
  */
-export function formatCurrency(amount: number, currencyCode?: string, compact = false): string {
-    const currency = currencyCode ?? (typeof window !== 'undefined' ? window.localStorage.getItem('vvarsa.currency') : null) ?? 'IDR';
-    const locale = currency === 'IDR' ? 'id-ID' : currency === 'SGD' ? 'en-SG' : 'en-US';
-    if (compact) {
-        const symbol = currency === 'IDR' ? 'Rp' : currency === 'SGD' ? 'S$' : '$';
-        if (amount >= 1_000_000_000) return `${symbol} ${(amount / 1_000_000_000).toFixed(1)}B`;
-        if (amount >= 1_000_000) return `${symbol} ${(amount / 1_000_000).toFixed(1)}M`;
-        if (amount >= 1_000) return `${symbol} ${(amount / 1_000).toFixed(currency === 'IDR' ? 0 : 1)}K`;
+export const DEFAULT_USD_EXCHANGE_RATE = 15000;
+
+/**
+ * Get current USD exchange rate (cached or default)
+ */
+export function getUsdExchangeRate(): number {
+    if (typeof window !== 'undefined') {
+        const cached = window.localStorage.getItem('vvarsa.usd_rate');
+        if (cached) {
+            const parsed = parseFloat(cached);
+            if (!isNaN(parsed) && parsed > 0) return parsed;
+        }
     }
+    return DEFAULT_USD_EXCHANGE_RATE;
+}
+
+/**
+ * Fetch live USD exchange rate in real-time
+ */
+export async function fetchLiveExchangeRate(): Promise<number> {
+    try {
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        if (data && data.rates && data.rates.IDR) {
+            const liveRate = data.rates.IDR;
+            if (typeof window !== 'undefined') {
+                window.localStorage.setItem('vvarsa.usd_rate', String(liveRate));
+                window.localStorage.setItem('vvarsa.usd_rate_updated', String(Date.now()));
+            }
+            return liveRate;
+        }
+    } catch (e) {
+        // Fall back gracefully to cached or default rate if offline or API error occurs
+    }
+    return getUsdExchangeRate();
+}
+
+/**
+ * Get active currency based on localStorage or current i18n language
+ */
+export function getActiveCurrency(): string {
+    if (typeof window !== 'undefined') {
+        const savedCurrency = window.localStorage.getItem('vvarsa.currency');
+        if (savedCurrency === 'USD' || savedCurrency === 'IDR' || savedCurrency === 'SGD') {
+            return savedCurrency;
+        }
+    }
+    const currentLang = i18n.language || (typeof window !== 'undefined' ? window.localStorage.getItem('vvarsa.language') : 'id');
+    return currentLang === 'en' ? 'USD' : 'IDR';
+}
+
+/**
+ * Get active currency symbol
+ */
+export function getCurrencySymbol(currencyCode?: string): string {
+    const currency = currencyCode ?? getActiveCurrency();
+    if (currency === 'USD') return '$';
+    if (currency === 'SGD') return 'S$';
+    return 'Rp';
+}
+
+/**
+ * Format a number using tenant/active currency.
+ */
+export function formatCurrency(
+    amount: number,
+    currencyCode?: string,
+    compact = false,
+    convertRate = true
+): string {
+    const currency = currencyCode ?? getActiveCurrency();
+    const locale = currency === 'IDR' ? 'id-ID' : currency === 'SGD' ? 'en-SG' : 'en-US';
+
+    let displayAmount = amount;
+    if (convertRate && currency === 'USD' && !currencyCode) {
+        displayAmount = amount / getUsdExchangeRate();
+    }
+
+    if (compact) {
+        const symbol = getCurrencySymbol(currency);
+        if (displayAmount >= 1_000_000_000) return `${symbol} ${(displayAmount / 1_000_000_000).toFixed(1)}B`;
+        if (displayAmount >= 1_000_000) return `${symbol} ${(displayAmount / 1_000_000).toFixed(1)}M`;
+        if (displayAmount >= 1_000) return `${symbol} ${(displayAmount / 1_000).toFixed(currency === 'IDR' ? 0 : 1)}K`;
+        return `${symbol} ${displayAmount.toFixed(currency === 'IDR' ? 0 : 2)}`;
+    }
+
     const formatted = new Intl.NumberFormat(locale, {
         style: 'currency',
         currency,
         minimumFractionDigits: currency === 'IDR' ? 0 : 2,
         maximumFractionDigits: currency === 'IDR' ? 0 : 2,
-    }).format(amount);
+    }).format(displayAmount);
 
     return currency === 'SGD' ? formatted.replace('$', 'S$') : formatted;
 }
