@@ -7,7 +7,7 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -107,12 +107,7 @@ export default function Opname({ products }: Props) {
             <Head title={t('inventory.opnameTitle')} />
             <div className="p-4 md:p-6">
                 <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                    <div className="flex items-center gap-3">
-                        <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-xl">
-                            <Link href="/inventory">
-                                <ArrowLeft size={18} />
-                            </Link>
-                        </Button>
+                    <div>
                         <div>
                             <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                                 {t('inventory.opnameTitle')}

@@ -10,7 +10,7 @@ import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -84,12 +84,7 @@ export default function StockIn({ products }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('inventory.stockInTitle')} />
             <div className="w-full p-4 md:p-6">
-                <div className="mb-6 flex items-center gap-3">
-                    <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-xl">
-                        <Link href="/inventory">
-                            <ArrowLeft size={18} />
-                        </Link>
-                    </Button>
+                <div className="mb-6">
                     <div>
                         <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                             {t('inventory.stockInTitle')}
@@ -171,11 +166,20 @@ export default function StockIn({ products }: Props) {
                                     </Label>
                                     <Input
                                         id="unit_cost"
-                                        type="text"
-                                        value={formatRupiah(data.unit_cost)}
-                                        onChange={(e) => setData('unit_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                        className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                        type="number"
+                                        min={0}
+                                        step="any"
+                                        placeholder="0"
+                                        value={data.unit_cost === 0 ? '' : data.unit_cost}
+                                        onChange={(e) => setData('unit_cost', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
+                                        className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('unit_cost') ? 'border-rose-500' : ''}`}
                                     />
+                                    {data.unit_cost > 0 && (
+                                        <p className="mt-1 text-xs text-muted-foreground">
+                                            Preview: <span className="font-semibold text-foreground">{formatRupiah(data.unit_cost)}</span>
+                                        </p>
+                                    )}
+                                    {displayError('unit_cost') && <p className="mt-1 text-xs text-rose-500">{displayError('unit_cost')}</p>}
                                 </div>
                             </div>
 

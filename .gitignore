@@ -22,3 +22,10 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Python & Microservice
+services/**/venv/
+services/**/.env
+__pycache__/
+*.pyc
+

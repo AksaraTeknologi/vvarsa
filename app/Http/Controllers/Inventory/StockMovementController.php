@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Events\LowStockAlertEvent;
 use App\Http\Controllers\Controller;
+use App\Models\ExpenseCategory;
 use App\Models\Product;
+use App\Models\RecipeIngredient;
 use App\Models\StockMovement;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -61,7 +64,37 @@ class StockMovementController extends Controller
                 'movement_date' => $validated['movement_date'],
             ]);
 
-            $product->update(['current_stock' => $qtyAfter]);
+            $productData = ['current_stock' => $qtyAfter];
+            $unitCost = (float) ($validated['unit_cost'] ?? $product->cost_price);
+            if (isset($validated['unit_cost']) && $validated['unit_cost'] > 0) {
+                $productData['cost_price'] = $validated['unit_cost'];
+
+                RecipeIngredient::where('ingredient_id', $product->id)
+                    ->update(['ingredient_cost' => $validated['unit_cost']]);
+            }
+            $product->update($productData);
+
+            // Record financial expense transaction for Stock In purchase
+            $totalCost = $unitCost * (float) $validated['qty'];
+            if ($totalCost > 0) {
+                $expenseCat = ExpenseCategory::firstOrCreate(
+                    ['tenant_id' => $tenant->id, 'name' => 'Stok Masuk (Bahan Baku)'],
+                    ['type' => 'expense', 'color' => '#10B981']
+                );
+
+                Transaction::create([
+                    'tenant_id' => $tenant->id,
+                    'type' => 'expense',
+                    'category' => 'Stok Masuk',
+                    'expense_category_id' => $expenseCat->id,
+                    'amount' => $totalCost,
+                    'description' => "Stok Masuk: {$product->name} ({$validated['qty']} {$product->unit})",
+                    'reference' => $validated['reference'] ?? ($product->sku ? "STOK-IN-{$product->sku}" : 'STOK-IN'),
+                    'date' => $validated['movement_date'],
+                    'payment_method' => 'cash',
+                    'user_id' => auth()->id(),
+                ]);
+            }
 
         });
 

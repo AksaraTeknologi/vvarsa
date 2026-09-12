@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Services\AiAnalyticsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -12,6 +13,12 @@ use Inertia\Response;
 
 class DashboardController extends Controller
 {
+    protected AiAnalyticsService $aiService;
+
+    public function __construct(AiAnalyticsService $aiService)
+    {
+        $this->aiService = $aiService;
+    }
     public function index(Request $request): Response
     {
         $tenant = app('tenant');

@@ -41,7 +41,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
             ingredient_name: ing.ingredient_name,
             qty: Number(ing.qty),
             unit: ing.unit,
-            ingredient_cost: Number(ing.ingredient_cost),
+            ingredient_cost: Number(ing.ingredient?.cost_price ?? ing.ingredient_cost),
             isFromInventory: ing.ingredient_id !== null,
         })),
     );

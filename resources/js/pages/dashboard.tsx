@@ -1,4 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
+import { AiAnalyticsWidget } from '@/components/ai-analytics-widget';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Event, type Product, type Transaction } from '@/types/mrp';
@@ -96,7 +97,8 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                 </div>
 
                 {/* ── Stats Cards ─────────────────────────────────────── */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                     <StatCard
                         title={t('dashboard.salesToday')}
                         value={formatRupiah(stats.sales_today, true)}

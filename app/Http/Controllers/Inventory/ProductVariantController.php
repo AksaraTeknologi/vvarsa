@@ -45,7 +45,7 @@ class ProductVariantController extends Controller
     {
         $tenant = app('tenant');
         $recipes = Recipe::where('tenant_id', $tenant->id)
-            ->with('ingredients')
+            ->with('ingredients.ingredient:id,name,unit,cost_price')
             ->orderBy('name')
             ->get()
             ->map(function ($r) {
@@ -90,7 +90,7 @@ class ProductVariantController extends Controller
         $variant->append(['hpp', 'margin']);
 
         $recipes = Recipe::where('tenant_id', $tenant->id)
-            ->with('ingredients')
+            ->with('ingredients.ingredient:id,name,unit,cost_price')
             ->orderBy('name')
             ->get()
             ->map(function ($r) {

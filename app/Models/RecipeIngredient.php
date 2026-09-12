@@ -35,10 +35,32 @@ class RecipeIngredient extends Model
     }
 
     /**
-     * Total cost contribution = ingredient_cost * qty
+     * Effective unit cost of the ingredient based on the latest raw material price (Product.cost_price).
+     */
+    public function getEffectiveCostAttribute(): float
+    {
+        if ($this->relationLoaded('ingredient') && $this->ingredient) {
+            $cost = (float) $this->ingredient->cost_price;
+            if ($cost > 0) {
+                return $cost;
+            }
+        }
+
+        if ($this->ingredient_id) {
+            $productCost = Product::where('id', $this->ingredient_id)->value('cost_price');
+            if ($productCost !== null && (float) $productCost > 0) {
+                return (float) $productCost;
+            }
+        }
+
+        return (float) $this->ingredient_cost;
+    }
+
+    /**
+     * Total cost contribution = effective_cost * qty
      */
     public function getTotalCostAttribute(): float
     {
-        return (float) $this->ingredient_cost * (float) $this->qty;
+        return $this->effective_cost * (float) $this->qty;
     }
 }

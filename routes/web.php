@@ -21,6 +21,7 @@ use App\Http\Controllers\Owner\MemberController;
 use App\Http\Controllers\Owner\SubscriptionController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Tax\TaxController;
+use App\Http\Controllers\TenantAnalyticsController;
 use App\Http\Middleware\EnsureTenantMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -89,8 +90,9 @@ Route::middleware(['auth', 'verified', EnsureTenantMiddleware::class])
 
         // ── Shared Tenant Routes (Owner, Supervisor & Staff) ──
         Route::middleware(['role:owner|supervisor|staff'])->group(function () {
-            // Dashboard
+            // Dashboard & AI Analytics
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+            Route::get('/api/ai/analytics', [TenantAnalyticsController::class, 'getAnalytics'])->name('ai.analytics');
 
             // Inventory: View & Movement Actions
             Route::prefix('inventory')->name('inventory.')->group(function () {
