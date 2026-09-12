@@ -11,11 +11,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Calculator, FlaskConical } from 'lucide-react';
 import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Varian Produk', href: '/variants' },
-    { title: 'Tambah Varian', href: '/variants/create' },
-];
+import { useTranslation } from 'react-i18next';
 
 interface Recipe {
     id: number;
@@ -33,6 +29,12 @@ interface Props {
 }
 
 export default function VariantCreate({ recipes }: Props) {
+    const { t } = useTranslation();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('variants.title', 'Varian Produk'), href: '/variants' },
+        { title: t('variants.addVariant', 'Tambah Varian'), href: '/variants/create' },
+    ];
+
     const [processing, setProcessing] = useState(false);
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
@@ -77,16 +79,16 @@ export default function VariantCreate({ recipes }: Props) {
                     },
                 ),
             {
-                loading: 'Menyimpan varian baru...',
-                success: 'Varian berhasil disimpan!',
-                error: 'Gagal Menyimpan',
+                loading: t('variants.saving', 'Menyimpan varian baru...'),
+                success: t('variants.saveSuccess', 'Varian berhasil disimpan!'),
+                error: t('common.failed', 'Gagal Menyimpan'),
             },
         ).finally(() => setProcessing(false));
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Tambah Varian Produk" />
+            <Head title={t('variants.createTitle', 'Tambah Varian Produk')} />
 
             <div className="mx-auto max-w-3xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
@@ -97,68 +99,68 @@ export default function VariantCreate({ recipes }: Props) {
                     </Button>
                     <div>
                         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <FlaskConical className="text-violet-500" size={22} />
-                            Tambah Varian Produk
+                            <FlaskConical className="text-[#3f9567]" size={22} />
+                            {t('variants.createTitle', 'Tambah Varian Produk')}
                         </h1>
-                        <p className="text-muted-foreground text-sm">Buat varian baru untuk dijual dan hubungkan dengan resep dasar</p>
+                        <p className="text-muted-foreground text-sm">{t('variants.createSubtitle', 'Buat varian baru untuk dijual dan hubungkan dengan resep dasar')}</p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Informasi Varian */}
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-sm font-semibold">Informasi Penjualan Varian</h2>
+                        <h2 className="text-sm font-semibold">{t('variants.salesInfo', 'Informasi Penjualan Varian')}</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="col-span-2 space-y-1.5">
-                                <Label htmlFor="name">Nama Varian *</Label>
+                                <Label htmlFor="name">{t('variants.variantName', 'Nama Varian')} *</Label>
                                 <Input
                                     id="name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="Contoh: Mochi Strawberry Choco (3 pcs)"
+                                    placeholder={t('variants.namePlaceholder', 'Contoh: Mochi Strawberry Choco (3 pcs)')}
                                     required
                                     className={formErrors.name ? 'border-rose-500' : ''}
                                 />
                                 {formErrors.name && <p className="text-xs text-rose-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="sku">SKU (Kode Produk)</Label>
+                                <Label htmlFor="sku">{t('variants.skuCode', 'SKU (Kode Produk)')}</Label>
                                 <Input
                                     id="sku"
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
-                                    placeholder="Contoh: VAR-STRW-CHOCO-3"
+                                    placeholder={t('variants.skuPlaceholder', 'Contoh: VAR-STRW-CHOCO-3')}
                                     className={formErrors.sku ? 'border-rose-500' : ''}
                                 />
                                 {formErrors.sku && <p className="text-xs text-rose-500">{formErrors.sku}</p>}
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="sell_price">Harga Jual (Rp) *</Label>
+                                <Label htmlFor="sell_price">{t('variants.sellPriceLabel', 'Harga Jual (Rp) *')}</Label>
                                 <Input
                                     id="sell_price"
                                     type="text"
                                     value={sellPrice > 0 ? formatRupiah(sellPrice) : ''}
                                     onChange={(e) => setSellPrice(parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                    placeholder="Rp18.000"
+                                    placeholder={formatRupiah(18000)}
                                     required
                                     className={formErrors.sell_price ? 'border-rose-500' : ''}
                                 />
                                 {formErrors.sell_price && <p className="text-xs text-rose-500">{formErrors.sell_price}</p>}
                             </div>
                             <div className="col-span-2 space-y-1.5">
-                                <Label htmlFor="description">Deskripsi Penjualan</Label>
+                                <Label htmlFor="description">{t('variants.description', 'Deskripsi Penjualan')}</Label>
                                 <Textarea
                                     id="description"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Masukkan penjelasan produk untuk slip penjualan atau menu kasir..."
+                                    placeholder={t('variants.descriptionPlaceholder', 'Masukkan penjelasan produk untuk slip penjualan atau menu kasir...')}
                                     rows={2}
                                 />
                             </div>
                             <div className="col-span-2 flex items-center gap-2">
                                 <Checkbox id="is_active" checked={isActive} onCheckedChange={(checked) => setIsActive(!!checked)} />
                                 <Label htmlFor="is_active" className="cursor-pointer text-sm font-normal">
-                                    Varian ini aktif dan tampil di POS kasir
+                                    {t('variants.activeCheckbox', 'Varian ini aktif dan tampil di POS kasir')}
                                 </Label>
                             </div>
                         </div>
@@ -166,13 +168,13 @@ export default function VariantCreate({ recipes }: Props) {
 
                     {/* Penghubung Resep */}
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-sm font-semibold">Formula / Resep Acuan</h2>
+                        <h2 className="text-sm font-semibold">{t('variants.recipeFormula', 'Formula / Resep Acuan')}</h2>
                         <div className="grid grid-cols-3 gap-4">
                             <div className="col-span-2 space-y-1.5">
-                                <Label htmlFor="recipe_id">Pilih Resep Acuan *</Label>
+                                <Label htmlFor="recipe_id">{t('variants.selectRecipe', 'Pilih Resep Acuan *')}</Label>
                                 <Select value={recipeId || ''} onValueChange={(val) => setRecipeId(val)}>
                                     <SelectTrigger className="h-10 rounded-xl">
-                                        <SelectValue placeholder="Pilih resep dasar..." />
+                                        <SelectValue placeholder={t('variants.recipePlaceholder', 'Pilih resep dasar...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {recipes.map((r) => (
@@ -185,7 +187,7 @@ export default function VariantCreate({ recipes }: Props) {
                                 {formErrors.recipe_id && <p className="text-xs text-rose-500">{formErrors.recipe_id}</p>}
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="recipe_qty">Porsi / Kelipatan Resep *</Label>
+                                <Label htmlFor="recipe_qty">{t('variants.recipeQty', 'Porsi / Kelipatan Resep *')}</Label>
                                 <Input
                                     id="recipe_qty"
                                     type="number"
@@ -203,7 +205,7 @@ export default function VariantCreate({ recipes }: Props) {
                         {selectedRecipe && selectedRecipe.ingredients && selectedRecipe.ingredients.length > 0 && (
                             <div className="border-border space-y-2 border-t pt-3">
                                 <span className="text-muted-foreground block text-xs font-semibold">
-                                    Estimasi Konsumsi Bahan Baku (kelipatan {recipeQty}):
+                                    {t('variants.estimatedConsumption', { qty: recipeQty, defaultValue: `Estimasi Konsumsi Bahan Baku (kelipatan ${recipeQty}):` })}
                                 </span>
                                 <div className="flex flex-wrap gap-1.5">
                                     {selectedRecipe.ingredients.map((ing, i) => (
@@ -226,15 +228,15 @@ export default function VariantCreate({ recipes }: Props) {
                         <Calculator size={20} className="text-muted-foreground shrink-0" />
                         <div className="grid flex-1 grid-cols-3 gap-4 text-sm">
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">HPP (Modal Varian)</div>
-                                <div className="font-semibold text-violet-700 dark:text-violet-400">{formatRupiah(hpp)}</div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">{t('variants.hppCost', 'HPP (Modal Varian)')}</div>
+                                <div className="font-semibold text-[#3f9567]">{formatRupiah(hpp)}</div>
                             </div>
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">Untung/Varian</div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">{t('variants.profitPerVariant', 'Untung/Varian')}</div>
                                 <div className={`font-semibold ${profit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{formatRupiah(profit)}</div>
                             </div>
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">Margin Keuntungan</div>
+                                <div className="text-muted-foreground mb-0.5 text-xs">{t('variants.profitMargin', 'Margin Keuntungan')}</div>
                                 <div
                                     className={`font-semibold ${margin >= 20 ? 'text-emerald-600' : margin >= 10 ? 'text-amber-600' : 'text-rose-600'}`}
                                 >
@@ -246,10 +248,10 @@ export default function VariantCreate({ recipes }: Props) {
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/variants">Batal</Link>
+                            <Link href="/variants">{t('common.cancel', 'Batal')}</Link>
                         </Button>
-                        <Button type="submit" disabled={processing} className="rounded-xl bg-violet-600 px-5 text-white hover:bg-violet-700">
-                            {processing ? 'Menyimpan...' : 'Tambah Varian'}
+                        <Button type="submit" disabled={processing} variant="owner" className="rounded-xl px-5">
+                            {processing ? t('common.saving', 'Menyimpan...') : t('variants.addVariant', 'Tambah Varian')}
                         </Button>
                     </div>
                 </form>

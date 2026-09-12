@@ -4,7 +4,7 @@ import { type LandingProps } from './types';
 
 export function Hero({ goToDashboard }: LandingProps) {
     return (
-                    <section className="hero-gradient relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(105,190,125,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(222,248,229,0.9),transparent_28%),linear-gradient(180deg,#f8fff9_0%,#ffffff_52%,#eaf8ed_100%)] px-5 pb-28 pt-16 sm:px-6 lg:px-10 lg:pb-36 lg:pt-40">
+                    <section className="hero-gradient relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(105,190,125,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(222,248,229,0.9),transparent_28%),linear-gradient(180deg,#f8fff9_0%,#ffffff_52%,#eaf8ed_100%)] px-5 pb-20 pt-12 sm:px-6 lg:px-10 lg:pb-28 lg:pt-24">
 
                         <div className="hero-orb absolute left-[-120px] top-[120px] size-[340px] rounded-full bg-[#a8e3b5]/70 blur-[110px]" />
 
@@ -16,7 +16,7 @@ export function Hero({ goToDashboard }: LandingProps) {
 
                         <div className="absolute inset-0 opacity-[0.4] hero-grid" />
 
-                        <div className="relative mx-auto grid max-w-7xl items-center gap-20 lg:grid-cols-[0.92fr_1.08fr]">
+                        <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
 
                             {/* HERO COPY */}
 
@@ -24,7 +24,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                                 data-reveal
                                 className="reveal-hidden relative z-10"
                             >
-                                <h1 className="max-w-3xl text-[2.8rem] font-black leading-[0.82] tracking-[-0.07em] sm:text-5xl lg:text-[5rem]">
+                                <h1 className="max-w-3xl text-[2.3rem] font-black leading-[0.86] tracking-[-0.06em] sm:text-4xl lg:text-[4.2rem]">
                                     Usaha lebih
                                     <br />
 
@@ -33,7 +33,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                                             tertata
                                         </span>
 
-                                        <span className="absolute -bottom-2 left-0 right-0 -z-0 h-5 rounded-[0.75rem] bg-[#D8F380] opacity-90 sm:h-8" />
+                                        <span className="absolute -bottom-2 left-0 right-0 -z-0 h-4 rounded-[0.6rem] bg-[#D8F380] opacity-90 sm:h-6" />
                                     </span>{' '}
 
                                     <span className="text-[#17182A]">
@@ -47,7 +47,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </span>
                                 </h1>
 
-                                <p className="mt-7 max-w-xl text-base font-semibold leading-relaxed text-[#66677A] sm:text-lg">
+                                <p className="mt-5 max-w-xl text-sm font-semibold leading-relaxed text-[#66677A] sm:text-base">
                                     VVARSA menyatukan stok, kasir,
                                     penjualan, dan laporan dalam satu sistem
                                     yang elegan, efisien, dan siap berkembang.
@@ -61,7 +61,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </span>
                                 </p>
 
-                                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                                     <Link
                                         href={goToDashboard}
                                         className="group inline-flex items-center justify-center rounded-2xl bg-[#5E4BF2] px-7 py-4 text-sm font-black text-white shadow-[0_18px_45px_rgba(94,75,242,0.45)] transition duration-300 hover:-translate-y-1 hover:bg-[#4938D9] sm:text-base"
@@ -83,7 +83,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </a>
                                 </div>
 
-                                <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
+                                <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
                                     <div className="rounded-full border border-[#EAE5F8] bg-white px-4 py-2 shadow-sm">
                                         <div className="flex items-center gap-1">
                                             {[1, 2, 3, 4, 5].map(

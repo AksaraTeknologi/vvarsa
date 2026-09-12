@@ -6,13 +6,14 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { Building2, Search } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getColumns, type Tenant } from './columns';
 import { DataTable } from './data-table';
 import { EditTenantDialog } from './edit-tenant-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin Dashboard', href: '/admin' },
-    { title: 'Tenants', href: '/admin/tenants' },
+    { title: 'navigation.dashboard', href: '/admin' },
+    { title: 'navigation.tenants', href: '/admin/tenants' },
 ];
 
 interface Plan {
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export default function TenantsIndex({ tenants, plans, filters }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [planId, setPlanId] = useState(filters.plan_id || 'all');
 
@@ -62,11 +64,11 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
         setIsEditOpen(true);
     };
 
-    const columns = getColumns(handleEdit);
+    const columns = getColumns(handleEdit, t);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Kelola Tenant" />
+            <Head title={t('admin.tenants.title')} />
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
                 <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
@@ -76,12 +78,12 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                             <div className="mb-1.5 flex items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1a56ff]/20 bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest text-[#1a56ff] uppercase">
                                     <Building2 size={11} />
-                                    Platform Admin
+                                    {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Kelola Tenant</h1>
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.tenants.title')}</h1>
                             <p className="mt-0.5 text-sm text-[#5F6073]">
-                                Pantau daftar tenant bisnis yang terdaftar, status operasional, dan kapasitas paket langganan.
+                                {t('admin.tenants.subtitle')}
                             </p>
                         </div>
                     </div>
@@ -95,7 +97,7 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                             <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                             <Input
                                 type="text"
-                                placeholder="Cari nama tenant atau slug..."
+                                placeholder={t('admin.tenants.searchPlaceholder')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleFilter()}
@@ -106,10 +108,10 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                         <div className="w-full sm:w-48">
                             <Select value={planId} onValueChange={(val) => setPlanId(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Semua Paket" />
+                                    <SelectValue placeholder={t('admin.tenants.allPlans')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Paket</SelectItem>
+                                    <SelectItem value="all">{t('admin.tenants.allPlans')}</SelectItem>
                                     {plans.map((plan) => (
                                         <SelectItem key={plan.id} value={plan.id.toString()}>
                                             {plan.name}
@@ -120,7 +122,7 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                         </div>
 
                         <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
-                            Filter
+                            {t('common.filter')}
                         </Button>
                     </div>
 
@@ -132,8 +134,11 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                         {tenants.last_page > 1 && (
                             <div className="border-border bg-card flex items-center justify-between rounded-xl border border-t px-4 py-3 shadow-sm">
                                 <p className="text-muted-foreground text-sm">
-                                    Menampilkan {(tenants.current_page - 1) * tenants.per_page + 1}–
-                                    {Math.min(tenants.current_page * tenants.per_page, tenants.total)} dari {tenants.total} tenant
+                                    {t('admin.tenants.showing', {
+                                        from: (tenants.current_page - 1) * tenants.per_page + 1,
+                                        to: Math.min(tenants.current_page * tenants.per_page, tenants.total),
+                                        total: tenants.total,
+                                    })}
                                 </p>
                                 <div className="flex gap-1">
                                     {tenants.links.map((link, i) => (

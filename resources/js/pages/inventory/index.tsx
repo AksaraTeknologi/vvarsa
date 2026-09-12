@@ -6,14 +6,15 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { type BreadcrumbItem } from '@/types';
 import { type InventoryFilters, type PaginatedData, type Product, type ProductCategory } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
-import { AlertTriangle, Package, PackagePlus, Search } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Package, PackagePlus, Search } from 'lucide-react';
 import { useState } from 'react';
-import { columns } from './columns';
+import { useTranslation } from 'react-i18next';
+import { getColumns } from './columns';
 import { DataTable } from './data-table';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Inventori', href: '/inventory' },
-    { title: 'Produk', href: '/inventory' },
+    { title: 'navigation.inventory', href: '/inventory' },
+    { title: 'navigation.products', href: '/inventory' },
 ];
 
 interface Props {
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export default function InventoryIndex({ products, categories, filters, low_stock_list, total_count, max_products }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [category, setCategory] = useState(filters.category || 'all');
 
@@ -51,30 +53,39 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
         });
     };
 
-    const tableColumns = columns(handleToggleActive);
+    const tableColumns = getColumns(t, handleToggleActive);
 
     const usagePercent = Math.round((total_count / max_products) * 100);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Inventori - Produk" />
+            <Head title={`${t('navigation.inventory')} - ${t('navigation.products')}`} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Produk</h1>
-                        <p className="text-muted-foreground text-sm">
-                            {total_count} / {max_products} produk digunakan
+                    <div className="flex items-center gap-3">
+                        {filters.low_stock && (
+                            <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
+                                <Link href="/inventory">
+                                    <ArrowLeft size={18} />
+                                </Link>
+                            </Button>
+                        )}
+                        <div>
+                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('navigation.products')}</h1>
+                        <p className="text-muted-foreground mt-1 text-sm">
+                            {t('inventory.productsUsed', { current: total_count, max: max_products })}
                         </p>
+                        </div>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="secondary" asChild className="rounded-xl">
-                            <Link href="/inventory/stock-in">Stok Masuk</Link>
+                            <Link href="/inventory/stock-in">{t('navigation.stockIn')}</Link>
                         </Button>
-                        <Button asChild className="inline-flex items-center gap-2 rounded-xl">
+                        <Button asChild variant="owner" className="rounded-xl">
                             <Link href="/inventory/create">
                                 <PackagePlus size={16} />
-                                Tambah Produk
+                                {t('inventory.addProduct')}
                             </Link>
                         </Button>
                     </div>
@@ -83,7 +94,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                 {/* Usage bar */}
                 <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
                     <div className="mb-2 flex justify-between text-sm">
-                        <span className="text-muted-foreground">Kapasitas Produk (Paket Free)</span>
+                        <span className="text-muted-foreground">{t('inventory.capacityLabel')}</span>
                         <span className="text-foreground font-semibold">
                             {total_count}/{max_products}
                         </span>
@@ -107,26 +118,26 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                 </div>
 
                 {/* Filters */}
-                <div className="bg-card border-border flex flex-col items-center gap-3 rounded-2xl border p-4 sm:flex-row">
+                <div className="flex flex-col items-center gap-3 sm:flex-row">
                     <div className="relative w-full flex-1">
                         <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                         <Input
                             type="text"
-                            placeholder="Cari nama produk atau SKU..."
+                            placeholder={t('inventory.searchPlaceholder')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="w-full rounded-xl pl-9"
+                            className="h-12 w-full rounded-xl !border-[#dde9df] !bg-white pl-9 text-sm text-slate-700 shadow-sm placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-[#b8d9bf]"
                         />
                     </div>
 
                     <div className="w-full sm:w-48">
                         <Select value={category} onValueChange={setCategory}>
-                            <SelectTrigger className="w-full rounded-xl">
-                                <SelectValue placeholder="Kategori" />
+                            <SelectTrigger className="h-12 w-full rounded-xl border-[#dde9df] bg-white text-sm text-slate-700 shadow-sm">
+                                <SelectValue placeholder={t('inventory.category')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">Semua Kategori</SelectItem>
+                                <SelectItem value="all">{t('inventory.allCategories')}</SelectItem>
                                 {categories.map((c) => (
                                     <SelectItem key={c.id} value={c.id.toString()}>
                                         {c.name}
@@ -136,8 +147,8 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                         </Select>
                     </div>
 
-                    <Button onClick={applyFilter} className="w-full rounded-xl px-6 sm:w-auto">
-                        Filter
+                    <Button onClick={applyFilter} variant="owner" className="h-12 rounded-xl px-4 py-2 text-sm">
+                        {t('common.filter')}
                     </Button>
                 </div>
 
@@ -150,8 +161,11 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                         {products.last_page > 1 && (
                             <div className="border-border bg-card flex items-center justify-between rounded-xl border border-t px-4 py-3 shadow-sm">
                                 <p className="text-muted-foreground text-sm">
-                                    Menampilkan {(products.current_page - 1) * products.per_page + 1}–
-                                    {Math.min(products.current_page * products.per_page, products.total)} dari {products.total} produk
+                                    {t('inventory.showingPagination', {
+                                        start: (products.current_page - 1) * products.per_page + 1,
+                                        end: Math.min(products.current_page * products.per_page, products.total),
+                                        total: products.total,
+                                    })}
                                 </p>
                                 <div className="flex gap-1">
                                     {products.links.map((link, i) => (
@@ -173,18 +187,23 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
                         <div className="mb-4 flex items-center justify-between">
                             <div>
-                                <h2 className="font-semibold">Stok Menipis</h2>
-                                <p className="text-muted-foreground text-xs">Produk yang perlu segera dibeli</p>
+                                <h2 className="font-semibold">{t('inventory.lowStockTitle')}</h2>
+                                <p className="text-muted-foreground text-xs">{t('inventory.lowStockSubtitle')}</p>
                             </div>
-                            <Button variant="ghost" size="sm" asChild className="rounded-lg text-xs">
-                                <Link href="/inventory?low_stock=1">Lihat semua</Link>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                asChild
+                                className="-mr-2 rounded-lg text-xs text-[#3f9567] hover:bg-[#edf8f1] hover:text-[#2f7d51]"
+                            >
+                                <Link href="/inventory?low_stock=1">{t('inventory.viewAll')}</Link>
                             </Button>
                         </div>
 
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
                                 <Package size={32} className="mb-2 text-emerald-500" />
-                                <p className="text-muted-foreground text-sm">Semua stok aman</p>
+                                <p className="text-muted-foreground text-sm">{t('inventory.allStockSafe')}</p>
                             </div>
                         ) : (
                             <div className="space-y-3">
@@ -199,7 +218,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-foreground truncate text-sm font-medium">{product.name}</p>
                                                 <p className="text-muted-foreground text-xs">
-                                                    Batas {product.min_stock} {product.unit}
+                                                    {t('inventory.minStockLimit', { min: product.min_stock, unit: product.unit })}
                                                 </p>
                                             </div>
                                             <div

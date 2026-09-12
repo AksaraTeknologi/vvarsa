@@ -5,18 +5,18 @@ export function Benefits() {
         <section
             data-reveal
             id="manfaat"
-            className="reveal-hidden relative mx-auto max-w-7xl overflow-visible px-6 py-28 lg:px-10 lg:py-36"
+            className="reveal-hidden relative mx-auto max-w-7xl overflow-visible px-6 py-20 lg:px-10 lg:py-24"
         >
             <div className="pointer-events-none absolute left-[-100px] top-[15%] size-[300px] rounded-full bg-[#D8F380]/30 blur-[110px]" />
 
             <div className="pointer-events-none absolute right-[-100px] bottom-[5%] size-[320px] rounded-full bg-[#BDB5FF]/25 blur-[110px]" />
 
-            <div className="relative grid items-center gap-16 lg:grid-cols-[0.8fr_1.2fr]">
+            <div className="relative grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr]">
 
                 {/* LEFT COPY */}
 
                 <div>
-                    <h2 className="mt-6 text-[2.5rem] font-black leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-[3.6rem]">
+                    <h2 className="mt-4 text-[2.1rem] font-black leading-[1.02] tracking-[-0.05em] sm:text-4xl lg:text-[3rem]">
                         Usaha sibuk,
                         <br />
 
@@ -35,7 +35,7 @@ export function Benefits() {
                         </span>
                     </h2>
 
-                    <p className="mt-6 max-w-lg text-base font-semibold leading-relaxed text-[#777689] sm:text-lg">
+                    <p className="mt-4 max-w-lg text-sm font-semibold leading-relaxed text-[#777689] sm:text-base">
                         VVARSA menyatukan stok, kasir,
                         penjualan, dan laporan dalam satu
                         ekosistem. Dengan operasional yang lebih

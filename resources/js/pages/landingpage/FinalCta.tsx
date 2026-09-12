@@ -4,7 +4,7 @@ import { type LandingProps } from './types';
 
 export function FinalCta({ goToDashboard }: LandingProps) {
     return (
-                    <section className="px-6 py-20 lg:px-10 lg:py-28">
+                    <section className="px-6 py-16 lg:px-10 lg:py-20">
                         <div
                             data-reveal
                             className="reveal-hidden relative mx-auto max-w-7xl overflow-hidden rounded-[3rem] bg-[linear-gradient(135deg,#5E4BF2_0%,#4736D4_100%)] px-7 py-14 text-white shadow-[0_35px_90px_rgba(94,75,242,0.3)] sm:px-12 lg:px-20 lg:py-20"
@@ -23,7 +23,7 @@ export function FinalCta({ goToDashboard }: LandingProps) {
                                         🚀 Saatnya naik level
                                     </span>
 
-                                    <h2 className="mt-5 max-w-2xl text-[2.2rem] font-black leading-tight tracking-tight sm:text-4xl lg:text-[4rem]">
+                                    <h2 className="mt-4 max-w-2xl text-[2rem] font-black leading-tight tracking-tight sm:text-3xl lg:text-[3.4rem]">
                                         Rapiin operasional.
                                         <br />
                                         Naikin omzet.
@@ -33,7 +33,7 @@ export function FinalCta({ goToDashboard }: LandingProps) {
                                         </span>
                                     </h2>
 
-                                    <p className="mt-5 max-w-xl text-sm font-semibold leading-relaxed text-white/70 sm:text-base">
+                                    <p className="mt-4 max-w-xl text-sm font-semibold leading-relaxed text-white/70 sm:text-base">
                                         Jangan biarkan proses manual
                                         menghambat penjualan. Mulai kelola
                                         bisnis dengan sistem yang lebih cepat,
@@ -42,7 +42,7 @@ export function FinalCta({ goToDashboard }: LandingProps) {
 
                                     <Link
                                         href={goToDashboard}
-                                        className="group mt-8 inline-flex items-center rounded-2xl bg-[#D8F380] px-7 py-4 text-sm font-black text-[#17182A] shadow-xl transition hover:-translate-y-1 hover:bg-white sm:text-base"
+                                        className="group mt-6 inline-flex items-center rounded-2xl bg-[#D8F380] px-6 py-3.5 text-sm font-black text-[#17182A] shadow-xl transition hover:-translate-y-1 hover:bg-white sm:text-base"
                                     >
                                         Coba Gratis Sekarang
 

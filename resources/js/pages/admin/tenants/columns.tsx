@@ -13,6 +13,7 @@ export interface Tenant {
     name: string;
     slug: string;
     business_type: string;
+    currency: 'IDR' | 'USD' | 'SGD';
     phone: string | null;
     address: string | null;
     is_active: boolean;
@@ -25,7 +26,10 @@ export interface Tenant {
     };
 }
 
-export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[] => [
+export const getColumns = (
+    onEdit: (tenant: Tenant) => void,
+    t: (key: string, options?: any) => string = (k) => k
+): ColumnDef<Tenant>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -36,7 +40,7 @@ export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Tenant / Bisnis" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.tenants.colTenant')} />,
         cell: ({ row }) => {
             const tenant = row.original;
             return (
@@ -54,7 +58,7 @@ export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[
     },
     {
         accessorKey: 'plan',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Paket" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.tenants.colPlan')} />,
         cell: ({ row }) => {
             return (
                 <Badge variant="outline" className="capitalize">
@@ -65,21 +69,21 @@ export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[
     },
     {
         accessorKey: 'products_count',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Produk" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.tenants.colProducts')} />,
         cell: ({ row }) => {
             return <div className="text-center font-medium">{row.original.products_count}</div>;
         },
     },
     {
         accessorKey: 'users_count',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Pengguna" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.tenants.colUsers')} />,
         cell: ({ row }) => {
             return <div className="text-center font-medium">{row.original.users_count}</div>;
         },
     },
     {
         accessorKey: 'is_active',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.tenants.colStatus')} />,
         cell: ({ row }) => {
             const tenant = row.original;
             return (
@@ -91,14 +95,14 @@ export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[
                             : 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
                     }
                 >
-                    {tenant.is_active ? 'Aktif' : 'Nonaktif'}
+                    {tenant.is_active ? t('admin.active') : t('admin.inactive')}
                 </Badge>
             );
         },
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
+        header: () => <div className="text-center">{t('admin.tenants.colActions')}</div>,
         cell: ({ row }) => {
             const tenant = row.original;
 
@@ -112,10 +116,10 @@ export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[
 
             return (
                 <div className="flex items-center justify-center gap-2">
-                    <Button variant="ghost" size="icon" onClick={() => onEdit(tenant)} className="hover:bg-muted h-8 w-8" title="Edit Tenant">
+                    <Button variant="ghost" size="icon" onClick={() => onEdit(tenant)} className="hover:bg-muted h-8 w-8" title={t('admin.tenants.editTitle')}>
                         <Edit size={15} />
                     </Button>
-                    <Button variant="ghost" size="icon" asChild className="hover:bg-muted h-8 w-8" title="Detail Tenant">
+                    <Button variant="ghost" size="icon" asChild className="hover:bg-muted h-8 w-8" title={t('admin.tenants.detailTitle')}>
                         <Link href={`/admin/tenants/${tenant.id}`}>
                             <Eye size={15} />
                         </Link>
@@ -125,7 +129,7 @@ export const getColumns = (onEdit: (tenant: Tenant) => void): ColumnDef<Tenant>[
                         size="icon"
                         onClick={handleToggleActive}
                         className={`hover:bg-muted h-8 w-8 ${tenant.is_active ? 'text-rose-500' : 'text-emerald-500'}`}
-                        title={tenant.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+                        title={tenant.is_active ? t('admin.inactive') : t('admin.active')}
                     >
                         {tenant.is_active ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
                     </Button>

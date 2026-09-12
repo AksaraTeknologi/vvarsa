@@ -21,7 +21,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
         <>
             <section
                 id="produk"
-                className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.38),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(216,243,128,0.25),transparent_28%),linear-gradient(180deg,#F4F0FF_0%,#F0EFF7_40%,#F7F2ED_100%)] px-6 py-20 text-[#17182A] lg:px-10 lg:py-28"
+                className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.38),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(216,243,128,0.25),transparent_28%),linear-gradient(180deg,#F4F0FF_0%,#F0EFF7_40%,#F7F2ED_100%)] px-6 py-16 text-[#17182A] lg:px-10 lg:py-20"
             >
                 <div className="absolute right-[-120px] top-[-100px] size-[420px] rounded-full bg-[#5E4BF2]/16 blur-[120px]" />
 
@@ -39,7 +39,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                 Semua dalam satu tempat
                             </span>
 
-                            <h2 className="mt-6 text-[3.1rem] font-black leading-[0.86] tracking-[-0.07em] text-[#17182A] sm:text-5xl lg:text-[5.2rem]">
+                            <h2 className="mt-4 text-[2.5rem] font-black leading-[0.9] tracking-[-0.06em] text-[#17182A] sm:text-4xl lg:text-[4.5rem]">
                                 Satu dashboard.
                                 <br />
                                 <span className="text-[#5E4BF2]">
@@ -49,13 +49,13 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                 jadi mudah.
                             </h2>
 
-                            <p className="mt-6 max-w-[31rem] text-sm font-semibold leading-relaxed text-[#5F6073] sm:text-base">
+                            <p className="mt-4 max-w-[31rem] text-sm font-semibold leading-relaxed text-[#5F6073] sm:text-base">
                                 Tidak perlu pindah-pindah aplikasi.
                                 Semua data penting bisnismu saling
                                 terhubung secara otomatis.
                             </p>
 
-                            <div className="mt-8 space-y-3">
+                            <div className="mt-6 space-y-3">
                                 {features.map((feature, index) => {
                                     const Icon = feature.icon;
                                     const active = activeFeature === index;
@@ -77,7 +77,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                                 className={`flex size-12 shrink-0 items-center justify-center rounded-[1.1rem] ${
                                                     active
                                                         ? 'bg-[#D8F380] text-[#17182A] shadow-[0_8px_18px_rgba(216,243,128,0.35)]'
-                                                        : 'bg-[#F2F0FF] text-[#5E4BF2]'
+                                                        : 'bg-[#eaf6ee] text-[#2f8f5c]'
                                                 }`}
                                             >
                                                 <Icon className="size-5" />
@@ -238,12 +238,12 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
 
                                     <div className="space-y-3">
                                         <div
-                                            className={`rounded-[1.5rem] p-4 text-[#17182A] shadow-[0_24px_46px_rgba(216,243,128,0.28)] ${
+                                            className={`rounded-[1.5rem] p-4 text-[#17182A] shadow-[0_18px_35px_rgba(94,75,242,0.08)] ${
                                                 features[activeFeature].tone === 'orange'
-                                                    ? 'bg-[linear-gradient(135deg,#FFB49A_0%,#FF8C67_100%)]'
+                                                    ? 'bg-[linear-gradient(135deg,#FFF1EC_0%,#FDE4DB_100%)]'
                                                     : features[activeFeature].tone === 'blue'
-                                                      ? 'bg-[linear-gradient(135deg,#B9E3FF_0%,#79D7FF_100%)]'
-                                                      : 'bg-[linear-gradient(135deg,#D8F380_0%,#C8F369_100%)]'
+                                                      ? 'bg-[linear-gradient(135deg,#EEF6FF_0%,#E0F0FF_100%)]'
+                                                      : 'bg-[linear-gradient(135deg,#F4F0FF_0%,#ECE7FF_100%)]'
                                             }`}
                                         >
                                             <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#37421A] opacity-70">

@@ -4,22 +4,25 @@ import { type Supplier } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
 import { FormEventHandler } from 'react';
-
-const BUSINESS_TYPES = [
-    { value: '', label: 'Pilih Jenis Bisnis' },
-    { value: 'fnb', label: 'Food & Beverage (FnB)' },
-    { value: 'retail', label: 'Retail' },
-    { value: 'fashion', label: 'Fashion' },
-];
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     supplier: Supplier;
 }
 
 export default function SupplierEdit({ supplier }: Props) {
+    const { t } = useTranslation();
+
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Supplier', href: '/suppliers' },
-        { title: 'Edit', href: `/suppliers/${supplier.id}/edit` },
+        { title: t('navigation.suppliers'), href: '/suppliers' },
+        { title: t('common.edit'), href: `/suppliers/${supplier.id}/edit` },
+    ];
+
+    const businessTypes = [
+        { value: '', label: t('supplier.selectBusinessType') },
+        { value: 'fnb', label: t('supplier.businessTypes.fnb') },
+        { value: 'retail', label: t('supplier.businessTypes.retail') },
+        { value: 'fashion', label: t('supplier.businessTypes.fashion') },
     ];
 
     // Inisialisasi state form dengan data supplier yang sudah ada
@@ -56,14 +59,14 @@ export default function SupplierEdit({ supplier }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Edit Supplier" />
+            <Head title={t('supplier.editTitle')} />
 
             <div className="mx-auto max-w-4xl p-4 md:p-6">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Edit Supplier</h1>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('supplier.editTitle')}</h1>
                         <p className="text-muted-foreground mt-1 text-sm">
-                            Perbarui informasi untuk supplier <span className="text-foreground font-semibold">{supplier.name}</span>.
+                            {t('supplier.editSubtitleWithName', { name: supplier.name })}
                         </p>
                     </div>
                     <Link
@@ -71,7 +74,7 @@ export default function SupplierEdit({ supplier }: Props) {
                         className="bg-muted text-foreground hover:bg-muted/80 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors"
                     >
                         <ArrowLeft size={16} />
-                        Kembali
+                        {t('common.back')}
                     </Link>
                 </div>
 
@@ -79,15 +82,16 @@ export default function SupplierEdit({ supplier }: Props) {
                     <form onSubmit={submit} className="space-y-6">
                         {/* Basic Information */}
                         <div>
-                            <h2 className="mb-4 text-lg font-semibold">Informasi Dasar</h2>
+                            <h2 className="mb-4 text-lg font-semibold">{t('supplier.basicInfo')}</h2>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-1">
                                     <label htmlFor="name" className="text-sm font-medium">
-                                        Nama Supplier <span className="text-red-500">*</span>
+                                        {t('supplier.supplierName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         id="name"
                                         type="text"
+                                        placeholder={t('supplier.supplierNamePlaceholder')}
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -98,7 +102,7 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1">
                                     <label htmlFor="business_type" className="text-sm font-medium">
-                                        Jenis Bisnis
+                                        {t('supplier.businessType')}
                                     </label>
                                     <select
                                         id="business_type"
@@ -106,7 +110,7 @@ export default function SupplierEdit({ supplier }: Props) {
                                         onChange={(e) => setData('business_type', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
                                     >
-                                        {BUSINESS_TYPES.map((type) => (
+                                        {businessTypes.map((type) => (
                                             <option key={type.value} value={type.value}>
                                                 {type.label}
                                             </option>
@@ -117,12 +121,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1 sm:col-span-2">
                                     <label htmlFor="product_categories" className="text-sm font-medium">
-                                        Kategori Produk
+                                        {t('supplier.productCategories')}
                                     </label>
                                     <input
                                         id="product_categories"
                                         type="text"
-                                        placeholder="Contoh: Sayuran, Daging, Bumbu Dapur (pisahkan dengan koma)"
+                                        placeholder={t('supplier.productCategoriesPlaceholder')}
                                         value={data.product_categories}
                                         onChange={(e) => setData('product_categories', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -132,11 +136,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1 sm:col-span-2">
                                     <label htmlFor="description" className="text-sm font-medium">
-                                        Deskripsi Singkat
+                                        {t('supplier.shortDescription')}
                                     </label>
                                     <textarea
                                         id="description"
                                         rows={3}
+                                        placeholder={t('supplier.notesPlaceholder')}
                                         value={data.description}
                                         onChange={(e) => setData('description', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -150,15 +155,16 @@ export default function SupplierEdit({ supplier }: Props) {
 
                         {/* Contact & Location Info */}
                         <div>
-                            <h2 className="mb-4 text-lg font-semibold">Kontak & Lokasi</h2>
+                            <h2 className="mb-4 text-lg font-semibold">{t('supplier.contactAndLocation')}</h2>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-1">
                                     <label htmlFor="contact_name" className="text-sm font-medium">
-                                        Nama Kontak (PIC)
+                                        {t('supplier.picName')}
                                     </label>
                                     <input
                                         id="contact_name"
                                         type="text"
+                                        placeholder={t('supplier.picNamePlaceholder')}
                                         value={data.contact_name}
                                         onChange={(e) => setData('contact_name', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -168,11 +174,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1">
                                     <label htmlFor="phone" className="text-sm font-medium">
-                                        Nomor Telepon
+                                        {t('supplier.phone')}
                                     </label>
                                     <input
                                         id="phone"
                                         type="tel"
+                                        placeholder={t('supplier.phonePlaceholder')}
                                         value={data.phone}
                                         onChange={(e) => setData('phone', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -182,11 +189,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1">
                                     <label htmlFor="email" className="text-sm font-medium">
-                                        Email
+                                        {t('common.email')}
                                     </label>
                                     <input
                                         id="email"
                                         type="email"
+                                        placeholder={t('supplier.emailPlaceholder')}
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -196,12 +204,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1">
                                     <label htmlFor="website" className="text-sm font-medium">
-                                        Website / Social Media
+                                        {t('supplier.website')}
                                     </label>
                                     <input
                                         id="website"
                                         type="url"
-                                        placeholder="https://..."
+                                        placeholder={t('supplier.websitePlaceholder')}
                                         value={data.website}
                                         onChange={(e) => setData('website', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -211,11 +219,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1 sm:col-span-2">
                                     <label htmlFor="city" className="text-sm font-medium">
-                                        Kota
+                                        {t('supplier.city')}
                                     </label>
                                     <input
                                         id="city"
                                         type="text"
+                                        placeholder={t('supplier.cityPlaceholder')}
                                         value={data.city}
                                         onChange={(e) => setData('city', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -225,11 +234,12 @@ export default function SupplierEdit({ supplier }: Props) {
 
                                 <div className="space-y-1 sm:col-span-2">
                                     <label htmlFor="address" className="text-sm font-medium">
-                                        Alamat Lengkap
+                                        {t('supplier.fullAddress')}
                                     </label>
                                     <textarea
                                         id="address"
                                         rows={3}
+                                        placeholder={t('supplier.addressPlaceholder')}
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
                                         className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -245,7 +255,7 @@ export default function SupplierEdit({ supplier }: Props) {
                                 onClick={() => reset()}
                                 className="border-border bg-background hover:bg-muted rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
                             >
-                                Kembalikan (Reset)
+                                {t('supplier.resetEdit')}
                             </button>
                             <button
                                 type="submit"
@@ -253,7 +263,7 @@ export default function SupplierEdit({ supplier }: Props) {
                                 className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors disabled:opacity-70"
                             >
                                 <Save size={16} />
-                                {processing ? 'Menyimpan...' : 'Perbarui Supplier'}
+                                {processing ? t('common.saving') : t('supplier.updateSupplier')}
                             </button>
                         </div>
                     </form>

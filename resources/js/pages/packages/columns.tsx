@@ -22,12 +22,12 @@ interface PackageModel {
     variants?: ProductVariant[];
 }
 
-function PackageActions({ pkg }: { pkg: PackageModel }) {
+function PackageActions({ pkg, t }: { pkg: PackageModel; t: any }) {
     const handleDelete = () => {
         handleAsyncAction(() => routerPromise('delete', `/packages/${pkg.id}`, {}, { preserveScroll: true }), {
-            loading: `Menghapus paket "${pkg.name}"...`,
-            success: `Paket "${pkg.name}" berhasil dihapus!`,
-            error: 'Gagal Menghapus',
+            loading: t('packages.deleting', { name: pkg.name, defaultValue: `Menghapus paket "${pkg.name}"...` }),
+            success: t('packages.deleteSuccess', { name: pkg.name, defaultValue: `Paket "${pkg.name}" berhasil dihapus!` }),
+            error: t('common.failed', 'Gagal Menghapus'),
         });
     };
 
@@ -41,8 +41,8 @@ function PackageActions({ pkg }: { pkg: PackageModel }) {
                         </Link>
                     </Button>
                 </TooltipTrigger>
-                <TooltipContent>
-                    <p>Edit Paket</p>
+                <TooltipContent className="bg-[#5aa67a] text-white" arrowClassName="!bg-[#5aa67a] !fill-[#5aa67a]">
+                    <p>{t('packages.editPackage', 'Edit Paket')}</p>
                 </TooltipContent>
             </Tooltip>
 
@@ -53,40 +53,40 @@ function PackageActions({ pkg }: { pkg: PackageModel }) {
                             trigger={
                                 <Button variant="link" size="icon" className="size-8 text-red-500 hover:cursor-pointer">
                                     <Trash className="size-4" />
-                                    <span className="sr-only">Hapus Paket</span>
+                                    <span className="sr-only">{t('packages.deletePackage', 'Hapus Paket')}</span>
                                 </Button>
                             }
-                            title="Apakah Anda yakin ingin menghapus paket produk ini?"
+                            title={t('packages.deleteConfirm', 'Apakah Anda yakin ingin menghapus paket produk ini?')}
                             itemName={pkg.name}
                             onConfirm={handleDelete}
                         />
                     </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                    <p>Hapus Paket</p>
+                <TooltipContent className="bg-[#5aa67a] text-white" arrowClassName="!bg-[#5aa67a] !fill-[#5aa67a]">
+                    <p>{t('packages.deletePackage', 'Hapus Paket')}</p>
                 </TooltipContent>
             </Tooltip>
         </div>
     );
 }
 
-export const columns: ColumnDef<PackageModel>[] = [
+export const columns = (t: any): ColumnDef<PackageModel>[] => [
     {
         accessorKey: 'no',
-        header: 'No',
+        header: () => <div className="w-full text-center">No</div>,
         cell: ({ row }) => {
             const index = row.index + 1;
-            return <div className="font-medium">{index}</div>;
+            return <div className="w-full text-center font-medium">{index}</div>;
         },
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nama Paket" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.packageName', 'Nama Paket')} />,
         cell: ({ row }) => {
             const pkg = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className="rounded-lg bg-indigo-50 p-1.5 text-indigo-500 dark:bg-indigo-950/40">
+                    <div className="rounded-lg bg-[#edf8f1] p-1.5 text-[#3f9567]">
                         <Package size={16} />
                     </div>
                     <div>
@@ -99,33 +99,39 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         accessorKey: 'capacity',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Kapasitas (Isi)" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.capacity', 'Kapasitas (Isi)')} centered />,
         cell: ({ row }) => {
-            return <div className="font-semibold">{row.original.capacity} Pcs</div>;
+            return (
+                <div className="w-full text-center font-semibold">
+                    {t('packages.capacityPcs', { count: row.original.capacity, defaultValue: `${row.original.capacity} Pcs` })}
+                </div>
+            );
         },
     },
     {
         accessorKey: 'price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Bundle" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.bundlePrice', 'Harga Bundle')} centered />,
         cell: ({ row }) => {
-            return <div className="font-bold text-indigo-600">{formatRupiah(Number(row.original.price))}</div>;
+            return <div className="w-full text-center font-semibold text-foreground">{formatRupiah(Number(row.original.price))}</div>;
         },
     },
     {
         accessorKey: 'variants',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Batasan Rasa" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.flavorLimit', 'Batasan Rasa')} centered />,
         cell: ({ row }) => {
             const pkg = row.original;
             return !pkg.variants || pkg.variants.length === 0 ? (
-                <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-                    Bebas Mix
-                </span>
+                <div className="flex w-full justify-center">
+                    <span className="inline-flex items-center rounded-full border border-[#c7e0ce] bg-[#edf8f1] px-2 py-0.5 text-xs font-medium text-[#3f9567]">
+                        {t('packages.freeMix', 'Bebas Mix')}
+                    </span>
+                </div>
             ) : (
-                <div className="flex max-w-xs flex-wrap gap-1">
+                <div className="flex max-w-xs flex-wrap justify-center gap-1">
                     {pkg.variants.map((v) => (
                         <span
                             key={v.id}
-                            className="inline-flex items-center rounded-lg border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:border-indigo-900/30 dark:bg-indigo-950/20 dark:text-indigo-400"
+                            className="inline-flex items-center rounded-lg border border-[#c7e0ce] bg-[#edf8f1] px-2 py-0.5 text-xs font-medium text-[#3f9567]"
                         >
                             {v.name.replace('Mochi ', '')}
                         </span>
@@ -136,13 +142,16 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         accessorKey: 'is_active',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('packages.status', 'Status')} />,
         cell: ({ row }) => {
             const active = row.original.is_active;
             return (
-                <div className="text-center">
-                    <Badge variant={active ? 'default' : 'secondary'} className="text-xs">
-                        {active ? 'Aktif' : 'Nonaktif'}
+                <div className="flex w-full items-center justify-start text-left">
+                    <Badge
+                        variant="outline"
+                        className={`text-xs font-medium ${active ? 'border-[#c7e0ce] bg-[#edf8f1] text-[#3f9567]' : 'border-slate-200 bg-slate-50 text-slate-500'}`}
+                    >
+                        {active ? t('packages.active', 'Aktif') : t('packages.inactive', 'Nonaktif')}
                     </Badge>
                 </div>
             );
@@ -150,7 +159,7 @@ export const columns: ColumnDef<PackageModel>[] = [
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
-        cell: ({ row }) => <PackageActions pkg={row.original} />,
+        header: () => <div className="text-center">{t('packages.actions', 'Aksi')}</div>,
+        cell: ({ row }) => <PackageActions pkg={row.original} t={t} />,
     },
 ];

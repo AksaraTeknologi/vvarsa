@@ -53,6 +53,7 @@ class EnsureTenantMiddleware
                 'id' => $tenant->id,
                 'name' => $tenant->name,
                 'business_type' => $tenant->business_type,
+                'currency' => $tenant->currency ?? 'IDR',
                 'plan' => $tenant->plan ? [
                     'name' => $tenant->plan->name,
                     'slug' => $tenant->plan->slug,

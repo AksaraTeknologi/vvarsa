@@ -49,7 +49,7 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-full justify-start text-left font-normal rounded-xl h-9 border-input bg-transparent px-3 py-1 text-sm shadow-sm hover:bg-accent/50",
+            "w-full justify-start rounded-xl border-input bg-white px-3 py-1 text-left text-sm font-normal text-[#315d45] shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30",
             !dateValue && "text-muted-foreground",
             className
           )}
@@ -63,7 +63,7 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           mode="single"
           selected={dateValue}
           onSelect={handleSelect}
-          captionLayout="dropdown"
+          captionLayout="label"
         />
       </PopoverContent>
     </Popover>

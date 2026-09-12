@@ -1,6 +1,6 @@
 export function Stats() {
     return (
-                    <section className="bg-white px-6 py-20 lg:px-10">
+                    <section className="bg-white px-6 py-14 lg:px-10">
                         <div className="mx-auto grid max-w-7xl grid-cols-2 overflow-hidden rounded-[2.25rem] border border-[#EAE4F7] bg-[linear-gradient(135deg,#FDFBFF_0%,#F3F0FF_100%)] shadow-[0_24px_60px_rgba(94,75,242,0.06)] sm:grid-cols-4">
                             {[
                                 ['1,200+', 'Bisnis aktif', '#5E4BF2'],

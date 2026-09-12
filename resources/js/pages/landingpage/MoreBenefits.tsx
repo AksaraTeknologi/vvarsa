@@ -2,18 +2,18 @@ import { Check } from 'lucide-react';
 
 export function MoreBenefits() {
     return (
-                    <section className="bg-[linear-gradient(180deg,#F7F5FF_0%,#F3F0EC_100%)] px-6 py-20 lg:px-10">
+                    <section className="bg-[linear-gradient(180deg,#F7F5FF_0%,#F3F0EC_100%)] px-6 py-16 lg:px-10">
                         <div className="mx-auto max-w-7xl">
                             <div
                                 data-reveal
-                                className="reveal-hidden mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
+                                className="reveal-hidden mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
                             >
                                 <div>
                                     <span className="rounded-full bg-[#D8F380] px-4 py-2 text-[10px] font-black uppercase text-[#17182A]">
                                         Kenapa lebih cepat
                                     </span>
 
-                                    <h2 className="mt-5 text-[2.2rem] font-black leading-tight tracking-[-0.04em] sm:text-4xl">
+                                    <h2 className="mt-4 text-[2rem] font-black leading-tight tracking-[-0.04em] sm:text-3xl">
                                         Rapi di dalam,
                                         <span className="text-[#5E4BF2]">
                                             {' '}

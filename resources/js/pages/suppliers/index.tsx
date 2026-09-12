@@ -5,16 +5,7 @@ import { type PaginatedData, type Supplier } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { CheckCircle, Edit, MapPin, Phone, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Supplier', href: '/suppliers' }];
-
-const BUSINESS_TYPE_LABELS: Record<string, string> = {
-    fnb: 'Food & Beverage',
-    retail: 'Retail / Toko',
-    fashion: 'Fashion & Tekstil',
-    services: 'Jasa / Services',
-    general: 'Manufaktur / Umum',
-};
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     suppliers: PaginatedData<Supplier>;
@@ -24,32 +15,47 @@ interface Props {
 }
 
 export default function SuppliersIndex({ suppliers, cities, filters, business_type }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [city, setCity] = useState(filters.city || '');
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.suppliers'), href: '/suppliers' }];
+
+    const getBusinessTypeLabel = (type?: string | null) => {
+        if (!type) return '';
+        const normalized = type.toLowerCase();
+        if (normalized.includes('fnb') || normalized.includes('food') || normalized.includes('makanan')) return t('supplier.businessTypes.fnb', 'Food & Beverage');
+        if (normalized.includes('retail') || normalized.includes('toko')) return t('supplier.businessTypes.retail', 'Retail / Toko');
+        if (normalized.includes('fashion') || normalized.includes('tekstil')) return t('supplier.businessTypes.fashion', 'Fashion & Tekstil');
+        if (normalized.includes('service') || normalized.includes('jasa')) return t('supplier.businessTypes.services', 'Jasa / Services');
+        if (normalized.includes('general') || normalized.includes('manufaktur') || normalized.includes('umum') || normalized.includes('grosir')) return t('supplier.businessTypes.general', 'Manufaktur / Umum');
+        return type;
+    };
 
     const applyFilter = () => {
         router.get('/suppliers', { search, city }, { preserveState: true, replace: true });
     };
 
-    const businessTypeLabel = BUSINESS_TYPE_LABELS[business_type] ?? business_type;
+    const businessTypeLabel = getBusinessTypeLabel(business_type);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Rekomendasi Supplier" />
+            <Head title={t('supplier.recommendations')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Header & Add Button */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Rekomendasi Supplier</h1>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('supplier.recommendations')}</h1>
                         <p className="text-muted-foreground text-sm">
-                            Supplier untuk kategori bisnis: <span className="text-foreground font-semibold">{businessTypeLabel}</span>
+                            {t('supplier.categorySubtitle')}{' '}
+                            <span className="text-foreground font-semibold">{businessTypeLabel}</span>
                         </p>
                     </div>
                     <Link
                         href="/suppliers/create"
                         className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium"
                     >
-                        <Plus size={16} /> Tambah Supplier
+                        <Plus size={16} /> {t('supplier.addSupplier')}
                     </Link>
                 </div>
 
@@ -59,26 +65,26 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                         <Search className="text-muted-foreground absolute top-2.5 left-3" size={16} />
                         <input
                             className="w-full rounded-xl border px-9 py-2 text-sm"
-                            placeholder="Cari supplier..."
+                            placeholder={t('supplier.searchPlaceholder')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
                         />
                     </div>
                     <select className="rounded-xl border px-4 py-2 text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
-                        <option value="">Semua Kota</option>
+                        <option value="">{t('supplier.allCities')}</option>
                         {cities.map((c) => (
                             <option key={c} value={c}>
                                 {c}
                             </option>
                         ))}
                     </select>
-                    <Button onClick={() => applyFilter()}>Cari</Button>
+                    <Button onClick={() => applyFilter()}>{t('common.search')}</Button>
                 </div>
 
                 {/* Grid Cards */}
                 {suppliers.data.length === 0 ? (
-                    <div className="bg-card text-muted-foreground rounded-2xl border py-20 text-center">Tidak ada data ditemukan.</div>
+                    <div className="bg-card text-muted-foreground rounded-2xl border py-20 text-center">{t('supplier.noData')}</div>
                 ) : (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {suppliers.data.map((supplier) => (
@@ -92,7 +98,7 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                             {supplier.name}
                                             {supplier.is_verified && <CheckCircle size={14} className="text-blue-500" />}
                                         </h3>
-                                        <p className="text-muted-foreground text-xs">{supplier.business_type}</p>
+                                        <p className="text-muted-foreground text-xs">{getBusinessTypeLabel(supplier.business_type)}</p>
                                     </div>
                                     <Link href={`/suppliers/${supplier.id}/edit`} className="hover:bg-muted rounded-lg p-2">
                                         <Edit size={16} />

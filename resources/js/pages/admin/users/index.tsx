@@ -6,14 +6,15 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { Plus, Search, Users } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getColumns, type UserItem } from './columns';
 import { CreateUserDialog } from './create-user-dialog';
 import { DataTable } from './data-table';
 import { EditUserDialog } from './edit-user-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin Dashboard', href: '/admin' },
-    { title: 'Users', href: '/admin/users' },
+    { title: 'navigation.dashboard', href: '/admin' },
+    { title: 'navigation.users', href: '/admin/users' },
 ];
 
 interface Tenant {
@@ -38,6 +39,7 @@ interface Props {
 }
 
 export default function UsersIndex({ users, tenants, filters }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [tenantId, setTenantId] = useState(filters.tenant_id || 'all');
 
@@ -64,11 +66,11 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
         setIsEditOpen(true);
     };
 
-    const columns = getColumns(handleEdit);
+    const columns = getColumns(handleEdit, t);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Daftar Pengguna" />
+            <Head title={t('admin.users.title')} />
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
                 <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
@@ -78,18 +80,18 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
                             <div className="mb-1.5 flex items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1a56ff]/20 bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest text-[#1a56ff] uppercase">
                                     <Users size={11} />
-                                    Platform Admin
+                                    {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Daftar Pengguna</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">Pantau daftar seluruh pengguna yang terdaftar di sistem platform ini.</p>
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.users.title')}</h1>
+                            <p className="mt-0.5 text-sm text-[#5F6073]">{t('admin.users.subtitle')}</p>
                         </div>
                         <Button
                             size="sm"
                             onClick={() => setIsCreateOpen(true)}
                             className="admin-primary-button gap-1.5 text-white"
                         >
-                            <Plus size={14} /> Tambah Pengguna
+                            <Plus size={14} /> {t('admin.users.addUser')}
                         </Button>
                     </div>
                 </div>
@@ -102,7 +104,7 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
                             <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                             <Input
                                 type="text"
-                                placeholder="Cari nama atau email pengguna..."
+                                placeholder={t('admin.users.searchPlaceholder')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleFilter()}
@@ -113,7 +115,7 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
                         <div className="w-full sm:w-48">
                             <Select value={tenantId} onValueChange={(val) => setTenantId(val)}>
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Semua Tenant" />
+                                    <SelectValue placeholder={`Semua Tenant`} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">Semua Tenant</SelectItem>
@@ -127,7 +129,7 @@ export default function UsersIndex({ users, tenants, filters }: Props) {
                         </div>
 
                         <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
-                            Filter
+                            {t('common.filter')}
                         </Button>
                     </div>
 

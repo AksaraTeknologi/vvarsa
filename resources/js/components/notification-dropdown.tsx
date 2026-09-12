@@ -40,6 +40,25 @@ function eventIcon(kind: string) {
     return Bell;
 }
 
+interface ListenerProps {
+    receive: (kind: string, payload: BroadcastPayload) => void;
+}
+
+function TenantEchoListener({ tenantId, receive }: ListenerProps & { tenantId: string | number }) {
+    const channelName = `tenant.${tenantId}`;
+    useEcho<BroadcastPayload>(channelName, '.LowStockAlertEvent', (payload) => receive('LowStockAlertEvent', payload), [tenantId]);
+    useEcho<BroadcastPayload>(channelName, '.MemberRequestSubmittedEvent', (payload) => receive('MemberRequestSubmittedEvent', payload), [tenantId]);
+    useEcho<BroadcastPayload>(channelName, '.MemberRequestReviewedEvent', (payload) => receive('MemberRequestReviewedEvent', payload), [tenantId]);
+    return null;
+}
+
+function UserEchoListener({ userId, receive }: ListenerProps & { userId: string | number }) {
+    const userChannelName = `user.${userId}`;
+    useEcho<BroadcastPayload>(userChannelName, '.NewOrderReceivedEvent', (payload) => receive('NewOrderReceivedEvent', payload), [userId]);
+    useEcho<BroadcastPayload>(userChannelName, '.CommunityReplyReceivedEvent', (payload) => receive('CommunityReplyReceivedEvent', payload), [userId]);
+    return null;
+}
+
 export function NotificationDropdown() {
     const { auth, tenant } = usePage<SharedData>().props;
     const [notifications, setNotifications] = useState<RealtimeEvent[]>([]);
@@ -94,16 +113,6 @@ export function NotificationDropdown() {
         if (kind === 'NewOrderReceivedEvent') toast.success(message);
     };
 
-    const channelName = tenant?.id ? `tenant.${tenant.id}` : '';
-
-    useEcho<BroadcastPayload>(channelName, '.LowStockAlertEvent', (payload) => receive('LowStockAlertEvent', payload), [tenant?.id]);
-    const userChannelName = auth?.user?.id ? `user.${auth.user.id}` : '';
-
-    useEcho<BroadcastPayload>(userChannelName, '.NewOrderReceivedEvent', (payload) => receive('NewOrderReceivedEvent', payload), [auth?.user?.id]);
-    useEcho<BroadcastPayload>(channelName, '.MemberRequestSubmittedEvent', (payload) => receive('MemberRequestSubmittedEvent', payload), [tenant?.id]);
-    useEcho<BroadcastPayload>(channelName, '.MemberRequestReviewedEvent', (payload) => receive('MemberRequestReviewedEvent', payload), [tenant?.id]);
-    useEcho<BroadcastPayload>(userChannelName, '.CommunityReplyReceivedEvent', (payload) => receive('CommunityReplyReceivedEvent', payload), [auth?.user?.id]);
-
     const markAllRead = async () => {
         setNotifications((current) => current.map((notification) => ({ ...notification, read: true })));
 
@@ -141,27 +150,31 @@ export function NotificationDropdown() {
     };
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative" aria-label="Notifikasi">
-                    <Bell className="size-5" />
-                    {unreadCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-4 rounded-full bg-red-500 px-1 text-[10px] leading-4 font-bold text-white">{unreadCount > 99 ? '99+' : unreadCount}</span>}
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
-                <div className="flex items-center justify-between px-2">
-                    <DropdownMenuLabel className="px-0">Notifikasi</DropdownMenuLabel>
-                    {unreadCount > 0 && <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs" onClick={markAllRead}><CheckCheck className="size-3.5" /> Tandai dibaca</Button>}
-                </div>
-                <DropdownMenuSeparator />
-                {notifications.length === 0 ? <p className="px-3 py-6 text-center text-sm text-muted-foreground">Belum ada notifikasi.</p> : notifications.map((notification) => {
-                    const Icon = eventIcon(notification.kind);
-                    return <button key={notification.id} type="button" onClick={() => { void markRead(notification.id); if (notification.url) window.location.assign(notification.url); }} className={`flex w-full items-start gap-3 px-3 py-3 text-left hover:bg-muted ${notification.read ? 'opacity-60' : ''}`}>
-                        <Icon className="mt-0.5 size-4 shrink-0 text-primary" />
-                        <span className="min-w-0 flex-1"><span className="block text-xs font-semibold">{eventLabel(notification.kind)}</span><span className="block text-sm">{notification.message}</span><span className="block text-[11px] text-muted-foreground">{notification.createdAt}</span></span>
-                    </button>;
-                })}
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+            {tenant?.id && <TenantEchoListener tenantId={tenant.id} receive={receive} />}
+            {auth?.user?.id && <UserEchoListener userId={auth.user.id} receive={receive} />}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="relative" aria-label="Notifikasi">
+                        <Bell className="size-5" />
+                        {unreadCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-4 rounded-full bg-red-500 px-1 text-[10px] leading-4 font-bold text-white">{unreadCount > 99 ? '99+' : unreadCount}</span>}
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-80">
+                    <div className="flex items-center justify-between px-2">
+                        <DropdownMenuLabel className="px-0">Notifikasi</DropdownMenuLabel>
+                        {unreadCount > 0 && <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs" onClick={markAllRead}><CheckCheck className="size-3.5" /> Tandai dibaca</Button>}
+                    </div>
+                    <DropdownMenuSeparator />
+                    {notifications.length === 0 ? <p className="px-3 py-6 text-center text-sm text-muted-foreground">Belum ada notifikasi.</p> : notifications.map((notification) => {
+                        const Icon = eventIcon(notification.kind);
+                        return <button key={notification.id} type="button" onClick={() => { void markRead(notification.id); if (notification.url) window.location.assign(notification.url); }} className={`flex w-full items-start gap-3 px-3 py-3 text-left hover:bg-muted ${notification.read ? 'opacity-60' : ''}`}>
+                            <Icon className="mt-0.5 size-4 shrink-0 text-primary" />
+                            <span className="min-w-0 flex-1"><span className="block text-xs font-semibold">{eventLabel(notification.kind)}</span><span className="block text-sm">{notification.message}</span><span className="block text-[11px] text-muted-foreground">{notification.createdAt}</span></span>
+                        </button>;
+                    })}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </>
     );
 }

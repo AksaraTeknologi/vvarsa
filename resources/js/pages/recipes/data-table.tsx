@@ -3,6 +3,7 @@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useTranslation } from 'react-i18next';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -10,6 +11,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+    const { t } = useTranslation();
     const table = useReactTable({
         data,
         columns,
@@ -18,14 +20,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
     return (
         <div className="border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
-            <Table>
+            <Table className="min-w-[900px]">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-border border-b bg-slate-50/50 hover:bg-transparent dark:bg-slate-800/10">
+                        <TableRow key={headerGroup.id} className="border-border border-b bg-slate-50/70 hover:bg-slate-50/70">
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}
-                                    className="text-muted-foreground h-10 px-4 py-3 text-xs font-semibold tracking-wider uppercase"
+                                    className="text-muted-foreground h-10 whitespace-nowrap px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase"
                                 >
                                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                 </TableHead>
@@ -39,7 +41,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
-                                className="hover:bg-muted/30 border-border border-b transition-colors"
+                                className="hover:bg-[#edf8f1]/70 border-border border-b transition-colors"
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id} className="px-4 py-3.5 align-middle">
@@ -51,7 +53,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     ) : (
                         <TableRow>
                             <TableCell colSpan={columns.length} className="text-muted-foreground h-24 text-center text-sm">
-                                Tidak ada resep ditemukan.
+                                {t('recipes.noRecipesFound', 'Tidak ada resep ditemukan.')}
                             </TableCell>
                         </TableRow>
                     )}

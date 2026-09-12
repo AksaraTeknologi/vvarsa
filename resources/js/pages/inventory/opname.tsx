@@ -9,12 +9,8 @@ import { type Product } from '@/types/mrp';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Inventori', href: '/inventory' },
-    { title: 'Stok Opname', href: '/inventory/opname' },
-];
 
 interface Props {
     products: Product[];
@@ -38,6 +34,13 @@ const opnameSchema = z.object({
 });
 
 export default function Opname({ products }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.inventory'), href: '/inventory' },
+        { title: t('inventory.opnameTitle'), href: '/inventory/opname' },
+    ];
+
     const [items, setItems] = useState<OpnameItem[]>(
         products.map((p) => ({
             product_id: p.id,
@@ -87,9 +90,9 @@ export default function Opname({ products }: Props) {
                     },
                 ),
             {
-                loading: 'Menyimpan hasil stok opname...',
-                success: 'Stok opname berhasil disimpan!',
-                error: 'Gagal Menyimpan',
+                loading: t('inventory.savingOpname'),
+                success: t('inventory.opnameSuccess'),
+                error: t('inventory.opnameError'),
             },
         ).finally(() => setProcessing(false));
     };
@@ -101,18 +104,20 @@ export default function Opname({ products }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Stok Opname" />
+            <Head title={t('inventory.opnameTitle')} />
             <div className="p-4 md:p-6">
                 <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div className="flex items-center gap-3">
-                        <Button variant="ghost" size="icon" asChild className="rounded-xl">
+                        <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-xl">
                             <Link href="/inventory">
                                 <ArrowLeft size={18} />
                             </Link>
                         </Button>
                         <div>
-                            <h1 className="text-2xl font-bold tracking-tight">Stok Opname</h1>
-                            <p className="text-muted-foreground text-sm">Cocokkan stok sistem dengan stok fisik aktual</p>
+                            <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
+                                {t('inventory.opnameTitle')}
+                            </h1>
+                            <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('inventory.opnameSubtitle')}</p>
                         </div>
                     </div>
                     <div className="flex w-full items-center gap-3 sm:w-auto">
@@ -121,8 +126,8 @@ export default function Opname({ products }: Props) {
                 </div>
 
                 {changedCount > 0 && (
-                    <div className="mb-4 rounded-xl bg-amber-50 p-3 text-sm text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
-                        {changedCount} produk akan diupdate stoknya.
+                    <div className="mb-4 rounded-xl bg-rose-50 p-3 text-sm text-rose-700 dark:bg-rose-900/20 dark:text-rose-400">
+                        {t('inventory.changedProductsCount', { count: changedCount })}
                     </div>
                 )}
 
@@ -130,12 +135,22 @@ export default function Opname({ products }: Props) {
                     <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
                         <Table>
                             <TableHeader>
-                                <TableRow>
-                                    <TableHead className="px-4 py-3">Produk</TableHead>
-                                    <TableHead className="px-4 py-3 text-center">Stok Sistem</TableHead>
-                                    <TableHead className="px-4 py-3 text-center">Stok Aktual</TableHead>
-                                    <TableHead className="px-4 py-3 text-center">Selisih</TableHead>
-                                    <TableHead className="px-4 py-3">Catatan</TableHead>
+                                <TableRow className="border-border bg-slate-50/70 hover:bg-slate-50/70">
+                                    <TableHead className="text-muted-foreground px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase">
+                                        {t('inventory.product')}
+                                    </TableHead>
+                                    <TableHead className="text-muted-foreground px-4 py-2.5 text-center text-xs font-bold tracking-[0.06em] uppercase">
+                                        {t('inventory.systemStock')}
+                                    </TableHead>
+                                    <TableHead className="text-muted-foreground px-4 py-2.5 text-center text-xs font-bold tracking-[0.06em] uppercase">
+                                        {t('inventory.actualStock')}
+                                    </TableHead>
+                                    <TableHead className="text-muted-foreground px-4 py-2.5 text-center text-xs font-bold tracking-[0.06em] uppercase">
+                                        {t('inventory.difference')}
+                                    </TableHead>
+                                    <TableHead className="text-muted-foreground px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase">
+                                        {t('common.notes')}
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -143,7 +158,10 @@ export default function Opname({ products }: Props) {
                                     const item = items.find((i) => String(i.product_id) === String(product.id))!;
                                     const diff = getDifference(product.id);
                                     return (
-                                        <TableRow key={product.id} className={`${diff !== 0 ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''}`}>
+                                        <TableRow
+                                            key={product.id}
+                                            className={`${diff !== 0 ? 'bg-rose-50/40 dark:bg-rose-900/10' : ''} hover:bg-[#edf8f1]/70`}
+                                        >
                                             <TableCell className="px-4 py-3">
                                                 <p className="text-sm font-medium">{product.name}</p>
                                                 <p className="text-muted-foreground text-xs">{product.category?.name}</p>
@@ -159,7 +177,7 @@ export default function Opname({ products }: Props) {
                                                     min={0}
                                                     value={item.actual_stock}
                                                     onChange={(e) => updateItem(product.id, 'actual_stock', parseInt(e.target.value) || 0)}
-                                                    className="mx-auto h-9 w-24 rounded-xl text-center"
+                                                    className="mx-auto h-9 w-24 rounded-xl !bg-white !text-center !text-sm !text-slate-700 placeholder:text-slate-400"
                                                 />
                                                 {clientErrors[`items.${idx}.actual_stock`] && (
                                                     <p className="mt-1 text-xs text-rose-500">{clientErrors[`items.${idx}.actual_stock`]}</p>
@@ -177,8 +195,8 @@ export default function Opname({ products }: Props) {
                                                     type="text"
                                                     value={item.note}
                                                     onChange={(e) => updateItem(product.id, 'note', e.target.value)}
-                                                    placeholder="Catatan..."
-                                                    className="h-9 w-full rounded-xl"
+                                                    placeholder={t('inventory.notePlaceholder')}
+                                                    className="h-9 w-full rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                                 />
                                             </TableCell>
                                         </TableRow>
@@ -190,11 +208,11 @@ export default function Opname({ products }: Props) {
 
                     <div className="mt-4 flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">Batal</Link>
+                            <Link href="/inventory">{t('common.cancel')}</Link>
                         </Button>
-                        <Button type="submit" disabled={processing || changedCount === 0} className="inline-flex items-center gap-2 rounded-xl">
+                        <Button type="submit" variant="owner" disabled={processing || changedCount === 0} className="inline-flex items-center gap-2 rounded-xl">
                             <Save size={16} />
-                            {processing ? 'Menyimpan...' : `Simpan Opname (${changedCount} perubahan)`}
+                            {processing ? t('common.saving') : t('inventory.saveOpnameCount', { count: changedCount })}
                         </Button>
                     </div>
                 </form>

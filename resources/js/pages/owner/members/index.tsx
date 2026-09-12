@@ -10,11 +10,10 @@ import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { AlertCircle, Check, Clock, ShieldCheck, UserPlus, Users, X } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { getColumns, type Member } from './columns';
 import { DataTable } from './data-table';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Anggota Tim', href: '/members' }];
 
 interface Role {
     id: number;
@@ -56,9 +55,11 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 export default function MembersIndex({ members, limit, member_count, pending_requests, is_supervisor, is_owner }: Props) {
+    const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const authUserId = auth.user.id;
     const authRole = is_owner ? 'owner' : is_supervisor ? 'supervisor' : 'staff';
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('members.title'), href: '/members' }];
 
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
@@ -113,7 +114,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
     };
 
     const handleDeleteMember = (memberId: number, name: string) => {
-        if (confirm(`Apakah Anda yakin ingin menghapus ${name} dari tim?`)) {
+        if (confirm(t('members.deleteConfirm', { name }))) {
             deleteForm.delete(`/members/${memberId}`, { preserveScroll: true });
         }
     };
@@ -123,24 +124,24 @@ export default function MembersIndex({ members, limit, member_count, pending_req
     };
 
     const handleReject = (requestId: string, name: string) => {
-        if (confirm(`Tolak permintaan penambahan ${name}?`)) {
+        if (confirm(t('members.rejectConfirm', { name }))) {
             rejectForm.post(`/members/requests/${requestId}/reject`, { preserveScroll: true });
         }
     };
 
     const capacityPercent = Math.round((member_count / limit) * 100);
 
-    const columns = getColumns(authUserId, authRole, handleUpdateRole, handleDeleteMember, updateForm.processing, deleteForm.processing);
+    const columns = getColumns(authUserId, authRole, handleUpdateRole, handleDeleteMember, updateForm.processing, deleteForm.processing, t);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Anggota Tim" />
+            <Head title={t('members.title')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Header section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Anggota Tim</h1>
-                        <p className="text-muted-foreground text-sm">Kelola pengguna dan hak akses operasional untuk bisnis Anda.</p>
+                        <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('members.title')}</h1>
+                        <p className="text-muted-foreground text-sm">{t('members.subtitle')}</p>
                     </div>
 
                     {/* Tombol Tambah Anggota */}
@@ -148,17 +149,17 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                         <DialogTrigger asChild>
                             <Button className="inline-flex items-center gap-2 rounded-xl" disabled={member_count >= limit}>
                                 <UserPlus size={16} />
-                                Tambah Anggota
+                                {t('members.addMember')}
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <form onSubmit={handleAddMember}>
                                 <DialogHeader>
-                                    <DialogTitle>Tambah Anggota Baru</DialogTitle>
+                                    <DialogTitle>{t('members.addTitle')}</DialogTitle>
                                     <DialogDescription>
                                         {is_supervisor
-                                            ? 'Permintaan akan dikirim ke owner untuk disetujui sebelum akun aktif.'
-                                            : 'Masukkan detail akun untuk mengundang anggota baru ke dashboard bisnis Anda.'}
+                                            ? t('members.supervisorNoticeDesc')
+                                            : t('members.ownerNoticeDesc')}
                                     </DialogDescription>
                                 </DialogHeader>
 
@@ -166,20 +167,18 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                 {is_supervisor && (
                                     <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-400">
                                         <ShieldCheck size={16} className="mt-0.5 shrink-0" />
-                                        <span>
-                                            Sebagai <strong>Supervisor</strong>, penambahan anggota memerlukan persetujuan owner terlebih dahulu.
-                                        </span>
+                                        <span>{t('members.supervisorBanner')}</span>
                                     </div>
                                 )}
 
                                 <div className="grid gap-4 py-4">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">Nama Lengkap</Label>
+                                        <Label htmlFor="name">{t('members.fullName')}</Label>
                                         <Input
                                             id="name"
                                             value={addForm.data.name}
                                             onChange={(e) => addForm.setData('name', e.target.value)}
-                                            placeholder="Nama Lengkap"
+                                            placeholder={t('members.fullName')}
                                             className={clientErrors.name || addForm.errors.name ? 'border-rose-500' : ''}
                                             required
                                         />
@@ -188,7 +187,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label htmlFor="email">{t('members.email')}</Label>
                                         <Input
                                             id="email"
                                             type="email"
@@ -203,13 +202,13 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password">Password Sementara</Label>
+                                        <Label htmlFor="password">{t('members.tempPassword')}</Label>
                                         <Input
                                             id="password"
                                             type="password"
                                             value={addForm.data.password}
                                             onChange={(e) => addForm.setData('password', e.target.value)}
-                                            placeholder="Min. 8 karakter"
+                                            placeholder={t('members.passwordHint')}
                                             className={clientErrors.password || addForm.errors.password ? 'border-rose-500' : ''}
                                             required
                                         />
@@ -218,15 +217,15 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="role">Peran / Hak Akses</Label>
+                                        <Label htmlFor="role">{t('members.roleLabel')}</Label>
                                         <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
                                             <SelectTrigger id="role" className="h-9 rounded-xl">
-                                                <SelectValue placeholder="Pilih Peran" />
+                                                <SelectValue placeholder={t('members.selectRole')} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="staff">Staff (Akses Terbatas: Stok & Operasional)</SelectItem>
+                                                <SelectItem value="staff">{t('members.staffRoleDesc')}</SelectItem>
                                                 {is_owner && (
-                                                    <SelectItem value="supervisor">Supervisor (Akses Luas, Butuh Approval Member)</SelectItem>
+                                                    <SelectItem value="supervisor">{t('members.supervisorRoleDesc')}</SelectItem>
                                                 )}
                                             </SelectContent>
                                         </Select>
@@ -238,16 +237,16 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
                                 <DialogFooter>
                                     <Button type="button" variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-xl">
-                                        Batal
+                                        {t('members.cancel')}
                                     </Button>
                                     <Button type="submit" disabled={addForm.processing} className="rounded-xl">
                                         {addForm.processing
                                             ? is_supervisor
-                                                ? 'Mengirim...'
-                                                : 'Menyimpan...'
+                                                ? t('members.sending')
+                                                : t('members.saving')
                                             : is_supervisor
-                                              ? 'Kirim Permintaan'
-                                              : 'Tambah Anggota'}
+                                              ? t('members.sendRequest')
+                                              : t('members.addMember')}
                                     </Button>
                                 </DialogFooter>
                             </form>
@@ -261,11 +260,11 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                         <CardHeader className="pb-3">
                             <CardTitle className="flex items-center gap-2 text-base text-amber-700 dark:text-amber-400">
                                 <Clock size={18} />
-                                Permintaan Menunggu Persetujuan
+                                {t('members.pendingTitle')}
                                 <Badge className="ml-1 bg-amber-500 text-white hover:bg-amber-500">{pending_requests.length}</Badge>
                             </CardTitle>
                             <CardDescription>
-                                Supervisor mengajukan permintaan penambahan anggota baru. Tinjau dan setujui atau tolak.
+                                {t('members.pendingDesc')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="pt-0">
@@ -289,7 +288,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                                 </div>
                                                 <p className="text-muted-foreground text-xs">{req.email}</p>
                                                 <p className="text-muted-foreground mt-0.5 text-xs">
-                                                    Diajukan oleh: <span className="text-foreground font-medium">{req.requested_by?.name}</span>
+                                                    {t('members.requestedBy', { name: req.requested_by?.name })}
                                                 </p>
                                             </div>
                                         </div>
@@ -302,7 +301,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                                 onClick={() => handleReject(req.id, req.name)}
                                             >
                                                 <X size={14} />
-                                                Tolak
+                                                {t('members.reject')}
                                             </Button>
                                             <Button
                                                 size="sm"
@@ -311,7 +310,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                                 onClick={() => handleApprove(req.id)}
                                             >
                                                 <Check size={14} />
-                                                Setujui
+                                                {t('members.approve')}
                                             </Button>
                                         </div>
                                     </div>
@@ -327,10 +326,10 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                         <div className="mb-2 flex items-center justify-between text-sm">
                             <span className="text-muted-foreground flex items-center gap-1">
                                 <Users size={16} />
-                                Batas Kapasitas Pengguna
+                                {t('members.capacityLabel')}
                             </span>
                             <span className="text-foreground font-semibold">
-                                {member_count} / {limit} pengguna terdaftar
+                                {t('members.capacityCount', { count: member_count, limit })}
                             </span>
                         </div>
                         <div className="bg-muted h-2.5 overflow-hidden rounded-full">
@@ -344,7 +343,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                         {member_count >= limit && (
                             <p className="mt-3 flex items-center gap-1 text-xs text-rose-500">
                                 <AlertCircle size={14} />
-                                Kuota pengguna Anda sudah penuh. Hubungi pemilik atau upgrade paket langganan untuk menambah lebih banyak staff.
+                                {t('members.capacityFullWarning')}
                             </p>
                         )}
                     </CardContent>
@@ -353,8 +352,8 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                 {/* Team members list DataTable */}
                 <Card className="border-border overflow-hidden rounded-2xl shadow-sm">
                     <CardHeader>
-                        <CardTitle>Daftar Pengguna</CardTitle>
-                        <CardDescription>Semua pengguna yang memiliki akses ke dashboard tenant bisnis Anda.</CardDescription>
+                        <CardTitle>{t('members.listTitle')}</CardTitle>
+                        <CardDescription>{t('members.listDesc')}</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
                         <DataTable columns={columns} data={members} />

@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/react';
-import { AVAILABLE_FEATURES } from './index';
+import { useTranslation } from 'react-i18next';
+import { AVAILABLE_FEATURES, getFeatureLabel } from './index';
 
 interface CreatePlanDialogProps {
     open: boolean;
@@ -13,6 +14,7 @@ interface CreatePlanDialogProps {
 }
 
 export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) {
+    const { t } = useTranslation();
     const form = useForm({
         name: '',
         price: '0',
@@ -51,20 +53,18 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
             <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-[500px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Buat Paket Langganan Baru</DialogTitle>
-                        <DialogDescription>
-                            Tentukan batasan kapasitas, tarif, dan fitur-fitur yang bisa diakses oleh tenant pada paket ini.
-                        </DialogDescription>
+                        <DialogTitle>{t('admin.plans.createTitle')}</DialogTitle>
+                        <DialogDescription>{t('admin.plans.createDescription')}</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Nama Paket</Label>
+                            <Label htmlFor="name">{t('admin.plans.planName')}</Label>
                             <Input
                                 id="name"
                                 value={form.data.name}
                                 onChange={(e) => form.setData('name', e.target.value)}
-                                placeholder="Contoh: Paket Pro, Paket Retail"
+                                placeholder={t('admin.plans.planNamePlaceholder')}
                                 required
                             />
                             {form.errors.name && <p className="text-destructive text-xs">{form.errors.name}</p>}
@@ -72,30 +72,30 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="price">Harga Bulanan (Rp)</Label>
+                                <Label htmlFor="price">{t('admin.plans.monthlyPrice')}</Label>
                                 <Input
                                     id="price"
                                     type="number"
                                     value={form.data.price}
                                     onChange={(e) => form.setData('price', e.target.value)}
-                                    placeholder="0 jika gratis"
+                                    placeholder={t('admin.plans.pricePlaceholder')}
                                     required
                                 />
                                 {form.errors.price && <p className="text-destructive text-xs">{form.errors.price}</p>}
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="billing_cycle">Siklus Penagihan</Label>
+                                <Label htmlFor="billing_cycle">{t('admin.plans.billingCycle')}</Label>
                                 <Select
                                     value={form.data.billing_cycle}
                                     onValueChange={(value) => form.setData('billing_cycle', value as 'monthly' | 'yearly')}
                                 >
                                     <SelectTrigger className="w-full rounded-xl">
-                                        <SelectValue placeholder="Siklus Penagihan" />
+                                        <SelectValue placeholder={t('admin.plans.billingCycle')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="monthly">Bulanan</SelectItem>
-                                        <SelectItem value="yearly">Tahunan</SelectItem>
+                                        <SelectItem value="monthly">{t('admin.plans.monthly')}</SelectItem>
+                                        <SelectItem value="yearly">{t('admin.plans.yearly')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 {form.errors.billing_cycle && <p className="text-destructive text-xs">{form.errors.billing_cycle}</p>}
@@ -104,7 +104,7 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="max_users">Maksimal Pengguna</Label>
+                                <Label htmlFor="max_users">{t('admin.plans.maxUsers')}</Label>
                                 <Input
                                     id="max_users"
                                     type="number"
@@ -116,7 +116,7 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="max_products">Maksimal Produk</Label>
+                                <Label htmlFor="max_products">{t('admin.plans.maxProducts')}</Label>
                                 <Input
                                     id="max_products"
                                     type="number"
@@ -135,12 +135,12 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
                                 onCheckedChange={(checked) => form.setData('is_active', checked === true)}
                             />
                             <Label htmlFor="is_active" className="cursor-pointer text-sm">
-                                Paket Aktif & Ditawarkan
+                                {t('admin.plans.planActiveLabel')}
                             </Label>
                         </div>
 
                         <div className="space-y-2 border-t pt-2">
-                            <Label className="text-sm font-semibold">Daftar Fitur Aktif</Label>
+                            <Label className="text-sm font-semibold">{t('admin.plans.activeFeatures')}</Label>
                             <div className="grid max-h-48 grid-cols-2 gap-2.5 overflow-y-auto rounded-lg border bg-slate-50/50 p-1 dark:bg-slate-800/10">
                                 {AVAILABLE_FEATURES.map((feat) => {
                                     const isChecked = form.data.features.includes(feat.id);
@@ -158,7 +158,7 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
                                                 htmlFor={`feat-${feat.id}`}
                                                 className="cursor-pointer text-xs leading-none text-slate-700 dark:text-slate-300"
                                             >
-                                                {feat.label}
+                                                {getFeatureLabel(feat.id, t)}
                                             </label>
                                         </div>
                                     );
@@ -169,10 +169,10 @@ export function CreatePlanDialog({ open, onOpenChange }: CreatePlanDialogProps) 
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            Batal
+                            {t('common.cancel')}
                         </Button>
                         <Button type="submit" disabled={form.processing}>
-                            {form.processing ? 'Menyimpan...' : 'Simpan Paket'}
+                            {form.processing ? t('common.saving') : t('admin.plans.savePlan')}
                         </Button>
                     </DialogFooter>
                 </form>

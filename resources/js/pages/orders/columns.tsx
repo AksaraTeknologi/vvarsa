@@ -8,17 +8,21 @@ import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Check, CheckCircle2, Clock, ShoppingBag, XCircle } from 'lucide-react';
 
-const STATUS_LABELS: Record<string, { label: string; color: string; icon: React.ElementType }> = {
-    pending: { label: 'Pending', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400', icon: Clock },
-    processing: { label: 'Diproses', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400', icon: ShoppingBag },
-    done: { label: 'Selesai', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400', icon: CheckCircle2 },
-    cancelled: { label: 'Dibatalkan', color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400', icon: XCircle },
+const getStatusConfig = (status: string, t: (key: string, options?: any) => string) => {
+    const STATUS_MAP: Record<string, { label: string; color: string; icon: React.ElementType }> = {
+        pending: { label: t('orders.pending'), color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400', icon: Clock },
+        processing: { label: t('orders.inProcess'), color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400', icon: ShoppingBag },
+        done: { label: t('orders.completed'), color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400', icon: CheckCircle2 },
+        cancelled: { label: t('orders.cancelled'), color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400', icon: XCircle },
+    };
+    return STATUS_MAP[status];
 };
 
 export const columns = (
     updateStatus: (order: Order, status: string) => void,
     cancelOrder: (order: Order) => void,
     openPayModal?: (order: Order) => void,
+    t: (key: string, options?: any) => string = (k) => k,
 ): ColumnDef<Order>[] => [
     {
         accessorKey: 'no',
@@ -30,7 +34,7 @@ export const columns = (
     },
     {
         accessorKey: 'order_number',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Order" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('orders.orderNumber')} />,
         cell: ({ row }) => {
             const order = row.original;
             return (
@@ -43,7 +47,7 @@ export const columns = (
     },
     {
         accessorKey: 'customer_name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Pelanggan" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('orders.customer')} />,
         cell: ({ row }) => {
             const order = row.original;
             return (
@@ -56,7 +60,7 @@ export const columns = (
     },
     {
         accessorKey: 'items',
-        header: 'Item',
+        header: t('orders.items'),
         cell: ({ row }) => {
             const order = row.original;
             return (
@@ -72,7 +76,7 @@ export const columns = (
     },
     {
         accessorKey: 'total',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Total" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.total')} />,
         cell: ({ row }) => {
             const order = row.original;
             return <div className="text-right text-sm font-bold">{formatRupiah(Number(order.total))}</div>;
@@ -80,10 +84,10 @@ export const columns = (
     },
     {
         accessorKey: 'status',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('orders.orderStatus')} />,
         cell: ({ row }) => {
             const order = row.original;
-            const status = STATUS_LABELS[order.status];
+            const status = getStatusConfig(order.status, t);
             const StatusIcon = status?.icon;
             return status ? (
                 <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${status.color}`}>
@@ -95,14 +99,14 @@ export const columns = (
     },
     {
         accessorKey: 'payment_status',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Bayar" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('orders.paymentStatus')} />,
         cell: ({ row }) => {
             const order = row.original;
             return order.payment_status === 'paid' ? (
                 <div className="flex flex-col items-center gap-0.5">
                     <span className="bg-emerald-105 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
                         <Check size={10} />
-                        Lunas
+                        {t('orders.paid')}
                     </span>
                     {order.payment_method && (
                         <span className="text-muted-foreground block max-w-[120px] truncate text-center text-[10px] font-medium">
@@ -115,14 +119,14 @@ export const columns = (
                     onClick={() => openPayModal?.(order)}
                     className="inline-flex cursor-pointer items-center gap-1 rounded-full border-none bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-200 dark:bg-rose-900/30 dark:text-rose-400"
                 >
-                    Belum Bayar
+                    {t('orders.unpaid')}
                 </button>
             );
         },
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
+        header: () => <div className="text-center">{t('common.actions')}</div>,
         cell: ({ row }) => {
             const order = row.original;
             const canCancel = order.payment_status === 'unpaid' && order.status !== 'cancelled';
@@ -130,7 +134,7 @@ export const columns = (
             return (
                 <div className="flex items-center justify-center gap-1.5">
                     <Button variant="ghost" size="sm" asChild className="h-8 rounded-lg px-2.5 text-xs">
-                        <Link href={`/orders/${order.id}`}>Detail</Link>
+                        <Link href={`/orders/${order.id}`}>{t('common.detail')}</Link>
                     </Button>
 
                     {canPay && (
@@ -140,7 +144,7 @@ export const columns = (
                             onClick={() => openPayModal?.(order)}
                             className="h-8 rounded-lg border-emerald-200 px-2.5 text-xs text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/20"
                         >
-                            Bayar
+                            {t('orders.markPaid')}
                         </Button>
                     )}
 
@@ -151,7 +155,7 @@ export const columns = (
                             onClick={() => updateStatus(order, 'processing')}
                             className="h-8 rounded-lg border-blue-200 px-2.5 text-xs text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/20"
                         >
-                            Proses
+                            {t('orders.process')}
                         </Button>
                     )}
 
@@ -162,7 +166,7 @@ export const columns = (
                             onClick={() => updateStatus(order, 'done')}
                             className="h-8 rounded-lg border-emerald-200 px-2.5 text-xs text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/20"
                         >
-                            Selesai
+                            {t('orders.markDone')}
                         </Button>
                     )}
 
@@ -173,7 +177,7 @@ export const columns = (
                             onClick={() => cancelOrder(order)}
                             className="h-8 rounded-lg px-2.5 text-xs text-rose-500 hover:bg-rose-50 hover:text-rose-600"
                         >
-                            Batalkan
+                            {t('orders.cancelOrder')}
                         </Button>
                     )}
                 </div>

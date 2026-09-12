@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -77,7 +78,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                     </Button>
                     <div>
                         <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight">
-                            <Package className="text-indigo-500" size={22} />
+                            <Package className="text-[#3f9567]" size={22} />
                             Edit Paket Produk
                         </h1>
                         <p className="text-muted-foreground mt-0.5 text-xs">Ubah pengaturan paket harga atau batasan rasanya</p>
@@ -117,7 +118,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="price">Harga Bundle (Rp) *</Label>
+                                <Label htmlFor="price">Harga Bundle ({getCurrencySymbol()}) *</Label>
                                 <Input
                                     id="price"
                                     type="number"
@@ -152,7 +153,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                 type="checkbox"
                                 checked={data.is_active}
                                 onChange={(e) => setData('is_active', e.target.checked)}
-                                className="rounded text-indigo-600 focus:ring-indigo-500"
+                                className="rounded text-[#3f9567] focus:ring-[#5aa67a]"
                             />
                             <Label htmlFor="is_active" className="cursor-pointer">
                                 Paket aktif dan dapat dipilih di Kasir
@@ -178,7 +179,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                 type="checkbox"
                                 checked={allVariantsAllowed}
                                 onChange={(e) => setAllVariantsAllowed(e.target.checked)}
-                                className="rounded text-indigo-600 focus:ring-indigo-500"
+                                className="rounded text-[#3f9567] focus:ring-[#5aa67a]"
                             />
                             <Label htmlFor="all_allowed" className="cursor-pointer text-sm font-semibold">
                                 Bebas Mix (Semua rasa diperbolehkan)
@@ -195,7 +196,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                             type="checkbox"
                                             checked={data.variant_ids.some((vId) => String(vId) === String(v.id))}
                                             onChange={(e) => handleCheckboxChange(v.id, e.target.checked)}
-                                            className="rounded text-indigo-600 focus:ring-indigo-500"
+                                            className="rounded text-[#3f9567] focus:ring-[#5aa67a]"
                                         />
                                         <Label htmlFor={`var-${v.id}`} className="cursor-pointer text-sm leading-tight">
                                             {v.name}
@@ -212,7 +213,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                         <Button asChild variant="outline" className="rounded-xl">
                             <Link href="/packages">Batal</Link>
                         </Button>
-                        <Button type="submit" disabled={processing} className="gap-1.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">
+                        <Button type="submit" disabled={processing} variant="owner" className="gap-1.5 rounded-xl">
                             <Save size={16} />
                             Simpan Perubahan
                         </Button>

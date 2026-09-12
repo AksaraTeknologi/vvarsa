@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-owner-accent text-white shadow-[0_4px_14px_0_rgba(63,149,103,0.24)] hover:opacity-90",
+          "bg-purple text-white shadow-[0_4px_14px_0_rgba(94,75,242,0.3)] hover:opacity-90",
         admin:
           "bg-admin-accent text-white hover:opacity-90 shadow-[0_4px_14px_0_rgba(94,75,242,0.3)]",
         owner:
@@ -63,6 +63,7 @@ function Button({
   return (
     <Comp
       data-slot="button"
+      data-variant={variant}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />

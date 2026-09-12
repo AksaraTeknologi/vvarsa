@@ -11,11 +11,10 @@ import { type PaginatedData, type TaxReport } from '@/types/mrp';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { columns } from './columns';
 import { DataTable } from './data-table';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Pajak', href: '/tax' }];
 
 interface Props {
     reports: PaginatedData<TaxReport>;
@@ -34,8 +33,11 @@ const taxSchema = z.object({
 });
 
 export default function TaxIndex({ reports }: Props) {
+    const { t } = useTranslation();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.tax'), href: '/tax' }];
 
     const { data, setData, post, processing, errors, reset } = useForm({
         period: '',
@@ -61,7 +63,11 @@ export default function TaxIndex({ reports }: Props) {
             const newErrors: Record<string, string> = {};
             result.error.issues.forEach((issue) => {
                 const path = issue.path[0] as string;
-                newErrors[path] = issue.message;
+                if (path === 'period') newErrors.period = t('tax.validation.periodRequired', 'Periode wajib diisi');
+                else if (path === 'tax_type') newErrors.tax_type = t('tax.validation.taxTypeRequired', 'Jenis pajak wajib diisi');
+                else if (path === 'gross_amount') newErrors.gross_amount = t('tax.validation.grossAmountMin', 'Omzet bruto tidak boleh negatif');
+                else if (path === 'tax_amount') newErrors.tax_amount = t('tax.validation.taxAmountMin', 'Jumlah pajak tidak boleh negatif');
+                else newErrors[path] = issue.message;
             });
             setClientErrors(newErrors);
             return;
@@ -79,38 +85,36 @@ export default function TaxIndex({ reports }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Laporan Pajak" />
+            <Head title={t('tax.reports')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-foreground text-2xl font-bold tracking-tight">Laporan Pajak</h1>
-                        <p className="text-muted-foreground mt-1 text-sm">Kelola kewajiban pajak bisnis Anda</p>
+                        <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('tax.reports')}</h1>
+                        <p className="text-muted-foreground mt-1 text-sm">{t('tax.subtitle')}</p>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/tax/consultation">Konsultasi Pajak</Link>
+                            <Link href="/tax/consultation">{t('tax.consultation')}</Link>
                         </Button>
 
                         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                             <DialogTrigger asChild>
                                 <Button className="inline-flex items-center gap-2 rounded-xl">
-                                    <Plus size={16} /> Laporan Baru
+                                    <Plus size={16} /> {t('tax.newReport')}
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[425px]">
                                 <form onSubmit={handleSubmit}>
                                     <DialogHeader>
-                                        <DialogTitle>Buat Laporan Pajak Baru</DialogTitle>
-                                        <DialogDescription>
-                                            Masukkan omzet bruto dan detail lainnya untuk menyimpan laporan perpajakan.
-                                        </DialogDescription>
+                                        <DialogTitle>{t('tax.dialogCreateTitle')}</DialogTitle>
+                                        <DialogDescription>{t('tax.dialogCreateDesc')}</DialogDescription>
                                     </DialogHeader>
 
                                     <div className="grid gap-4 py-4">
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
-                                                <Label htmlFor="period">Periode</Label>
+                                                <Label htmlFor="period">{t('tax.period')}</Label>
                                                 <Input
                                                     id="period"
                                                     type="text"
@@ -123,15 +127,15 @@ export default function TaxIndex({ reports }: Props) {
                                                 {displayError('period') && <p className="text-xs text-rose-500">{displayError('period')}</p>}
                                             </div>
                                             <div className="space-y-1">
-                                                <Label htmlFor="tax_type">Jenis Pajak</Label>
+                                                <Label htmlFor="tax_type">{t('tax.taxType')}</Label>
                                                 <Select value={data.tax_type} onValueChange={(val) => setData('tax_type', val)}>
                                                     <SelectTrigger id="tax_type" className="h-9 rounded-xl">
-                                                        <SelectValue placeholder="Jenis Pajak" />
+                                                        <SelectValue placeholder={t('tax.taxType')} />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {TAX_TYPES.map((t) => (
-                                                            <SelectItem key={t} value={t}>
-                                                                {t}
+                                                        {TAX_TYPES.map((taxItem) => (
+                                                            <SelectItem key={taxItem} value={taxItem}>
+                                                                {taxItem}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
@@ -140,7 +144,7 @@ export default function TaxIndex({ reports }: Props) {
                                         </div>
 
                                         <div className="space-y-1">
-                                            <Label htmlFor="gross_amount">Omzet Bruto (Rp)</Label>
+                                            <Label htmlFor="gross_amount">{t('tax.grossAmount')}</Label>
                                             <Input
                                                 id="gross_amount"
                                                 type="text"
@@ -154,7 +158,7 @@ export default function TaxIndex({ reports }: Props) {
                                         </div>
 
                                         <div className="space-y-1">
-                                            <Label htmlFor="tax_amount">Jumlah Pajak (Rp)</Label>
+                                            <Label htmlFor="tax_amount">{t('tax.taxAmount')}</Label>
                                             <Input
                                                 id="tax_amount"
                                                 type="text"
@@ -168,21 +172,21 @@ export default function TaxIndex({ reports }: Props) {
 
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
-                                                <Label htmlFor="status">Status</Label>
+                                                <Label htmlFor="status">{t('common.status')}</Label>
                                                 <Select value={data.status} onValueChange={(val) => setData('status', val as any)}>
                                                     <SelectTrigger id="status" className="h-9 rounded-xl">
-                                                        <SelectValue placeholder="Status" />
+                                                        <SelectValue placeholder={t('common.status')} />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value="draft">Draft</SelectItem>
-                                                        <SelectItem value="submitted">Dilaporkan</SelectItem>
-                                                        <SelectItem value="paid">Lunas</SelectItem>
+                                                        <SelectItem value="draft">{t('tax.status.draft')}</SelectItem>
+                                                        <SelectItem value="submitted">{t('tax.status.submitted')}</SelectItem>
+                                                        <SelectItem value="paid">{t('tax.status.paid')}</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
                                             <div className="flex flex-col justify-end space-y-1.5">
                                                 <Label htmlFor="due_date" className="mb-0.5">
-                                                    Jatuh Tempo
+                                                    {t('tax.dueDate')}
                                                 </Label>
                                                 <DatePicker value={data.due_date} onChange={(val) => setData('due_date', val)} />
                                             </div>
@@ -199,10 +203,10 @@ export default function TaxIndex({ reports }: Props) {
                                             }}
                                             className="rounded-xl"
                                         >
-                                            Batal
+                                            {t('common.cancel')}
                                         </Button>
                                         <Button type="submit" disabled={processing} className="rounded-xl px-6">
-                                            {processing ? 'Menyimpan...' : 'Simpan'}
+                                            {processing ? t('common.saving') : t('common.save')}
                                         </Button>
                                     </DialogFooter>
                                 </form>
@@ -213,23 +217,24 @@ export default function TaxIndex({ reports }: Props) {
 
                 {/* Tax Info Banner */}
                 <div className="rounded-2xl border border-indigo-100 bg-indigo-50/50 p-5 dark:border-indigo-900/30 dark:bg-indigo-950/10">
-                    <h2 className="font-semibold text-indigo-700 dark:text-indigo-400">Info Pajak UMKM 2026</h2>
-                    <p className="text-muted-foreground mt-1 text-sm">
-                        UMKM dengan omzet hingga <strong>Rp 4,8 miliar/tahun</strong> dikenakan PPh Final sebesar <strong>0,5%</strong> dari omzet
-                        bruto. Dibayarkan paling lambat tanggal <strong>15 bulan berikutnya</strong>.
-                    </p>
+                    <h2 className="font-semibold text-indigo-700 dark:text-indigo-400">{t('tax.infoBannerTitle')}</h2>
+                    <p className="text-muted-foreground mt-1 text-sm">{t('tax.infoBannerDescText')}</p>
                 </div>
 
                 {/* Reports table */}
                 <div className="space-y-4">
-                    <DataTable columns={columns} data={reports.data} />
+                    <DataTable columns={columns(t)} data={reports.data} />
 
                     {/* Pagination */}
                     {reports.last_page > 1 && (
                         <div className="border-border bg-card flex items-center justify-between rounded-xl border border-t px-4 py-3 shadow-sm">
                             <p className="text-muted-foreground text-sm">
-                                Menampilkan {(reports.current_page - 1) * reports.per_page + 1}–
-                                {Math.min(reports.current_page * reports.per_page, reports.total)} dari {reports.total} laporan
+                                {t('tax.paginationShowing', {
+                                    from: (reports.current_page - 1) * reports.per_page + 1,
+                                    to: Math.min(reports.current_page * reports.per_page, reports.total),
+                                    total: reports.total,
+                                    defaultValue: `Menampilkan ${(reports.current_page - 1) * reports.per_page + 1}–${Math.min(reports.current_page * reports.per_page, reports.total)} dari ${reports.total} laporan`,
+                                })}
                             </p>
                             <div className="flex gap-1">
                                 {reports.links.map((link, i) => (

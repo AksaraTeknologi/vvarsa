@@ -5,31 +5,34 @@ import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: '/settings/profile',
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: '/settings/password',
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: '/settings/appearance',
-        icon: null,
-    },
-    {
-        title: 'Metode Pembayaran',
-        href: '/settings/payment-methods',
-        icon: null,
-    },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const { t } = useTranslation();
+
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: t('settings.profileNav'),
+            href: '/settings/profile',
+            icon: null,
+        },
+        {
+            title: t('settings.passwordNav'),
+            href: '/settings/password',
+            icon: null,
+        },
+        {
+            title: t('settings.appearanceNav'),
+            href: '/settings/appearance',
+            icon: null,
+        },
+        {
+            title: t('settings.paymentNav'),
+            href: '/settings/payment-methods',
+            icon: null,
+        },
+    ];
+
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
@@ -39,7 +42,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="px-4 py-6">
-            <Heading title="Settings" description="Manage your profile and account settings" />
+            <Heading title={t('settings.title')} description={t('settings.subtitle')} />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">

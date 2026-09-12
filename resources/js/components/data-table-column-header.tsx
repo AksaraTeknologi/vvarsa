@@ -7,29 +7,34 @@ import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from 'lucide-react';
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
     column: Column<TData, TValue>;
     title: string;
+    centered?: boolean;
 }
 
-export function DataTableColumnHeader<TData, TValue>({ column, title, className }: DataTableColumnHeaderProps<TData, TValue>) {
+export function DataTableColumnHeader<TData, TValue>({ column, title, className, centered = false }: DataTableColumnHeaderProps<TData, TValue>) {
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>;
     }
 
     return (
-        <div className={cn('flex items-center space-x-2', className)}>
+        <div className={cn('flex items-center space-x-2', centered && 'w-full justify-center', className)}>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="data-[state=open]:bg-[#EAE7FF] -ml-3 h-8 rounded-lg px-2 text-[11px] font-extrabold tracking-[0.06em] text-[#686673] uppercase hover:cursor-pointer hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
+                        className={cn(
+                            'data-[state=open]:bg-[#e8f5ec] h-8 rounded-lg px-2 text-[11px] font-extrabold tracking-[0.06em] text-[#686673] uppercase hover:cursor-pointer hover:bg-[#edf8f1] hover:text-[#3f9567]',
+                            !centered && '-ml-3',
+                            centered && 'relative w-full justify-center pr-8',
+                        )}
                     >
-                        <span>{title}</span>
+                        <span className="whitespace-nowrap">{title}</span>
                         {column.getIsSorted() === 'desc' ? (
-                            <ArrowDown className="ml-1.5 size-3.5" />
+                            <ArrowDown className={cn('ml-1.5 size-3.5', centered && 'absolute right-1 ml-0')} />
                         ) : column.getIsSorted() === 'asc' ? (
-                            <ArrowUp className="ml-1.5 size-3.5" />
+                            <ArrowUp className={cn('ml-1.5 size-3.5', centered && 'absolute right-1 ml-0')} />
                         ) : (
-                            <ChevronsUpDown className="ml-1.5 size-3.5" />
+                            <ChevronsUpDown className={cn('ml-1.5 size-3.5', centered && 'absolute right-1 ml-0')} />
                         )}
                     </Button>
                 </DropdownMenuTrigger>

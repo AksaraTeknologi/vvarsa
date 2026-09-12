@@ -8,8 +8,7 @@ import { type Event, type PaginatedData } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { CalendarDays, MapPin, Search, Users } from 'lucide-react';
 import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Event', href: '/events' }];
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     events: PaginatedData<Event>;
@@ -18,27 +17,13 @@ interface Props {
     filters: { search?: string; city?: string; business_type?: string; only_registered?: string };
 }
 
-const BUSINESS_TYPES = [
-    { value: '', label: 'Semua Kategori' },
-    { value: 'fnb', label: 'Makanan & Minuman (FnB)' },
-    { value: 'retail', label: 'Retail' },
-    { value: 'fashion', label: 'Fashion' },
-    { value: 'general', label: 'Umum' },
-    { value: 'service', label: 'Jasa / Service' },
-];
+const BUSINESS_TYPE_KEYS = ['', 'fnb', 'retail', 'fashion', 'general', 'service'];
 
 const STATUS_STYLES: Record<string, string> = {
     upcoming: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
     ongoing: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
     completed: 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
     cancelled: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-    upcoming: 'Akan Datang',
-    ongoing: 'Berlangsung',
-    completed: 'Selesai',
-    cancelled: 'Dibatalkan',
 };
 
 export const getCalculatedStatus = (event: {
@@ -57,7 +42,6 @@ export const getCalculatedStatus = (event: {
     } else if (now >= startDate && now <= endDate) {
         return 'ongoing';
     } else {
-        // Cek jika tanggal hari ini sama dengan tanggal start_date (tanpa memedulikan jam)
         const isSameDay = now.toDateString() === startDate.toDateString();
         if (isSameDay) {
             return 'ongoing';
@@ -67,9 +51,13 @@ export const getCalculatedStatus = (event: {
 };
 
 export default function EventsIndex({ events, registered_event_ids, cities, filters }: Props) {
+    const { t, i18n } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [city, setCity] = useState(filters.city || '');
     const [businessType, setBusinessType] = useState(filters.business_type || '');
+
+    const currentLocale = i18n.language === 'id' ? 'id-ID' : 'en-US';
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('events.title'), href: '/events' }];
 
     const onlyRegistered = filters.only_registered === 'true' || filters.only_registered === '1';
 
@@ -101,11 +89,11 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Event Bisnis & Komunitas" />
+            <Head title={t('events.pageTitle')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Event Bisnis & Komunitas</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">Ikuti event, webinar, dan pameran menarik untuk kembangkan bisnis Anda</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t('events.pageTitle')}</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">{t('events.pageSubtitle')}</p>
                 </div>
 
                 {/* Navigation Tabs */}
@@ -118,7 +106,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
-                        Semua Event
+                        {t('events.allEvents')}
                     </button>
                     <button
                         onClick={() => handleTabChange(true)}
@@ -128,7 +116,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
-                        Event Saya ({registered_event_ids.length})
+                        {t('events.myEvents', { count: registered_event_ids.length })}
                     </button>
                 </div>
 
@@ -138,7 +126,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                         <Input
                             type="text"
-                            placeholder="Cari event..."
+                            placeholder={t('events.searchPlaceholder')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
@@ -147,22 +135,22 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                     </div>
                     <Select value={businessType || 'all'} onValueChange={(val) => setBusinessType(val === 'all' ? '' : val)}>
                         <SelectTrigger className="h-10 w-full rounded-xl sm:w-[180px]">
-                            <SelectValue placeholder="Kategori" />
+                            <SelectValue placeholder={t('events.categoryPlaceholder')} />
                         </SelectTrigger>
                         <SelectContent>
-                            {BUSINESS_TYPES.map((t) => (
-                                <SelectItem key={t.value || 'all'} value={t.value || 'all'}>
-                                    {t.label}
+                            {BUSINESS_TYPE_KEYS.map((key) => (
+                                <SelectItem key={key || 'all'} value={key || 'all'}>
+                                    {t(`events.categories.${key || 'all'}`)}
                                 </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
                     <Select value={city || 'all'} onValueChange={(val) => setCity(val === 'all' ? '' : val)}>
                         <SelectTrigger className="h-10 w-full rounded-xl sm:w-[180px]">
-                            <SelectValue placeholder="Kota" />
+                            <SelectValue placeholder={t('events.cityPlaceholder')} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Semua Kota</SelectItem>
+                            <SelectItem value="all">{t('events.allCities')}</SelectItem>
                             {cities.map((c) => (
                                 <SelectItem key={c} value={c}>
                                     {c}
@@ -171,7 +159,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         </SelectContent>
                     </Select>
                     <Button onClick={applyFilter} className="h-10 w-full rounded-xl px-6 sm:w-auto">
-                        Filter
+                        {t('events.filter')}
                     </Button>
                 </div>
 
@@ -179,7 +167,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                 {events.data.length === 0 ? (
                     <div className="bg-card border-border rounded-2xl border py-16 text-center">
                         <CalendarDays size={40} className="text-muted-foreground/30 mx-auto mb-3" />
-                        <p className="text-muted-foreground text-sm">Tidak ada event ditemukan.</p>
+                        <p className="text-muted-foreground text-sm">{t('events.noEventsFound')}</p>
                     </div>
                 ) : (
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -197,14 +185,14 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                     <div className="from-primary/80 to-primary flex items-center justify-between bg-gradient-to-r px-5 py-3 text-white">
                                         <div>
                                             <p className="text-xs font-medium opacity-80">
-                                                {new Date(event.start_date).toLocaleString('id-ID', { weekday: 'long' })}
+                                                {new Date(event.start_date).toLocaleString(currentLocale, { weekday: 'long' })}
                                             </p>
                                             <p className="text-lg font-bold">
                                                 {formatDate(event.start_date, { day: 'numeric', month: 'short', year: 'numeric' })}
                                             </p>
                                         </div>
                                         <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[calculatedStatus]}`}>
-                                            {STATUS_LABELS[calculatedStatus]}
+                                            {t(`events.status.${calculatedStatus}`)}
                                         </span>
                                     </div>
 
@@ -222,8 +210,8 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                             <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                                 <Users size={12} />
                                                 <span>
-                                                    {event.registered_count} terdaftar
-                                                    {event.max_participants && ` / ${event.max_participants} maks`}
+                                                    {t('events.registeredCount', { count: event.registered_count })}
+                                                    {event.max_participants && t('events.maxCount', { max: event.max_participants })}
                                                 </span>
                                             </div>
                                         </div>
@@ -232,18 +220,18 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                             <span
                                                 className={`text-sm font-semibold ${event.registration_fee === 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}
                                             >
-                                                {event.registration_fee === 0 ? 'Gratis' : formatRupiah(event.registration_fee)}
+                                                {event.registration_fee === 0 ? t('events.free') : formatRupiah(event.registration_fee)}
                                             </span>
                                             {isRegistered ? (
                                                 <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
-                                                    ✓ Terdaftar
+                                                    {t('events.registeredBadge')}
                                                 </span>
                                             ) : isFull ? (
                                                 <span className="text-muted-foreground rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold dark:bg-slate-800">
-                                                    Penuh
+                                                    {t('events.fullBadge')}
                                                 </span>
                                             ) : (
-                                                <span className="text-primary text-xs font-medium">Lihat Detail →</span>
+                                                <span className="text-primary text-xs font-medium">{t('events.viewDetail')}</span>
                                             )}
                                         </div>
                                     </div>

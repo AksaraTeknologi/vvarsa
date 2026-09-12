@@ -5,8 +5,7 @@ import { type CommunityPost, type PaginatedData } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { Eye, Heart, MessageCircle, PinIcon, Plus, Search, Users } from 'lucide-react';
 import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Komunitas', href: '/community' }];
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     posts: PaginatedData<CommunityPost>;
@@ -15,13 +14,7 @@ interface Props {
     tenant_business_type: string;
 }
 
-const CATEGORIES = [
-    { value: '', label: 'Semua' },
-    { value: 'discussion', label: 'Diskusi' },
-    { value: 'question', label: 'Pertanyaan' },
-    { value: 'tips', label: 'Tips' },
-    { value: 'announcement', label: 'Pengumuman' },
-];
+const CATEGORY_KEYS = ['', 'discussion', 'question', 'tips', 'announcement'];
 
 const CATEGORY_STYLES: Record<string, string> = {
     discussion: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
@@ -47,25 +40,31 @@ function getInitials(name: string) {
         .slice(0, 2);
 }
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: (k: string, opts?: any) => string, locale: string): string {
     const now = new Date();
     const date = new Date(dateStr);
     const diffMs = now.getTime() - date.getTime();
     const diffMin = Math.floor(diffMs / 60000);
     const diffHr = Math.floor(diffMin / 60);
     const diffDay = Math.floor(diffHr / 24);
-    if (diffMin < 1) return 'Baru saja';
-    if (diffMin < 60) return `${diffMin} menit lalu`;
-    if (diffHr < 24) return `${diffHr} jam lalu`;
-    if (diffDay < 7) return `${diffDay} hari lalu`;
-    return formatDate(dateStr, { day: 'numeric', month: 'short' });
+    if (diffMin < 1) return t('community.time.justNow');
+    if (diffMin < 60) return t('community.time.minutesAgo', { count: diffMin });
+    if (diffHr < 24) return t('community.time.hoursAgo', { count: diffHr });
+    if (diffDay < 7) return t('community.time.daysAgo', { count: diffDay });
+    return new Date(dateStr).toLocaleDateString(locale, { day: 'numeric', month: 'short' });
 }
 
 export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_business_type }: Props) {
+    const { t, i18n } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [category, setCategory] = useState(filters.category || '');
 
-    const businessLabel = BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type;
+    const currentLocale = i18n.language === 'id' ? 'id-ID' : 'en-US';
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('community.title'), href: '/community' }];
+
+    const businessLabel = t(`community.businessTypes.${tenant_business_type}`, {
+        defaultValue: BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type,
+    });
     const businessColor = BUSINESS_TYPE_COLORS[tenant_business_type] || BUSINESS_TYPE_COLORS.general;
 
     const applyFilter = (overrides: Partial<{ search: string; category: string }> = {}) => {
@@ -78,7 +77,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Komunitas" />
+            <Head title={t('community.title')} />
             <div className="flex flex-col gap-5 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -88,13 +87,13 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-xl font-bold tracking-tight">Komunitas</h1>
+                                <h1 className="text-xl font-bold tracking-tight">{t('community.title')}</h1>
                                 <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${businessColor}`}>
                                     {businessLabel}
                                 </span>
                             </div>
                             <p className="text-muted-foreground text-xs">
-                                Forum eksklusif untuk pelaku bisnis {businessLabel}
+                                {t('community.subtitle', { business: businessLabel })}
                             </p>
                         </div>
                     </div>
@@ -102,35 +101,38 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                         href="/community/create"
                         className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium shadow-sm transition-all"
                     >
-                        <Plus size={16} /> Buat Diskusi
+                        <Plus size={16} /> {t('community.createDiscussion')}
                     </Link>
                 </div>
 
                 {/* Filter Bar */}
                 <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
                     <div className="flex gap-2 overflow-x-auto pb-2">
-                        {CATEGORIES.map((cat) => (
-                            <button
-                                key={cat.value}
-                                onClick={() => {
-                                    setCategory(cat.value);
-                                    applyFilter({ category: cat.value });
-                                }}
-                                className={`shrink-0 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors ${
-                                    category === cat.value
-                                        ? 'bg-primary text-primary-foreground'
-                                        : 'border-border hover:bg-muted border'
-                                }`}
-                            >
-                                {cat.label}
-                            </button>
-                        ))}
+                        {CATEGORY_KEYS.map((catKey) => {
+                            const label = t(`community.categories.${catKey || 'all'}`);
+                            return (
+                                <button
+                                    key={catKey}
+                                    onClick={() => {
+                                        setCategory(catKey);
+                                        applyFilter({ category: catKey });
+                                    }}
+                                    className={`shrink-0 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors ${
+                                        category === catKey
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'border-border hover:bg-muted border'
+                                    }`}
+                                >
+                                    {label}
+                                </button>
+                            );
+                        })}
                     </div>
                     <div className="relative mt-3">
                         <Search size={15} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                         <input
                             type="text"
-                            placeholder={`Cari diskusi di komunitas ${businessLabel}...`}
+                            placeholder={t('community.searchPlaceholder', { business: businessLabel })}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
@@ -145,9 +147,9 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                         <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full">
                             <MessageCircle size={28} className="text-muted-foreground/50" />
                         </div>
-                        <p className="font-medium">Belum ada diskusi</p>
+                        <p className="font-medium">{t('community.emptyStateTitle')}</p>
                         <p className="text-muted-foreground mt-1 text-sm">
-                            Jadilah yang pertama memulai diskusi di komunitas {businessLabel}!
+                            {t('community.emptyStateSubtitle', { business: businessLabel })}
                         </p>
                     </div>
                 ) : (
@@ -168,13 +170,13 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                     <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
                                         {post.is_pinned && (
                                             <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-                                                <PinIcon size={9} /> Disematkan
+                                                <PinIcon size={9} /> {t('community.pinned')}
                                             </span>
                                         )}
                                         <span
                                             className={`rounded-full px-2 py-0.5 text-xs font-medium ${CATEGORY_STYLES[post.category] || 'bg-slate-100 text-slate-600'}`}
                                         >
-                                            {CATEGORIES.find((c) => c.value === post.category)?.label || post.category}
+                                            {t(`community.categories.${post.category}`, { defaultValue: post.category })}
                                         </span>
                                     </div>
 
@@ -187,10 +189,10 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
 
                                     <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs text-slate-400">
                                         <span className="font-medium text-slate-500 dark:text-slate-400">
-                                            {post.user?.name || 'Anonim'}
+                                            {post.user?.name || t('community.anonymous')}
                                         </span>
                                         <span>{post.tenant?.name}</span>
-                                        <span>{timeAgo(post.created_at)}</span>
+                                        <span>{timeAgo(post.created_at, t, currentLocale)}</span>
                                         <span className="ml-auto flex items-center gap-2.5">
                                             <span className="flex items-center gap-1">
                                                 <Heart
@@ -239,4 +241,3 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
         </AppLayout>
     );
 }
-

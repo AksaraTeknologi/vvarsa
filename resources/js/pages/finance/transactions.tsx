@@ -7,18 +7,14 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { formatRupiah } from '@/lib/utils-mrp';
+import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ExpenseCategory, type PaginatedData, type Transaction } from '@/types/mrp';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowDownRight, ArrowUpRight, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Keuangan', href: '/finance' },
-    { title: 'Transaksi', href: '/finance/transactions' },
-];
 
 interface TransactionSummary {
     total_income: number;
@@ -44,8 +40,14 @@ const transactionSchema = z.object({
 });
 
 export default function Transactions({ transactions, summary, expense_categories = [] }: Props) {
+    const { t } = useTranslation();
     const [showForm, setShowForm] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('finance.title', 'Keuangan'), href: '/finance' },
+        { title: t('finance.transactions', 'Transaksi'), href: '/finance/transactions' },
+    ];
 
     const { data, setData, processing, errors, reset } = useForm({
         type: 'income' as 'income' | 'expense',
@@ -89,9 +91,9 @@ export default function Transactions({ transactions, summary, expense_categories
                     },
                 }),
             {
-                loading: 'Mencatat transaksi...',
-                success: 'Transaksi berhasil dicatat!',
-                error: 'Gagal Mencatat Transaksi',
+                loading: t('finance.recording', 'Mencatat transaksi...'),
+                success: t('finance.recordSuccess', 'Transaksi berhasil dicatat!'),
+                error: t('finance.recordError', 'Gagal Mencatat Transaksi'),
             },
         );
     };
@@ -100,48 +102,48 @@ export default function Transactions({ transactions, summary, expense_categories
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Transaksi" />
+            <Head title={t('finance.transactionsTitle', 'Transaksi')} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Transaksi</h1>
-                        <p className="text-muted-foreground text-sm">Semua catatan pemasukan dan pengeluaran</p>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('finance.transactionsTitle', 'Transaksi')}</h1>
+                        <p className="text-muted-foreground text-sm">{t('finance.transactionsSubtitle', 'Semua catatan pemasukan dan pengeluaran')}</p>
                     </div>
                     <Dialog open={showForm} onOpenChange={setShowForm}>
                         <DialogTrigger asChild>
                             <Button className="inline-flex items-center gap-2 rounded-xl">
-                                <Plus size={16} /> Catat Transaksi
+                                <Plus size={16} /> {t('finance.addTransaction', 'Catat Transaksi')}
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <form onSubmit={handleSubmit}>
                                 <DialogHeader>
-                                    <DialogTitle>Catat Transaksi Baru</DialogTitle>
-                                    <DialogDescription>Masukkan nominal dan detail transaksi keuangan Anda.</DialogDescription>
+                                    <DialogTitle>{t('finance.newTransactionModalTitle', 'Catat Transaksi Baru')}</DialogTitle>
+                                    <DialogDescription>{t('finance.newTransactionModalDesc', 'Masukkan nominal dan detail transaksi keuangan Anda.')}</DialogDescription>
                                 </DialogHeader>
 
                                 <div className="grid gap-4 py-4">
                                     <div className="grid grid-cols-2 gap-2">
-                                        {(['income', 'expense'] as const).map((t) => (
+                                        {(['income', 'expense'] as const).map((itemType) => (
                                             <Button
-                                                key={t}
+                                                key={itemType}
                                                 type="button"
-                                                variant={data.type === t ? 'default' : 'outline'}
+                                                variant={data.type === itemType ? 'default' : 'outline'}
                                                 onClick={() => {
-                                                    setData('type', t);
-                                                    if (t === 'income') {
+                                                    setData('type', itemType);
+                                                    if (itemType === 'income') {
                                                         setData('expense_category_id', '');
                                                     }
                                                 }}
-                                                className={`rounded-xl py-2.5 text-sm font-medium transition-colors ${data.type === t ? (t === 'income' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-rose-600 text-white hover:bg-rose-700') : ''}`}
+                                                className={`rounded-xl py-2.5 text-sm font-medium transition-colors ${data.type === itemType ? (itemType === 'income' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-rose-600 text-white hover:bg-rose-700') : ''}`}
                                             >
-                                                {t === 'income' ? '+ Pemasukan' : '- Pengeluaran'}
+                                                {itemType === 'income' ? t('finance.addIncome', '+ Pemasukan') : t('finance.addExpense', '- Pengeluaran')}
                                             </Button>
                                         ))}
                                     </div>
                                     <div className="grid gap-1">
-                                        <Label htmlFor="amount">Jumlah (Rp) *</Label>
+                                        <Label htmlFor="amount">{t('finance.amountLabel', `Jumlah (${getCurrencySymbol()}) *`)}</Label>
                                         <Input
                                             id="amount"
                                             type="text"
@@ -154,7 +156,7 @@ export default function Transactions({ transactions, summary, expense_categories
 
                                     {data.type === 'expense' && (
                                         <div className="grid gap-1">
-                                            <Label htmlFor="expense_category_id">Kategori Pengeluaran</Label>
+                                            <Label htmlFor="expense_category_id">{t('finance.expenseCategoryLabel', 'Kategori Pengeluaran')}</Label>
                                             <Select
                                                 value={data.expense_category_id || 'none'}
                                                 onValueChange={(val) => setData('expense_category_id', val === 'none' ? '' : val)}
@@ -163,10 +165,10 @@ export default function Transactions({ transactions, summary, expense_categories
                                                     id="expense_category_id"
                                                     className={`rounded-xl ${displayError('expense_category_id') ? 'border-rose-500' : ''}`}
                                                 >
-                                                    <SelectValue placeholder="Pilih kategori pengeluaran..." />
+                                                    <SelectValue placeholder={t('finance.selectCategoryPlaceholder', 'Pilih kategori pengeluaran...')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="none">Tanpa Kategori</SelectItem>
+                                                    <SelectItem value="none">{t('finance.noCategory', 'Tanpa Kategori')}</SelectItem>
                                                     {expense_categories?.map((cat) => (
                                                         <SelectItem key={cat.id} value={String(cat.id)}>
                                                             {cat.name} {cat.type ? `(${cat.type.toUpperCase()})` : ''}
@@ -181,33 +183,33 @@ export default function Transactions({ transactions, summary, expense_categories
                                     )}
 
                                     <div className="grid gap-1">
-                                        <Label htmlFor="description">Keterangan</Label>
+                                        <Label htmlFor="description">{t('finance.descriptionLabel', 'Keterangan')}</Label>
                                         <Input
                                             id="description"
                                             type="text"
                                             value={data.description}
                                             onChange={(e) => setData('description', e.target.value)}
-                                            placeholder="Deskripsi transaksi"
+                                            placeholder={t('finance.descriptionPlaceholder', 'Deskripsi transaksi')}
                                             className={displayError('description') ? 'border-rose-500' : ''}
                                         />
                                         {displayError('description') && <p className="mt-1 text-xs text-rose-500">{displayError('description')}</p>}
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="grid gap-1">
-                                            <Label htmlFor="date">Tanggal *</Label>
+                                            <Label htmlFor="date">{t('finance.dateLabel', 'Tanggal *')}</Label>
                                             <DatePicker value={data.date} onChange={(val) => setData('date', val)} />
                                             {displayError('date') && <p className="mt-1 text-xs text-rose-500">{displayError('date')}</p>}
                                         </div>
                                         <div className="grid gap-1">
-                                            <Label htmlFor="payment_method">Metode</Label>
+                                            <Label htmlFor="payment_method">{t('finance.methodLabel', 'Metode')}</Label>
                                             <Select value={data.payment_method} onValueChange={(val) => setData('payment_method', val as any)}>
                                                 <SelectTrigger id="payment_method" className="rounded-xl">
-                                                    <SelectValue placeholder="Metode" />
+                                                    <SelectValue placeholder={t('finance.methodPlaceholder', 'Metode')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="cash">Cash</SelectItem>
-                                                    <SelectItem value="transfer">Transfer</SelectItem>
-                                                    <SelectItem value="credit">Kredit</SelectItem>
+                                                    <SelectItem value="cash">{t('finance.cash', 'Cash')}</SelectItem>
+                                                    <SelectItem value="transfer">{t('finance.transfer', 'Transfer')}</SelectItem>
+                                                    <SelectItem value="credit">{t('finance.credit', 'Kredit')}</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
@@ -224,10 +226,10 @@ export default function Transactions({ transactions, summary, expense_categories
                                         }}
                                         className="rounded-xl"
                                     >
-                                        Batal
+                                        {t('common.cancel', 'Batal')}
                                     </Button>
                                     <Button type="submit" disabled={processing} className="rounded-xl px-6">
-                                        {processing ? 'Menyimpan...' : 'Simpan'}
+                                        {processing ? t('common.saving', 'Menyimpan...') : t('common.save', 'Simpan')}
                                     </Button>
                                 </DialogFooter>
                             </form>
@@ -238,17 +240,17 @@ export default function Transactions({ transactions, summary, expense_categories
                 {/* Summary */}
                 <div className="grid grid-cols-3 gap-4">
                     <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-900/20">
-                        <p className="text-muted-foreground text-xs">Total Pemasukan</p>
+                        <p className="text-muted-foreground text-xs">{t('finance.totalIncome', 'Total Pemasukan')}</p>
                         <p className="mt-1 text-lg font-bold text-emerald-600 dark:text-emerald-400">{formatRupiah(summary.total_income)}</p>
                     </div>
                     <div className="rounded-2xl bg-rose-50 p-4 dark:bg-rose-900/20">
-                        <p className="text-muted-foreground text-xs">Total Pengeluaran</p>
+                        <p className="text-muted-foreground text-xs">{t('finance.totalExpense', 'Total Pengeluaran')}</p>
                         <p className="mt-1 text-lg font-bold text-rose-600 dark:text-rose-400">{formatRupiah(summary.total_expense)}</p>
                     </div>
                     <div
                         className={`rounded-2xl p-4 ${summary.total_income - summary.total_expense >= 0 ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-orange-50 dark:bg-orange-900/20'}`}
                     >
-                        <p className="text-muted-foreground text-xs">Net Profit</p>
+                        <p className="text-muted-foreground text-xs">{t('finance.netProfit', 'Net Profit')}</p>
                         <p
                             className={`mt-1 text-lg font-bold ${summary.total_income - summary.total_expense >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`}
                         >
@@ -263,10 +265,10 @@ export default function Transactions({ transactions, summary, expense_categories
                         <table className="w-full">
                             <thead>
                                 <tr className="border-border border-b">
-                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">Tanggal</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">Keterangan</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">Metode</th>
-                                    <th className="text-muted-foreground px-4 py-3 text-right text-xs font-semibold uppercase">Jumlah</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">{t('common.date', 'Tanggal')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-left text-xs font-semibold uppercase">{t('finance.descriptionLabel', 'Keterangan')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-center text-xs font-semibold uppercase">{t('finance.methodLabel', 'Metode')}</th>
+                                    <th className="text-muted-foreground px-4 py-3 text-right text-xs font-semibold uppercase">{t('finance.amount', 'Jumlah')}</th>
                                     <th className="px-4 py-3"></th>
                                 </tr>
                             </thead>
@@ -274,19 +276,19 @@ export default function Transactions({ transactions, summary, expense_categories
                                 {transactions.data.length === 0 ? (
                                     <tr>
                                         <td colSpan={5} className="text-muted-foreground py-12 text-center text-sm">
-                                            Belum ada transaksi.
+                                            {t('finance.noTransactions', 'Belum ada transaksi.')}
                                         </td>
                                     </tr>
                                 ) : (
-                                    transactions.data.map((t) => (
-                                        <tr key={t.id} className="hover:bg-muted/30 transition-colors">
-                                            <td className="text-muted-foreground px-4 py-3 text-sm">{t.date}</td>
+                                    transactions.data.map((item) => (
+                                        <tr key={item.id} className="hover:bg-muted/30 transition-colors">
+                                            <td className="text-muted-foreground px-4 py-3 text-sm">{item.date}</td>
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-2">
                                                     <div
-                                                        className={`rounded-lg p-1.5 ${t.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
+                                                        className={`rounded-lg p-1.5 ${item.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
                                                     >
-                                                        {t.type === 'income' ? (
+                                                        {item.type === 'income' ? (
                                                             <ArrowUpRight size={12} className="text-emerald-600" />
                                                         ) : (
                                                             <ArrowDownRight size={12} className="text-rose-600" />
@@ -294,24 +296,26 @@ export default function Transactions({ transactions, summary, expense_categories
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-sm font-medium">
-                                                            {t.description || (t.type === 'income' ? 'Pemasukan' : 'Pengeluaran')}
+                                                            {item.description || (item.type === 'income' ? t('finance.income', 'Pemasukan') : t('finance.expense', 'Pengeluaran'))}
                                                         </span>
-                                                        {(t.expense_category || (t as any).expenseCategory) && (
+                                                        {(item.expense_category || (item as any).expenseCategory) && (
                                                             <span className="mt-0.5 inline-flex w-fit items-center rounded-md bg-rose-50 px-1.5 py-0.5 text-[10px] font-medium text-rose-700 dark:bg-rose-950/50 dark:text-rose-300">
-                                                                {(t.expense_category || (t as any).expenseCategory)?.name}
+                                                                {(item.expense_category || (item as any).expenseCategory)?.name}
                                                             </span>
                                                         )}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3 text-center">
-                                                <span className="text-muted-foreground text-xs capitalize">{t.payment_method}</span>
+                                                <span className="text-muted-foreground text-xs capitalize">
+                                                    {item.payment_method === 'cash' ? t('finance.cash', 'Cash') : item.payment_method === 'transfer' ? t('finance.transfer', 'Transfer') : item.payment_method === 'credit' ? t('finance.credit', 'Kredit') : item.payment_method}
+                                                </span>
                                             </td>
                                             <td
-                                                className={`px-4 py-3 text-right text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
+                                                className={`px-4 py-3 text-right text-sm font-semibold ${item.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
                                             >
-                                                {t.type === 'income' ? '+' : '-'}
-                                                {formatRupiah(t.amount)}
+                                                {item.type === 'income' ? '+' : '-'}
+                                                {formatRupiah(item.amount)}
                                             </td>
                                             <td className="px-4 py-3">
                                                 <DeleteConfirmDialog
@@ -321,23 +325,23 @@ export default function Transactions({ transactions, summary, expense_categories
                                                             className="text-muted-foreground transition-colors hover:text-rose-600"
                                                         >
                                                             <Trash2 size={14} />
-                                                            <span className="sr-only">Hapus Transaksi</span>
+                                                            <span className="sr-only">{t('common.delete', 'Hapus')}</span>
                                                         </button>
                                                     }
-                                                    title="Apakah Anda yakin ingin menghapus transaksi ini?"
+                                                    title={t('finance.deleteConfirm', 'Apakah Anda yakin ingin menghapus transaksi ini?')}
                                                     itemName={
-                                                        t.description
-                                                            ? `${t.description} (${formatRupiah(t.amount)})`
-                                                            : `${t.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} ${formatRupiah(t.amount)}`
+                                                        item.description
+                                                            ? `${item.description} (${formatRupiah(item.amount)})`
+                                                            : `${item.type === 'income' ? t('finance.income', 'Pemasukan') : t('finance.expense', 'Pengeluaran')} ${formatRupiah(item.amount)}`
                                                     }
                                                     onConfirm={() =>
                                                         handleAsyncAction(
-                                                            () => routerPromise('delete', `/finance/transactions/${t.id}`, {}, { preserveScroll: true }),
+                                                            () => routerPromise('delete', `/finance/transactions/${item.id}`, {}, { preserveScroll: true }),
                                                             {
-                                                                loading: 'Menghapus transaksi...',
-                                                                success: 'Transaksi berhasil dihapus!',
-                                                                error: 'Gagal Menghapus Transaksi',
-                                                            },
+                                                                loading: t('finance.deleting', 'Menghapus transaksi...'),
+                                                                success: t('finance.deleteSuccess', 'Transaksi berhasil dihapus!'),
+                                                                error: t('finance.deleteError', 'Gagal Menghapus Transaksi'),
+                                                                },
                                                         )
                                                     }
                                                 />

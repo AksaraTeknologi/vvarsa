@@ -3,23 +3,26 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Plus, Store } from 'lucide-react';
-import { columns, Supplier } from './columns';
+import { useTranslation } from 'react-i18next';
+import { getColumns, Supplier } from './columns';
 import { DataTable } from './data-table';
-
-// Definisikan breadcrumbs untuk halaman ini
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin Dashboard', href: '/admin' },
-    { title: 'Supplier', href: '/admin/suppliers' },
-];
 
 interface Props {
     suppliers: Supplier[];
 }
 
 export default function SupplierIndex({ suppliers }: Props) {
+    const { t } = useTranslation();
+    const columns = getColumns(t);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.dashboard', 'Dasbor'), href: '/admin' },
+        { title: t('navigation.suppliers', 'Supplier'), href: '/admin/supplier' },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Kelola Supplier" />
+            <Head title={t('admin.supplier.title')} />
 
             <div className="flex flex-col gap-0">
                 {/* Page Header */}
@@ -30,17 +33,17 @@ export default function SupplierIndex({ suppliers }: Props) {
                             <div className="mb-1.5 flex items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1a56ff]/20 bg-[#1a56ff]/15 px-2.5 py-0.5 text-[11px] font-semibold tracking-widest text-[#1a56ff] uppercase">
                                     <Store size={11} />
-                                    Platform Admin
+                                    {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">Kelola Supplier</h1>
+                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.supplier.title')}</h1>
                             <p className="mt-0.5 text-sm text-[#5F6073]">
-                                Kelola semua data supplier, kontak, dan status operasional mereka untuk sistem ini.
+                                {t('admin.supplier.subtitle')}
                             </p>
                         </div>
                         <Link href="/admin/supplier/create">
                             <Button size="sm" className="admin-primary-button gap-1.5 text-white">
-                                <Plus size={14} /> Tambah Supplier
+                                <Plus size={14} /> {t('admin.supplier.add')}
                             </Button>
                         </Link>
                     </div>

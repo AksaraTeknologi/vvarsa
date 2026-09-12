@@ -6,10 +6,9 @@ import { type PaginatedData, type Recipe } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
 import { BookOpen, PlusCircle, Search } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './columns';
 import { DataTable } from './data-table';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Resep (BOM)', href: '/recipes' }];
 
 interface Props {
     recipes: PaginatedData<Recipe>;
@@ -17,7 +16,9 @@ interface Props {
 }
 
 export default function RecipesIndex({ recipes, filters }: Props) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search ?? '');
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('recipes.title'), href: '/recipes' }];
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,22 +27,22 @@ export default function RecipesIndex({ recipes, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Resep / Bill of Materials (BOM)" />
+            <Head title={t('recipes.title')} />
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <BookOpen className="text-violet-500" size={26} />
-                            Resep / Bill of Materials (BOM)
+                        <h1 className="flex items-center gap-2 text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
+                            <BookOpen className="text-[#3f9567]" size={22} />
+                            {t('recipes.title')}
                         </h1>
-                        <p className="text-muted-foreground mt-0.5 text-sm">Formulasi bahan baku dan kalkulasi HPP dasar</p>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('recipes.subtitle')}</p>
                     </div>
-                    <Button asChild className="gap-1.5 rounded-xl bg-violet-600 text-white hover:bg-violet-700">
+                    <Button asChild variant="owner" className="gap-1.5 rounded-xl">
                         <Link href="/recipes/create">
                             <PlusCircle size={16} />
-                            Tambah Resep
+                            {t('recipes.addRecipe')}
                         </Link>
                     </Button>
                 </div>
@@ -53,12 +54,12 @@ export default function RecipesIndex({ recipes, filters }: Props) {
                         <Input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Cari resep..."
-                            className="h-9 rounded-xl pl-9"
+                            placeholder={t('recipes.searchPlaceholder')}
+                            className="h-10 rounded-xl !border-[#dde9df] !bg-white pl-9 text-sm text-slate-700 placeholder:text-slate-400"
                         />
                     </div>
-                    <Button type="submit" variant="outline" className="h-9 rounded-xl">
-                        Cari
+                    <Button type="submit" variant="owner" className="h-10 rounded-xl px-4 text-sm">
+                        {t('common.search')}
                     </Button>
                 </form>
 
@@ -67,14 +68,14 @@ export default function RecipesIndex({ recipes, filters }: Props) {
                     {recipes.data.length === 0 ? (
                         <div className="bg-card border-border rounded-2xl border p-16 text-center shadow-sm">
                             <BookOpen size={40} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                            <p className="text-muted-foreground font-medium">Belum ada resep</p>
-                            <p className="text-muted-foreground mt-1 text-sm">Mulai tambahkan resep formula seperti "Resep Mochi Strawberry"</p>
+                            <p className="text-muted-foreground font-medium">{t('common.noData')}</p>
+                            <p className="text-muted-foreground mt-1 text-sm">{t('recipes.subtitle')}</p>
                             <Button asChild className="mt-4 rounded-xl" variant="outline">
-                                <Link href="/recipes/create">+ Tambah Resep Pertama</Link>
+                                <Link href="/recipes/create">+ {t('recipes.addRecipe')}</Link>
                             </Button>
                         </div>
                     ) : (
-                        <DataTable columns={columns} data={recipes.data} />
+                        <DataTable columns={columns(t)} data={recipes.data} />
                     )}
                 </div>
 

@@ -28,7 +28,7 @@ export function Testimonials() {
     return (
                     <section
                         id="cerita"
-                        className="px-6 py-20 lg:px-10 lg:py-28"
+                        className="px-6 py-16 lg:px-10 lg:py-20"
                     >
                         <div className="mx-auto max-w-7xl">
                             <div
@@ -40,7 +40,7 @@ export function Testimonials() {
                                         Cerita pengguna
                                     </span>
 
-                                    <h2 className="mt-5 text-[2.2rem] font-black tracking-[-0.04em] sm:text-5xl">
+                                    <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] sm:text-4xl">
                                         Mereka sudah
                                         <span className="text-[#5E4BF2]">
                                             {' '}
@@ -69,7 +69,7 @@ export function Testimonials() {
                                 </div>
                             </div>
 
-                            <div className="mt-14 grid gap-7 md:grid-cols-3">
+                            <div className="mt-10 grid gap-5 md:grid-cols-3">
                                 {[
                                     {
                                         bg: 'linear-gradient(180deg, #F2EEFF 0%, #FFFFFF 100%)',

@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 interface Tenant {
@@ -40,6 +41,7 @@ const createUserSchema = z
     );
 
 export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDialogProps) {
+    const { t } = useTranslation();
     const form = useForm({
         name: '',
         email: '',
@@ -80,18 +82,18 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
             <DialogContent className="sm:max-w-[450px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Tambah Pengguna Baru</DialogTitle>
-                        <DialogDescription>Buat akun pengguna baru dan tentukan peran serta bisnis tenant mereka.</DialogDescription>
+                        <DialogTitle>{t('admin.users.createTitle')}</DialogTitle>
+                        <DialogDescription>{t('admin.users.createDescription')}</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Nama Lengkap</Label>
+                            <Label htmlFor="name">{t('admin.users.fullName')}</Label>
                             <Input
                                 id="name"
                                 value={form.data.name}
                                 onChange={(e) => form.setData('name', e.target.value)}
-                                placeholder="Contoh: John Doe"
+                                placeholder={t('admin.users.fullNamePlaceholder')}
                                 required
                             />
                             {(validationErrors.name || form.errors.name) && (
@@ -100,13 +102,13 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Alamat Email</Label>
+                            <Label htmlFor="email">{t('common.email')}</Label>
                             <Input
                                 id="email"
                                 type="email"
                                 value={form.data.email}
                                 onChange={(e) => form.setData('email', e.target.value)}
-                                placeholder="Contoh: john@example.com"
+                                placeholder={t('admin.users.emailPlaceholder')}
                                 required
                             />
                             {(validationErrors.email || form.errors.email) && (
@@ -115,13 +117,13 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Kata Sandi (Password)</Label>
+                            <Label htmlFor="password">{t('admin.users.password')}</Label>
                             <Input
                                 id="password"
                                 type="password"
                                 value={form.data.password}
                                 onChange={(e) => form.setData('password', e.target.value)}
-                                placeholder="Minimal 8 karakter"
+                                placeholder={t('admin.users.passwordPlaceholder')}
                                 required
                             />
                             {(validationErrors.password || form.errors.password) && (
@@ -130,7 +132,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="role">Peran (Role)</Label>
+                            <Label htmlFor="role">{t('admin.users.role')}</Label>
                             <Select
                                 value={form.data.role}
                                 onValueChange={(val) => {
@@ -141,12 +143,12 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 }}
                             >
                                 <SelectTrigger className="w-full rounded-xl">
-                                    <SelectValue placeholder="Pilih Peran" />
+                                    <SelectValue placeholder={t('admin.users.selectRole')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="owner">Owner (Pemilik Bisnis)</SelectItem>
-                                    <SelectItem value="staff">Staff (Karyawan Tenant)</SelectItem>
-                                    <SelectItem value="admin">Platform Admin</SelectItem>
+                                    <SelectItem value="owner">{t('admin.users.roleOwner')}</SelectItem>
+                                    <SelectItem value="staff">{t('admin.users.roleStaff')}</SelectItem>
+                                    <SelectItem value="admin">{t('admin.users.roleAdmin')}</SelectItem>
                                 </SelectContent>
                             </Select>
                             {(validationErrors.role || form.errors.role) && (
@@ -156,10 +158,10 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
 
                         {form.data.role !== 'admin' && (
                             <div className="grid gap-2">
-                                <Label htmlFor="tenant_id">Bisnis / Tenant</Label>
+                                <Label htmlFor="tenant_id">{t('admin.users.colTenant')}</Label>
                                 <Select value={form.data.tenant_id || ''} onValueChange={(val) => form.setData('tenant_id', val)}>
                                     <SelectTrigger className="w-full rounded-xl">
-                                        <SelectValue placeholder="Pilih Bisnis" />
+                                        <SelectValue placeholder={t('admin.users.selectBusiness')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {tenants.map((t) => (
@@ -178,10 +180,10 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            Batal
+                            {t('common.cancel')}
                         </Button>
                         <Button type="submit" disabled={form.processing}>
-                            {form.processing ? 'Menyimpan...' : 'Simpan Pengguna'}
+                            {form.processing ? t('common.saving') : t('admin.users.saveUser')}
                         </Button>
                     </DialogFooter>
                 </form>

@@ -4,6 +4,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
+import './lib/i18n';
 
 import { Toaster } from '@/components/ui/sonner';
 import { configureEcho } from '@laravel/echo-react';

@@ -8,10 +8,9 @@ import { type Order, type OrderSummaryItem, type PaginatedData } from '@/types/m
 import { Head, Link, router } from '@inertiajs/react';
 import { AlertCircle, Banknote, ClipboardList, CreditCard, PlusCircle, ShoppingBag, Smartphone } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './columns';
 import { DataTable } from './data-table';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Pesanan', href: '/orders' }];
 
 interface PaymentMethod {
     id: number;
@@ -29,6 +28,10 @@ interface Props {
 }
 
 export default function OrdersIndex({ orders, summary, filters, paymentMethods = [] }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.orders'), href: '/orders' }];
+
     const [showPayModal, setShowPayModal] = useState<Order | null>(null);
     const [payData, setPayDataState] = useState({ payment_method: '' });
     const setPayData = (field: string, value: string) => setPayDataState((prev) => ({ ...prev, [field]: value }));
@@ -39,18 +42,18 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
 
     const updateStatus = (order: Order, status: string) => {
         handleAsyncAction(() => routerPromise('patch', `/orders/${order.id}/status`, { status }), {
-            loading: 'Memperbarui status pesanan...',
-            success: 'Status pesanan berhasil diperbarui!',
-            error: 'Gagal Memperbarui Status',
+            loading: t('orders.updatingStatus'),
+            success: t('orders.statusUpdated'),
+            error: t('orders.statusUpdateFailed'),
         });
     };
 
     const cancelOrder = (order: Order) => {
-        if (!confirm(`Batalkan pesanan ${order.order_number}?`)) return;
+        if (!confirm(t('orders.cancelConfirm', { number: order.order_number }))) return;
         handleAsyncAction(() => routerPromise('delete', `/orders/${order.id}`), {
-            loading: 'Membatalkan pesanan...',
-            success: 'Pesanan berhasil dibatalkan!',
-            error: 'Gagal Membatalkan Pesanan',
+            loading: t('orders.cancellingOrder'),
+            success: t('orders.orderCancelled'),
+            error: t('orders.orderCancelFailed'),
         });
     };
 
@@ -81,40 +84,40 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                     },
                 ),
             {
-                loading: 'Memproses pembayaran...',
-                success: 'Pesanan berhasil ditandai lunas!',
-                error: 'Gagal Memproses Pembayaran',
+                loading: t('orders.processingPayment'),
+                success: t('orders.paidSuccess'),
+                error: t('orders.paymentFailed'),
             },
         );
     };
 
-    const tableColumns = columns(updateStatus, cancelOrder, openPayModal);
+    const tableColumns = columns(updateStatus, cancelOrder, openPayModal, t);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Pesanan" />
+            <Head title={t('navigation.orders')} />
 
             <div className="flex flex-1 flex-col gap-5 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <ClipboardList className="text-indigo-500" size={26} />
-                            Daftar Pesanan
+                        <h1 className="flex items-center gap-2 text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
+                            <ClipboardList className="text-[#3f9567]" size={22} />
+                            {t('orders.listTitle')}
                         </h1>
-                        <p className="text-muted-foreground mt-0.5 text-sm">Kelola pesanan masuk & status pembayaran</p>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('orders.subtitle')}</p>
                     </div>
                     <div className="flex gap-2">
-                        <Button asChild variant="outline" className="gap-1.5 rounded-xl border-indigo-200 text-indigo-700 hover:bg-indigo-50">
+                        <Button asChild variant="outline" className="gap-1.5 rounded-xl border-[#c7e0ce] text-[#3f9567] hover:bg-[#edf8f1]">
                             <Link href="/pos">
                                 <ShoppingBag size={15} />
-                                POS Kasir
+                                {t('orders.posButton')}
                             </Link>
                         </Button>
-                        <Button asChild className="gap-1.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">
+                        <Button asChild variant="owner" className="gap-1.5 rounded-xl">
                             <Link href="/orders/create">
                                 <PlusCircle size={16} />
-                                Buat Pesanan
+                                {t('orders.createOrder')}
                             </Link>
                         </Button>
                     </div>
@@ -122,24 +125,24 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
 
                 {/* Order Summary */}
                 {summary.length > 0 && (
-                    <div className="rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50 to-violet-50 p-5 dark:border-indigo-800 dark:from-indigo-900/20 dark:to-violet-900/20">
+                    <div className="rounded-2xl border border-[#c7e0ce] bg-[#edf8f1] p-5">
                         <div className="mb-3 flex items-center gap-2">
-                            <AlertCircle size={15} className="text-indigo-500" />
-                            <span className="text-sm font-semibold text-indigo-700 dark:text-indigo-300">Ringkasan Produksi — Pesanan Aktif</span>
+                            <AlertCircle size={15} className="text-[#3f9567]" />
+                            <span className="text-sm font-semibold text-[#315d45]">{t('orders.productionSummary')}</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {summary.map((item) => (
                                 <div
                                     key={item.variant_id ?? item.variant_name}
-                                    className="flex items-center gap-2 rounded-xl border border-indigo-100 bg-white px-3 py-2 shadow-sm dark:border-indigo-800 dark:bg-indigo-900/40"
+                                    className="flex items-center gap-2 rounded-xl border border-[#d4e8da] bg-white px-3 py-2 shadow-sm"
                                 >
-                                    <span className="text-lg leading-none font-semibold text-indigo-700 dark:text-indigo-300">{item.total_qty}×</span>
+                                    <span className="text-lg leading-none font-semibold text-[#3f9567]">{item.total_qty}×</span>
                                     <span className="text-foreground text-sm">{item.variant_name}</span>
                                 </div>
                             ))}
                         </div>
                         <p className="text-muted-foreground mt-2 text-xs">
-                            Total per varian dari semua pesanan pending & diproses yang belum selesai
+                            {t('orders.productionSummaryHint')}
                         </p>
                     </div>
                 )}
@@ -148,24 +151,24 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                 <div className="flex flex-wrap gap-2">
                     <Select value={filters.status ?? 'all'} onValueChange={(v) => applyFilter('status', v)}>
                         <SelectTrigger className="h-9 w-40 rounded-xl text-sm">
-                            <SelectValue placeholder="Semua Status" />
+                            <SelectValue placeholder={t('orders.allStatuses')} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Semua Status</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="processing">Diproses</SelectItem>
-                            <SelectItem value="done">Selesai</SelectItem>
-                            <SelectItem value="cancelled">Dibatalkan</SelectItem>
+                            <SelectItem value="all">{t('orders.allStatuses')}</SelectItem>
+                            <SelectItem value="pending">{t('orders.pending')}</SelectItem>
+                            <SelectItem value="processing">{t('orders.inProcess')}</SelectItem>
+                            <SelectItem value="done">{t('orders.completed')}</SelectItem>
+                            <SelectItem value="cancelled">{t('orders.cancelled')}</SelectItem>
                         </SelectContent>
                     </Select>
                     <Select value={filters.payment_status ?? 'all'} onValueChange={(v) => applyFilter('payment_status', v)}>
                         <SelectTrigger className="h-9 w-44 rounded-xl text-sm">
-                            <SelectValue placeholder="Semua Pembayaran" />
+                            <SelectValue placeholder={t('orders.allPayments')} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Semua Pembayaran</SelectItem>
-                            <SelectItem value="unpaid">Belum Dibayar</SelectItem>
-                            <SelectItem value="paid">Lunas</SelectItem>
+                            <SelectItem value="all">{t('orders.allPayments')}</SelectItem>
+                            <SelectItem value="unpaid">{t('orders.unpaid')}</SelectItem>
+                            <SelectItem value="paid">{t('orders.paid')}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -174,9 +177,9 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                 {orders.data.length === 0 ? (
                     <div className="bg-card border-border flex flex-col items-center justify-center overflow-hidden rounded-2xl border py-16 text-center shadow-sm">
                         <ClipboardList size={40} className="text-muted-foreground mb-3 opacity-40" />
-                        <p className="text-muted-foreground font-medium">Belum ada pesanan</p>
+                        <p className="text-muted-foreground font-medium">{t('orders.noOrders')}</p>
                         <Button asChild className="mt-4 rounded-xl" variant="outline">
-                            <Link href="/orders/create">+ Buat Pesanan Pertama</Link>
+                            <Link href="/orders/create">{t('orders.createFirstOrder')}</Link>
                         </Button>
                     </div>
                 ) : (
@@ -205,13 +208,13 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
             {showPayModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
                     <div className="bg-card border-border text-foreground w-full max-w-sm rounded-2xl border p-6 shadow-xl">
-                        <h2 className="mb-1 text-lg font-bold">Tandai Pesanan Lunas</h2>
+                        <h2 className="mb-1 text-lg font-bold">{t('orders.markPaidTitle')}</h2>
                         <p className="text-muted-foreground mb-4 text-sm">
-                            Total: <span className="text-foreground font-semibold">{formatRupiah(Number(showPayModal.total))}</span>
+                            {t('common.total')}: <span className="text-foreground font-semibold">{formatRupiah(Number(showPayModal.total))}</span>
                         </p>
                         <form onSubmit={handleMarkPaid} className="space-y-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Metode Pembayaran</label>
+                                <label className="text-sm font-medium">{t('pos.paymentMethod')}</label>
                                 <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto pr-1">
                                     {paymentMethods.length > 0
                                         ? paymentMethods.map((pm) => {
@@ -236,7 +239,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                                                       onClick={() => setPayData('payment_method', value)}
                                                       className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border p-2.5 text-center text-xs font-medium transition-all ${
                                                           payData.payment_method === value
-                                                              ? 'border-indigo-600 bg-indigo-600 text-white'
+                                                              ? 'border-[#3f9567] bg-[#3f9567] text-white'
                                                               : 'bg-muted hover:bg-muted/80 border-border'
                                                       }`}
                                                   >
@@ -251,7 +254,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                                               );
                                           })
                                         : [
-                                              { key: 'cash', label: 'Tunai', icon: Banknote },
+                                              { key: 'cash', label: t('pos.cash'), icon: Banknote },
                                               { key: 'transfer', label: 'Transfer', icon: CreditCard },
                                               { key: 'qris', label: 'QRIS', icon: Smartphone },
                                           ].map((method) => {
@@ -263,7 +266,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                                                       onClick={() => setPayData('payment_method', method.key)}
                                                       className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-xs font-medium transition-all ${
                                                           payData.payment_method === method.key
-                                                              ? 'border-indigo-600 bg-indigo-600 text-white'
+                                                              ? 'border-[#3f9567] bg-[#3f9567] text-white'
                                                               : 'bg-muted hover:bg-muted/80 border-border'
                                                       }`}
                                                   >
@@ -276,10 +279,10 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                             </div>
                             <div className="flex gap-2">
                                 <Button type="button" variant="outline" className="flex-1 rounded-xl" onClick={() => setShowPayModal(null)}>
-                                    Batal
+                                    {t('common.cancel')}
                                 </Button>
                                 <Button type="submit" className="flex-1 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700">
-                                    Konfirmasi Lunas
+                                    {t('orders.confirmPaid')}
                                 </Button>
                             </div>
                         </form>

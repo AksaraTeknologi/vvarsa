@@ -26,24 +26,24 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
+      className={cn("relative p-3", className)}
       startMonth={startMonth}
       endMonth={endMonth}
       captionLayout={captionLayout}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-4",
-        month_caption: "flex justify-center pt-1 relative items-center gap-1",
-        caption_label: "text-sm font-medium",
+        month: "relative space-y-4",
+        month_caption: "flex justify-center pt-1 relative items-center gap-1 px-10",
+        caption_label: "text-sm font-semibold text-[#315d45]",
         dropdowns: "flex justify-center gap-1.5 z-10",
-        nav: "space-x-1 flex items-center absolute inset-0 flex justify-between px-1 pointer-events-none",
+        nav: "absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none",
         button_previous: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 pointer-events-auto"
+          "h-8 w-8 rounded-full border-[#d4e8da] bg-white p-0 text-[#3f9567] opacity-100 shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51] pointer-events-auto"
         ),
         button_next: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 pointer-events-auto"
+          "h-8 w-8 rounded-full border-[#d4e8da] bg-white p-0 text-[#3f9567] opacity-100 shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51] pointer-events-auto"
         ),
         month_grid: "w-full border-collapse space-y-1",
         weekdays: "flex",
@@ -51,22 +51,21 @@ function Calendar({
           "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
         week: "flex w-full mt-2",
         day: cn(
-          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected])]:rounded-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
+          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20",
           props.mode === "range"
             ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
             : "[&:has([aria-selected])]:rounded-md"
         ),
         day_button: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+          "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#5aa67a] aria-selected:!text-white aria-selected:hover:!bg-[#4b946a] aria-selected:opacity-100"
         ),
         range_start: "day-range-start",
         range_end: "day-range-end",
-        selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        today: "bg-accent text-accent-foreground",
+        selected: "bg-transparent",
+        today: "!bg-[#e8f6ed] !text-[#315d45]",
         outside:
-          "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+          "day-outside !text-[#9ca3af] [&>button]:!text-[#9ca3af] [&>button:hover]:!text-[#7f8a83] aria-selected:!bg-transparent aria-selected:!text-[#b7c0bb] aria-selected:opacity-70",
         disabled: "text-muted-foreground opacity-50",
         range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",

@@ -10,6 +10,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import { Activity, ArrowLeft, CreditCard, Package, Shield, ToggleLeft, ToggleRight, User, Users } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface UserItem {
     id: number;
@@ -50,11 +51,12 @@ interface Props {
 }
 
 export default function TenantShow({ tenant, stats, plans = [] }: Props) {
+    const { t } = useTranslation();
     const [isPlanOpen, setIsPlanOpen] = useState(false);
 
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Admin Dashboard', href: '/admin' },
-        { title: 'Tenants', href: '/admin/tenants' },
+        { title: 'navigation.dashboard', href: '/admin' },
+        { title: 'navigation.tenants', href: '/admin/tenants' },
         { title: tenant.name, href: `/admin/tenants/${tenant.id}` },
     ];
 
@@ -81,13 +83,13 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Tenant: ${tenant.name}`} />
+            <Head title={`${t('admin.tenants.detailTitle')}: ${tenant.name}`} />
             <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Back button */}
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" onClick={() => router.get('/admin/tenants')} className="rounded-xl">
                         <ArrowLeft size={16} className="mr-1" />
-                        Kembali
+                        {t('common.back')}
                     </Button>
                 </div>
 
@@ -108,7 +110,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                             : 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
                                     }
                                 >
-                                    {tenant.is_active ? 'Aktif' : 'Nonaktif'}
+                                    {tenant.is_active ? t('admin.active') : t('admin.inactive')}
                                 </Badge>
                             </div>
                             <p className="text-muted-foreground text-sm">{tenant.slug}.vvarsa.com</p>
@@ -125,12 +127,12 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                             {tenant.is_active ? (
                                 <span className="flex items-center gap-1.5">
                                     <ToggleRight size={18} />
-                                    Nonaktifkan Bisnis
+                                    {t('admin.tenants.deactivate')}
                                 </span>
                             ) : (
                                 <span className="flex items-center gap-1.5">
                                     <ToggleLeft size={18} />
-                                    Aktifkan Bisnis
+                                    {t('admin.tenants.activate')}
                                 </span>
                             )}
                         </Button>
@@ -138,12 +140,12 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         {/* Upgrade plan dialog */}
                         <Dialog open={isPlanOpen} onOpenChange={setIsPlanOpen}>
                             <DialogTrigger asChild>
-                                <Button className="rounded-xl">Ubah Paket Langganan</Button>
+                                <Button className="rounded-xl">{t('admin.tenants.changePlan')}</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[400px]">
                                 <form onSubmit={handleUpdatePlan}>
                                     <DialogHeader>
-                                        <DialogTitle>Ubah Paket Langganan</DialogTitle>
+                                        <DialogTitle>{t('admin.tenants.changePlan')}</DialogTitle>
                                         <DialogDescription>Sesuaikan tingkat fitur dan batas kapasitas untuk tenant {tenant.name}.</DialogDescription>
                                     </DialogHeader>
 
@@ -167,10 +169,10 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
 
                                     <DialogFooter>
                                         <Button type="button" variant="outline" onClick={() => setIsPlanOpen(false)}>
-                                            Batal
+                                            {t('common.cancel')}
                                         </Button>
                                         <Button type="submit" disabled={planForm.processing}>
-                                            {planForm.processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                                            {planForm.processing ? t('common.saving') : t('common.save')}
                                         </Button>
                                     </DialogFooter>
                                 </form>
@@ -183,33 +185,33 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <Card className="border-border">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Kapasitas Produk</CardTitle>
+                            <CardTitle className="text-sm font-medium">{t('admin.tenants.productLimit')}</CardTitle>
                             <Package className="text-muted-foreground h-4.5 w-4.5" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.product_count}</div>
                             <p className="text-muted-foreground mt-1 text-xs">
-                                Batas maksimal paket: {tenant.max_products >= 9999 ? 'Tak Terbatas' : tenant.max_products}
+                                Batas maksimal paket: {tenant.max_products >= 9999 ? '∞' : tenant.max_products}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card className="border-border">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Pengguna Aktif</CardTitle>
+                            <CardTitle className="text-sm font-medium">{t('admin.tenants.userLimit')}</CardTitle>
                             <Users className="text-muted-foreground h-4.5 w-4.5" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.user_count}</div>
                             <p className="text-muted-foreground mt-1 text-xs">
-                                Batas maksimal paket: {tenant.max_users >= 99 ? 'Tak Terbatas' : tenant.max_users}
+                                Batas maksimal paket: {tenant.max_users >= 99 ? '∞' : tenant.max_users}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card className="border-border">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Jumlah Transaksi</CardTitle>
+                            <CardTitle className="text-sm font-medium">{t('navigation.transactions')}</CardTitle>
                             <Activity className="text-muted-foreground h-4.5 w-4.5" />
                         </CardHeader>
                         <CardContent>
@@ -220,7 +222,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
 
                     <Card className="border-border">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Volume Penjualan</CardTitle>
+                            <CardTitle className="text-sm font-medium">{t('finance.totalRevenue')}</CardTitle>
                             <CreditCard className="text-muted-foreground h-4.5 w-4.5" />
                         </CardHeader>
                         <CardContent>
@@ -235,24 +237,24 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                     {/* Left: General info */}
                     <Card className="border-border md:col-span-1">
                         <CardHeader>
-                            <CardTitle className="text-lg">Detail Tenant</CardTitle>
+                            <CardTitle className="text-lg">{t('admin.tenants.detailTitle')}</CardTitle>
                             <CardDescription>Informasi umum bisnis</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
-                                <Label className="text-muted-foreground text-xs">Paket Saat Ini</Label>
+                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.colPlan')}</Label>
                                 <p className="text-sm font-semibold capitalize">{tenant.plan?.name || 'Free'}</p>
                             </div>
                             <div>
-                                <Label className="text-muted-foreground text-xs">Telepon</Label>
+                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.contact')}</Label>
                                 <p className="text-sm">{tenant.phone || '—'}</p>
                             </div>
                             <div>
-                                <Label className="text-muted-foreground text-xs">Alamat</Label>
+                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.address')}</Label>
                                 <p className="text-sm">{tenant.address || '—'}</p>
                             </div>
                             <div>
-                                <Label className="text-muted-foreground text-xs">Tanggal Registrasi</Label>
+                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.registeredSince')}</Label>
                                 <p className="text-sm">
                                     {new Date(tenant.created_at).toLocaleDateString('id-ID', {
                                         day: 'numeric',
@@ -267,23 +269,23 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                     {/* Right: Team Members */}
                     <Card className="border-border md:col-span-2">
                         <CardHeader>
-                            <CardTitle className="text-lg">Daftar Pengguna</CardTitle>
-                            <CardDescription>Pengguna terdaftar di tenant bisnis ini</CardDescription>
+                            <CardTitle className="text-lg">{t('admin.tenants.memberList')}</CardTitle>
+                            <CardDescription>{t('admin.tenants.memberListSub')}</CardDescription>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
                                     <thead>
                                         <tr className="border-border border-b bg-slate-50/50 dark:bg-slate-800/20">
-                                            <th className="text-muted-foreground px-6 py-3 text-xs font-semibold uppercase">Nama / Email</th>
-                                            <th className="text-muted-foreground px-6 py-3 text-xs font-semibold uppercase">Peran (Role)</th>
+                                            <th className="text-muted-foreground px-6 py-3 text-xs font-semibold uppercase">{t('admin.users.colNameEmail')}</th>
+                                            <th className="text-muted-foreground px-6 py-3 text-xs font-semibold uppercase">{t('admin.users.colRole')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-border divide-y">
                                         {tenant.users.length === 0 ? (
                                             <tr>
                                                 <td colSpan={2} className="text-muted-foreground py-6 text-center text-sm">
-                                                    Belum ada pengguna terdaftar untuk tenant ini.
+                                                    {t('common.noData')}
                                                 </td>
                                             </tr>
                                         ) : (

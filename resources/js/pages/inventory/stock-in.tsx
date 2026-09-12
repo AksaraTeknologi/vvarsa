@@ -6,18 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { formatRupiah } from '@/lib/utils-mrp';
+import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Inventori', href: '/inventory' },
-    { title: 'Stok Masuk', href: '/inventory/stock-in' },
-];
 
 interface Props {
     products: Product[];
@@ -33,6 +29,12 @@ const stockInSchema = z.object({
 });
 
 export default function StockIn({ products }: Props) {
+    const { t } = useTranslation();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.inventory'), href: '/inventory' },
+        { title: t('inventory.stockInTitle'), href: '/inventory/stock-in' },
+    ];
+
     const { data, setData, errors } = useForm({
         product_id: '',
         qty: 1,
@@ -69,9 +71,9 @@ export default function StockIn({ products }: Props) {
                     onFinish: () => setProcessing(false),
                 }),
             {
-                loading: 'Mencatat stok masuk...',
-                success: 'Stok masuk berhasil dicatat!',
-                error: 'Gagal Mencatat Stok Masuk',
+                loading: t('inventory.recordingStockIn'),
+                success: t('inventory.stockInSuccess'),
+                error: t('inventory.stockInError'),
             },
         ).finally(() => setProcessing(false));
     };
@@ -80,26 +82,29 @@ export default function StockIn({ products }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Stok Masuk" />
+            <Head title={t('inventory.stockInTitle')} />
             <div className="w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
-                    <Button variant="ghost" size="icon" asChild className="rounded-xl">
+                    <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-xl">
                         <Link href="/inventory">
                             <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Stok Masuk</h1>
-                        <p className="text-muted-foreground text-sm">Catat penerimaan stok baru</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
+                            {t('inventory.stockInTitle')}
+                        </h1>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('inventory.stockInSubtitle')}</p>
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
+                        <div className="p-5 md:p-6">
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="product_id" className="mb-1.5 block">
-                                    Produk *
+                                    {t('inventory.product')} *
                                 </Label>
                                 <Select
                                     value={data.product_id}
@@ -111,14 +116,14 @@ export default function StockIn({ products }: Props) {
                                 >
                                     <SelectTrigger
                                         id="product_id"
-                                        className={`h-10 rounded-xl ${displayError('product_id') ? 'border-rose-500' : ''}`}
+                                        className={`h-10 rounded-xl text-sm ${displayError('product_id') ? 'border-rose-500' : ''}`}
                                     >
-                                        <SelectValue placeholder="Pilih produk..." />
+                                        <SelectValue placeholder={t('inventory.selectProductPlaceholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {products.map((p) => (
                                             <SelectItem key={p.id} value={String(p.id)}>
-                                                {p.name} (Stok: {p.current_stock} {p.unit})
+                                                {p.name} ({t('inventory.stock')}: {p.current_stock} {p.unit})
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -132,19 +137,18 @@ export default function StockIn({ products }: Props) {
                             </div>
 
                             {selectedProduct && (
-                                <div className="rounded-xl bg-blue-50 p-3 text-sm dark:bg-blue-900/20">
+                                <div className="rounded-xl bg-blue-50 p-3.5 text-sm dark:bg-blue-900/20">
                                     <p className="font-medium text-blue-700 dark:text-blue-400">{selectedProduct.name}</p>
-                                    <p className="mt-0.5 text-xs text-blue-600 dark:text-blue-300">
-                                        Stok sekarang: {selectedProduct.current_stock} {selectedProduct.unit} | Minimum: {selectedProduct.min_stock}{' '}
-                                        {selectedProduct.unit}
+                                    <p className="mt-1 text-xs text-blue-600 dark:text-blue-300">
+                                        {t('inventory.currentStockLabel', { stock: selectedProduct.current_stock, unit: selectedProduct.unit, min: selectedProduct.min_stock })}
                                     </p>
                                 </div>
                             )}
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <Label htmlFor="qty" className="mb-1.5 block">
-                                        Jumlah Masuk *
+                                    <Label htmlFor="qty" className="mb-1 block text-sm font-medium">
+                                        {t('inventory.qtyIn')} *
                                     </Label>
                                     <Input
                                         id="qty"
@@ -152,74 +156,80 @@ export default function StockIn({ products }: Props) {
                                         min={1}
                                         value={data.qty}
                                         onChange={(e) => setData('qty', parseInt(e.target.value) || 1)}
-                                        className={displayError('qty') ? 'border-rose-500' : ''}
+                                        className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
                                     />
                                     {selectedProduct && (
                                         <p className="text-muted-foreground mt-1 text-xs">
-                                            Stok setelah: {selectedProduct.current_stock + (data.qty || 0)} {selectedProduct.unit}
+                                            {t('inventory.stockAfter', { stock: selectedProduct.current_stock + (data.qty || 0), unit: selectedProduct.unit })}
                                         </p>
                                     )}
                                     {displayError('qty') && <p className="mt-1 text-xs text-rose-500">{displayError('qty')}</p>}
                                 </div>
                                 <div>
-                                    <Label htmlFor="unit_cost" className="mb-1.5 block">
-                                        Harga Modal/Unit (Rp)
+                                    <Label htmlFor="unit_cost" className="mb-1 block text-sm font-medium">
+                                        {t('inventory.unitCost')} ({getCurrencySymbol()})
                                     </Label>
                                     <Input
                                         id="unit_cost"
                                         type="text"
                                         value={formatRupiah(data.unit_cost)}
                                         onChange={(e) => setData('unit_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
+                                        className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-1.5">
-                                <Label htmlFor="movement_date" className="block">
-                                    Tanggal *
-                                </Label>
-                                <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
-                                {displayError('movement_date') && <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>}
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="space-y-1">
+                                    <Label htmlFor="movement_date" className="block text-sm font-medium">
+                                        {t('common.date')} *
+                                    </Label>
+                                    <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
+                                    {displayError('movement_date') && <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>}
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="reference" className="mb-1 block text-sm font-medium">
+                                        {t('inventory.reference')}
+                                    </Label>
+                                    <Input
+                                        id="reference"
+                                        type="text"
+                                        value={data.reference}
+                                        onChange={(e) => setData('reference', e.target.value)}
+                                        placeholder={t('inventory.referencePlaceholder')}
+                                        className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    />
+                                </div>
                             </div>
 
                             <div>
-                                <Label htmlFor="reference" className="mb-1.5 block">
-                                    No. Referensi
-                                </Label>
-                                <Input
-                                    id="reference"
-                                    type="text"
-                                    value={data.reference}
-                                    onChange={(e) => setData('reference', e.target.value)}
-                                    placeholder="No. PO / Invoice (opsional)"
-                                />
-                            </div>
-
-                            <div>
-                                <Label htmlFor="note" className="mb-1.5 block">
-                                    Catatan
+                                <Label htmlFor="note" className="mb-1 block text-sm font-medium">
+                                    {t('inventory.notes')}
                                 </Label>
                                 <Textarea
                                     id="note"
-                                    rows={2}
+                                    rows={3}
                                     value={data.note}
                                     onChange={(e) => setData('note', e.target.value)}
-                                    placeholder="Catatan tambahan (opsional)"
+                                    placeholder={t('inventory.notesPlaceholder')}
+                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                             </div>
                         </div>
+                        </div>
                     </div>
 
-                    <div className="flex justify-end gap-3">
+                    <div className="mt-2 flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">Batal</Link>
+                            <Link href="/inventory">{t('Inventory.Cancel')}</Link>
                         </Button>
                         <Button
                             type="submit"
                             disabled={processing}
                             className="rounded-xl bg-emerald-600 px-5 text-white hover:bg-emerald-700 disabled:opacity-70"
                         >
-                            {processing ? 'Menyimpan...' : 'Simpan Stok Masuk'}
+                            {processing ? t('inventory.saving') : t('inventory.saveStockIn')}
                         </Button>
                     </div>
                 </form>

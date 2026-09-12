@@ -20,7 +20,10 @@ export interface UserItem {
     tenant?: Tenant | null;
 }
 
-export const getColumns = (onEdit: (user: UserItem) => void): ColumnDef<UserItem>[] => [
+export const getColumns = (
+    onEdit: (user: UserItem) => void,
+    t: (key: string, options?: any) => string = (k) => k
+): ColumnDef<UserItem>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -31,7 +34,7 @@ export const getColumns = (onEdit: (user: UserItem) => void): ColumnDef<UserItem
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nama & Email" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.users.colNameEmail')} />,
         cell: ({ row }) => {
             const user = row.original;
             return (
@@ -49,21 +52,21 @@ export const getColumns = (onEdit: (user: UserItem) => void): ColumnDef<UserItem
     },
     {
         accessorKey: 'tenant',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Bisnis / Tenant" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.users.colTenant')} />,
         cell: ({ row }) => {
             const tenant = row.original.tenant;
             return tenant ? (
                 <span className="text-foreground text-sm font-medium">{tenant.name}</span>
             ) : (
                 <Badge variant="outline" className="dark:text-slate-350 bg-slate-100 text-slate-700 dark:bg-slate-800">
-                    Platform Admin
+                    {t('admin.platformAdmin')}
                 </Badge>
             );
         },
     },
     {
         accessorKey: 'role',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Peran (Role)" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.users.colRole')} />,
         cell: ({ row }) => {
             const role = row.original.roles[0]?.name || 'staff';
             return (
@@ -99,7 +102,7 @@ export const getColumns = (onEdit: (user: UserItem) => void): ColumnDef<UserItem
     },
     {
         accessorKey: 'created_at',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Tanggal Bergabung" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.users.colJoinedDate')} />,
         cell: ({ row }) => {
             return (
                 <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
@@ -117,12 +120,12 @@ export const getColumns = (onEdit: (user: UserItem) => void): ColumnDef<UserItem
     },
     {
         id: 'actions',
-        header: () => <div className="text-center">Aksi</div>,
+        header: () => <div className="text-center">{t('admin.users.colActions')}</div>,
         cell: ({ row }) => {
             const user = row.original;
             return (
                 <div className="flex items-center justify-center gap-2">
-                    <Button variant="ghost" size="icon" onClick={() => onEdit(user)} className="hover:bg-muted h-8 w-8" title="Edit Pengguna">
+                    <Button variant="ghost" size="icon" onClick={() => onEdit(user)} className="hover:bg-muted h-8 w-8" title={t('admin.users.editTitle')}>
                         <Edit size={15} />
                     </Button>
                 </div>

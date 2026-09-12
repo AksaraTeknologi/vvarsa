@@ -9,11 +9,7 @@ import { type ProductVariant } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, ClipboardList, Minus, Package, Plus, ShoppingBag, ShoppingCart, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Pesanan', href: '/orders' },
-    { title: 'Buat Pesanan', href: '/orders/create' },
-];
+import { useTranslation } from 'react-i18next';
 
 interface PackageModel {
     id: number;
@@ -42,6 +38,13 @@ interface Props {
 let nextId = 1;
 
 export default function OrderCreate({ variants, packages }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('navigation.orders'), href: '/orders' },
+        { title: t('orders.createNewOrder'), href: '/orders/create' },
+    ];
+
     const { data, setData, post, processing, errors } = useForm({
         customer_name: '',
         customer_phone: '',
@@ -72,7 +75,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                 return `${qty}x ${name}`;
             });
 
-        if (selected.length === 0) return 'Belum ada rasa dipilih';
+        if (selected.length === 0) return t('orders.noFlavorSelected');
         return selected.join(', ');
     };
 
@@ -222,7 +225,7 @@ export default function OrderCreate({ variants, packages }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat Pesanan" />
+            <Head title={t('orders.createNewOrder')} />
 
             <div className="mx-auto max-w-2xl p-4 md:p-6">
                 {/* Header */}
@@ -234,48 +237,48 @@ export default function OrderCreate({ variants, packages }: Props) {
                     </Button>
                     <div>
                         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <ClipboardList className="text-indigo-500" size={22} />
-                            Buat Pesanan Baru
+                            <ClipboardList className="text-[#3f9567]" size={22} />
+                            {t('orders.createNewOrder')}
                         </h1>
-                        <p className="text-muted-foreground text-sm">Catat pesanan masuk dari pelanggan</p>
+                        <p className="text-muted-foreground text-sm">{t('orders.createSubtitle')}</p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* ── Data Pelanggan ──────────────────────────────────────── */}
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-sm font-semibold">Data Pelanggan</h2>
+                        <h2 className="text-sm font-semibold">{t('orders.customerData')}</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="col-span-2 space-y-1.5 md:col-span-1">
-                                <Label htmlFor="customer_name">Nama Pelanggan *</Label>
+                                <Label htmlFor="customer_name">{t('orders.customerNameReq')}</Label>
                                 <Input
                                     id="customer_name"
                                     value={data.customer_name}
                                     onChange={(e) => setData('customer_name', e.target.value)}
-                                    placeholder="cth: Budi Santoso"
+                                    placeholder={t('orders.customerNamePlaceholder')}
                                     className={errors.customer_name ? 'border-rose-500' : ''}
                                     required
                                 />
                                 {errors.customer_name && <p className="text-xs text-rose-500">{errors.customer_name}</p>}
                             </div>
                             <div className="col-span-2 space-y-1.5 md:col-span-1">
-                                <Label htmlFor="customer_phone">No. HP (opsional)</Label>
+                                <Label htmlFor="customer_phone">{t('orders.customerPhoneOpt')}</Label>
                                 <Input
                                     id="customer_phone"
                                     type="tel"
                                     value={data.customer_phone}
                                     onChange={(e) => setData('customer_phone', e.target.value)}
-                                    placeholder="cth: 0812xxxx"
+                                    placeholder={t('orders.customerPhonePlaceholder')}
                                 />
                             </div>
                             <div className="col-span-2 space-y-1.5">
-                                <Label htmlFor="notes">Catatan</Label>
+                                <Label htmlFor="notes">{t('orders.notes')}</Label>
                                 <Textarea
                                     id="notes"
                                     value={data.notes}
                                     onChange={(e) => setData('notes', e.target.value)}
                                     rows={2}
-                                    placeholder="Catatan khusus pesanan (opsional)"
+                                    placeholder={t('orders.notesPlaceholder')}
                                 />
                             </div>
                         </div>
@@ -284,7 +287,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                     {/* ── Pilih Paket / Varian Rasa ───────────────────────────── */}
                     {packages.length > 0 ? (
                         <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                            <h2 className="text-sm font-semibold">Tambah Paket</h2>
+                            <h2 className="text-sm font-semibold">{t('orders.addPackage')}</h2>
                             {errors.items && <p className="text-xs text-rose-500">{errors.items as string}</p>}
 
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -293,26 +296,26 @@ export default function OrderCreate({ variants, packages }: Props) {
                                         key={pkg.id}
                                         type="button"
                                         onClick={() => addPaket(pkg)}
-                                        className="group border-border bg-muted flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                                        className="group border-border bg-muted flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-[#a9d4b6] hover:bg-[#edf8f1]"
                                     >
-                                        <Package size={18} className="text-muted-foreground mb-1 transition-colors group-hover:text-indigo-500" />
+                                        <Package size={18} className="text-muted-foreground mb-1 transition-colors group-hover:text-[#3f9567]" />
                                         <span className="max-w-full truncate text-sm font-bold">{pkg.name}</span>
                                         <span className="text-muted-foreground text-[10px] font-semibold tracking-widest uppercase">
-                                            Isi {pkg.capacity} Pcs
+                                            {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                         </span>
                                         {pkg.description && (
                                             <span className="text-muted-foreground/80 line-clamp-2 max-w-full px-1 text-[10px] leading-snug">
                                                 {pkg.description}
                                             </span>
                                         )}
-                                        <span className="mt-1 text-sm font-bold text-indigo-600">{formatRupiah(Number(pkg.price))}</span>
+                                        <span className="mt-1 text-sm font-bold text-[#3f9567]">{formatRupiah(Number(pkg.price))}</span>
                                     </button>
                                 ))}
                             </div>
                         </div>
                     ) : (
                         <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                            <h2 className="text-sm font-semibold">Pilih Varian Rasa</h2>
+                            <h2 className="text-sm font-semibold">{t('orders.selectFlavorTitle')}</h2>
                             {errors.items && <p className="text-xs text-rose-500">{errors.items as string}</p>}
 
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -329,19 +332,19 @@ export default function OrderCreate({ variants, packages }: Props) {
                                             key={v.id}
                                             type="button"
                                             onClick={() => addDirectVariant(v)}
-                                            className="group border-border bg-muted relative flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                                            className="group border-border bg-muted relative flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-[#a9d4b6] hover:bg-[#edf8f1]"
                                         >
                                             {currentQty > 0 && (
-                                                <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
+                                                <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#3f9567] text-[10px] font-bold text-white">
                                                     {currentQty}
                                                 </div>
                                             )}
                                             <ShoppingBag
                                                 size={18}
-                                                className="text-muted-foreground mb-1 transition-colors group-hover:text-indigo-500"
+                                                className="text-muted-foreground mb-1 transition-colors group-hover:text-[#3f9567]"
                                             />
                                             <span className="max-w-full truncate text-sm font-bold">{v.name.replace('Mochi ', '')}</span>
-                                            <span className="mt-1 text-sm font-bold text-indigo-600">{formatRupiah(Number(v.sell_price))}</span>
+                                            <span className="mt-1 text-sm font-bold text-[#3f9567]">{formatRupiah(Number(v.sell_price))}</span>
                                         </button>
                                     );
                                 })}
@@ -351,14 +354,14 @@ export default function OrderCreate({ variants, packages }: Props) {
 
                     {/* ── Cart / Item Pesanan ──────────────────────────────────── */}
                     <div className="bg-card border-border space-y-3 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-sm font-semibold">Item Pesanan</h2>
+                        <h2 className="text-sm font-semibold">{t('orders.orderItems')}</h2>
 
                         {cart.length === 0 ? (
                             <div className="text-muted-foreground py-8 text-center text-sm">
                                 <ShoppingCart size={28} className="mx-auto mb-2 opacity-30" />
                                 {packages.length > 0
-                                    ? 'Pilih paket di atas untuk mulai mencatat pesanan'
-                                    : 'Pilih varian rasa di atas untuk mulai mencatat pesanan'}
+                                    ? t('orders.selectPackageFirst')
+                                    : t('orders.selectFlavorFirst')}
                             </div>
                         ) : (
                             <>
@@ -446,7 +449,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                             {/* Detail Varian Summary Badge */}
                                             <div className="bg-muted/50 dark:bg-muted/30 border-border/40 rounded-lg border p-2 text-xs">
                                                 <span className="text-muted-foreground mb-0.5 block text-[10px] font-bold tracking-wider uppercase">
-                                                    Detail Rasa Varian:
+                                                    {t('orders.flavorDetails')}
                                                 </span>
                                                 <span
                                                     className={`text-xs font-semibold ${Object.values(item.quantities).reduce((s, q) => s + q, 0) > 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground/70 font-normal italic'}`}
@@ -468,7 +471,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                                     return (
                                                         <>
                                                             <div className="text-muted-foreground border-border mb-1 flex items-center justify-between border-b pb-1.5 text-xs">
-                                                                <span>Pilih Varian Rasa</span>
+                                                                <span>{t('orders.selectFlavorTitle')}</span>
                                                                 <span
                                                                     className={
                                                                         totalSelected === item.isi
@@ -477,8 +480,8 @@ export default function OrderCreate({ variants, packages }: Props) {
                                                                     }
                                                                 >
                                                                     {totalSelected === item.isi
-                                                                        ? '✓ Lengkap'
-                                                                        : `⚠ Kurang ${item.isi - totalSelected}`}{' '}
+                                                                        ? t('orders.complete')
+                                                                        : t('orders.missingPcs', { count: item.isi - totalSelected })}{' '}
                                                                     ({totalSelected}/{item.isi} Pcs)
                                                                 </span>
                                                             </div>
@@ -531,7 +534,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                 {/* Subtotal */}
                                 <div className="border-border mt-1 flex items-end justify-between border-t pt-3">
                                     <div className="text-right">
-                                        <div className="text-muted-foreground text-xs">Total</div>
+                                        <div className="text-muted-foreground text-xs">{t('common.total')}</div>
                                         <div className="text-xl font-bold">{formatRupiah(subtotal)}</div>
                                     </div>
                                 </div>
@@ -542,14 +545,14 @@ export default function OrderCreate({ variants, packages }: Props) {
                     {/* ── Aksi ────────────────────────────────────────────────── */}
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/orders">Batal</Link>
+                            <Link href="/orders">{t('common.cancel')}</Link>
                         </Button>
                         <Button
                             type="submit"
                             disabled={processing || cart.length === 0 || !cartComplete}
-                            className="rounded-xl bg-indigo-600 px-5 text-white hover:bg-indigo-700"
+                            variant="owner" className="rounded-xl px-5"
                         >
-                            {processing ? 'Menyimpan...' : 'Buat Pesanan'}
+                            {processing ? t('orders.savingOrder') : t('orders.saveOrder')}
                         </Button>
                     </div>
                 </form>

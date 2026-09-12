@@ -97,6 +97,7 @@ class TenantController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:tenants,slug,'.$tenant->id,
             'business_type' => 'required|string|max:255',
+            'currency' => 'required|in:IDR,USD,SGD',
             'phone' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'plan_id' => 'required|exists:subscription_plans,id',

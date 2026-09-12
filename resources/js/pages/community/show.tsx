@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { BUSINESS_TYPE_LABELS, formatDate } from '@/lib/utils-mrp';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
+import { BUSINESS_TYPE_LABELS, formatDate } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type CommunityPost, type CommunityReply } from '@/types/mrp';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Heart, LogIn, LogOut, MessageCircle, Send } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 interface Props {
@@ -17,13 +18,6 @@ interface Props {
     tenant_business_type: string;
     is_member: boolean;
 }
-
-const CATEGORY_LABELS: Record<string, string> = {
-    discussion: 'Diskusi',
-    question: 'Pertanyaan',
-    tips: 'Tips & Trik',
-    announcement: 'Pengumuman',
-};
 
 const CATEGORY_STYLES: Record<string, string> = {
     discussion: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
@@ -49,31 +43,34 @@ function getInitials(name: string) {
         .slice(0, 2);
 }
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: (k: string, opts?: any) => string, locale: string): string {
     const now = new Date();
     const date = new Date(dateStr);
     const diffMs = now.getTime() - date.getTime();
     const diffMin = Math.floor(diffMs / 60000);
     const diffHr = Math.floor(diffMin / 60);
     const diffDay = Math.floor(diffHr / 24);
-    if (diffMin < 1) return 'Baru saja';
-    if (diffMin < 60) return `${diffMin} menit lalu`;
-    if (diffHr < 24) return `${diffHr} jam lalu`;
-    if (diffDay < 7) return `${diffDay} hari lalu`;
-    return formatDate(dateStr, { day: 'numeric', month: 'short', year: 'numeric' });
+    if (diffMin < 1) return t('community.time.justNow');
+    if (diffMin < 60) return t('community.time.minutesAgo', { count: diffMin });
+    if (diffHr < 24) return t('community.time.hoursAgo', { count: diffHr });
+    if (diffDay < 7) return t('community.time.daysAgo', { count: diffDay });
+    return new Date(dateStr).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-const breadcrumbs = (post: CommunityPost): BreadcrumbItem[] => [
-    { title: 'Komunitas', href: '/community' },
-    { title: post.title, href: `/community/${post.id}` },
-];
-
-const replySchema = z.object({
-    content: z.string().min(1, 'Balasan tidak boleh kosong'),
-});
-
 export default function CommunityShow({ post, replies, is_liked, tenant_business_type, is_member }: Props) {
+    const { t, i18n } = useTranslation();
     const { auth } = usePage().props as any;
+
+    const currentLocale = i18n.language === 'id' ? 'id-ID' : 'en-US';
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('community.title'), href: '/community' },
+        { title: post.title, href: `/community/${post.id}` },
+    ];
+
+    const replySchema = z.object({
+        content: z.string().min(1, t('community.validation.replyEmpty')),
+    });
 
     const {
         data,
@@ -88,7 +85,9 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
 
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const businessLabel = BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type;
+    const businessLabel = t(`community.businessTypes.${tenant_business_type}`, {
+        defaultValue: BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type,
+    });
     const businessColor = BUSINESS_TYPE_COLORS[tenant_business_type] || BUSINESS_TYPE_COLORS.general;
 
     const handleReply = (e: React.FormEvent) => {
@@ -113,14 +112,14 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
 
     const toggleLike = () => {
         handleAsyncAction(() => routerPromise('post', `/community/${post.id}/like`, {}, { preserveScroll: true }), {
-            loading: 'Memproses...',
-            success: 'Berhasil!',
-            error: 'Gagal',
+            loading: t('community.toasts.processing'),
+            success: t('community.toasts.success'),
+            error: t('community.toasts.failed'),
         });
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs(post)}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={post.title} />
             <div className="flex h-[calc(100vh-64px)] flex-col">
                 {/* Top bar */}
@@ -137,9 +136,9 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                         </div>
                         <p className="text-muted-foreground text-xs">
                             <span className={`mr-1.5 rounded-full px-2 py-0.5 ${CATEGORY_STYLES[post.category] || ''}`}>
-                                {CATEGORY_LABELS[post.category] || post.category}
+                                {t(`community.categories.${post.category}`, { defaultValue: post.category })}
                             </span>
-                            {post.replies_count} balasan · {post.views_count} dilihat
+                            {t('community.repliesCount', { count: post.replies_count })} · {t('community.viewsCount', { count: post.views_count })}
                         </p>
                     </div>
                     <button
@@ -155,11 +154,11 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                     </button>
                     {is_member ? (
                         <Button variant="outline" size="sm" onClick={() => router.delete(`/community/${post.id}/leave`, { preserveScroll: true })}>
-                            <LogOut className="size-4" /> Keluar
+                            <LogOut className="size-4" /> {t('community.leave')}
                         </Button>
                     ) : (
                         <Button size="sm" onClick={() => router.post(`/community/${post.id}/join`, {}, { preserveScroll: true })}>
-                            <LogIn className="size-4" /> Gabung
+                            <LogIn className="size-4" /> {t('community.join')}
                         </Button>
                     )}
                 </div>
@@ -174,9 +173,9 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             </div>
                             <div className="flex-1">
                                 <div className="mb-1 flex flex-wrap items-baseline gap-2">
-                                    <span className="text-sm font-semibold">{post.user?.name || 'Anonim'}</span>
+                                    <span className="text-sm font-semibold">{post.user?.name || t('community.anonymous')}</span>
                                     <span className="text-muted-foreground text-xs">{post.tenant?.name}</span>
-                                    <span className="text-muted-foreground text-xs">{timeAgo(post.created_at)}</span>
+                                    <span className="text-muted-foreground text-xs">{timeAgo(post.created_at, t, currentLocale)}</span>
                                 </div>
                                 <div className="bg-card border-border rounded-2xl rounded-tl-sm border px-4 py-3 shadow-sm">
                                     <p className="text-muted-foreground whitespace-pre-line text-sm leading-relaxed">{post.content}</p>
@@ -190,7 +189,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                                 <div className="border-border flex-1 border-t" />
                                 <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                     <MessageCircle size={12} />
-                                    {replies.length} Balasan
+                                    {t('community.repliesCountDivider', { count: replies.length })}
                                 </span>
                                 <div className="border-border flex-1 border-t" />
                             </div>
@@ -206,8 +205,8 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                                     </div>
                                     <div className={`max-w-[80%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
                                         <div className={`mb-1 flex items-baseline gap-2 ${isMe ? 'flex-row-reverse' : ''}`}>
-                                            <span className="text-xs font-semibold">{isMe ? 'Anda' : (reply.user?.name || 'Anonim')}</span>
-                                            <span className="text-muted-foreground text-xs">{timeAgo(reply.created_at)}</span>
+                                            <span className="text-xs font-semibold">{isMe ? t('community.you') : (reply.user?.name || t('community.anonymous'))}</span>
+                                            <span className="text-muted-foreground text-xs">{timeAgo(reply.created_at, t, currentLocale)}</span>
                                         </div>
                                         <div
                                             className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
@@ -243,7 +242,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                                             if (data.content.trim()) handleReply(e as any);
                                         }
                                     }}
-                                    placeholder="Tulis balasan... (Enter untuk kirim, Shift+Enter untuk baris baru)"
+                                    placeholder={t('community.replyPlaceholder')}
                                     className={`resize-none rounded-2xl ${clientErrors.content || errors.content ? 'border-rose-500' : ''}`}
                                 />
                                 {(clientErrors.content || errors.content) && (
@@ -259,7 +258,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                                 <Send size={15} />
                             </Button>
                         </form> : <div className="text-muted-foreground flex items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-3 text-sm">
-                            <LogIn className="size-4" /> Gabung komunitas untuk ikut chat.
+                            <LogIn className="size-4" /> {t('community.joinToChat')}
                         </div>}
                     </div>
                 </div>
@@ -267,5 +266,3 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
         </AppLayout>
     );
 }
-
-

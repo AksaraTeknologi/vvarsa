@@ -54,7 +54,7 @@ export function Pricing({ goToDashboard }: LandingProps) {
     return (
                     <section
                         id="paket"
-                        className="bg-[radial-gradient(circle_at_top,rgba(94,75,242,0.08),transparent_30%),linear-gradient(180deg,#F8F6F2_0%,#F1F0FF_100%)] px-6 py-24 lg:px-10 lg:py-32"
+                        className="bg-[radial-gradient(circle_at_top,rgba(94,75,242,0.08),transparent_30%),linear-gradient(180deg,#F8F6F2_0%,#F1F0FF_100%)] px-6 py-16 lg:px-10 lg:py-20"
                     >
                         <div className="mx-auto max-w-7xl">
                             <div
@@ -65,7 +65,7 @@ export function Pricing({ goToDashboard }: LandingProps) {
                                     Harga transparan
                                 </span>
 
-                                <h2 className="mt-5 text-[2.2rem] font-black tracking-[-0.04em] sm:text-5xl">
+                                <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] sm:text-4xl">
                                     Pilih yang paling pas,
                                     <span className="text-[#5E4BF2]">
                                         {' '}
@@ -73,14 +73,14 @@ export function Pricing({ goToDashboard }: LandingProps) {
                                     </span>
                                 </h2>
 
-                                <p className="mt-4 text-sm font-semibold leading-relaxed text-[#777689] sm:text-base">
+                                <p className="mt-3 text-sm font-semibold leading-relaxed text-[#777689] sm:text-base">
                                     Mulai dari yang paling sederhana sampai
                                     yang siap mendukung bisnis yang tumbuh
                                     cepat.
                                 </p>
                             </div>
 
-                            <div className="mt-16 grid gap-8 lg:grid-cols-3">
+                            <div className="mt-10 grid gap-6 lg:grid-cols-3">
                                 {plans.map((plan) => {
                                     const Icon = plan.icon;
                                     const isFeatured =

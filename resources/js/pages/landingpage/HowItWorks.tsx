@@ -4,7 +4,7 @@ export function HowItWorks() {
     return (
                     <section
                         id="cara-kerja"
-                        className="relative mt-6 overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.22),transparent_30%),linear-gradient(180deg,#17182A_0%,#101426_100%)] px-6 py-20 text-white lg:px-10 lg:py-28"
+                        className="relative mt-4 overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.22),transparent_30%),linear-gradient(180deg,#17182A_0%,#101426_100%)] px-6 py-16 text-white lg:px-10 lg:py-20"
                     >
                         <div className="absolute left-[-80px] top-[-40px] size-52 rounded-full bg-[#D8F380]/18 blur-3xl" />
 
@@ -21,7 +21,7 @@ export function HowItWorks() {
                                     Cara kerja VVARSA
                                 </span>
 
-                                <h2 className="mx-auto mt-5 max-w-4xl text-[2.2rem] font-black leading-tight tracking-[-0.04em] sm:text-5xl">
+                                <h2 className="mx-auto mt-4 max-w-4xl text-[2rem] font-black leading-tight tracking-[-0.04em] sm:text-4xl">
                                     Dari data ribet,
                                     <span className="text-[#D8F380]">
                                         {' '}
@@ -29,14 +29,14 @@ export function HowItWorks() {
                                     </span>
                                 </h2>
 
-                                <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold text-white/65 sm:text-base">
+                                <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-white/65 sm:text-base">
                                     Semua proses penting dari input data sampai
                                     laporan keputusan dibuat dalam satu flow
                                     yang simpel, cepat, dan lebih rapi.
                                 </p>
                             </div>
 
-                            <div className="relative mt-16 grid gap-6 md:grid-cols-3">
+                            <div className="relative mt-10 grid gap-5 md:grid-cols-3">
                                 {[
                                     {
                                         step: '01',

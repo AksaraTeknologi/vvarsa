@@ -132,7 +132,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                     </Button>
                     <div>
                         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <BookOpen className="text-violet-500" size={22} />
+                            <BookOpen className="text-[#3f9567]" size={22} />
                             Edit Resep: {recipe.name}
                         </h1>
                         <p className="text-muted-foreground text-sm">Ubah informasi resep dan takaran bahan baku</p>
@@ -264,7 +264,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                             }
                                             readOnly={recipe.isFromInventory}
                                             className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
-                                            placeholder="Rp0"
+                                            placeholder={formatRupiah(0)}
                                         />
                                     </div>
                                     {/* Total HPP */}
@@ -275,7 +275,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                             value={recipe.qty * recipe.ingredient_cost > 0 ? formatRupiah(recipe.qty * recipe.ingredient_cost) : ''}
                                             readOnly
                                             className="bg-muted h-9 rounded-xl text-xs font-medium"
-                                            placeholder="Rp0"
+                                            placeholder={formatRupiah(0)}
                                         />
                                     </div>
                                     {/* Hapus */}
@@ -298,12 +298,12 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                     </div>
 
                     {/* HPP Preview */}
-                    <div className="flex items-center gap-4 rounded-2xl border border-violet-200 bg-violet-50 p-5 dark:bg-violet-950/20">
-                        <Calculator size={20} className="shrink-0 text-violet-600" />
+                    <div className="flex items-center gap-4 rounded-2xl border border-[#c7e0ce] bg-[#edf8f1] p-5">
+                        <Calculator size={20} className="shrink-0 text-[#3f9567]" />
                         <div className="grid flex-1 grid-cols-2 gap-4 text-sm">
                             <div>
                                 <div className="text-muted-foreground mb-0.5 text-xs">Total HPP 1 Adonan / Resep</div>
-                                <div className="text-lg font-bold text-violet-700 dark:text-violet-400">{formatRupiah(totalCost)}</div>
+                                <div className="text-lg font-bold text-[#3f9567]">{formatRupiah(totalCost)}</div>
                             </div>
                             <div>
                                 <div className="text-muted-foreground mb-0.5 text-xs">HPP per Pcs (Hasil Porsi)</div>
@@ -316,7 +316,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                         <Button variant="outline" asChild className="rounded-xl">
                             <Link href="/recipes">Batal</Link>
                         </Button>
-                        <Button type="submit" disabled={processing} className="rounded-xl bg-violet-600 px-5 text-white hover:bg-violet-700">
+                        <Button type="submit" disabled={processing} variant="owner" className="rounded-xl px-5">
                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                         </Button>
                     </div>
