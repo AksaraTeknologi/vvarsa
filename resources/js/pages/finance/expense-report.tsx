@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { formatRupiah, MONTHS_ID } from '@/lib/utils-mrp';
+import { formatDate, formatRupiah, MONTHS_ID } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
@@ -8,16 +8,30 @@ import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer,
 
 const PIE_COLORS = ['#6366f1', '#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
 
+interface TransactionItem {
+    id: string;
+    type: string;
+    category?: string;
+    amount: number;
+    description?: string;
+    reference?: string;
+    date: string;
+    payment_method?: string;
+    expenseCategory?: { id: number; name: string };
+    user?: { id: number; name: string };
+}
+
 interface Props {
     monthly_data: { day: number; total: number }[];
     by_category: { expense_category_id: number | null; total: number; count: number; expense_category?: { id: number; name: string } }[];
+    transactions?: TransactionItem[];
     year: number;
     month: number;
     today_expense: number;
     month_expense: number;
 }
 
-export default function ExpenseReport({ monthly_data, by_category, year, month, today_expense, month_expense }: Props) {
+export default function ExpenseReport({ monthly_data, by_category, transactions = [], year, month, today_expense, month_expense }: Props) {
     const { t } = useTranslation();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -142,6 +156,71 @@ export default function ExpenseReport({ monthly_data, by_category, year, month, 
                                 </div>
                             </div>
                         )}
+                    </div>
+                </div>
+
+                {/* Table of Expense Transactions */}
+                <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-base font-semibold">{t('finance.expenseTableTitle', 'Daftar Transaksi Pengeluaran')}</h2>
+                        <span className="text-muted-foreground text-xs">
+                            {transactions.length} {t('finance.records', 'transaksi')}
+                        </span>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="border-border text-muted-foreground border-b text-xs uppercase">
+                                    <th className="px-4 py-3 text-left">{t('common.date', 'Tanggal')}</th>
+                                    <th className="px-4 py-3 text-left">{t('finance.category', 'Kategori')}</th>
+                                    <th className="px-4 py-3 text-left">{t('finance.description', 'Keterangan')}</th>
+                                    <th className="px-4 py-3 text-left">{t('finance.reference', 'No. Referensi')}</th>
+                                    <th className="px-4 py-3 text-right">{t('finance.amount', 'Jumlah')}</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-border divide-y">
+                                {transactions.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="text-muted-foreground py-8 text-center text-sm">
+                                            {t('finance.noExpenseTransactions', 'Belum ada transaksi pengeluaran pada bulan ini.')}
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    transactions.map((tx) => {
+                                        const catName = tx.expenseCategory?.name || tx.category || t('finance.other', 'Lainnya');
+                                        const isStockIn = catName.toLowerCase().includes('stok masuk') || (tx.description && tx.description.toLowerCase().includes('stok masuk'));
+                                        return (
+                                            <tr key={tx.id} className="hover:bg-muted/40 transition-colors">
+                                                <td className="text-muted-foreground whitespace-nowrap px-4 py-3 text-xs">
+                                                    {formatDate(tx.date)}
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-3">
+                                                    <span
+                                                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                                                            isStockIn
+                                                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300'
+                                                                : 'bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300'
+                                                        }`}
+                                                    >
+                                                        {catName}
+                                                    </span>
+                                                </td>
+                                                <td className="text-foreground max-w-xs truncate px-4 py-3 font-medium">
+                                                    {tx.description || '—'}
+                                                </td>
+                                                <td className="text-muted-foreground whitespace-nowrap px-4 py-3 text-xs">
+                                                    {tx.reference || '—'}
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-3 text-right font-bold text-rose-600 dark:text-rose-400">
+                                                    {formatRupiah(tx.amount)}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

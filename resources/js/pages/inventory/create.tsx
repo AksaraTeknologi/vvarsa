@@ -4,11 +4,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductCategory } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Info } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -20,14 +19,11 @@ interface Props {
 const UNITS = ['pcs', 'kg', 'gram', 'liter', 'ml', 'box', 'karton', 'porsi', 'gelas', 'botol', 'pak', 'lusin'];
 
 const productSchema = z.object({
-    name: z.string().min(1, 'Nama produk wajib diisi'),
+    name: z.string().min(1, 'Nama produk/bahan wajib diisi'),
     sku: z.string().optional(),
     category_id: z.string().optional(),
     unit: z.string().min(1, 'Satuan wajib diisi'),
-    min_stock: z.number().min(0, 'Stok minimum tidak boleh negatif'),
-    purchase_price: z.number().min(0, 'Harga beli tidak boleh negatif'),
-    purchase_qty: z.number().min(0.001, 'Isi kemasan tidak boleh kosong atau negatif'),
-    sell_price: z.number().min(0, 'Harga jual tidak boleh negatif').optional().default(0),
+    min_stock: z.coerce.number().min(0, 'Stok minimum tidak boleh negatif'),
     description: z.string().optional(),
 });
 
@@ -45,9 +41,6 @@ export default function InventoryCreate({ categories }: Props) {
         category_id: '',
         unit: 'pcs',
         min_stock: 0,
-        purchase_price: 0,
-        purchase_qty: 1,
-        sell_price: 0,
         description: '',
     });
 
@@ -71,10 +64,7 @@ export default function InventoryCreate({ categories }: Props) {
         post('/inventory');
     };
 
-    const costPrice = data.purchase_qty > 0 ? data.purchase_price / data.purchase_qty : 0;
-    const margin = data.sell_price > 0 ? Math.round(((data.sell_price - costPrice) / data.sell_price) * 100) : 0;
-
-    const displayError = (field: keyof typeof errors) => clientErrors[field] || errors[field];
+    const displayError = (field: keyof typeof data): string | undefined => clientErrors[field] || errors[field];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -83,6 +73,18 @@ export default function InventoryCreate({ categories }: Props) {
                 <div className="mb-6">
                     <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('inventory.addProduct')}</h1>
                     <p className="text-muted-foreground mt-1 text-sm">{t('inventory.addProductSubtitle')}</p>
+                </div>
+
+                {/* Info Alert explaining Stock In pricing logic */}
+                <div className="mb-6 flex items-start gap-3 rounded-2xl border border-blue-200 bg-blue-50/70 p-4 text-xs text-blue-800 dark:border-blue-900/40 dark:bg-blue-950/40 dark:text-blue-300">
+                    <Info className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
+                    <div>
+                        <p className="font-semibold text-sm mb-0.5">Informasi Pembelian &amp; Harga Bahan Pokok</p>
+                        <p className="leading-relaxed">
+                            Harga beli dan stok awal tidak diinput di sini karena harga bahan pokok dapat berubah-ubah. 
+                            Catat harga modal per unit dan jumlah pembelian terbaru melalui menu <strong>Stok Masuk (Stock In)</strong> saat barang datang.
+                        </p>
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -164,62 +166,6 @@ export default function InventoryCreate({ categories }: Props) {
                                 <p className="text-muted-foreground text-[11px]">{t('inventory.minStockHint')}</p>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                        <h2 className="text-foreground text-sm font-semibold">{t('inventory.pricingAndPackaging')}</h2>
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="purchase_price">{t('inventory.purchasePricePkg')} *</Label>
-                                <Input
-                                    id="purchase_price"
-                                    type="text"
-                                    value={formatRupiah(data.purchase_price)}
-                                    onChange={(e) => setData('purchase_price', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                    className={displayError('purchase_price') ? 'border-rose-500' : ''}
-                                    required
-                                />
-                                {displayError('purchase_price') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_price')}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="purchase_qty">{t('inventory.purchaseQty')} *</Label>
-                                <Input
-                                    id="purchase_qty"
-                                    type="number"
-                                    step="any"
-                                    min={0.1}
-                                    value={data.purchase_qty}
-                                    onChange={(e) => setData('purchase_qty', parseFloat(e.target.value) || 0)}
-                                    className={displayError('purchase_qty') ? 'border-rose-500' : ''}
-                                    required
-                                />
-                                {displayError('purchase_qty') && <p className="mt-1 text-xs text-rose-500">{displayError('purchase_qty')}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="sell_price">{t('inventory.sellPriceOptional')}</Label>
-                                <Input
-                                    id="sell_price"
-                                    type="text"
-                                    value={formatRupiah(data.sell_price)}
-                                    onChange={(e) => setData('sell_price', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                    className={displayError('sell_price') ? 'border-rose-500' : ''}
-                                />
-                                {displayError('sell_price') && <p className="mt-1 text-xs text-rose-500">{displayError('sell_price')}</p>}
-                            </div>
-                        </div>
-                        {data.purchase_qty > 0 && data.purchase_price > 0 && (
-                            <div className="text-muted-foreground bg-muted/30 rounded-xl p-3 text-sm">
-                                {t('inventory.costPriceEstimate', { unit: data.unit, price: formatRupiah(data.purchase_price / data.purchase_qty) })}
-                            </div>
-                        )}
-                        {data.sell_price > 0 && costPrice > 0 && (
-                            <div
-                                className={`rounded-xl p-3 text-sm ${margin >= 20 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'}`}
-                            >
-                                {t('inventory.marginProfit', { margin })}
-                                {margin < 20 && t('inventory.lowMarginWarning')}
-                            </div>
-                        )}
                     </div>
 
                     <div className="bg-card border-border space-y-2 rounded-2xl border p-5 shadow-sm">

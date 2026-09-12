@@ -33,12 +33,12 @@ class Recipe extends Model
     }
 
     /**
-     * Total cost of 1 full recipe batch/adonan
+     * Total cost of 1 full recipe batch/adonan based on latest raw material prices
      */
     public function getTotalCostAttribute(): float
     {
         return (float) $this->ingredients->sum(function ($ingredient) {
-            return (float) $ingredient->ingredient_cost * (float) $ingredient->qty;
+            return (float) $ingredient->total_cost;
         });
     }
 

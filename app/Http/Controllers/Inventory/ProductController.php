@@ -77,8 +77,8 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:product_categories,id',
             'unit' => 'required|string|max:50',
             'min_stock' => 'required|integer|min:0',
-            'purchase_price' => 'required|numeric|min:0',
-            'purchase_qty' => 'required|numeric|min:0.001',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'purchase_qty' => 'nullable|numeric|min:0.001',
             'sell_price' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
         ]);
@@ -86,6 +86,9 @@ class ProductController extends Controller
         $product = Product::create(array_merge($validated, [
             'tenant_id' => $tenant->id,
             'current_stock' => 0,
+            'purchase_price' => $validated['purchase_price'] ?? 0,
+            'purchase_qty' => $validated['purchase_qty'] ?? 1,
+            'cost_price' => 0,
             'sell_price' => $validated['sell_price'] ?? 0,
         ]));
 
@@ -116,8 +119,8 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:product_categories,id',
             'unit' => 'required|string|max:50',
             'min_stock' => 'required|integer|min:0',
-            'purchase_price' => 'required|numeric|min:0',
-            'purchase_qty' => 'required|numeric|min:0.001',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'purchase_qty' => 'nullable|numeric|min:0.001',
             'sell_price' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'is_active' => 'boolean',

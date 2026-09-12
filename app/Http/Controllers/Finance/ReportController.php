@@ -71,9 +71,19 @@ class ReportController extends Controller
             ->select('expense_category_id', DB::raw('SUM(amount) as total'), DB::raw('COUNT(*) as count'))
             ->groupBy('expense_category_id')->get();
 
+        $transactions = Transaction::where('tenant_id', $tenant->id)
+            ->where('type', 'expense')
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->with(['expenseCategory:id,name', 'user:id,name'])
+            ->orderBy('date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return Inertia::render('finance/expense-report', [
             'monthly_data' => $monthlyData,
             'by_category' => $byCategory,
+            'transactions' => $transactions,
             'year' => (int) $year,
             'month' => (int) $month,
             'today_expense' => (float) Transaction::where('tenant_id', $tenant->id)

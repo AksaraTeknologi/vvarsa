@@ -168,10 +168,20 @@ export default function StockIn({ products }: Props) {
                                     </Label>
                                     <Input
                                         id="unit_cost"
-                                        type="text"
-                                        value={formatRupiah(data.unit_cost)}
-                                        onChange={(e) => setData('unit_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
+                                        type="number"
+                                        min={0}
+                                        step="any"
+                                        placeholder="0"
+                                        value={data.unit_cost === 0 ? '' : data.unit_cost}
+                                        onChange={(e) => setData('unit_cost', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
+                                        className={displayError('unit_cost') ? 'border-rose-500' : ''}
                                     />
+                                    {data.unit_cost > 0 && (
+                                        <p className="mt-1 text-xs text-muted-foreground">
+                                            Preview: <span className="font-semibold text-foreground">{formatRupiah(data.unit_cost)}</span>
+                                        </p>
+                                    )}
+                                    {displayError('unit_cost') && <p className="mt-1 text-xs text-rose-500">{displayError('unit_cost')}</p>}
                                 </div>
                             </div>
 

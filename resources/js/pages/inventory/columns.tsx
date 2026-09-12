@@ -144,24 +144,24 @@ export const getColumns = (t: (key: string, options?: any) => string, onToggleAc
         cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.category?.name || '—'}</span>,
     },
     {
-        accessorKey: 'purchase_price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.purchasePrice')} />,
+        accessorKey: 'cost_price',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Modal / Unit" />,
         cell: ({ row }) => {
             const product = row.original;
+            const cost = product.cost_price || (product.purchase_qty > 0 ? product.purchase_price / product.purchase_qty : 0);
             return (
                 <div className="text-right">
-                    <div className="font-medium">{formatRupiah(product.purchase_price)}</div>
-                    <div className="text-muted-foreground text-[11px]">
-                        per {parseFloat(String(product.purchase_qty))} {product.unit}
-                    </div>
+                    {cost > 0 ? (
+                        <>
+                            <div className="font-semibold text-slate-900 dark:text-slate-50">{formatRupiah(cost)}</div>
+                            <div className="text-muted-foreground text-[11px]">per {product.unit}</div>
+                        </>
+                    ) : (
+                        <div className="text-muted-foreground text-xs italic">Belum Stok Masuk</div>
+                    )}
                 </div>
             );
         },
-    },
-    {
-        accessorKey: 'sell_price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.sellPrice')} />,
-        cell: ({ row }) => <div className="text-right font-semibold text-slate-900 dark:text-slate-50">{formatRupiah(row.original.sell_price)}</div>,
     },
     {
         accessorKey: 'current_stock',

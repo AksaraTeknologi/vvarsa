@@ -58,7 +58,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan reverb:start\" \"npm run dev\" --names='server,reverb,vite'"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74,#f472b6\" \"php artisan serve\" \"php artisan reverb:start\" \"npm run dev\" \"PYTHONPATH=services/ai-analytics services/ai-analytics/venv/bin/python services/ai-analytics/app/main.py\" --names='server,reverb,vite,ai-service'"
         ],
         "dev:ssr": [
             "npm run build:ssr",

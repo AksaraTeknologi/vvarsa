@@ -76,7 +76,7 @@ class OrderController extends Controller
         $tenant = app('tenant');
         $variants = ProductVariant::where('tenant_id', $tenant->id)
             ->where('is_active', true)
-            ->with('recipe.ingredients')
+            ->with('recipe.ingredients.ingredient:id,name,unit,cost_price')
             ->orderBy('name')
             ->get()
             ->map(function ($v) {
