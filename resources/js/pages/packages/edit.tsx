@@ -7,7 +7,7 @@ import { getCurrencySymbol } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Package, Save } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { useState } from 'react';
 
 interface PackageModel {
@@ -68,20 +68,19 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Edit Paket ${pkg.name}`} />
 
-            <div className="flex max-w-3xl flex-1 flex-col gap-6 p-4 md:p-6">
+            <div className="flex w-full flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
-                <div className="flex items-center gap-4">
-                    <Button asChild variant="outline" size="icon" className="h-8 w-8 shrink-0 rounded-lg">
+                <div className="flex items-center gap-3">
+                    <Button asChild variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-xl">
                         <Link href="/packages">
-                            <ArrowLeft size={14} />
+                            <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight">
-                            <Package className="text-[#3f9567]" size={22} />
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                             Edit Paket Produk
                         </h1>
-                        <p className="text-muted-foreground mt-0.5 text-xs">Ubah pengaturan paket harga atau batasan rasanya</p>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">Ubah Pengaturan Paket Harga Atau Batasan Rasanya</p>
                     </div>
                 </div>
 
@@ -96,7 +95,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="cth: Paket 3 Mix Mochi"
                                 required
-                                className="rounded-xl text-sm"
+                                className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                             />
                             {errors.name && <p className="text-xs text-rose-500">{errors.name}</p>}
                         </div>
@@ -112,7 +111,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                     value={data.capacity}
                                     onChange={(e) => setData('capacity', parseInt(e.target.value) || 0)}
                                     required
-                                    className="rounded-xl text-sm"
+                                    className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                                 {errors.capacity && <p className="text-xs text-rose-500">{errors.capacity}</p>}
                             </div>
@@ -127,7 +126,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                     onChange={(e) => setData('price', e.target.value)}
                                     placeholder="cth: 18000"
                                     required
-                                    className="rounded-xl text-sm"
+                                    className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                                 {errors.price && <p className="text-xs text-rose-500">{errors.price}</p>}
                             </div>
@@ -141,7 +140,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder="Catatan opsional mengenai paket..."
-                                className="min-h-[80px] rounded-xl text-sm"
+                                className="min-h-[88px] rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                             />
                             {errors.description && <p className="text-xs text-rose-500">{errors.description}</p>}
                         </div>
@@ -153,7 +152,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                 type="checkbox"
                                 checked={data.is_active}
                                 onChange={(e) => setData('is_active', e.target.checked)}
-                                className="rounded text-[#3f9567] focus:ring-[#5aa67a]"
+                                className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                             />
                             <Label htmlFor="is_active" className="cursor-pointer">
                                 Paket aktif dan dapat dipilih di Kasir
@@ -179,7 +178,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                 type="checkbox"
                                 checked={allVariantsAllowed}
                                 onChange={(e) => setAllVariantsAllowed(e.target.checked)}
-                                className="rounded text-[#3f9567] focus:ring-[#5aa67a]"
+                                className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                             />
                             <Label htmlFor="all_allowed" className="cursor-pointer text-sm font-semibold">
                                 Bebas Mix (Semua rasa diperbolehkan)
@@ -196,7 +195,7 @@ export default function PackageEdit({ package: pkg, variants }: Props) {
                                             type="checkbox"
                                             checked={data.variant_ids.some((vId) => String(vId) === String(v.id))}
                                             onChange={(e) => handleCheckboxChange(v.id, e.target.checked)}
-                                            className="rounded text-[#3f9567] focus:ring-[#5aa67a]"
+                                            className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                                         />
                                         <Label htmlFor={`var-${v.id}`} className="cursor-pointer text-sm leading-tight">
                                             {v.name}
