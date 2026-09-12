@@ -9,7 +9,7 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Calculator, FlaskConical } from 'lucide-react';
+import { ArrowLeft, Calculator } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -90,19 +90,20 @@ export default function VariantCreate({ recipes }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('variants.createTitle', 'Tambah Varian Produk')} />
 
-            <div className="mx-auto max-w-3xl p-4 md:p-6">
+            <div className="w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
-                    <Button variant="ghost" size="icon" asChild className="rounded-xl">
+                    <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
                         <Link href="/variants">
                             <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <FlaskConical className="text-[#3f9567]" size={22} />
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                             {t('variants.createTitle', 'Tambah Varian Produk')}
                         </h1>
-                        <p className="text-muted-foreground text-sm">{t('variants.createSubtitle', 'Buat varian baru untuk dijual dan hubungkan dengan resep dasar')}</p>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">
+                            {t('variants.createSubtitle', 'Buat Varian Baru Untuk Dijual Dan Hubungkan Dengan Resep Dasar')}
+                        </p>
                     </div>
                 </div>
 
@@ -119,7 +120,7 @@ export default function VariantCreate({ recipes }: Props) {
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder={t('variants.namePlaceholder', 'Contoh: Mochi Strawberry Choco (3 pcs)')}
                                     required
-                                    className={formErrors.name ? 'border-rose-500' : ''}
+                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.name ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.name && <p className="text-xs text-rose-500">{formErrors.name}</p>}
                             </div>
@@ -130,7 +131,7 @@ export default function VariantCreate({ recipes }: Props) {
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
                                     placeholder={t('variants.skuPlaceholder', 'Contoh: VAR-STRW-CHOCO-3')}
-                                    className={formErrors.sku ? 'border-rose-500' : ''}
+                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.sku ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.sku && <p className="text-xs text-rose-500">{formErrors.sku}</p>}
                             </div>
@@ -143,7 +144,7 @@ export default function VariantCreate({ recipes }: Props) {
                                     onChange={(e) => setSellPrice(parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                     placeholder={formatRupiah(18000)}
                                     required
-                                    className={formErrors.sell_price ? 'border-rose-500' : ''}
+                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.sell_price ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.sell_price && <p className="text-xs text-rose-500">{formErrors.sell_price}</p>}
                             </div>
@@ -155,10 +156,16 @@ export default function VariantCreate({ recipes }: Props) {
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder={t('variants.descriptionPlaceholder', 'Masukkan penjelasan produk untuk slip penjualan atau menu kasir...')}
                                     rows={2}
+                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                             </div>
                             <div className="col-span-2 flex items-center gap-2">
-                                <Checkbox id="is_active" checked={isActive} onCheckedChange={(checked) => setIsActive(!!checked)} />
+                                <Checkbox
+                                    id="is_active"
+                                    checked={isActive}
+                                    onCheckedChange={(checked) => setIsActive(!!checked)}
+                                    className="data-[state=unchecked]:!border-slate-300 data-[state=unchecked]:!bg-white data-[state=checked]:!border-blue-600 data-[state=checked]:!bg-blue-600 data-[state=checked]:!text-white"
+                                />
                                 <Label htmlFor="is_active" className="cursor-pointer text-sm font-normal">
                                     {t('variants.activeCheckbox', 'Varian ini aktif dan tampil di POS kasir')}
                                 </Label>
@@ -173,7 +180,7 @@ export default function VariantCreate({ recipes }: Props) {
                             <div className="col-span-2 space-y-1.5">
                                 <Label htmlFor="recipe_id">{t('variants.selectRecipe', 'Pilih Resep Acuan *')}</Label>
                                 <Select value={recipeId || ''} onValueChange={(val) => setRecipeId(val)}>
-                                    <SelectTrigger className="h-10 rounded-xl">
+                                    <SelectTrigger className="h-10 rounded-xl bg-white text-sm">
                                         <SelectValue placeholder={t('variants.recipePlaceholder', 'Pilih resep dasar...')} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -196,7 +203,7 @@ export default function VariantCreate({ recipes }: Props) {
                                     value={recipeQty}
                                     onChange={(e) => setRecipeQty(parseFloat(e.target.value) || 0)}
                                     required
-                                    className={formErrors.recipe_qty ? 'border-rose-500' : ''}
+                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.recipe_qty ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.recipe_qty && <p className="text-xs text-rose-500">{formErrors.recipe_qty}</p>}
                             </div>
@@ -204,12 +211,12 @@ export default function VariantCreate({ recipes }: Props) {
 
                         {selectedRecipe && selectedRecipe.ingredients && selectedRecipe.ingredients.length > 0 && (
                             <div className="border-border space-y-2 border-t pt-3">
-                                <span className="text-muted-foreground block text-xs font-semibold">
+                                <span className="text-muted-foreground block text-sm font-semibold">
                                     {t('variants.estimatedConsumption', { qty: recipeQty, defaultValue: `Estimasi Konsumsi Bahan Baku (kelipatan ${recipeQty}):` })}
                                 </span>
-                                <div className="flex flex-wrap gap-1.5">
+                                <div className="flex flex-wrap gap-2">
                                     {selectedRecipe.ingredients.map((ing, i) => (
-                                        <span key={i} className="bg-muted text-muted-foreground rounded-lg px-2 py-1 text-xs">
+                                        <span key={i} className="rounded-lg border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-600">
                                             {ing.ingredient_name}:{' '}
                                             <strong>
                                                 {(ing.qty * recipeQty).toFixed(3).replace(/\.?0+$/, '')} {ing.unit}
@@ -222,26 +229,20 @@ export default function VariantCreate({ recipes }: Props) {
                     </div>
 
                     {/* HPP & Margin Preview */}
-                    <div
-                        className={`flex items-center gap-4 rounded-2xl border p-5 ${margin >= 20 ? 'border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20' : margin >= 10 ? 'border-amber-200 bg-amber-50 dark:bg-amber-900/20' : 'border-rose-200 bg-rose-50 dark:bg-rose-900/20'}`}
-                    >
+                    <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5">
                         <Calculator size={20} className="text-muted-foreground shrink-0" />
-                        <div className="grid flex-1 grid-cols-3 gap-4 text-sm">
+                        <div className="grid flex-1 grid-cols-3 gap-4 text-base">
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">{t('variants.hppCost', 'HPP (Modal Varian)')}</div>
-                                <div className="font-semibold text-[#3f9567]">{formatRupiah(hpp)}</div>
+                                <div className="text-muted-foreground mb-0.5 text-sm">{t('variants.hppCost', 'HPP (Modal Varian)')}</div>
+                                <div className="text-foreground font-semibold">{formatRupiah(hpp)}</div>
                             </div>
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">{t('variants.profitPerVariant', 'Untung/Varian')}</div>
-                                <div className={`font-semibold ${profit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{formatRupiah(profit)}</div>
+                                <div className="text-muted-foreground mb-0.5 text-sm">{t('variants.profitPerVariant', 'Untung/Varian')}</div>
+                                <div className="text-muted-foreground font-semibold">{formatRupiah(profit)}</div>
                             </div>
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">{t('variants.profitMargin', 'Margin Keuntungan')}</div>
-                                <div
-                                    className={`font-semibold ${margin >= 20 ? 'text-emerald-600' : margin >= 10 ? 'text-amber-600' : 'text-rose-600'}`}
-                                >
-                                    {margin.toFixed(1)}%
-                                </div>
+                                <div className="text-muted-foreground mb-0.5 text-sm">{t('variants.profitMargin', 'Margin Keuntungan')}</div>
+                                <div className="text-muted-foreground font-semibold">{margin.toFixed(1)}%</div>
                             </div>
                         </div>
                     </div>

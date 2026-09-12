@@ -7,7 +7,7 @@ import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, ClipboardList, Minus, Package, Plus, ShoppingBag, ShoppingCart, Trash2 } from 'lucide-react';
+import { ArrowLeft, Minus, Package, Plus, ShoppingBag, ShoppingCart, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -227,20 +227,19 @@ export default function OrderCreate({ variants, packages }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('orders.createNewOrder')} />
 
-            <div className="mx-auto max-w-2xl p-4 md:p-6">
+            <div className="w-full p-4 md:p-6">
                 {/* Header */}
                 <div className="mb-6 flex items-center gap-3">
-                    <Button variant="ghost" size="icon" asChild className="rounded-xl">
+                    <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
                         <Link href="/orders">
                             <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <ClipboardList className="text-[#3f9567]" size={22} />
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                             {t('orders.createNewOrder')}
                         </h1>
-                        <p className="text-muted-foreground text-sm">{t('orders.createSubtitle')}</p>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('orders.createSubtitle')}</p>
                     </div>
                 </div>
 
@@ -256,7 +255,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                     value={data.customer_name}
                                     onChange={(e) => setData('customer_name', e.target.value)}
                                     placeholder={t('orders.customerNamePlaceholder')}
-                                    className={errors.customer_name ? 'border-rose-500' : ''}
+                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${errors.customer_name ? 'border-rose-500' : ''}`}
                                     required
                                 />
                                 {errors.customer_name && <p className="text-xs text-rose-500">{errors.customer_name}</p>}
@@ -269,6 +268,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                     value={data.customer_phone}
                                     onChange={(e) => setData('customer_phone', e.target.value)}
                                     placeholder={t('orders.customerPhonePlaceholder')}
+                                    className="!bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                             </div>
                             <div className="col-span-2 space-y-1.5">
@@ -279,6 +279,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                     onChange={(e) => setData('notes', e.target.value)}
                                     rows={2}
                                     placeholder={t('orders.notesPlaceholder')}
+                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                             </div>
                         </div>
@@ -296,19 +297,19 @@ export default function OrderCreate({ variants, packages }: Props) {
                                         key={pkg.id}
                                         type="button"
                                         onClick={() => addPaket(pkg)}
-                                        className="group border-border bg-muted flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-[#a9d4b6] hover:bg-[#edf8f1]"
+                                        className="group border-border bg-white flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-[#a9d4b6] hover:bg-[#edf8f1]"
                                     >
                                         <Package size={18} className="text-muted-foreground mb-1 transition-colors group-hover:text-[#3f9567]" />
                                         <span className="max-w-full truncate text-sm font-bold">{pkg.name}</span>
-                                        <span className="text-muted-foreground text-[10px] font-semibold tracking-widest uppercase">
+                                            <span className="text-muted-foreground text-sm font-semibold tracking-wide uppercase">
                                             {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                         </span>
                                         {pkg.description && (
-                                            <span className="text-muted-foreground/80 line-clamp-2 max-w-full px-1 text-[10px] leading-snug">
+                                            <span className="text-muted-foreground/80 line-clamp-2 max-w-full px-1 text-sm leading-snug">
                                                 {pkg.description}
                                             </span>
                                         )}
-                                        <span className="mt-1 text-sm font-bold text-[#3f9567]">{formatRupiah(Number(pkg.price))}</span>
+                                        <span className="text-foreground mt-1 text-sm font-bold">{formatRupiah(Number(pkg.price))}</span>
                                     </button>
                                 ))}
                             </div>
@@ -332,19 +333,16 @@ export default function OrderCreate({ variants, packages }: Props) {
                                             key={v.id}
                                             type="button"
                                             onClick={() => addDirectVariant(v)}
-                                            className="group border-border bg-muted relative flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-[#a9d4b6] hover:bg-[#edf8f1]"
+                                            className="group border-border bg-white relative flex flex-col items-center gap-1 rounded-2xl border p-4 text-center transition-all hover:border-slate-300 hover:bg-slate-50"
                                         >
                                             {currentQty > 0 && (
-                                                <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#3f9567] text-[10px] font-bold text-white">
+                                                <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[10px] font-bold text-white">
                                                     {currentQty}
                                                 </div>
                                             )}
-                                            <ShoppingBag
-                                                size={18}
-                                                className="text-muted-foreground mb-1 transition-colors group-hover:text-[#3f9567]"
-                                            />
+                                            <ShoppingBag size={18} className="text-muted-foreground mb-1" />
                                             <span className="max-w-full truncate text-sm font-bold">{v.name.replace('Mochi ', '')}</span>
-                                            <span className="mt-1 text-sm font-bold text-[#3f9567]">{formatRupiah(Number(v.sell_price))}</span>
+                                            <span className="text-foreground mt-1 text-sm font-bold">{formatRupiah(Number(v.sell_price))}</span>
                                         </button>
                                     );
                                 })}
@@ -377,7 +375,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                             <div key={item.id} className="bg-background border-border flex items-center gap-2 rounded-xl border p-3">
                                                 <div className="min-w-0 flex-1">
                                                     <div className="truncate text-sm font-medium">{v.name.replace('Mochi ', '')}</div>
-                                                    <div className="text-muted-foreground text-xs">{formatRupiah(Number(v.sell_price))}/pcs</div>
+                                                    <div className="text-muted-foreground text-sm">{formatRupiah(Number(v.sell_price))}/pcs</div>
                                                 </div>
                                                 <div className="flex shrink-0 items-center gap-1.5">
                                                     <button
@@ -403,7 +401,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                                     </button>
                                                 </div>
                                                 <div className="min-w-[60px] shrink-0 text-right">
-                                                    <div className="text-xs font-semibold">{formatRupiah(item.harga)}</div>
+                                                    <div className="text-sm font-semibold">{formatRupiah(item.harga)}</div>
                                                 </div>
                                                 <button
                                                     type="button"
@@ -426,7 +424,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                             <div>
                                                 <div className="mb-1 flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
-                                                        <span className="rounded-lg bg-indigo-100 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">
+                                                        <span className="rounded-lg border border-[#c7e0ce] bg-[#edf8f1] px-2.5 py-1 text-sm font-bold text-[#3f9567] dark:border-emerald-800/50 dark:bg-emerald-900/20 dark:text-emerald-400">
                                                             {item.name}
                                                         </span>
                                                         <span className="text-sm font-semibold">{formatRupiah(item.harga)}</span>
@@ -442,17 +440,17 @@ export default function OrderCreate({ variants, packages }: Props) {
                                                     </Button>
                                                 </div>
                                                 {pkg?.description && (
-                                                    <p className="text-muted-foreground/80 pl-1 text-[11px] leading-normal">{pkg.description}</p>
+                                                    <p className="text-muted-foreground/80 pl-1 text-sm leading-normal">{pkg.description}</p>
                                                 )}
                                             </div>
 
                                             {/* Detail Varian Summary Badge */}
-                                            <div className="bg-muted/50 dark:bg-muted/30 border-border/40 rounded-lg border p-2 text-xs">
-                                                <span className="text-muted-foreground mb-0.5 block text-[10px] font-bold tracking-wider uppercase">
+                                            <div className="bg-muted/50 dark:bg-muted/30 border-border/40 rounded-lg border p-2 text-sm">
+                                                <span className="text-muted-foreground mb-0.5 block text-sm font-bold tracking-wider uppercase">
                                                     {t('orders.flavorDetails')}
                                                 </span>
                                                 <span
-                                                    className={`text-xs font-semibold ${Object.values(item.quantities).reduce((s, q) => s + q, 0) > 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground/70 font-normal italic'}`}
+                                                    className={`text-sm font-semibold ${Object.values(item.quantities).reduce((s, q) => s + q, 0) > 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground/70 font-normal italic'}`}
                                                 >
                                                     {getVariantSummary(item)}
                                                 </span>
@@ -470,7 +468,7 @@ export default function OrderCreate({ variants, packages }: Props) {
 
                                                     return (
                                                         <>
-                                                            <div className="text-muted-foreground border-border mb-1 flex items-center justify-between border-b pb-1.5 text-xs">
+                                                            <div className="text-muted-foreground border-border mb-1 flex items-center justify-between border-b pb-1.5 text-sm">
                                                                 <span>{t('orders.selectFlavorTitle')}</span>
                                                                 <span
                                                                     className={
@@ -493,7 +491,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                                                             key={v.id}
                                                                             className="bg-muted/40 border-border/60 flex items-center justify-between rounded-xl border p-2"
                                                                         >
-                                                                            <span className="truncate pr-2 text-xs font-medium">
+                                                                            <span className="truncate pr-2 text-sm font-medium">
                                                                                 {v.name.replace('Mochi ', '')}
                                                                             </span>
                                                                             <div className="flex shrink-0 items-center gap-2.5">
@@ -506,7 +504,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                                                                     <Minus size={11} className="text-muted-foreground" />
                                                                                 </button>
                                                                                 <span
-                                                                                    className={`w-4 text-center text-xs font-bold ${qty > 0 ? 'text-indigo-600' : 'text-muted-foreground/60'}`}
+                                                                                    className={`w-4 text-center text-sm font-bold ${qty > 0 ? 'text-indigo-600' : 'text-muted-foreground/60'}`}
                                                                                 >
                                                                                     {qty}
                                                                                 </span>
@@ -534,7 +532,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                 {/* Subtotal */}
                                 <div className="border-border mt-1 flex items-end justify-between border-t pt-3">
                                     <div className="text-right">
-                                        <div className="text-muted-foreground text-xs">{t('common.total')}</div>
+                                        <div className="text-muted-foreground text-sm">{t('common.total')}</div>
                                         <div className="text-xl font-bold">{formatRupiah(subtotal)}</div>
                                     </div>
                                 </div>

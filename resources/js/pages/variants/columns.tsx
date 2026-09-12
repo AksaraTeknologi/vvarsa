@@ -63,10 +63,10 @@ function VariantActions({ variant, t }: { variant: ProductVariant; t: any }) {
 export const columns = (t: any): ColumnDef<ProductVariant & { hpp: number; margin: number; profit: number }>[] => [
     {
         accessorKey: 'no',
-        header: 'No',
+        header: () => <div className="w-full text-center">No</div>,
         cell: ({ row }) => {
             const index = row.index + 1;
-            return <div className="font-medium">{index}</div>;
+            return <div className="w-full text-center font-medium">{index}</div>;
         },
     },
     {
@@ -106,42 +106,41 @@ export const columns = (t: any): ColumnDef<ProductVariant & { hpp: number; margi
     },
     {
         accessorKey: 'hpp',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.hpp', 'HPP')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.hpp', 'HPP')} centered />,
         cell: ({ row }) => {
-            return <div className="text-muted-foreground text-right font-medium">{formatRupiah(row.original.hpp ?? 0)}</div>;
+            return <div className="text-muted-foreground w-full text-center font-medium">{formatRupiah(row.original.hpp ?? 0)}</div>;
         },
     },
     {
         accessorKey: 'sell_price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.sellPrice', 'Harga Jual')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.sellPrice', 'Harga Jual')} centered />,
         cell: ({ row }) => {
-            return <div className="text-right font-bold">{formatRupiah(row.original.sell_price)}</div>;
+            return <div className="text-muted-foreground w-full text-center font-bold">{formatRupiah(row.original.sell_price)}</div>;
         },
     },
     {
         accessorKey: 'margin',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.margin', 'Margin')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.margin', 'Margin')} centered />,
         cell: ({ row }) => {
             const margin = row.original.margin ?? 0;
             return (
-                <div className="text-right">
-                    <span
-                        className={`text-sm font-semibold ${margin >= 20 ? 'text-emerald-600' : margin >= 10 ? 'text-amber-600' : 'text-rose-600'}`}
-                    >
-                        {margin.toFixed(1)}%
-                    </span>
+                <div className="w-full text-center">
+                    <span className="text-muted-foreground text-sm font-semibold">{margin.toFixed(1)}%</span>
                 </div>
             );
         },
     },
     {
         accessorKey: 'is_active',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.status', 'Status')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('variants.status', 'Status')} centered />,
         cell: ({ row }) => {
             const active = row.original.is_active;
             return (
-                <div className="text-center">
-                    <Badge variant={active ? 'default' : 'secondary'} className="text-xs">
+                <div className="flex w-full justify-center">
+                    <Badge
+                        variant="outline"
+                        className={`text-xs ${active ? 'border-[#c7e0ce] bg-[#edf8f1] text-[#3f9567]' : 'border-slate-200 bg-slate-50 text-slate-500'}`}
+                    >
                         {active ? t('variants.active', 'Aktif') : t('variants.inactive', 'Nonaktif')}
                     </Badge>
                 </div>
