@@ -9,7 +9,7 @@ import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type Product, type Recipe } from '@/types/mrp';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, BookOpen, Calculator, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Calculator, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -123,19 +123,18 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Edit Resep: ${recipe.name}`} />
 
-            <div className="mx-auto max-w-3xl p-4 md:p-6">
+            <div className="w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
-                    <Button variant="ghost" size="icon" asChild className="rounded-xl">
+                    <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
                         <Link href="/recipes">
                             <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                            <BookOpen className="text-[#3f9567]" size={22} />
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                             Edit Resep: {recipe.name}
                         </h1>
-                        <p className="text-muted-foreground text-sm">Ubah informasi resep dan takaran bahan baku</p>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">Ubah Informasi Resep Dan Takaran Bahan Baku</p>
                     </div>
                 </div>
 
@@ -153,7 +152,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                         onChange={(e) => setName(e.target.value)}
                                         placeholder="Contoh: Resep Mochi Strawberry Choco"
                                         required
-                                        className={formErrors.name ? 'border-rose-500' : ''}
+                                        className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.name ? 'border-rose-500' : ''}`}
                                     />
                                     {formErrors.name && <p className="text-xs text-rose-500">{formErrors.name}</p>}
                                 </div>
@@ -166,7 +165,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                         value={portionQty}
                                         onChange={(e) => setPortionQty(parseInt(e.target.value) || 0)}
                                         required
-                                        className={formErrors.portion_qty ? 'border-rose-500' : ''}
+                                        className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.portion_qty ? 'border-rose-500' : ''}`}
                                     />
                                     {formErrors.portion_qty && <p className="text-xs text-rose-500">{formErrors.portion_qty}</p>}
                                 </div>
@@ -179,6 +178,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="Masukkan detail pembuatan resep atau porsi dasar resep ini..."
                                     rows={3}
+                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                 />
                             </div>
                         </div>
@@ -188,7 +188,7 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div className="flex items-center justify-between">
                             <h2 className="text-sm font-semibold">Bahan-Bahan Resep *</h2>
-                            <Button type="button" variant="outline" size="sm" onClick={addRecipe} className="h-8 gap-1 rounded-xl text-xs">
+                            <Button type="button" variant="outline" size="sm" onClick={addRecipe} className="h-9 gap-1 rounded-xl text-sm">
                                 <Plus size={12} />
                                 Tambah Bahan
                             </Button>
@@ -201,12 +201,12 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                 <div key={i} className="flex items-end gap-2">
                                     {/* Pilih Bahan */}
                                     <div className="min-w-[120px] flex-[3] space-y-1">
-                                        {i === 0 && <Label className="text-muted-foreground text-xs">Pilih Bahan</Label>}
+                                        {i === 0 && <Label className="text-muted-foreground text-sm">Pilih Bahan</Label>}
                                         <Select
                                             value={recipe.ingredient_id ? String(recipe.ingredient_id) : 'custom'}
                                             onValueChange={(v) => selectIngredient(i, v)}
                                         >
-                                            <SelectTrigger className="h-9 rounded-xl text-xs">
+                                            <SelectTrigger className="h-10 rounded-xl bg-white text-sm">
                                                 <SelectValue placeholder="Pilih..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -221,41 +221,41 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                     </div>
                                     {/* Nama Bahan */}
                                     <div className="min-w-[90px] flex-[2] space-y-1">
-                                        {i === 0 && <Label className="text-muted-foreground text-xs">Nama Bahan</Label>}
+                                        {i === 0 && <Label className="text-muted-foreground text-sm">Nama Bahan</Label>}
                                         <Input
                                             value={recipe.ingredient_name}
                                             onChange={(e) => updateRecipe(i, 'ingredient_name', e.target.value)}
                                             placeholder="Nama bahan"
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
+                                            className={`h-10 rounded-xl !text-sm ${recipe.isFromInventory ? '!bg-slate-50' : '!bg-white'} !text-slate-700 placeholder:text-slate-400`}
                                         />
                                     </div>
                                     {/* Qty */}
                                     <div className="w-20 shrink-0 space-y-1">
-                                        {i === 0 && <Label className="text-muted-foreground text-xs">Qty</Label>}
+                                        {i === 0 && <Label className="text-muted-foreground text-sm">Qty</Label>}
                                         <Input
                                             type="number"
                                             min={0.1}
                                             step={0.1}
                                             value={recipe.qty}
                                             onChange={(e) => updateRecipe(i, 'qty', parseFloat(e.target.value) || 0)}
-                                            className="h-9 rounded-xl text-xs"
+                                            className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
                                         />
                                     </div>
                                     {/* Satuan */}
                                     <div className="w-16 shrink-0 space-y-1">
-                                        {i === 0 && <Label className="text-muted-foreground text-xs">Satuan</Label>}
+                                        {i === 0 && <Label className="text-muted-foreground text-sm">Satuan</Label>}
                                         <Input
                                             value={recipe.unit}
                                             onChange={(e) => updateRecipe(i, 'unit', e.target.value)}
                                             placeholder="gr"
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
+                                            className={`h-10 rounded-xl !text-sm ${recipe.isFromInventory ? '!bg-slate-50' : '!bg-white'} !text-slate-700 placeholder:text-slate-400`}
                                         />
                                     </div>
                                     {/* HPP/Unit */}
                                     <div className="w-24 shrink-0 space-y-1">
-                                        {i === 0 && <Label className="text-muted-foreground text-xs">HPP/Unit</Label>}
+                                        {i === 0 && <Label className="text-muted-foreground text-sm">HPP/Unit</Label>}
                                         <Input
                                             type="text"
                                             value={recipe.ingredient_cost > 0 ? formatRupiah(recipe.ingredient_cost) : ''}
@@ -263,18 +263,18 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                                                 updateRecipe(i, 'ingredient_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)
                                             }
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-9 rounded-xl text-xs ${recipe.isFromInventory ? 'bg-muted' : ''}`}
+                                            className={`h-10 rounded-xl !text-sm ${recipe.isFromInventory ? '!bg-slate-50' : '!bg-white'} !text-slate-700 placeholder:text-slate-400`}
                                             placeholder={formatRupiah(0)}
                                         />
                                     </div>
                                     {/* Total HPP */}
                                     <div className="w-28 shrink-0 space-y-1">
-                                        {i === 0 && <Label className="text-muted-foreground text-xs">Total HPP</Label>}
+                                        {i === 0 && <Label className="text-muted-foreground text-sm">Total HPP</Label>}
                                         <Input
                                             type="text"
                                             value={recipe.qty * recipe.ingredient_cost > 0 ? formatRupiah(recipe.qty * recipe.ingredient_cost) : ''}
                                             readOnly
-                                            className="bg-muted h-9 rounded-xl text-xs font-medium"
+                                            className="h-10 rounded-xl !bg-slate-50 !text-sm !font-medium !text-slate-700"
                                             placeholder={formatRupiah(0)}
                                         />
                                     </div>
@@ -298,16 +298,16 @@ export default function RecipeEdit({ recipe, ingredients }: Props) {
                     </div>
 
                     {/* HPP Preview */}
-                    <div className="flex items-center gap-4 rounded-2xl border border-[#c7e0ce] bg-[#edf8f1] p-5">
-                        <Calculator size={20} className="shrink-0 text-[#3f9567]" />
-                        <div className="grid flex-1 grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+                        <Calculator size={20} className="text-muted-foreground shrink-0" />
+                        <div className="grid flex-1 grid-cols-2 gap-4 text-base">
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">Total HPP 1 Adonan / Resep</div>
-                                <div className="text-lg font-bold text-[#3f9567]">{formatRupiah(totalCost)}</div>
+                                <div className="text-muted-foreground mb-0.5 text-sm">Total HPP 1 Adonan / Resep</div>
+                                <div className="text-foreground text-lg font-bold">{formatRupiah(totalCost)}</div>
                             </div>
                             <div>
-                                <div className="text-muted-foreground mb-0.5 text-xs">HPP per Pcs (Hasil Porsi)</div>
-                                <div className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{formatRupiah(hpp)}</div>
+                                <div className="text-muted-foreground mb-0.5 text-sm">HPP per Pcs (Hasil Porsi)</div>
+                                <div className="text-foreground text-lg font-bold">{formatRupiah(hpp)}</div>
                             </div>
                         </div>
                     </div>

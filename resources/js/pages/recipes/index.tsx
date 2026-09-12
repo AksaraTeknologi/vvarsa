@@ -33,8 +33,7 @@ export default function RecipesIndex({ recipes, filters }: Props) {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="flex items-center gap-2 text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
-                            <BookOpen className="text-[#3f9567]" size={22} />
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
                             {t('recipes.title')}
                         </h1>
                         <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('recipes.subtitle')}</p>
@@ -58,9 +57,6 @@ export default function RecipesIndex({ recipes, filters }: Props) {
                             className="h-10 rounded-xl !border-[#dde9df] !bg-white pl-9 text-sm text-slate-700 placeholder:text-slate-400"
                         />
                     </div>
-                    <Button type="submit" variant="owner" className="h-10 rounded-xl px-4 text-sm">
-                        {t('common.search')}
-                    </Button>
                 </form>
 
                 {/* Table */}

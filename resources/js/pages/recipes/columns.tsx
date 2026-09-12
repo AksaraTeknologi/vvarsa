@@ -62,10 +62,10 @@ function RecipeActions({ recipe, t }: { recipe: Recipe; t: any }) {
 export const columns = (t: any): ColumnDef<Recipe>[] => [
     {
         accessorKey: 'no',
-        header: 'No',
+        header: () => <div className="w-full text-center">No</div>,
         cell: ({ row }) => {
             const index = row.index + 1;
-            return <div className="font-medium">{index}</div>;
+            return <div className="w-full text-center font-medium">{index}</div>;
         },
     },
     {
@@ -104,17 +104,17 @@ export const columns = (t: any): ColumnDef<Recipe>[] => [
     },
     {
         accessorKey: 'total_cost',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.batchHpp', 'HPP 1 Adonan')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.batchHpp', 'HPP 1 Adonan')} centered />,
         cell: ({ row }) => {
-            return <div className="text-muted-foreground text-right font-medium">{formatRupiah(row.original.total_cost ?? 0)}</div>;
+            return <div className="text-muted-foreground w-full text-center font-medium">{formatRupiah(row.original.total_cost ?? 0)}</div>;
         },
     },
     {
         accessorKey: 'portion_qty',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.portionQty', 'Porsi Hasil')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.portionQty', 'Porsi Hasil')} centered />,
         cell: ({ row }) => {
             return (
-                <div className="text-muted-foreground text-right font-medium">
+                <div className="text-muted-foreground w-full text-center font-medium">
                     {t('recipes.portionUnit', { count: Number(row.original.portion_qty), defaultValue: `${Number(row.original.portion_qty)} pcs` })}
                 </div>
             );
@@ -122,9 +122,9 @@ export const columns = (t: any): ColumnDef<Recipe>[] => [
     },
     {
         accessorKey: 'hpp',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.hppPerPcs', 'HPP per Pcs')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('recipes.hppPerPcs', 'HPP per Pcs')} centered />,
         cell: ({ row }) => {
-            return <div className="text-right font-bold text-emerald-600 dark:text-emerald-400">{formatRupiah(row.original.hpp ?? 0)}</div>;
+            return <div className="text-muted-foreground w-full text-center font-bold">{formatRupiah(row.original.hpp ?? 0)}</div>;
         },
     },
     {
