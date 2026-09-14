@@ -55,7 +55,7 @@ interface Props {
 
 const statusColors: Record<string, string> = {
     upcoming: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800',
-    ongoing: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800',
+    ongoing: 'bg-white text-[#3f9567] border-[#9bc9aa] dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800',
     completed: 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-400 dark:border-slate-700',
     cancelled: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/30 dark:text-rose-400 dark:border-rose-800',
 };
@@ -112,7 +112,7 @@ export default function EventIndex({ events, filters }: Props) {
                                 </span>
                             </div>
                             <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('admin.event.title')}</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">{t('admin.event.subtitle')}</p>
+                            <p className="business-page-subtitle mt-1 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.event.subtitle')}</p>
                         </div>
                         <Link href="/admin/events/create">
                             <Button size="sm" variant="owner" className="gap-1.5 text-white">
@@ -296,7 +296,7 @@ export default function EventIndex({ events, filters }: Props) {
                                 {events.links.map((link, i) => (
                                     <Button
                                         key={i}
-                                        variant={link.active ? 'default' : 'outline'}
+                                        variant={link.active ? 'owner' : 'outline'}
                                         disabled={!link.url}
                                         onClick={() => link.url && router.get(link.url)}
                                         className="h-8 rounded-lg px-3 text-xs"

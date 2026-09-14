@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type PaginatedData, type Supplier } from '@/types/mrp';
@@ -36,27 +37,32 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
         router.get('/suppliers', { search, city }, { preserveState: true, replace: true });
     };
 
+    const handleCityChange = (value: string) => {
+        setCity(value);
+        router.get('/suppliers', { search, city: value }, { preserveState: true, replace: true });
+    };
+
     const businessTypeLabel = getBusinessTypeLabel(business_type);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('supplier.recommendations')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="business-page flex flex-col gap-6 p-4 md:p-6">
                 {/* Header & Add Button */}
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{t('supplier.recommendations')}</h1>
-                        <p className="text-muted-foreground text-sm">
+                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('supplier.recommendations')}</h1>
+                        <p className="text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">
                             {t('supplier.categorySubtitle')}{' '}
                             <span className="text-foreground font-semibold">{businessTypeLabel}</span>
                         </p>
                     </div>
-                    <Link
-                        href="/suppliers/create"
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium"
-                    >
-                        <Plus size={16} /> {t('supplier.addSupplier')}
-                    </Link>
+                    <Button asChild variant="owner" className="rounded-xl">
+                        <Link href="/suppliers/create">
+                            <Plus size={16} />
+                            {t('supplier.addSupplier')}
+                        </Link>
+                    </Button>
                 </div>
 
                 {/* Filters */}
@@ -64,43 +70,47 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                     <div className="relative flex-1">
                         <Search className="text-muted-foreground absolute top-2.5 left-3" size={16} />
                         <input
-                            className="w-full rounded-xl border px-9 py-2 text-sm"
+                            className="h-10 w-full rounded-xl border border-[#d9e5dd] bg-white px-9 py-2 text-sm text-slate-700 outline-none transition focus:border-owner-accent focus:ring-2 focus:ring-owner-accent/20"
                             placeholder={t('supplier.searchPlaceholder')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
                         />
                     </div>
-                    <select className="rounded-xl border px-4 py-2 text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
-                        <option value="">{t('supplier.allCities')}</option>
-                        {cities.map((c) => (
-                            <option key={c} value={c}>
-                                {c}
-                            </option>
-                        ))}
-                    </select>
-                    <Button onClick={() => applyFilter()}>{t('common.search')}</Button>
+                    <Select value={city || 'all'} onValueChange={(value) => handleCityChange(value === 'all' ? '' : value)}>
+                        <SelectTrigger className="h-10 w-full rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20 sm:w-[180px]">
+                            <SelectValue placeholder={t('supplier.allCities')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">{t('supplier.allCities')}</SelectItem>
+                            {cities.map((c) => (
+                                <SelectItem key={c} value={c}>
+                                    {c}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Grid Cards */}
                 {suppliers.data.length === 0 ? (
                     <div className="bg-card text-muted-foreground rounded-2xl border py-20 text-center">{t('supplier.noData')}</div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 [perspective:1200px] md:grid-cols-2 lg:grid-cols-3">
                         {suppliers.data.map((supplier) => (
                             <div
                                 key={supplier.id}
-                                className="bg-card flex flex-col gap-3 rounded-2xl border p-5 shadow-sm transition-shadow hover:shadow-md"
+                                className="bg-card group flex flex-col gap-3 rounded-2xl border p-5 shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-owner-accent/45 hover:shadow-[10px_16px_26px_rgba(90,166,122,0.16)] hover:[transform:rotateX(-2deg)_rotateY(1.5deg)_translateZ(5px)] active:scale-[0.99] motion-reduce:transition-none motion-reduce:hover:transform-none"
                             >
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <h3 className="flex items-center gap-2 font-semibold">
                                             {supplier.name}
-                                            {supplier.is_verified && <CheckCircle size={14} className="text-blue-500" />}
+                                            {supplier.is_verified && <CheckCircle size={14} className="text-owner-accent" />}
                                         </h3>
                                         <p className="text-muted-foreground text-xs">{getBusinessTypeLabel(supplier.business_type)}</p>
                                     </div>
-                                    <Link href={`/suppliers/${supplier.id}/edit`} className="hover:bg-muted rounded-lg p-2">
+                                    <Link href={`/suppliers/${supplier.id}/edit`} className="hover:bg-muted flex size-9 items-center justify-center rounded-xl transition-colors">
                                         <Edit size={16} />
                                     </Link>
                                 </div>
@@ -123,10 +133,10 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                         {suppliers.links.map((link, i) => (
                             <Button
                                 key={i}
-                                variant={link.active ? 'default' : 'outline'}
+                                variant={link.active ? 'owner' : 'outline'}
                                 disabled={!link.url}
                                 onClick={() => link.url && router.get(link.url, {}, { preserveState: true, replace: true })}
-                                className="h-8 px-3"
+                                className="h-8 rounded-xl px-3"
                             >
                                 <span dangerouslySetInnerHTML={{ __html: link.label }} />
                             </Button>

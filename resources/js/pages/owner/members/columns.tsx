@@ -16,17 +16,17 @@ export interface Member {
 const ROLE_BADGE: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
     owner: {
         label: 'Owner',
-        className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100',
+        className: 'bg-owner-accent/10 text-owner-accent hover:bg-owner-accent/10',
         icon: <Shield size={12} />,
     },
     supervisor: {
         label: 'Supervisor',
-        className: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 hover:bg-amber-100',
+        className: 'bg-owner-accent/10 text-owner-accent hover:bg-owner-accent/10',
         icon: <ShieldCheck size={12} />,
     },
     staff: {
         label: 'Staff',
-        className: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400',
+        className: 'bg-owner-accent/10 text-owner-accent hover:bg-owner-accent/10',
         icon: <UserIcon size={12} />,
     },
 };
@@ -47,33 +47,33 @@ export const getColumns = (
     t: (key: string, options?: any) => string,
 ): ColumnDef<Member>[] => [
     {
-        accessorKey: 'no',
-        header: 'No',
+        id: 'no',
+        header: () => <div className="text-center text-sm font-semibold">No.</div>,
         cell: ({ row }) => {
             const index = row.index + 1;
-            return <div className="font-medium">{index}</div>;
+            return <div className="text-center text-sm font-medium text-slate-600">{index}</div>;
         },
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.nameAndEmail')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.nameAndEmail')} className="text-sm normal-case tracking-normal" />,
         cell: ({ row }) => {
             const member = row.original;
             return (
                 <div className="flex items-center gap-3">
-                    <div className="bg-primary/10 text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 font-bold text-owner-accent">
                         {member.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
                         <div className="text-foreground flex items-center gap-1.5 text-sm font-medium">
                             {member.name}
                             {member.id === authUserId && (
-                                <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
+                                <Badge variant="outline" className="border-transparent bg-owner-accent/10 px-2 py-0.5 text-sm text-owner-accent hover:bg-owner-accent/10">
                                     {t('members.you')}
                                 </Badge>
                             )}
                         </div>
-                        <span className="text-muted-foreground text-xs">{member.email}</span>
+                        <span className="text-muted-foreground text-sm">{member.email}</span>
                     </div>
                 </div>
             );
@@ -81,7 +81,7 @@ export const getColumns = (
     },
     {
         accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.contact')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.contact')} className="text-sm normal-case tracking-normal" />,
         cell: ({ row }) => {
             return (
                 <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
@@ -93,13 +93,13 @@ export const getColumns = (
     },
     {
         accessorKey: 'role',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.role')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('members.role')} className="text-sm normal-case tracking-normal" />,
         cell: ({ row }) => {
             const role = row.original.roles[0]?.name || 'staff';
             const meta = ROLE_BADGE[role] ?? ROLE_BADGE.staff;
             return (
-                <Badge variant="outline" className={`border-transparent capitalize ${meta.className}`}>
-                    <span className="flex items-center gap-1">
+                <Badge variant="outline" className={`border-transparent px-2.5 py-1 text-sm capitalize ${meta.className}`}>
+                    <span className="flex items-center gap-1.5">
                         {meta.icon}
                         {meta.label}
                     </span>
@@ -127,7 +127,7 @@ export const getColumns = (
                                     size="sm"
                                     onClick={() => onUpdateRole(member.id, role)}
                                     disabled={isUpdateProcessing}
-                                    className="h-8 rounded-xl bg-owner-accent text-white shadow-sm hover:opacity-90 text-xs"
+                                    className="h-9 rounded-xl bg-owner-accent text-sm text-white shadow-sm hover:opacity-90"
                                     title={t('members.changeTo', { role: nextRoleMeta?.label ?? nextRole })}
                                 >
                                     → {nextRoleMeta?.label ?? nextRole}
@@ -143,10 +143,10 @@ export const getColumns = (
                                 </Button>
                             </>
                         ) : (
-                            <span className="text-muted-foreground text-xs">{t('members.onlyOwner')}</span>
+                            <span className="text-muted-foreground text-sm">{t('members.onlyOwner')}</span>
                         )
                     ) : (
-                        <span className="text-muted-foreground text-xs">—</span>
+                        <span className="text-muted-foreground text-sm">—</span>
                     )}
                 </div>
             );

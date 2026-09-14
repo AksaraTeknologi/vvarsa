@@ -20,18 +20,18 @@ interface Props {
 }
 
 const CATEGORY_STYLES: Record<string, string> = {
-    discussion: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    question: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-    tips: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-    announcement: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+    discussion: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    question: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    tips: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    announcement: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
 };
 
 const BUSINESS_TYPE_COLORS: Record<string, string> = {
-    fnb: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
-    retail: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
-    fashion: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400',
-    general: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
-    service: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400',
+    fnb: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    retail: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    fashion: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    general: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    service: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
 };
 
 function getInitials(name: string) {
@@ -123,30 +123,32 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
             <Head title={post.title} />
             <div className="business-page flex h-[calc(100vh-64px)] flex-col">
                 {/* Top bar */}
-                <div className="border-border bg-card flex shrink-0 items-center gap-3 border-b px-4 py-3">
-                    <Link href="/community" className="hover:bg-muted rounded-xl p-1.5 transition-colors">
+                <div className="border-border bg-card mx-4 mt-4 flex shrink-0 items-center gap-3 rounded-2xl border px-4 py-3 shadow-[0_8px_22px_rgba(90,166,122,0.08)] md:mx-6 md:px-5">
+                    <Link href="/community" className="hover:bg-muted flex size-9 shrink-0 items-center justify-center rounded-xl transition-colors">
                         <ArrowLeft size={18} />
                     </Link>
-                    <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                            <p className="truncate font-semibold">{post.title}</p>
-                            <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${businessColor}`}>
+                    <div className="min-w-0 flex-1 space-y-1">
+                        <div className="flex flex-wrap items-center gap-2.5">
+                            <p className="min-w-0 truncate text-sm font-bold text-slate-800 md:text-base">{post.title}</p>
+                            <span className={`shrink-0 rounded-full border border-owner-accent/35 px-2 py-0.5 text-xs font-medium ${businessColor}`}>
                                 {businessLabel}
                             </span>
                         </div>
-                        <p className="text-muted-foreground text-xs">
-                            <span className={`mr-1.5 rounded-full px-2 py-0.5 ${CATEGORY_STYLES[post.category] || ''}`}>
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                            <span className={`rounded-full px-2 py-0.5 ${CATEGORY_STYLES[post.category] || ''}`}>
                                 {t(`community.categories.${post.category}`, { defaultValue: post.category })}
                             </span>
-                            {t('community.repliesCount', { count: post.replies_count })} · {t('community.viewsCount', { count: post.views_count })}
-                        </p>
+                            <span>{t('community.repliesCount', { count: post.replies_count })}</span>
+                            <span className="text-slate-300">·</span>
+                            <span>{t('community.viewsCount', { count: post.views_count })}</span>
+                        </div>
                     </div>
                     <button
                         onClick={toggleLike}
-                        className={`flex shrink-0 items-center gap-1 rounded-xl px-3 py-1.5 text-sm transition-colors ${
+                        className={`flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-2 text-sm transition-colors ${
                             is_liked
-                                ? 'bg-rose-50 text-rose-500 dark:bg-rose-900/20'
-                                : 'hover:bg-muted text-muted-foreground'
+                                ? 'border-rose-200 bg-rose-50 text-rose-500 dark:border-rose-800 dark:bg-rose-900/20'
+                                : 'border-border text-muted-foreground hover:bg-muted'
                         }`}
                     >
                         <Heart size={15} className={is_liked ? 'fill-current' : ''} />
@@ -157,7 +159,11 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             <LogOut className="size-4" /> {t('community.leave')}
                         </Button>
                     ) : (
-                        <Button size="sm" onClick={() => router.post(`/community/${post.id}/join`, {}, { preserveScroll: true })}>
+                        <Button
+                            size="sm"
+                            className="bg-owner-accent text-white hover:opacity-90"
+                            onClick={() => router.post(`/community/${post.id}/join`, {}, { preserveScroll: true })}
+                        >
                             <LogIn className="size-4" /> {t('community.join')}
                         </Button>
                     )}
@@ -168,7 +174,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                     <div className="mx-auto max-w-3xl space-y-5">
                         {/* Original post as first message */}
                         <div className="flex gap-3">
-                            <div className="bg-primary/10 text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 text-sm font-bold text-owner-accent">
                                 {getInitials(post.user?.name || '?')}
                             </div>
                             <div className="flex-1">
@@ -200,7 +206,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             const isMe = reply.user_id === auth?.user?.id;
                             return (
                                 <div key={reply.id} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
-                                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${isMe ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${isMe ? 'bg-owner-accent text-white' : 'bg-muted text-muted-foreground'}`}>
                                         {getInitials(reply.user?.name || '?')}
                                     </div>
                                     <div className={`max-w-[80%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
@@ -211,7 +217,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                                         <div
                                             className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                                                 isMe
-                                                    ? 'bg-primary text-primary-foreground rounded-tr-sm'
+                                                    ? 'rounded-tr-sm bg-owner-accent text-white'
                                                     : 'bg-card border-border border rounded-tl-sm shadow-sm'
                                             }`}
                                         >
@@ -225,10 +231,10 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                 </div>
 
                 {/* Reply input — pinned at bottom like chat */}
-                <div className="border-border bg-card shrink-0 border-t px-4 py-3">
+                <div className="shrink-0 px-4 pb-4 pt-3 md:px-6">
                     <div className="mx-auto max-w-3xl">
                         {is_member ? <form onSubmit={handleReply} className="flex items-end gap-3">
-                            <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 text-sm font-bold text-owner-accent">
                                 {getInitials(auth?.user?.name || '?')}
                             </div>
                             <div className="flex-1">
@@ -251,6 +257,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             </div>
                             <Button
                                 type="submit"
+                                variant="owner"
                                 size="icon"
                                 disabled={processing || !data.content.trim()}
                                 className="h-9 w-9 shrink-0 rounded-xl"

@@ -90,8 +90,8 @@ export default function TaxIndex({ reports }: Props) {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('tax.reports')}</h1>
-                        <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('tax.subtitle')}</p>
+                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('tax.reports')}</h1>
+                        <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('tax.subtitle')}</p>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" asChild className="rounded-xl">
@@ -104,32 +104,32 @@ export default function TaxIndex({ reports }: Props) {
                                     <Plus size={16} /> {t('tax.newReport')}
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
+                            <DialogContent className="text-sm sm:max-w-[620px]">
                                 <form onSubmit={handleSubmit}>
                                     <DialogHeader>
-                                        <DialogTitle>{t('tax.dialogCreateTitle')}</DialogTitle>
-                                        <DialogDescription>{t('tax.dialogCreateDesc')}</DialogDescription>
+                                        <DialogTitle className="text-lg font-semibold">{t('tax.dialogCreateTitle')}</DialogTitle>
+                                        <DialogDescription className="text-sm leading-relaxed">{t('tax.dialogCreateDesc')}</DialogDescription>
                                     </DialogHeader>
 
                                     <div className="grid gap-4 py-4">
-                                        <div className="grid grid-cols-2 gap-3">
+                                        <div className="grid gap-3 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
                                             <div className="space-y-1">
-                                                <Label htmlFor="period">{t('tax.period')}</Label>
+                                                <Label htmlFor="period" className="text-sm font-medium">{t('tax.period')}</Label>
                                                 <Input
                                                     id="period"
                                                     type="text"
                                                     value={data.period}
                                                     onChange={(e) => setData('period', e.target.value)}
                                                     placeholder="2026-06"
-                                                    className={displayError('period') ? 'border-rose-500' : ''}
+                                                    className={`!border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${displayError('period') ? '!border-rose-500' : ''}`}
                                                     required
                                                 />
-                                                {displayError('period') && <p className="text-xs text-rose-500">{displayError('period')}</p>}
+                                                {displayError('period') && <p className="text-sm text-rose-500">{displayError('period')}</p>}
                                             </div>
                                             <div className="space-y-1">
-                                                <Label htmlFor="tax_type">{t('tax.taxType')}</Label>
+                                                <Label htmlFor="tax_type" className="text-sm font-medium">{t('tax.taxType')}</Label>
                                                 <Select value={data.tax_type} onValueChange={(val) => setData('tax_type', val)}>
-                                                    <SelectTrigger id="tax_type" className="h-9 rounded-xl">
+                                                    <SelectTrigger id="tax_type" className="h-10 rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20">
                                                         <SelectValue placeholder={t('tax.taxType')} />
                                                     </SelectTrigger>
                                                     <SelectContent>
@@ -144,37 +144,37 @@ export default function TaxIndex({ reports }: Props) {
                                         </div>
 
                                         <div className="space-y-1">
-                                            <Label htmlFor="gross_amount">{t('tax.grossAmount')}</Label>
+                                            <Label htmlFor="gross_amount" className="text-sm font-medium">{t('tax.grossAmount')}</Label>
                                             <Input
                                                 id="gross_amount"
                                                 type="text"
                                                 value={formatRupiah(data.gross_amount)}
                                                 onChange={(e) => setData('gross_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                                 onBlur={calculateTax}
-                                                className={displayError('gross_amount') ? 'border-rose-500' : ''}
+                                                className={`!border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${displayError('gross_amount') ? '!border-rose-500' : ''}`}
                                                 required
                                             />
-                                            {displayError('gross_amount') && <p className="text-xs text-rose-500">{displayError('gross_amount')}</p>}
+                                            {displayError('gross_amount') && <p className="text-sm text-rose-500">{displayError('gross_amount')}</p>}
                                         </div>
 
                                         <div className="space-y-1">
-                                            <Label htmlFor="tax_amount">{t('tax.taxAmount')}</Label>
+                                            <Label htmlFor="tax_amount" className="text-sm font-medium">{t('tax.taxAmount')}</Label>
                                             <Input
                                                 id="tax_amount"
                                                 type="text"
                                                 value={formatRupiah(data.tax_amount)}
                                                 onChange={(e) => setData('tax_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                                className={displayError('tax_amount') ? 'border-rose-500' : ''}
+                                                className={`!border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${displayError('tax_amount') ? '!border-rose-500' : ''}`}
                                                 required
                                             />
-                                            {displayError('tax_amount') && <p className="text-xs text-rose-500">{displayError('tax_amount')}</p>}
+                                            {displayError('tax_amount') && <p className="text-sm text-rose-500">{displayError('tax_amount')}</p>}
                                         </div>
 
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
-                                                <Label htmlFor="status">{t('common.status')}</Label>
+                                                <Label htmlFor="status" className="text-sm font-medium">{t('common.status')}</Label>
                                                 <Select value={data.status} onValueChange={(val) => setData('status', val as any)}>
-                                                    <SelectTrigger id="status" className="h-9 rounded-xl">
+                                                    <SelectTrigger id="status" className="h-10 rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20">
                                                         <SelectValue placeholder={t('common.status')} />
                                                     </SelectTrigger>
                                                     <SelectContent>
@@ -185,10 +185,14 @@ export default function TaxIndex({ reports }: Props) {
                                                 </Select>
                                             </div>
                                             <div className="flex flex-col justify-end space-y-1.5">
-                                                <Label htmlFor="due_date" className="mb-0.5">
+                                                <Label htmlFor="due_date" className="mb-0.5 text-sm font-medium">
                                                     {t('tax.dueDate')}
                                                 </Label>
-                                                <DatePicker value={data.due_date} onChange={(val) => setData('due_date', val)} />
+                                                    <DatePicker
+                                                        value={data.due_date}
+                                                        onChange={(val) => setData('due_date', val)}
+                                                        className="!border-[#d9e5dd] !bg-white !text-slate-700 hover:!bg-white hover:!text-slate-700 focus-visible:!border-owner-accent"
+                                                    />
                                             </div>
                                         </div>
                                     </div>
@@ -217,8 +221,8 @@ export default function TaxIndex({ reports }: Props) {
 
                 {/* Tax Info Banner */}
                 <div className="rounded-2xl border border-indigo-100 bg-indigo-50/50 p-5 dark:border-indigo-900/30 dark:bg-indigo-950/10">
-                    <h2 className="font-semibold text-indigo-700 dark:text-indigo-400">{t('tax.infoBannerTitle')}</h2>
-                    <p className="text-muted-foreground mt-1 text-sm">{t('tax.infoBannerDescText')}</p>
+                    <h2 className="text-sm font-semibold leading-5 text-indigo-700 dark:text-indigo-400">{t('tax.infoBannerTitle')}</h2>
+                    <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{t('tax.infoBannerDescText')}</p>
                 </div>
 
                 {/* Reports table */}

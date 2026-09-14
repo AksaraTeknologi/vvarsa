@@ -47,16 +47,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             <Head title={t('profile.settings')} />
 
             <SettingsLayout>
-                <div className="space-y-6">
+                <div className="space-y-5 rounded-2xl border border-[#d9e5dd] bg-white p-5 shadow-sm md:p-6">
                     <HeadingSmall title={t('profile.information')} description={t('profile.description')} />
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">{t('common.name')}</Label>
+                            <Label htmlFor="name" className="text-sm font-medium">{t('common.name')}</Label>
 
                             <Input
                                 id="name"
-                                className="mt-1 block w-full"
+                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 required
@@ -68,12 +68,12 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">{t('common.email')}</Label>
+                            <Label htmlFor="email" className="text-sm font-medium">{t('common.email')}</Label>
 
                             <Input
                                 id="email"
                                 type="email"
-                                className="mt-1 block w-full"
+                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 required
@@ -107,7 +107,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         )}
 
                         <div className="flex items-center gap-4">
-                            <Button disabled={processing}>{t('common.save')}</Button>
+                            <Button disabled={processing} variant="owner" className="rounded-xl">{t('common.save')}</Button>
 
                             <Transition
                                 show={recentlySuccessful}

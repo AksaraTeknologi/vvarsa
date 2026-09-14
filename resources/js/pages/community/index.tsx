@@ -4,7 +4,7 @@ import { BUSINESS_TYPE_LABELS, formatDate, truncate } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type CommunityPost, type PaginatedData } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
-import { Eye, Heart, MessageCircle, PinIcon, Plus, Search, Users } from 'lucide-react';
+import { Eye, Heart, MessageCircle, PinIcon, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,18 +18,18 @@ interface Props {
 const CATEGORY_KEYS = ['', 'discussion', 'question', 'tips', 'announcement'];
 
 const CATEGORY_STYLES: Record<string, string> = {
-    discussion: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    question: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-    tips: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-    announcement: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+    discussion: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    question: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    tips: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    announcement: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
 };
 
 const BUSINESS_TYPE_COLORS: Record<string, string> = {
-    fnb: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
-    retail: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
-    fashion: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400',
-    general: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
-    service: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400',
+    fnb: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    retail: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    fashion: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    general: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
+    service: 'bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20',
 };
 
 function getInitials(name: string) {
@@ -83,17 +83,14 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-2xl">
-                            <Users size={22} className="text-primary" />
-                        </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('community.title')}</h1>
-                                <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${businessColor}`}>
+                                <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('community.title')}</h1>
+                                <span className={`rounded-full border border-owner-accent/35 px-2.5 py-0.5 text-[11px] font-semibold ${businessColor}`}>
                                     {businessLabel}
                                 </span>
                             </div>
-                            <p className="text-muted-foreground text-xs">
+                            <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                                 {t('community.subtitle', { business: businessLabel })}
                             </p>
                         </div>
@@ -119,7 +116,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                     }}
                                     className={`shrink-0 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors ${
                                         category === catKey
-                                            ? 'bg-primary text-primary-foreground'
+                                            ? 'bg-owner-accent text-white'
                                             : 'border-border hover:bg-muted border'
                                     }`}
                                 >
@@ -136,7 +133,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="border-border bg-background w-full rounded-xl border py-2 pr-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="border-border bg-background w-full rounded-xl border py-2 pr-4 pl-9 text-sm focus:ring-2 focus:ring-owner-accent focus:outline-none"
                         />
                     </div>
                 </div>
@@ -153,15 +150,15 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                         </p>
                     </div>
                 ) : (
-                    <div className="space-y-2.5">
+                    <div className="space-y-2.5 [perspective:1100px]">
                         {posts.data.map((post) => (
                             <Link
                                 key={post.id}
                                 href={`/community/${post.id}`}
-                                className="bg-card border-border hover:border-primary/30 group flex gap-3 rounded-2xl border p-4 shadow-sm transition-all hover:shadow-md"
+                                className="bg-card border-border group flex gap-3 rounded-2xl border p-4 shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:border-owner-accent/40 hover:shadow-[0_14px_24px_rgba(90,166,122,0.16)] hover:[transform:translateY(-4px)_rotateX(1.5deg)_rotateY(2deg)_translateZ(4px)] active:[transform:translateY(-1px)_scale(0.99)] motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:active:transform-none"
                             >
                                 {/* Avatar */}
-                                <div className="bg-primary/10 text-primary hidden h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold sm:flex">
+                                <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 text-sm font-bold text-owner-accent sm:flex [transform:translateZ(6px)]">
                                     {getInitials(post.user?.name || '?')}
                                 </div>
 
@@ -169,18 +166,18 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                 <div className="min-w-0 flex-1">
                                     <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
                                         {post.is_pinned && (
-                                            <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                            <span className="flex items-center gap-1 rounded-full bg-owner-accent/10 px-2 py-0.5 text-xs font-medium text-owner-accent dark:bg-owner-accent/20">
                                                 <PinIcon size={9} /> {t('community.pinned')}
                                             </span>
                                         )}
                                         <span
-                                            className={`rounded-full px-2 py-0.5 text-xs font-medium ${CATEGORY_STYLES[post.category] || 'bg-slate-100 text-slate-600'}`}
+                                            className={`rounded-full px-2 py-0.5 text-xs font-medium ${CATEGORY_STYLES[post.category] || 'bg-owner-accent/10 text-owner-accent'}`}
                                         >
                                             {t(`community.categories.${post.category}`, { defaultValue: post.category })}
                                         </span>
                                     </div>
 
-                                    <h2 className="group-hover:text-primary font-semibold leading-snug transition-colors">
+                                    <h2 className="group-hover:text-owner-accent font-semibold leading-snug transition-colors [transform:translateZ(4px)]">
                                         {post.title}
                                     </h2>
                                     <p className="text-muted-foreground mt-0.5 line-clamp-1 text-sm">
@@ -227,7 +224,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                 onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
                                 className={`rounded-xl px-3 py-1.5 text-sm transition-colors ${
                                     link.active
-                                        ? 'bg-primary text-primary-foreground'
+                                        ? 'bg-owner-accent text-white'
                                         : link.url
                                           ? 'border-border hover:bg-muted border'
                                           : 'text-muted-foreground cursor-not-allowed'

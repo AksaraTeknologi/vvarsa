@@ -119,7 +119,7 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
             <Head title="Pengaturan Metode Pembayaran" />
 
             <SettingsLayout>
-                <div className="space-y-6">
+                <div className="space-y-5">
                     <HeadingSmall
                         title="Metode Pembayaran Toko"
                         description="Kelola rekening bank, e-wallet, atau opsi pembayaran yang dapat dipilih oleh pelanggan saat checkout."
@@ -127,39 +127,41 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
 
                     {/* Form Tambah */}
                     {editingId === null && (
-                        <form onSubmit={handleCreate} className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
-                            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-slate-800 dark:text-slate-200">
-                                <Plus size={16} className="text-indigo-500" />
+                        <form onSubmit={handleCreate} className="border-owner-accent/25 bg-white space-y-4 rounded-2xl border p-5 shadow-sm md:p-6">
+                            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-owner-accent">
+                                <Plus size={16} />
                                 Tambah Metode / Rekening Baru
                             </h3>
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="name">Nama Metode *</Label>
+                                    <Label htmlFor="name" className="text-sm font-medium">Nama Metode *</Label>
                                     <Input
                                         id="name"
                                         placeholder="cth: Transfer Bank BRI, ShopeePay"
                                         value={createForm.data.name}
                                         onChange={(e) => createForm.setData('name', e.target.value)}
-                                        required
+                                        required className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                     />
                                     <InputError message={createForm.errors.name} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="account_name">Nama Pemilik (a.n.)</Label>
+                                    <Label htmlFor="account_name" className="text-sm font-medium">Nama Pemilik (a.n.)</Label>
                                     <Input
                                         id="account_name"
                                         placeholder="cth: Mochi Delight"
                                         value={createForm.data.account_name}
+                                        className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                         onChange={(e) => createForm.setData('account_name', e.target.value)}
                                     />
                                     <InputError message={createForm.errors.account_name} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="account_number">No. Rekening / HP</Label>
+                                    <Label htmlFor="account_number" className="text-sm font-medium">No. Rekening / HP</Label>
                                     <Input
                                         id="account_number"
                                         placeholder="cth: 1223-01-xxxx, 0812-xxxx"
                                         value={createForm.data.account_number}
+                                        className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                         onChange={(e) => createForm.setData('account_number', e.target.value)}
                                     />
                                     <InputError message={createForm.errors.account_number} />
@@ -169,7 +171,7 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                 <Button
                                     type="submit"
                                     disabled={createForm.processing}
-                                    className="rounded-xl bg-indigo-600 text-white hover:bg-indigo-700"
+                                    variant="owner" className="rounded-xl"
                                 >
                                     {createForm.processing ? 'Menyimpan...' : 'Tambah Metode'}
                                 </Button>
@@ -178,15 +180,15 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                     )}
 
                     {/* List/Table */}
-                    <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
-                        <div className="border-border border-b bg-slate-50/50 p-4 dark:bg-slate-800/10">
-                            <h3 className="text-sm font-semibold">Daftar Metode Pembayaran Aktif</h3>
+                    <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
+                        <div className="border-border border-b bg-[#f7fbf8] p-4">
+                            <h3 className="text-sm font-semibold text-[#1f2a23]">Daftar Metode Pembayaran Aktif</h3>
                         </div>
                         {paymentMethods.length === 0 ? (
                             <div className="text-muted-foreground space-y-2 py-12 text-center text-sm">
-                                <ShieldAlert size={28} className="mx-auto text-amber-500 opacity-30" />
-                                <p>Belum ada metode pembayaran yang dikonfigurasi.</p>
-                                <p className="text-xs">Sistem akan menggunakan fallback bawaan (Tunai, Transfer, QRIS) di kasir.</p>
+                                <ShieldAlert size={28} className="mx-auto text-owner-accent opacity-50" />
+                                <p className="text-sm">Belum ada metode pembayaran yang dikonfigurasi.</p>
+                                <p className="text-sm">Sistem akan menggunakan fallback bawaan (Tunai, Transfer, QRIS) di kasir.</p>
                             </div>
                         ) : (
                             <div className="divide-border divide-y">
@@ -195,30 +197,32 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
 
                                     if (isEditing) {
                                         return (
-                                            <form key={pm.id} onSubmit={(e) => handleUpdate(e, pm.id)} className="space-y-4 bg-indigo-50/20 p-4">
+                                            <form key={pm.id} onSubmit={(e) => handleUpdate(e, pm.id)} className="space-y-4 bg-owner-accent/[0.04] p-4 md:p-5">
                                                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                                     <div className="space-y-1.5">
-                                                        <Label>Nama Metode *</Label>
+                                                        <Label className="text-sm font-medium">Nama Metode *</Label>
                                                         <Input
                                                             value={editForm.data.name}
                                                             onChange={(e) => editForm.setData('name', e.target.value)}
-                                                            required
+                                                            required className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                                         />
                                                         <InputError message={editForm.errors.name} />
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <Label>Nama Pemilik (a.n.)</Label>
+                                                        <Label className="text-sm font-medium">Nama Pemilik (a.n.)</Label>
                                                         <Input
                                                             value={editForm.data.account_name}
                                                             onChange={(e) => editForm.setData('account_name', e.target.value)}
+                                                            className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                                         />
                                                         <InputError message={editForm.errors.account_name} />
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <Label>No. Rekening / HP</Label>
+                                                        <Label className="text-sm font-medium">No. Rekening / HP</Label>
                                                         <Input
                                                             value={editForm.data.account_number}
                                                             onChange={(e) => editForm.setData('account_number', e.target.value)}
+                                                            className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                                         />
                                                         <InputError message={editForm.errors.account_number} />
                                                     </div>
@@ -233,7 +237,7 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                             id={`edit-active-${pm.id}`}
                                                             checked={editForm.data.is_active}
                                                             onChange={(e) => editForm.setData('is_active', e.target.checked)}
-                                                            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                            className="rounded border-owner-accent text-owner-accent focus:ring-owner-accent"
                                                         />
                                                     </div>
                                                     <div className="flex gap-2">
@@ -250,7 +254,7 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                             type="submit"
                                                             disabled={editForm.processing}
                                                             size="sm"
-                                                            className="rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+                                                            variant="owner" className="rounded-lg"
                                                         >
                                                             <Check size={14} className="mr-1" /> Simpan
                                                         </Button>
@@ -266,7 +270,7 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{pm.name}</span>
                                                 </div>
-                                                <div className="text-muted-foreground mt-1 space-y-0.5 text-xs">
+                                                <div className="text-muted-foreground mt-1 space-y-0.5 text-sm">
                                                     {pm.account_number && (
                                                         <div>
                                                             No. Rek: <span className="font-mono">{pm.account_number}</span>
@@ -282,12 +286,12 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                             <div className="flex items-center justify-end gap-3">
                                                 {/* Toggle Switch */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-muted-foreground text-xs">{pm.is_active ? 'Aktif' : 'Non-aktif'}</span>
+                                                    <span className="text-muted-foreground text-sm">{pm.is_active ? 'Aktif' : 'Non-aktif'}</span>
                                                     <button
                                                         type="button"
                                                         onClick={() => handleToggleActive(pm)}
-                                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:outline-none ${
-                                                            pm.is_active ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-800'
+                                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-owner-accent focus:ring-offset-2 focus:outline-none ${
+                                                            pm.is_active ? 'bg-owner-accent' : 'bg-slate-200 dark:bg-slate-800'
                                                         }`}
                                                     >
                                                         <span

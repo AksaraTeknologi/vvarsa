@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
@@ -29,12 +30,6 @@ const PLAN_ICONS: Record<string, React.ElementType> = {
     free: Package,
     pro: Zap,
     enterprise: Crown,
-};
-
-const PLAN_COLORS: Record<string, string> = {
-    free: 'border-slate-300 dark:border-slate-600',
-    pro: 'border-blue-400 shadow-blue-100 dark:border-blue-500 dark:shadow-blue-900/20',
-    enterprise: 'border-emerald-400 shadow-emerald-100 dark:border-emerald-500 dark:shadow-emerald-900/20',
 };
 
 const FEATURE_LABELS: Record<string, string> = {
@@ -129,17 +124,17 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
             <div className="business-page flex flex-col gap-5 p-4 md:p-6">
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('subscription.title')}</h1>
-                    <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('subscription.subtitle')}</p>
+                    <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('subscription.title')}</h1>
+                    <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('subscription.subtitle')}</p>
                 </div>
 
                 {/* Current status */}
                 {current_plan && (
-                    <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border p-4 shadow-sm">
+                    <div className="bg-card border-owner-accent/30 mx-auto w-full max-w-5xl rounded-2xl border p-4 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm">{t('subscription.activePlan')}</p>
-                                <p className="text-lg font-bold">{current_plan.name}</p>
+                                <p className="text-base font-bold text-owner-accent">{current_plan.name}</p>
                             </div>
                             <div className="text-right">
                                 <div className="flex items-center gap-3 text-sm">
@@ -157,8 +152,8 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                     </div>
                 )}
 
-                    {/* Pricing Cards */}
-                    <div className="mx-auto grid w-full max-w-5xl gap-6 sm:grid-cols-3">
+                {/* Pricing Cards */}
+                <div className="grid w-full gap-5 [perspective:1200px] sm:grid-cols-3">
                         {plans.map((plan) => {
                             const Icon = PLAN_ICONS[plan.slug] || Package;
                             const isCurrent = plan.slug === currentSlug;
@@ -168,24 +163,19 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                         return (
                             <div
                                 key={plan.id}
-                                className={`bg-card relative flex flex-col rounded-2xl border-2 p-6 shadow-sm transition-shadow hover:shadow-md ${PLAN_COLORS[plan.slug]}`}
+                                className={`bg-card relative flex flex-col rounded-2xl border-2 p-5 shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-owner-accent/60 hover:shadow-[0_16px_28px_rgba(90,166,122,0.16)] hover:[transform:rotateX(1deg)_rotateY(-1deg)_translateZ(5px)] motion-reduce:transition-none motion-reduce:hover:transform-none ${isCurrent ? 'border-owner-accent shadow-[0_8px_18px_rgba(90,166,122,0.12)]' : 'border-border'}`}
                             >
                                 {isPopular && (
                                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">{t('subscription.popular')}</span>
+                                        <span className="rounded-full bg-owner-accent px-3 py-1 text-sm font-semibold text-white">{t('subscription.popular')}</span>
                                     </div>
                                 )}
 
                                 <div className="mb-4">
                                     <div
-                                        className={`mb-3 inline-flex rounded-xl p-2.5 ${plan.slug === 'free' ? 'bg-slate-100 dark:bg-slate-800' : plan.slug === 'pro' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-emerald-100 dark:bg-emerald-900/30'}`}
+                                        className="mb-3 inline-flex rounded-xl bg-owner-accent/10 p-2.5 text-owner-accent"
                                     >
-                                        <Icon
-                                            size={20}
-                                            className={
-                                                plan.slug === 'free' ? 'text-slate-600' : plan.slug === 'pro' ? 'text-blue-600' : 'text-emerald-600'
-                                            }
-                                        />
+                                        <Icon size={20} />
                                     </div>
                                     <h2 className="text-xl font-bold">{plan.name}</h2>
                                     <div className="mt-2">
@@ -197,7 +187,7 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                 </div>
 
                                 {/* Limits */}
-                                <div className="mb-4 space-y-1 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
+                                <div className="mb-4 space-y-1 rounded-xl border border-owner-accent/15 bg-owner-accent/[0.04] p-3">
                                     <div className="flex items-center justify-between text-sm">
                                         <span className="text-muted-foreground">{t('subscription.usersLimit')}</span>
                                         <span className="font-semibold">
@@ -217,7 +207,7 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                         return (
                                             <div key={feat} className="flex items-center gap-2 text-sm">
                                                 {hasFeature ? (
-                                                    <CheckCircle size={14} className="shrink-0 text-emerald-500" />
+                                                    <CheckCircle size={14} className="shrink-0 text-owner-accent" />
                                                 ) : (
                                                     <XCircle size={14} className="text-muted-foreground/30 shrink-0" />
                                                 )}
@@ -227,16 +217,11 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                     })}
                                 </div>
 
-                                <button
+                                <Button
                                     disabled={isCurrent || isLoading}
                                     onClick={() => handleUpgrade(plan.id)}
-                                                                        className={`business-plan-action w-full rounded-xl py-3 text-sm font-semibold transition-colors ${
-                                        isCurrent
-                                            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                                                                                        : plan.slug === 'free'
-                                                                                            ? 'border border-[#9bc9aa] bg-white text-[#3f9567] hover:bg-[#f1faf4]'
-                                                                                            : 'bg-[#3f9567] text-white hover:bg-[#327d55]'
-                                    }`}
+                                    variant={isCurrent || plan.slug === 'free' ? 'outline' : 'owner'}
+                                    className={`business-plan-action w-full rounded-xl text-sm ${isCurrent ? 'cursor-not-allowed' : ''}`}
                                 >
                                     {isLoading
                                         ? t('subscription.processing')
@@ -245,15 +230,15 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                           : plan.price === 0 || Number(plan.price) === 0
                                             ? t('subscription.startFree')
                                             : t('subscription.upgradeNow')}
-                                </button>
+                                </Button>
                             </div>
                         );
                     })}
                 </div>
 
                 {/* FAQ */}
-                <div className="bg-card border-border mx-auto w-full max-w-2xl rounded-2xl border p-6 shadow-sm">
-                    <h2 className="mb-4 font-semibold">{t('subscription.faqTitle')}</h2>
+                <div className="bg-card border-border w-full rounded-2xl border p-5 shadow-sm md:p-6">
+                    <h2 className="mb-4 text-sm font-semibold">{t('subscription.faqTitle')}</h2>
                     <div className="space-y-4">
                         {faqItems.map((item, i) => (
                             <div key={i} className="border-border border-b pb-4 last:border-0 last:pb-0">

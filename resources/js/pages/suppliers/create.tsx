@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -53,22 +55,22 @@ export default function SupplierCreate() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('supplier.createTitle')} />
 
-            <div className="mx-auto max-w-4xl p-4 md:p-6">
-                <div className="mb-6 flex items-center justify-between">
+            <div className="business-page w-full p-4 md:p-6">
+                <div className="mb-6 flex items-center gap-3">
+                    <Button variant="ghost" size="icon" asChild className="h-10 w-10 shrink-0 rounded-xl">
+                        <Link href="/suppliers" aria-label={t('common.back')}>
+                            <ArrowLeft size={18} />
+                        </Link>
+                    </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{t('supplier.createTitle')}</h1>
-                        <p className="text-muted-foreground mt-1 text-sm">{t('supplier.createSubtitle')}</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
+                            {t('supplier.createTitle')}
+                        </h1>
+                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('supplier.createSubtitle')}</p>
                     </div>
-                    <Link
-                        href="/suppliers"
-                        className="bg-muted text-foreground hover:bg-muted/80 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors"
-                    >
-                        <ArrowLeft size={16} />
-                        {t('common.back')}
-                    </Link>
                 </div>
 
-                <div className="bg-card border-border rounded-2xl border p-6 shadow-sm">
+                <div className="bg-card border-border rounded-2xl border p-5 shadow-sm md:p-6">
                     <form onSubmit={submit} className="space-y-6">
                         {/* Basic Information */}
                         <div>
@@ -94,18 +96,27 @@ export default function SupplierCreate() {
                                     <label htmlFor="business_type" className="text-sm font-medium">
                                         {t('supplier.businessType')}
                                     </label>
-                                    <select
-                                        id="business_type"
-                                        value={data.business_type}
-                                        onChange={(e) => setData('business_type', e.target.value)}
-                                        className="border-border bg-background focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
+                                    <Select
+                                        value={data.business_type || 'unselected'}
+                                        onValueChange={(value) => setData('business_type', value === 'unselected' ? '' : value)}
                                     >
-                                        {businessTypes.map((type) => (
-                                            <option key={type.value} value={type.value}>
-                                                {type.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <SelectTrigger
+                                            id="business_type"
+                                            className="h-10 w-full rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20"
+                                        >
+                                            <SelectValue placeholder={t('supplier.selectBusinessType')} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="unselected">{t('supplier.selectBusinessType')}</SelectItem>
+                                            {businessTypes
+                                                .filter((type) => type.value)
+                                                .map((type) => (
+                                                    <SelectItem key={type.value} value={type.value}>
+                                                        {type.label}
+                                                    </SelectItem>
+                                                ))}
+                                        </SelectContent>
+                                    </Select>
                                     {errors.business_type && <p className="text-xs text-red-500">{errors.business_type}</p>}
                                 </div>
 
@@ -240,21 +251,23 @@ export default function SupplierCreate() {
                         </div>
 
                         <div className="flex justify-end gap-3 pt-4">
-                            <button
+                            <Button
                                 type="button"
+                                variant="outline"
                                 onClick={() => reset()}
-                                className="border-border bg-background hover:bg-muted rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
+                                className="rounded-xl"
                             >
                                 {t('supplier.reset')}
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                                 type="submit"
+                                variant="owner"
                                 disabled={processing}
-                                className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors disabled:opacity-70"
+                                className="rounded-xl"
                             >
                                 <Save size={16} />
                                 {processing ? t('common.saving') : t('supplier.saveSupplier')}
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </div>

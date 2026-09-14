@@ -3,23 +3,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { BUSINESS_TYPE_LABELS } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Users } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 const CATEGORY_KEYS = ['discussion', 'question', 'tips', 'announcement'] as const;
-
-const BUSINESS_TYPE_COLORS: Record<string, string> = {
-    fnb: 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800',
-    retail: 'bg-cyan-100 text-cyan-700 border-cyan-200 dark:bg-cyan-900/20 dark:text-cyan-400 dark:border-cyan-800',
-    fashion: 'bg-pink-100 text-pink-700 border-pink-200 dark:bg-pink-900/20 dark:text-pink-400 dark:border-pink-800',
-    general: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700',
-    service: 'bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800',
-};
 
 interface Props {
     tenant_business_type: string;
@@ -47,11 +38,6 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
 
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
-    const businessLabel = t(`community.businessTypes.${tenant_business_type}`, {
-        defaultValue: BUSINESS_TYPE_LABELS[tenant_business_type] || tenant_business_type,
-    });
-    const businessColor = BUSINESS_TYPE_COLORS[tenant_business_type] || BUSINESS_TYPE_COLORS.general;
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setClientErrors({});
@@ -75,32 +61,26 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('community.createDiscussion')} />
-            <div className="business-page mx-auto max-w-2xl p-4 md:p-6">
+            <div className="business-page w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
-                    <Button variant="ghost" size="icon" asChild className="rounded-xl">
+                    <Button variant="ghost" size="icon" asChild className="h-10 w-10 rounded-xl">
                         <Link href="/community">
                             <ArrowLeft size={18} />
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{t('community.createDiscussion')}</h1>
-                        <p className="text-muted-foreground text-sm">{t('community.createSubtitle')}</p>
+                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
+                            {t('community.createDiscussion')}
+                        </h1>
+                        <p className="text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('community.createSubtitle')}</p>
                     </div>
-                </div>
-
-                {/* Community context badge */}
-                <div className={`mb-5 flex items-center gap-2.5 rounded-2xl border px-4 py-3 ${businessColor}`}>
-                    <Users size={16} />
-                    <p className="text-sm font-medium">
-                        {t('community.contextBadge')} <strong>{businessLabel}</strong>
-                    </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Category picker */}
                     <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
-                        <Label className="mb-3 block font-semibold">{t('community.form.categoryLabel')}</Label>
-                        <div className="grid grid-cols-2 gap-3">
+                        <Label className="mb-3 block text-sm font-semibold">{t('community.form.categoryLabel')}</Label>
+                        <div className="grid grid-cols-2 gap-3 [perspective:1000px]">
                             {CATEGORY_KEYS.map((catKey) => {
                                 const catLabel = t(`community.form.categories.${catKey}.label`);
                                 const catDesc = t(`community.form.categories.${catKey}.desc`);
@@ -109,10 +89,10 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                         key={catKey}
                                         type="button"
                                         onClick={() => setData('category', catKey as any)}
-                                        className={`rounded-xl border p-3 text-left transition-all ${data.category === catKey ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                                        className={`group rounded-xl border bg-owner-accent/10 p-3 text-left [transform-style:preserve-3d] transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:border-owner-accent hover:bg-owner-accent/15 hover:shadow-[0_12px_20px_rgba(90,166,122,0.18)] hover:[transform:rotateX(2deg)_rotateY(-2deg)_translateZ(6px)] active:translate-y-0 active:scale-[0.985] motion-reduce:transition-none motion-reduce:hover:transform-none ${data.category === catKey ? 'border-owner-accent bg-owner-accent/20 shadow-[0_8px_16px_rgba(90,166,122,0.18)] [transform:translateZ(5px)]' : 'border-owner-accent/35'}`}
                                     >
-                                        <p className={`text-sm font-medium ${data.category === catKey ? 'text-primary' : ''}`}>{catLabel}</p>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">{catDesc}</p>
+                                        <p className={`text-sm font-medium ${data.category === catKey ? 'text-owner-accent' : ''}`}>{catLabel}</p>
+                                        <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{catDesc}</p>
                                     </button>
                                 );
                             })}
@@ -121,7 +101,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
 
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
                         <div>
-                            <Label htmlFor="title" className="mb-1.5 block">
+                            <Label htmlFor="title" className="mb-1.5 block text-sm font-medium">
                                 {t('community.form.titleLabel')}
                             </Label>
                             <Input
@@ -130,13 +110,13 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                 value={data.title}
                                 onChange={(e) => setData('title', e.target.value)}
                                 placeholder={t('community.form.titlePlaceholder')}
-                                className={displayError('title') ? 'border-rose-500' : ''}
+                                className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('title') ? 'border-rose-500' : ''}`}
                             />
                             {displayError('title') && <p className="mt-1 text-xs text-rose-500">{displayError('title')}</p>}
                         </div>
 
                         <div>
-                            <Label htmlFor="content" className="mb-1.5 block">
+                            <Label htmlFor="content" className="mb-1.5 block text-sm font-medium">
                                 {t('community.form.contentLabel')}
                             </Label>
                             <Textarea
@@ -145,7 +125,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                 value={data.content}
                                 onChange={(e) => setData('content', e.target.value)}
                                 placeholder={t('community.form.contentPlaceholder')}
-                                className={displayError('content') ? 'border-rose-500' : ''}
+                                className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('content') ? 'border-rose-500' : ''}`}
                             />
                             {displayError('content') && <p className="mt-1 text-xs text-rose-500">{displayError('content')}</p>}
                         </div>
@@ -155,7 +135,12 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                         <Button variant="outline" asChild className="rounded-xl">
                             <Link href="/community">{t('community.cancel')}</Link>
                         </Button>
-                        <Button type="submit" disabled={processing || !data.title || !data.content} className="rounded-xl px-5">
+                        <Button
+                            type="submit"
+                            disabled={processing || !data.title || !data.content}
+                            variant="owner"
+                            className="rounded-xl px-5"
+                        >
                             {processing ? t('community.posting') : t('community.postDiscussion')}
                         </Button>
                     </div>

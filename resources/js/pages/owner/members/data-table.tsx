@@ -19,15 +19,15 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     });
 
     return (
-        <div className="border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
-            <Table>
+        <div className="w-full overflow-x-auto">
+            <Table className="min-w-[760px]">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-border border-b bg-slate-50/50 hover:bg-transparent dark:bg-slate-800/10">
+                        <TableRow key={headerGroup.id} className="border-border border-b bg-[#f7fbf8] hover:bg-[#f7fbf8]">
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}
-                                    className="text-muted-foreground h-10 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase"
+                                    className="text-muted-foreground h-11 px-5 py-3 text-sm font-semibold tracking-normal"
                                 >
                                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                 </TableHead>
@@ -41,10 +41,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
-                                className="hover:bg-muted/30 border-border border-b transition-colors"
+                                className="border-border border-b transition-colors hover:bg-owner-accent/[0.04]"
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className="px-6 py-3.5 align-middle">
+                                    <TableCell key={cell.id} className="px-5 py-4 align-middle text-sm">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

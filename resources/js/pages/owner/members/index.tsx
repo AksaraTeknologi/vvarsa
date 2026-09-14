@@ -140,8 +140,8 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                 {/* Header section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('members.title')}</h1>
-                        <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('members.subtitle')}</p>
+                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('members.title')}</h1>
+                        <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('members.subtitle')}</p>
                     </div>
 
                     {/* Tombol Tambah Anggota */}
@@ -152,11 +152,11 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                 {t('members.addMember')}
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
+                        <DialogContent className="text-sm sm:max-w-[520px]">
                             <form onSubmit={handleAddMember}>
-                                <DialogHeader>
-                                    <DialogTitle>{t('members.addTitle')}</DialogTitle>
-                                    <DialogDescription>
+                                <DialogHeader className="space-y-2">
+                                    <DialogTitle className="text-lg font-semibold">{t('members.addTitle')}</DialogTitle>
+                                    <DialogDescription className="text-sm leading-relaxed">
                                         {is_supervisor
                                             ? t('members.supervisorNoticeDesc')
                                             : t('members.ownerNoticeDesc')}
@@ -165,81 +165,81 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
                                 {/* Banner info untuk supervisor */}
                                 {is_supervisor && (
-                                    <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-400">
+                                    <div className="mt-3 flex items-start gap-2 rounded-xl border border-owner-accent/30 bg-owner-accent/10 px-4 py-3 text-sm text-owner-accent">
                                         <ShieldCheck size={16} className="mt-0.5 shrink-0" />
                                         <span>{t('members.supervisorBanner')}</span>
                                     </div>
                                 )}
 
-                                <div className="grid gap-4 py-4">
+                                <div className="grid gap-4 py-5">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">{t('members.fullName')}</Label>
+                                        <Label htmlFor="name" className="text-sm font-medium">{t('members.fullName')}</Label>
                                         <Input
                                             id="name"
                                             value={addForm.data.name}
                                             onChange={(e) => addForm.setData('name', e.target.value)}
                                             placeholder={t('members.fullName')}
-                                            className={clientErrors.name || addForm.errors.name ? 'border-rose-500' : ''}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.name || addForm.errors.name) && (
-                                            <p className="text-destructive text-xs">{clientErrors.name || addForm.errors.name}</p>
+                                            <p className="text-destructive text-sm">{clientErrors.name || addForm.errors.name}</p>
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">{t('members.email')}</Label>
+                                        <Label htmlFor="email" className="text-sm font-medium">{t('members.email')}</Label>
                                         <Input
                                             id="email"
                                             type="email"
                                             value={addForm.data.email}
                                             onChange={(e) => addForm.setData('email', e.target.value)}
                                             placeholder="name@example.com"
-                                            className={clientErrors.email || addForm.errors.email ? 'border-rose-500' : ''}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.email || addForm.errors.email) && (
-                                            <p className="text-destructive text-xs">{clientErrors.email || addForm.errors.email}</p>
+                                            <p className="text-destructive text-sm">{clientErrors.email || addForm.errors.email}</p>
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password">{t('members.tempPassword')}</Label>
+                                        <Label htmlFor="password" className="text-sm font-medium">{t('members.tempPassword')}</Label>
                                         <Input
                                             id="password"
                                             type="password"
                                             value={addForm.data.password}
                                             onChange={(e) => addForm.setData('password', e.target.value)}
                                             placeholder={t('members.passwordHint')}
-                                            className={clientErrors.password || addForm.errors.password ? 'border-rose-500' : ''}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.password || addForm.errors.password) && (
-                                            <p className="text-destructive text-xs">{clientErrors.password || addForm.errors.password}</p>
+                                            <p className="text-destructive text-sm">{clientErrors.password || addForm.errors.password}</p>
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="role">{t('members.roleLabel')}</Label>
+                                        <Label htmlFor="role" className="text-sm font-medium">{t('members.roleLabel')}</Label>
                                         <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
-                                            <SelectTrigger id="role" className="h-9 rounded-xl">
+                                            <SelectTrigger id="role" className="h-10 rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20">
                                                 <SelectValue placeholder={t('members.selectRole')} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="staff">{t('members.staffRoleDesc')}</SelectItem>
+                                                <SelectItem value="staff" className="text-sm">{t('members.staffRoleDesc')}</SelectItem>
                                                 {is_owner && (
-                                                    <SelectItem value="supervisor">{t('members.supervisorRoleDesc')}</SelectItem>
+                                                    <SelectItem value="supervisor" className="text-sm">{t('members.supervisorRoleDesc')}</SelectItem>
                                                 )}
                                             </SelectContent>
                                         </Select>
                                         {(clientErrors.role || addForm.errors.role) && (
-                                            <p className="text-destructive text-xs">{clientErrors.role || addForm.errors.role}</p>
+                                            <p className="text-destructive text-sm">{clientErrors.role || addForm.errors.role}</p>
                                         )}
                                     </div>
                                 </div>
 
-                                <DialogFooter>
+                                <DialogFooter className="gap-2">
                                     <Button type="button" variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-xl">
                                         {t('members.cancel')}
                                     </Button>
-                                    <Button type="submit" disabled={addForm.processing} className="rounded-xl">
+                                    <Button type="submit" disabled={addForm.processing} variant="owner" className="rounded-xl">
                                         {addForm.processing
                                             ? is_supervisor
                                                 ? t('members.sending')
@@ -256,14 +256,14 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
                 {/* ── Pending Requests Section (hanya owner) ── */}
                 {is_owner && pending_requests.length > 0 && (
-                    <Card className="rounded-2xl border-amber-200 bg-amber-50/50 shadow-sm dark:border-amber-800/40 dark:bg-amber-900/10">
+                    <Card className="border-owner-accent/30 bg-white rounded-2xl shadow-sm">
                         <CardHeader className="pb-3">
-                            <CardTitle className="flex items-center gap-2 text-base text-amber-700 dark:text-amber-400">
+                            <CardTitle className="flex items-center gap-2 text-sm font-semibold text-owner-accent">
                                 <Clock size={18} />
                                 {t('members.pendingTitle')}
-                                <Badge className="ml-1 bg-amber-500 text-white hover:bg-amber-500">{pending_requests.length}</Badge>
+                                <Badge className="ml-1 bg-owner-accent text-white hover:bg-owner-accent">{pending_requests.length}</Badge>
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="text-sm leading-relaxed">
                                 {t('members.pendingDesc')}
                             </CardDescription>
                         </CardHeader>
@@ -272,22 +272,22 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                 {pending_requests.map((req) => (
                                     <div
                                         key={req.id}
-                                        className="dark:bg-card flex flex-col gap-3 rounded-xl border border-amber-100 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-amber-800/30"
+                                        className="flex flex-col gap-3 rounded-xl border border-border bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                                     >
                                         <div className="flex items-start gap-3">
                                             {/* Avatar */}
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 text-sm font-bold text-owner-accent">
                                                 {req.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-2">
                                                     <p className="text-foreground text-sm font-semibold">{req.name}</p>
-                                                    <Badge variant="outline" className="px-1.5 py-0 text-[10px] capitalize">
+                                                    <Badge variant="outline" className="px-1.5 py-0 text-sm capitalize">
                                                         {ROLE_LABELS[req.role] ?? req.role}
                                                     </Badge>
                                                 </div>
-                                                <p className="text-muted-foreground text-xs">{req.email}</p>
-                                                <p className="text-muted-foreground mt-0.5 text-xs">
+                                                <p className="text-muted-foreground text-sm">{req.email}</p>
+                                                <p className="text-muted-foreground mt-0.5 text-sm">
                                                     {t('members.requestedBy', { name: req.requested_by?.name })}
                                                 </p>
                                             </div>
@@ -305,7 +305,8 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                             </Button>
                                             <Button
                                                 size="sm"
-                                                className="h-8 gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700"
+                                                variant="owner"
+                                                className="h-8 gap-1.5 rounded-lg"
                                                 disabled={approveForm.processing}
                                                 onClick={() => handleApprove(req.id)}
                                             >
@@ -334,14 +335,12 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                         </div>
                         <div className="bg-muted h-2.5 overflow-hidden rounded-full">
                             <div
-                                className={`h-full rounded-full transition-all duration-500 ${
-                                    capacityPercent >= 90 ? 'bg-red-500' : capacityPercent >= 70 ? 'bg-amber-500' : 'bg-primary'
-                                }`}
+                                className="h-full rounded-full bg-owner-accent transition-all duration-500"
                                 style={{ width: `${Math.min(capacityPercent, 100)}%` }}
                             />
                         </div>
                         {member_count >= limit && (
-                            <p className="mt-3 flex items-center gap-1 text-xs text-rose-500">
+                            <p className="mt-3 flex items-center gap-1 text-sm text-rose-500">
                                 <AlertCircle size={14} />
                                 {t('members.capacityFullWarning')}
                             </p>
@@ -352,8 +351,8 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                 {/* Team members list DataTable */}
                 <Card className="border-border overflow-hidden rounded-2xl shadow-sm">
                     <CardHeader>
-                        <CardTitle>{t('members.listTitle')}</CardTitle>
-                        <CardDescription>{t('members.listDesc')}</CardDescription>
+                        <CardTitle className="text-sm font-semibold">{t('members.listTitle')}</CardTitle>
+                        <CardDescription className="text-sm leading-relaxed">{t('members.listDesc')}</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
                         <DataTable columns={columns} data={members} />

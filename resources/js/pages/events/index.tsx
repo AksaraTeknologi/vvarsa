@@ -21,7 +21,7 @@ const BUSINESS_TYPE_KEYS = ['', 'fnb', 'retail', 'fashion', 'general', 'service'
 
 const STATUS_STYLES: Record<string, string> = {
     upcoming: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    ongoing: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+    ongoing: 'bg-white/90 text-[#3f9567]',
     completed: 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
     cancelled: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400',
 };
@@ -90,10 +90,10 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('events.pageTitle')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">{t('events.pageTitle')}</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">{t('events.pageSubtitle')}</p>
+                    <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('events.pageTitle')}</h1>
+                    <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('events.pageSubtitle')}</p>
                 </div>
 
                 {/* Navigation Tabs */}
@@ -130,7 +130,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="h-10 w-full rounded-xl pl-9"
+                            className="!bg-white h-10 w-full rounded-xl border-[#c7e0ce] pl-9 text-[#254533] placeholder:text-[#9aa9a0] focus-visible:border-[#6bb789] focus-visible:ring-[#5aa67a]/20"
                         />
                     </div>
                     <Select value={businessType || 'all'} onValueChange={(val) => setBusinessType(val === 'all' ? '' : val)}>
@@ -158,7 +158,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                             ))}
                         </SelectContent>
                     </Select>
-                    <Button onClick={applyFilter} className="h-10 w-full rounded-xl px-6 sm:w-auto">
+                    <Button variant="owner" onClick={applyFilter} className="h-10 w-full rounded-xl px-6 sm:w-auto">
                         {t('events.filter')}
                     </Button>
                 </div>
@@ -170,7 +170,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         <p className="text-muted-foreground text-sm">{t('events.noEventsFound')}</p>
                     </div>
                 ) : (
-                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-5 [perspective:1200px] sm:grid-cols-2 lg:grid-cols-3">
                         {events.data.map((event) => {
                             const isRegistered = registered_event_ids.includes(event.id);
                             const isFull = event.max_participants !== null && event.registered_count >= event.max_participants;
@@ -179,15 +179,15 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                 <Link
                                     key={event.id}
                                     href={`/events/${event.id}`}
-                                    className="bg-card border-border group overflow-hidden rounded-2xl border shadow-sm transition-shadow hover:shadow-md"
+                                    className="business-event-card bg-card border-border group overflow-hidden rounded-2xl border shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:border-[#a9d4b6] hover:shadow-[0_18px_30px_rgba(63,149,103,0.18)] hover:[transform:translateY(-6px)_rotateX(2deg)_rotateY(3deg)_translateZ(6px)] motion-reduce:transition-none motion-reduce:hover:transform-none"
                                 >
                                     {/* Date banner */}
-                                    <div className="from-primary/80 to-primary flex items-center justify-between bg-gradient-to-r px-5 py-3 text-white">
+                                    <div className="flex items-center justify-between border-b border-[#3f9567] bg-[#5aa67a] px-5 py-3 text-white [transform:translateZ(8px)]">
                                         <div>
-                                            <p className="text-xs font-medium opacity-80">
+                                            <p className="text-xs font-medium text-white/80">
                                                 {new Date(event.start_date).toLocaleString(currentLocale, { weekday: 'long' })}
                                             </p>
-                                            <p className="text-lg font-bold">
+                                            <p className="text-lg font-bold text-white">
                                                 {formatDate(event.start_date, { day: 'numeric', month: 'short', year: 'numeric' })}
                                             </p>
                                         </div>
@@ -196,7 +196,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                         </span>
                                     </div>
 
-                                    <div className="p-5">
+                                    <div className="p-5 [transform:translateZ(6px)]">
                                         <h3 className="group-hover:text-primary line-clamp-2 leading-snug font-semibold transition-colors">
                                             {event.title}
                                         </h3>
@@ -209,9 +209,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                             </div>
                                             <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                                 <Users size={12} />
-                                                <span>
-                                                    {t('events.registeredCount', { count: event.registered_count })}
-                                                    {event.max_participants && t('events.maxCount', { max: event.max_participants })}
+                                                <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[calculatedStatus]}`}>
                                                 </span>
                                             </div>
                                         </div>
@@ -223,7 +221,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                                 {event.registration_fee === 0 ? t('events.free') : formatRupiah(event.registration_fee)}
                                             </span>
                                             {isRegistered ? (
-                                                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                                <span className="rounded-full border border-[#9bc9aa] bg-white px-3 py-1 text-xs font-semibold text-[#3f9567]">
                                                     {t('events.registeredBadge')}
                                                 </span>
                                             ) : isFull ? (

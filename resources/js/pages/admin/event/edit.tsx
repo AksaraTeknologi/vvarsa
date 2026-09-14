@@ -84,15 +84,15 @@ export default function EventEdit({ event }: Props) {
 
             <div className="business-page mx-auto flex w-full max-w-4xl flex-col gap-4 p-4 md:p-6">
                 <div>
-                    <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('admin.event.editTitle')}</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">{t('admin.event.editSubtitle')}</p>
+                    <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('admin.event.editTitle')}</h1>
+                    <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('admin.event.editSubtitle')}</p>
                 </div>
 
                 <div className="bg-card border-border overflow-hidden rounded-xl border shadow-sm">
-                    <form onSubmit={submit} className="space-y-8 p-6">
+                    <form onSubmit={submit} className="space-y-6 p-4 md:p-5">
                         {/* Section: Informasi Event */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.event.eventInfo')}</h2>
+                            <h2 className="border-b pb-2 text-sm font-semibold">{t('admin.event.eventInfo')}</h2>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2 md:col-span-2">
                                     <label htmlFor="title" className="text-sm font-medium">
@@ -165,7 +165,7 @@ export default function EventEdit({ event }: Props) {
 
                         {/* Section: Waktu & Lokasi */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.event.timeAndLocation')}</h2>
+                            <h2 className="border-b pb-2 text-sm font-semibold">{t('admin.event.timeAndLocation')}</h2>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <label htmlFor="start_date" className="text-sm font-medium">
@@ -223,7 +223,7 @@ export default function EventEdit({ event }: Props) {
 
                         {/* Section: Registrasi & Biaya */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.event.registrationAndFee')}</h2>
+                            <h2 className="border-b pb-2 text-sm font-semibold">{t('admin.event.registrationAndFee')}</h2>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <label htmlFor="registration_fee" className="text-sm font-medium">
@@ -271,7 +271,7 @@ export default function EventEdit({ event }: Props) {
 
                         {/* Section: Deskripsi & Media */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.event.additionalDetails')}</h2>
+                            <h2 className="border-b pb-2 text-sm font-semibold">{t('admin.event.additionalDetails')}</h2>
                             <div className="space-y-4">
                                 <div className="space-y-2">
                                     <label htmlFor="image" className="text-sm font-medium">
@@ -354,7 +354,7 @@ export default function EventEdit({ event }: Props) {
                             <Button type="button" variant="outline" asChild>
                                 <Link href="/admin/events">{t('common.cancel')}</Link>
                             </Button>
-                            <Button type="submit" disabled={processing} className="rounded-xl">
+                            <Button type="submit" disabled={processing} variant="owner" className="rounded-xl">
                                 {processing ? t('common.saving') : t('admin.event.updateEvent')}
                             </Button>
                         </div>
