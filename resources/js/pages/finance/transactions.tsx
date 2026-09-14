@@ -103,40 +103,40 @@ export default function Transactions({ transactions, summary, expense_categories
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('finance.transactionsTitle', 'Transaksi')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="finance-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{t('finance.transactionsTitle', 'Transaksi')}</h1>
-                        <p className="text-muted-foreground text-sm">{t('finance.transactionsSubtitle', 'Semua catatan pemasukan dan pengeluaran')}</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('finance.transactionsTitle', 'Transaksi')}</h1>
+                        <p className="finance-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('finance.transactionsSubtitle', 'Semua catatan pemasukan dan pengeluaran')}</p>
                     </div>
                     <Dialog open={showForm} onOpenChange={setShowForm}>
                         <DialogTrigger asChild>
-                            <Button className="inline-flex items-center gap-2 rounded-xl">
+                            <Button variant="owner" className="finance-add-transaction inline-flex items-center gap-2 rounded-xl">
                                 <Plus size={16} /> {t('finance.addTransaction', 'Catat Transaksi')}
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
+                        <DialogContent className="finance-transaction-dialog sm:max-w-[460px]">
                             <form onSubmit={handleSubmit}>
                                 <DialogHeader>
                                     <DialogTitle>{t('finance.newTransactionModalTitle', 'Catat Transaksi Baru')}</DialogTitle>
                                     <DialogDescription>{t('finance.newTransactionModalDesc', 'Masukkan nominal dan detail transaksi keuangan Anda.')}</DialogDescription>
                                 </DialogHeader>
 
-                                <div className="grid gap-4 py-4">
+                                <div className="grid gap-3 py-4">
                                     <div className="grid grid-cols-2 gap-2">
                                         {(['income', 'expense'] as const).map((itemType) => (
                                             <Button
                                                 key={itemType}
                                                 type="button"
-                                                variant={data.type === itemType ? 'default' : 'outline'}
+                                                variant={itemType === 'income' ? 'owner' : 'secondary'}
                                                 onClick={() => {
                                                     setData('type', itemType);
                                                     if (itemType === 'income') {
                                                         setData('expense_category_id', '');
                                                     }
                                                 }}
-                                                className={`rounded-xl py-2.5 text-sm font-medium transition-colors ${data.type === itemType ? (itemType === 'income' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-rose-600 text-white hover:bg-rose-700') : ''}`}
+                                                className="finance-transaction-type rounded-xl py-2.5 text-sm font-medium transition-colors"
                                             >
                                                 {itemType === 'income' ? t('finance.addIncome', '+ Pemasukan') : t('finance.addExpense', '- Pengeluaran')}
                                             </Button>
@@ -149,7 +149,7 @@ export default function Transactions({ transactions, summary, expense_categories
                                             type="text"
                                             value={formatRupiah(data.amount)}
                                             onChange={(e) => setData('amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                            className={displayError('amount') ? 'border-rose-500' : ''}
+                                            className={`finance-transaction-input ${displayError('amount') ? 'border-rose-500' : ''}`}
                                         />
                                         {displayError('amount') && <p className="mt-1 text-xs text-rose-500">{displayError('amount')}</p>}
                                     </div>
@@ -190,7 +190,7 @@ export default function Transactions({ transactions, summary, expense_categories
                                             value={data.description}
                                             onChange={(e) => setData('description', e.target.value)}
                                             placeholder={t('finance.descriptionPlaceholder', 'Deskripsi transaksi')}
-                                            className={displayError('description') ? 'border-rose-500' : ''}
+                                            className={`finance-transaction-input ${displayError('description') ? 'border-rose-500' : ''}`}
                                         />
                                         {displayError('description') && <p className="mt-1 text-xs text-rose-500">{displayError('description')}</p>}
                                     </div>
@@ -224,11 +224,11 @@ export default function Transactions({ transactions, summary, expense_categories
                                             setShowForm(false);
                                             reset();
                                         }}
-                                        className="rounded-xl"
+                                        className="finance-dialog-cancel rounded-xl"
                                     >
                                         {t('common.cancel', 'Batal')}
                                     </Button>
-                                    <Button type="submit" disabled={processing} className="rounded-xl px-6">
+                                    <Button type="submit" disabled={processing} variant="owner" className="rounded-xl px-6">
                                         {processing ? t('common.saving', 'Menyimpan...') : t('common.save', 'Simpan')}
                                     </Button>
                                 </DialogFooter>
@@ -239,16 +239,16 @@ export default function Transactions({ transactions, summary, expense_categories
 
                 {/* Summary */}
                 <div className="grid grid-cols-3 gap-4">
-                    <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-900/20">
+                    <div className="finance-card rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-900/20">
                         <p className="text-muted-foreground text-xs">{t('finance.totalIncome', 'Total Pemasukan')}</p>
                         <p className="mt-1 text-lg font-bold text-emerald-600 dark:text-emerald-400">{formatRupiah(summary.total_income)}</p>
                     </div>
-                    <div className="rounded-2xl bg-rose-50 p-4 dark:bg-rose-900/20">
+                    <div className="finance-card rounded-2xl bg-rose-50 p-4 dark:bg-rose-900/20">
                         <p className="text-muted-foreground text-xs">{t('finance.totalExpense', 'Total Pengeluaran')}</p>
                         <p className="mt-1 text-lg font-bold text-rose-600 dark:text-rose-400">{formatRupiah(summary.total_expense)}</p>
                     </div>
                     <div
-                        className={`rounded-2xl p-4 ${summary.total_income - summary.total_expense >= 0 ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-orange-50 dark:bg-orange-900/20'}`}
+                        className={`finance-card rounded-2xl p-4 ${summary.total_income - summary.total_expense >= 0 ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-orange-50 dark:bg-orange-900/20'}`}
                     >
                         <p className="text-muted-foreground text-xs">{t('finance.netProfit', 'Net Profit')}</p>
                         <p
@@ -260,7 +260,7 @@ export default function Transactions({ transactions, summary, expense_categories
                 </div>
 
                 {/* Transactions list */}
-                <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
+                <div className="finance-card bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>

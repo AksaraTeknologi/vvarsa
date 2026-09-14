@@ -108,11 +108,13 @@ function NavSection({
                             prefetch
                             preserveScroll
                             className={`group flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 ${
-                                isActive ? `${theme.bgSubtle} ${theme.text}` : `text-[#4a4e69] ${theme.textHover} ${theme.bgHover}`
+                                isActive
+                                    ? `${theme.bgSubtle} !text-[#2d6b49] hover:!text-[#2d6b49] focus-visible:!text-[#2d6b49]`
+                                    : `text-[#4a4e69] ${theme.textHover} ${theme.bgHover} hover:!text-[#2d6b49] focus-visible:!text-[#2d6b49]`
                             }`}
                         >
                             {item.icon && (
-                                <item.icon className={`size-4 shrink-0 transition-colors ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`} />
+                                <item.icon className={`size-4 shrink-0 !text-[#3f9567] transition-colors ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`} />
                             )}
                             <span className="truncate">{item.title}</span>
                             {isActive && (

@@ -43,10 +43,10 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('finance.title')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="finance-page flex flex-col gap-4 p-4 md:p-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">{t('finance.title')}</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">{t('finance.subtitle')}</p>
+                    <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('finance.title')}</h1>
+                    <p className="finance-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('finance.subtitle')}</p>
                 </div>
 
                 {/* Today & Month Stats */}
@@ -57,7 +57,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                         { title: `${t('navigation.sales')} (${t('dashboard.thisMonth')})`, value: this_month.income, color: 'text-blue-600', bg: 'bg-blue-500/10' },
                         { title: `${t('dashboard.expense')} (${t('dashboard.thisMonth')})`, value: this_month.expense, color: 'text-orange-600', bg: 'bg-orange-500/10' },
                     ].map(({ title, value, color }) => (
-                        <div key={title} className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                        <div key={title} className="finance-card bg-card border-border rounded-2xl border p-4 shadow-sm">
                             <p className="text-muted-foreground mb-2 text-sm">{title}</p>
                             <p className={`text-xl font-bold ${color}`}>{formatRupiah(value, true)}</p>
                         </div>
@@ -66,7 +66,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
 
                 {/* Net profit highlight */}
                 <div className="grid gap-4 sm:grid-cols-2">
-                    <div className={`rounded-2xl p-5 ${netToday >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
+                    <div className={`finance-card rounded-2xl p-4 ${netToday >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
                         <p className="text-sm font-medium">{t('finance.netProfitToday')}</p>
                         <p
                             className={`text-2xl font-bold ${netToday >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
@@ -75,7 +75,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                             {formatRupiah(netToday)}
                         </p>
                     </div>
-                    <div className={`rounded-2xl p-5 ${netMonth >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
+                    <div className={`finance-card rounded-2xl p-4 ${netMonth >= 0 ? 'bg-emerald-500/10' : 'bg-rose-500/10'}`}>
                         <p className="text-sm font-medium">{t('finance.netProfitMonth')}</p>
                         <p
                             className={`text-2xl font-bold ${netMonth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}
@@ -87,7 +87,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 </div>
 
                 {/* 12-Month Chart */}
-                <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                <div className="finance-card bg-card border-border rounded-2xl border p-4 shadow-sm">
                     <div className="mb-5 flex items-center justify-between">
                         <div>
                             <h2 className="font-semibold">{t('finance.twelveMonthTrend')}</h2>
@@ -108,20 +108,18 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                 </div>
 
                 {/* Quick links */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     {[
-                        { label: t('finance.transactions'), href: '/finance/transactions', color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400' },
-                        {
-                            label: t('finance.salesReport'),
-                            href: '/finance/sales-report',
-                            color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-                        },
-                        { label: t('finance.expenseReport'), href: '/finance/expense-report', color: 'bg-rose-500/10 text-rose-700 dark:text-rose-400' },
-                    ].map(({ label, href, color }) => (
+                        { label: t('finance.transactions'), href: '/finance/transactions' },
+                        { label: t('finance.salesReport'), href: '/finance/sales-report' },
+                        { label: t('finance.expenseReport'), href: '/finance/expense-report' },
+                    ].map(({ label, href }) => (
                         <Link
                             key={href}
                             href={href}
-                            className={`rounded-2xl p-4 text-center text-sm font-medium transition-opacity hover:opacity-80 ${color}`}
+                            prefetch
+                            preserveScroll
+                            className="finance-card group rounded-2xl border border-[#d9e5dd] bg-white p-4 text-center text-sm font-semibold text-[#3f9567] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#8fc7a5] hover:bg-[#f7fcf8] hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 focus-visible:outline-none"
                         >
                             {label}
                         </Link>

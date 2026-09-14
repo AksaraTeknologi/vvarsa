@@ -86,12 +86,12 @@ export default function TaxIndex({ reports }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('tax.reports')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('tax.reports')}</h1>
-                        <p className="text-muted-foreground mt-1 text-sm">{t('tax.subtitle')}</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('tax.reports')}</h1>
+                        <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('tax.subtitle')}</p>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" asChild className="rounded-xl">
@@ -100,7 +100,7 @@ export default function TaxIndex({ reports }: Props) {
 
                         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                             <DialogTrigger asChild>
-                                <Button className="inline-flex items-center gap-2 rounded-xl">
+                                <Button variant="owner" className="inline-flex items-center gap-2 rounded-xl">
                                     <Plus size={16} /> {t('tax.newReport')}
                                 </Button>
                             </DialogTrigger>
@@ -205,7 +205,7 @@ export default function TaxIndex({ reports }: Props) {
                                         >
                                             {t('common.cancel')}
                                         </Button>
-                                        <Button type="submit" disabled={processing} className="rounded-xl px-6">
+                                        <Button type="submit" disabled={processing} variant="owner" className="rounded-xl px-6">
                                             {processing ? t('common.saving') : t('common.save')}
                                         </Button>
                                     </DialogFooter>

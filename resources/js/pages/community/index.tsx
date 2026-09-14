@@ -1,4 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
+import { Button } from '@/components/ui/button';
 import { BUSINESS_TYPE_LABELS, formatDate, truncate } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type CommunityPost, type PaginatedData } from '@/types/mrp';
@@ -78,7 +79,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('community.title')} />
-            <div className="flex flex-col gap-5 p-4 md:p-6">
+            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
@@ -87,7 +88,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-xl font-bold tracking-tight">{t('community.title')}</h1>
+                                <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('community.title')}</h1>
                                 <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${businessColor}`}>
                                     {businessLabel}
                                 </span>
@@ -97,12 +98,11 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                             </p>
                         </div>
                     </div>
-                    <Link
-                        href="/community/create"
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium shadow-sm transition-all"
-                    >
-                        <Plus size={16} /> {t('community.createDiscussion')}
-                    </Link>
+                    <Button asChild variant="owner" className="inline-flex items-center gap-2 rounded-xl">
+                        <Link href="/community/create">
+                            <Plus size={16} /> {t('community.createDiscussion')}
+                        </Link>
+                    </Button>
                 </div>
 
                 {/* Filter Bar */}

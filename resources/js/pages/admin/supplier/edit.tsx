@@ -42,7 +42,7 @@ export default function SupplierEdit({ supplier }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.supplier.editTitle')} />
 
-            <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 p-4 md:p-6">
+            <div className="business-page mx-auto flex w-full max-w-4xl flex-col gap-4 p-4 md:p-6">
                 <div>
                     <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('admin.supplier.editTitle')}</h1>
                     <p className="text-muted-foreground mt-1 text-sm">{t('admin.supplier.editSubtitle')}</p>

@@ -24,7 +24,7 @@ export default function SupplierIndex({ suppliers }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.supplier.title')} />
 
-            <div className="flex flex-col gap-0">
+            <div className="business-page flex flex-col gap-0">
                 {/* Page Header */}
                 <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 py-6 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
@@ -36,13 +36,13 @@ export default function SupplierIndex({ suppliers }: Props) {
                                     {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.supplier.title')}</h1>
+                            <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('admin.supplier.title')}</h1>
                             <p className="mt-0.5 text-sm text-[#5F6073]">
                                 {t('admin.supplier.subtitle')}
                             </p>
                         </div>
                         <Link href="/admin/supplier/create">
-                            <Button size="sm" className="admin-primary-button gap-1.5 text-white">
+                            <Button size="sm" variant="owner" className="gap-1.5 text-white">
                                 <Plus size={14} /> {t('admin.supplier.add')}
                             </Button>
                         </Link>

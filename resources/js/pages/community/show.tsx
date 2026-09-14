@@ -121,7 +121,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={post.title} />
-            <div className="flex h-[calc(100vh-64px)] flex-col">
+            <div className="business-page flex h-[calc(100vh-64px)] flex-col">
                 {/* Top bar */}
                 <div className="border-border bg-card flex shrink-0 items-center gap-3 border-b px-4 py-3">
                     <Link href="/community" className="hover:bg-muted rounded-xl p-1.5 transition-colors">

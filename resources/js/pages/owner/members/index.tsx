@@ -136,18 +136,18 @@ export default function MembersIndex({ members, limit, member_count, pending_req
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('members.title')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('members.title')}</h1>
-                        <p className="text-muted-foreground text-sm">{t('members.subtitle')}</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('members.title')}</h1>
+                        <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('members.subtitle')}</p>
                     </div>
 
                     {/* Tombol Tambah Anggota */}
                     <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                         <DialogTrigger asChild>
-                            <Button className="inline-flex items-center gap-2 rounded-xl" disabled={member_count >= limit}>
+                            <Button variant="owner" className="inline-flex items-center gap-2 rounded-xl" disabled={member_count >= limit}>
                                 <UserPlus size={16} />
                                 {t('members.addMember')}
                             </Button>

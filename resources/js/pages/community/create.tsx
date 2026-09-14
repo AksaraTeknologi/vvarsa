@@ -75,7 +75,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('community.createDiscussion')} />
-            <div className="mx-auto max-w-2xl p-4 md:p-6">
+            <div className="business-page mx-auto max-w-2xl p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="rounded-xl">
                         <Link href="/community">

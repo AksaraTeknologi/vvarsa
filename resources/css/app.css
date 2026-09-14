@@ -1205,6 +1205,33 @@
     color: #719884;
 }
 
+.owner-theme .owner-sidebar a:hover,
+.owner-theme .owner-sidebar a:focus-visible,
+.owner-theme .owner-sidebar a[aria-current='page'] {
+    color: #2d6b49 !important;
+}
+
+.owner-theme .owner-sidebar a:hover svg,
+.owner-theme .owner-sidebar a:focus-visible svg,
+.owner-theme .owner-sidebar a[aria-current='page'] svg {
+    color: #3f9567 !important;
+}
+
+.owner-theme .owner-sidebar a[href='/pos'],
+.owner-theme .owner-sidebar a[href='/pos']:hover,
+.owner-theme .owner-sidebar a[href='/pos']:focus-visible,
+.owner-theme .owner-sidebar a[href='/pos'][aria-current='page'] {
+    color: #2d6b49 !important;
+}
+
+.owner-theme .owner-sidebar a[href='/pos'] svg,
+.owner-theme .owner-sidebar a[href='/pos']:hover svg,
+.owner-theme .owner-sidebar a[href='/pos']:focus-visible svg,
+.owner-theme .owner-sidebar a[href='/pos'][aria-current='page'] svg {
+    color: #3f9567 !important;
+    stroke: #3f9567 !important;
+}
+
 .owner-theme [data-slot='card'],
 .owner-theme [data-slot='sidebar-inset'] > main [data-slot='card'],
 .owner-theme [data-slot='dialog-content'],
@@ -1346,6 +1373,19 @@
 .owner-theme [data-slot='select-trigger']:focus {
     border-color: #6bb789;
     box-shadow: 0 0 0 3px rgb(90 166 122 / 0.14);
+}
+
+.owner-theme .pos-page input,
+.owner-theme .pos-page textarea {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #254533 !important;
+}
+
+.owner-theme .pos-page input::placeholder,
+.owner-theme .pos-page textarea::placeholder {
+    color: #9aa9a0 !important;
+    opacity: 1;
 }
 
 .owner-theme [data-slot='table'],
@@ -1849,6 +1889,291 @@
 
 html {
     scroll-behavior: smooth;
+}
+
+@keyframes posSelectionPop {
+    0% {
+        transform: scale(0.985);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pos-selection-pop {
+    animation: posSelectionPop 220ms ease-out;
+}
+
+.pos-page :where(h2, h3, p, span, label, button, a, input, textarea, select, option) {
+    font-size: 0.875rem !important;
+}
+
+.pos-cart-content :where(h2, h3, p, span, label, button, a, input, textarea, select, option) {
+    font-size: 0.75rem !important;
+}
+
+.finance-page {
+    color: #1d2a22;
+}
+
+.finance-page :where(p, span, label, button, a, input, textarea, select, option, th, td, h2, h3) {
+    font-size: 0.875rem !important;
+}
+
+.finance-page h1 {
+    font-size: 1.6rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #1f2a23;
+}
+
+.finance-page .finance-page-subtitle {
+    font-size: 0.875rem !important;
+    line-height: 1.625 !important;
+}
+
+@media (min-width: 768px) {
+    .finance-page h1 {
+        font-size: 1.9rem;
+    }
+
+    .finance-page .finance-page-subtitle {
+        font-size: 0.95rem !important;
+    }
+}
+
+.finance-page :where([data-slot='card'], [data-slot='dialog-content'], table, .bg-card, .bg-emerald-50, .bg-rose-50, .bg-blue-50, .bg-orange-50) {
+    border-radius: 1rem;
+}
+
+.finance-page :where(.bg-card, .bg-emerald-50, .bg-rose-50, .bg-blue-50, .bg-orange-50, [class~='bg-emerald-500/10'], [class~='bg-rose-500/10'], [class~='bg-blue-500/10'], [class~='bg-orange-500/10']) {
+    border: 1px solid #d9e5dd !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 14px rgb(31 42 35 / 0.05);
+}
+
+.finance-page .finance-card {
+    animation: financeCardReveal 420ms ease-out both;
+    transform: perspective(900px) translateZ(0);
+    transform-style: preserve-3d;
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    will-change: transform;
+}
+
+.finance-page .finance-card:hover {
+    transform: perspective(900px) translateY(-4px) rotateX(1.5deg) rotateY(-1deg) translateZ(4px);
+    border-color: #a9d4b6 !important;
+    box-shadow: 0 14px 26px rgb(31 42 35 / 0.1);
+}
+
+.finance-page .finance-card:nth-child(even):hover {
+    transform: perspective(900px) translateY(-4px) rotateX(1.5deg) rotateY(1deg) translateZ(4px);
+}
+
+.finance-page .finance-card:nth-child(2) {
+    animation-delay: 60ms;
+}
+
+.finance-page .finance-card:nth-child(3) {
+    animation-delay: 120ms;
+}
+
+.finance-page .finance-card:nth-child(4) {
+    animation-delay: 180ms;
+}
+
+@keyframes financeCardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finance-page .finance-card {
+        animation: none;
+        transform: none;
+        transition: none;
+    }
+}
+
+.finance-page :where([class~='bg-emerald-500/10'], [class~='bg-rose-500/10'], [class~='bg-blue-500/10'], [class~='bg-orange-500/10']) {
+    background: linear-gradient(135deg, #ffffff 0%, #f1faf4 100%) !important;
+}
+
+.finance-page :where(input, textarea, select, [data-slot='select-trigger'], [data-slot='button']) {
+    font-size: 0.875rem;
+}
+
+.finance-page :where(input, textarea, select, [data-slot='select-trigger']):focus,
+.finance-page :where(input, textarea, select, [data-slot='select-trigger']):focus-visible {
+    border-color: #6bb789 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.18) !important;
+}
+
+.finance-page [data-slot='button']:focus-visible {
+    --tw-ring-color: rgb(90 166 122 / 0.3) !important;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.18) !important;
+}
+
+.finance-page .finance-add-transaction:focus,
+.finance-page .finance-add-transaction:focus-visible {
+    outline: none !important;
+    border-color: #6bb789 !important;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.22) !important;
+}
+
+.finance-page .finance-transaction-dialog {
+    border: 1px solid #c7e0ce !important;
+    border-radius: 1.25rem !important;
+    background: #ffffff !important;
+    box-shadow: 0 18px 45px rgb(31 42 35 / 0.16) !important;
+}
+
+.finance-page .finance-transaction-dialog [data-slot='dialog-title'] {
+    color: #1f2a23;
+    font-size: 1.25rem !important;
+    font-weight: 700;
+}
+
+.finance-page .finance-transaction-dialog [data-slot='dialog-description'] {
+    color: #718178;
+}
+
+.finance-page .finance-transaction-dialog [data-slot='button'][data-variant='outline'],
+.finance-page .finance-transaction-dialog .finance-dialog-cancel {
+    border: 1px solid #9bc9aa !important;
+    background: #ffffff !important;
+    color: #3f9567 !important;
+}
+
+.finance-page .finance-transaction-dialog [data-slot='button'][data-variant='outline']:hover,
+.finance-page .finance-transaction-dialog .finance-dialog-cancel:hover {
+    background: #f1faf4 !important;
+    color: #2d6b49 !important;
+}
+
+.finance-page .finance-transaction-dialog [data-slot='button'][data-variant='owner'] {
+    background: #3f9567 !important;
+    color: #ffffff !important;
+}
+
+.finance-transaction-dialog .finance-transaction-input:focus,
+.finance-transaction-dialog .finance-transaction-input:focus-visible {
+    border-color: #6bb789 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.2) !important;
+}
+
+.finance-transaction-dialog input:focus,
+.finance-transaction-dialog input:focus-visible,
+.finance-transaction-dialog textarea:focus,
+.finance-transaction-dialog textarea:focus-visible,
+.finance-transaction-dialog [data-slot='select-trigger']:focus,
+.finance-transaction-dialog [data-slot='select-trigger']:focus-visible {
+    border-color: #6bb789 !important;
+    --tw-ring-color: rgb(90 166 122 / 0.3) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.2) !important;
+}
+
+.business-page {
+    color: #1d2a22;
+}
+
+.business-page :where(p, span, label, button, a, input, textarea, select, option, th, td, h2, h3) {
+    font-size: 0.875rem !important;
+}
+
+.business-page h1 {
+    font-size: 1.6rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #1f2a23;
+}
+
+.business-page .business-page-subtitle {
+    font-size: 0.875rem !important;
+    line-height: 1.625 !important;
+}
+
+@media (min-width: 768px) {
+    .business-page h1 {
+        font-size: 1.9rem;
+    }
+
+    .business-page .business-page-subtitle {
+        font-size: 0.95rem !important;
+    }
+}
+
+.business-page .admin-page-header {
+    background: linear-gradient(135deg, #f7fcf8 0%, #ffffff 62%, #edf8f1 100%) !important;
+    color: #1f2a23 !important;
+}
+
+.business-page .admin-page-header > div:first-child {
+    background: #b8dfc2 !important;
+    opacity: 0.2;
+}
+
+.business-page :where(.bg-card, .admin-filter-panel, .admin-data-table, [data-slot='card'], [data-slot='dialog-content']) {
+    border: 1px solid #d9e5dd !important;
+    border-radius: 1rem;
+    background: #ffffff !important;
+    box-shadow: 0 4px 14px rgb(31 42 35 / 0.05);
+}
+
+.business-page :where(.bg-card, .admin-filter-panel, .admin-data-table, [data-slot='card']) {
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.business-page :where(.bg-card, .admin-filter-panel, .admin-data-table, [data-slot='card']):hover {
+    border-color: #a9d4b6 !important;
+    box-shadow: 0 8px 20px rgb(31 42 35 / 0.08);
+}
+
+.business-page [data-slot='button'][data-variant='default'],
+.business-page .admin-primary-button {
+    background: #3f9567 !important;
+    background-color: #3f9567 !important;
+    color: #ffffff !important;
+}
+
+.business-page [data-slot='button'][data-variant='outline'] {
+    border-color: #9bc9aa !important;
+    color: #3f9567 !important;
+    background: #ffffff !important;
+}
+
+.business-page [data-slot='button'][data-variant='outline']:hover {
+    background: #f1faf4 !important;
+    color: #2d6b49 !important;
+}
+
+.business-page .business-plan-action:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.2);
+}
+
+.business-page :where(input, textarea, select, [data-slot='select-trigger']):focus,
+.business-page :where(input, textarea, select, [data-slot='select-trigger']):focus-visible {
+    border-color: #6bb789 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgb(90 166 122 / 0.18) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .business-page :where(.bg-card, .admin-filter-panel, .admin-data-table, [data-slot='card']) {
+        transition: none;
+    }
 }
 
 body {

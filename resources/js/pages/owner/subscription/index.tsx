@@ -126,11 +126,11 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('navigation.subscription')} />
-            <div className="flex flex-col gap-8 p-4 md:p-6">
+            <div className="business-page flex flex-col gap-5 p-4 md:p-6">
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold tracking-tight">{t('subscription.title')}</h1>
-                    <p className="text-muted-foreground mt-2">{t('subscription.subtitle')}</p>
+                    <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('subscription.title')}</h1>
+                    <p className="business-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('subscription.subtitle')}</p>
                 </div>
 
                 {/* Current status */}
@@ -230,14 +230,12 @@ export default function SubscriptionIndex({ plans, current_plan, product_count, 
                                 <button
                                     disabled={isCurrent || isLoading}
                                     onClick={() => handleUpgrade(plan.id)}
-                                    className={`w-full rounded-xl py-3 text-sm font-semibold transition-colors ${
+                                                                        className={`business-plan-action w-full rounded-xl py-3 text-sm font-semibold transition-colors ${
                                         isCurrent
                                             ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                                            : plan.slug === 'pro'
-                                               ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                               : plan.slug === 'enterprise'
-                                                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                                                 : 'border-border hover:bg-muted border'
+                                                                                        : plan.slug === 'free'
+                                                                                            ? 'border border-[#9bc9aa] bg-white text-[#3f9567] hover:bg-[#f1faf4]'
+                                                                                            : 'bg-[#3f9567] text-white hover:bg-[#327d55]'
                                     }`}
                                 >
                                     {isLoading

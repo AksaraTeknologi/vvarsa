@@ -57,7 +57,7 @@ export default function TaxConsultation() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('tax.consultation')} />
-            <div className="p-4 md:p-6">
+            <div className="business-page p-4 md:p-6">
                 <div className="mb-6">
                     <Link href="/tax" className="hover:bg-muted inline-flex items-center gap-2 rounded-xl p-2 text-sm transition-colors">
                         <ArrowLeft size={16} />
@@ -67,7 +67,7 @@ export default function TaxConsultation() {
 
                 <div className="mx-auto max-w-3xl">
                     {/* Header */}
-                    <div className="mb-6 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+                    <div className="mb-6 rounded-2xl bg-gradient-to-r from-[#2f7d57] via-[#5aa67a] to-[#dff1e5] p-6 text-white shadow-sm">
                         <div className="flex items-center gap-3">
                             <Shield size={32} className="shrink-0 text-white/80" />
                             <div>

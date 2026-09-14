@@ -34,17 +34,17 @@ export default function SalesReport({ data, total_sales, period, year, month, to
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('finance.salesReport', 'Laporan Penjualan')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="finance-page flex flex-col gap-4 p-4 md:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{t('finance.salesReport', 'Laporan Penjualan')}</h1>
-                        <p className="text-muted-foreground text-sm">{t('finance.salesReportSubtitle', 'Analisis tren pendapatan bisnis Anda')}</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('finance.salesReport', 'Laporan Penjualan')}</h1>
+                        <p className="finance-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('finance.salesReportSubtitle', 'Analisis tren pendapatan bisnis Anda')}</p>
                     </div>
                     <div className="flex items-center gap-2">
                         {(['daily', 'monthly', 'yearly'] as const).map((p) => (
                             <Button
                                 key={p}
-                                variant={period === p ? 'default' : 'outline'}
+                                variant={period === p ? 'owner' : 'outline'}
                                 onClick={() => router.get('/finance/sales-report', { period: p, year, month })}
                                 className="h-8 rounded-xl px-3 text-xs"
                             >
@@ -56,7 +56,7 @@ export default function SalesReport({ data, total_sales, period, year, month, to
 
                 {/* Period selector */}
                 {period !== 'yearly' && (
-                    <div className="bg-card border-border flex gap-3 rounded-2xl border p-4">
+                    <div className="finance-card bg-card border-border flex gap-3 rounded-2xl border p-4">
                         {period === 'daily' && (
                             <Select value={String(month)} onValueChange={(val) => router.get('/finance/sales-report', { period, year, month: val })}>
                                 <SelectTrigger className="w-[140px] rounded-xl">
@@ -88,22 +88,22 @@ export default function SalesReport({ data, total_sales, period, year, month, to
 
                 {/* Summary */}
                 <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-card border-border rounded-2xl border p-4">
+                    <div className="finance-card bg-card border-border rounded-2xl border p-4">
                         <p className="text-muted-foreground text-xs">{t('finance.todaySales', 'Penjualan Hari Ini')}</p>
                         <p className="mt-1 text-xl font-bold text-emerald-600">{formatRupiah(today_sales)}</p>
                     </div>
-                    <div className="bg-card border-border rounded-2xl border p-4">
+                    <div className="finance-card bg-card border-border rounded-2xl border p-4">
                         <p className="text-muted-foreground text-xs">{t('finance.monthSales', 'Penjualan Bulan Ini')}</p>
                         <p className="mt-1 text-xl font-bold text-blue-600">{formatRupiah(month_sales)}</p>
                     </div>
-                    <div className="bg-card border-border rounded-2xl border p-4">
+                    <div className="finance-card bg-card border-border rounded-2xl border p-4">
                         <p className="text-muted-foreground text-xs">{t('finance.periodTotal', 'Total Periode Ini')}</p>
                         <p className="mt-1 text-xl font-bold">{formatRupiah(total_sales)}</p>
                     </div>
                 </div>
 
                 {/* Chart */}
-                <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                <div className="finance-card bg-card border-border rounded-2xl border p-4 shadow-sm">
                     <h2 className="mb-4 font-semibold">{t('finance.salesChartTitle', 'Grafik Penjualan')}</h2>
                     {chartData.length === 0 ? (
                         <div className="flex h-48 items-center justify-center text-center">

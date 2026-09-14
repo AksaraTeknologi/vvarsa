@@ -47,11 +47,11 @@ export default function ExpenseReport({ monthly_data, by_category, transactions 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('finance.expenseReport', 'Laporan Pengeluaran')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="finance-page flex flex-col gap-4 p-4 md:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{t('finance.expenseReport', 'Laporan Pengeluaran')}</h1>
-                        <p className="text-muted-foreground text-sm">{t('finance.expenseReportSubtitle', 'Pantau dan kelola pengeluaran bisnis Anda')}</p>
+                        <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('finance.expenseReport', 'Laporan Pengeluaran')}</h1>
+                        <p className="finance-page-subtitle text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('finance.expenseReportSubtitle', 'Pantau dan kelola pengeluaran bisnis Anda')}</p>
                     </div>
                     <div className="flex gap-2">
                         <Select value={String(month)} onValueChange={(val) => router.get('/finance/expense-report', { year, month: val })}>
@@ -94,9 +94,9 @@ export default function ExpenseReport({ monthly_data, by_category, transactions 
                     </div>
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div className="grid gap-4 lg:grid-cols-2">
                     {/* Daily chart */}
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                    <div className="finance-card bg-card border-border rounded-2xl border p-4 shadow-sm">
                         <h2 className="mb-4 font-semibold">
                             {t('finance.dailyExpenseTitle', { month: MONTHS_ID[month - 1], year, defaultValue: `Pengeluaran Harian — ${MONTHS_ID[month - 1]} ${year}` })}
                         </h2>
@@ -116,7 +116,7 @@ export default function ExpenseReport({ monthly_data, by_category, transactions 
                     </div>
 
                     {/* By category */}
-                    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                    <div className="finance-card bg-card border-border rounded-2xl border p-4 shadow-sm">
                         <h2 className="mb-4 font-semibold">{t('finance.categoryPercentageTitle', 'Persentase per Kategori')}</h2>
                         {pieData.length === 0 ? (
                             <p className="text-muted-foreground py-8 text-center text-sm">{t('finance.noCategoryData', 'Tidak ada data kategori.')}</p>
@@ -160,7 +160,7 @@ export default function ExpenseReport({ monthly_data, by_category, transactions 
                 </div>
 
                 {/* Table of Expense Transactions */}
-                <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm">
+                <div className="finance-card bg-card border-border space-y-4 rounded-2xl border p-4 shadow-sm">
                     <div className="flex items-center justify-between">
                         <h2 className="text-base font-semibold">{t('finance.expenseTableTitle', 'Daftar Transaksi Pengeluaran')}</h2>
                         <span className="text-muted-foreground text-xs">
