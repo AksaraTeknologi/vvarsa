@@ -51,7 +51,7 @@ export const columns = (t: (key: string, options?: any) => string): ColumnDef<Ta
     },
     {
         accessorKey: 'status',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.status')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.status')} centered />,
         cell: ({ row }) => {
             const status = row.original.status;
             const statusLabel =
@@ -73,11 +73,11 @@ export const columns = (t: (key: string, options?: any) => string): ColumnDef<Ta
     },
     {
         accessorKey: 'due_date',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.dueDate')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('tax.dueDate')} centered />,
         cell: ({ row }) => {
             const dueDate = row.original.due_date;
             return (
-                <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
+                <div className="text-muted-foreground flex w-full items-center justify-center gap-1.5 text-center text-sm">
                     <Calendar size={14} className="opacity-60" />
                     <span>{dueDate ? formatDate(dueDate, { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</span>
                 </div>

@@ -1,6 +1,6 @@
-import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { BUSINESS_TYPE_LABELS, formatDate, truncate } from '@/lib/utils-mrp';
+import AppLayout from '@/layouts/app-layout';
+import { BUSINESS_TYPE_LABELS, truncate } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { type CommunityPost, type PaginatedData } from '@/types/mrp';
 import { Head, Link, router } from '@inertiajs/react';
@@ -85,8 +85,12 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                     <div className="flex items-center gap-3">
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('community.title')}</h1>
-                                <span className={`rounded-full border border-owner-accent/35 px-2.5 py-0.5 text-[11px] font-semibold ${businessColor}`}>
+                                <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
+                                    {t('community.title')}
+                                </h1>
+                                <span
+                                    className={`border-owner-accent/35 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${businessColor}`}
+                                >
                                     {businessLabel}
                                 </span>
                             </div>
@@ -115,9 +119,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                         applyFilter({ category: catKey });
                                     }}
                                     className={`shrink-0 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors ${
-                                        category === catKey
-                                            ? 'bg-owner-accent text-white'
-                                            : 'border-border hover:bg-muted border'
+                                        category === catKey ? 'bg-owner-accent text-white' : 'border-border hover:bg-muted border'
                                     }`}
                                 >
                                     {label}
@@ -133,7 +135,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="border-border bg-background w-full rounded-xl border py-2 pr-4 pl-9 text-sm focus:ring-2 focus:ring-owner-accent focus:outline-none"
+                            className="border-border bg-background focus:ring-owner-accent w-full rounded-xl border py-2 pr-4 pl-9 text-sm focus:ring-2 focus:outline-none"
                         />
                     </div>
                 </div>
@@ -145,9 +147,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                             <MessageCircle size={28} className="text-muted-foreground/50" />
                         </div>
                         <p className="font-medium">{t('community.emptyStateTitle')}</p>
-                        <p className="text-muted-foreground mt-1 text-sm">
-                            {t('community.emptyStateSubtitle', { business: businessLabel })}
-                        </p>
+                        <p className="text-muted-foreground mt-1 text-sm">{t('community.emptyStateSubtitle', { business: businessLabel })}</p>
                     </div>
                 ) : (
                     <div className="space-y-2.5 [perspective:1100px]">
@@ -155,10 +155,10 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                             <Link
                                 key={post.id}
                                 href={`/community/${post.id}`}
-                                className="bg-card border-border group flex gap-3 rounded-2xl border p-4 shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:border-owner-accent/40 hover:shadow-[0_14px_24px_rgba(90,166,122,0.16)] hover:[transform:translateY(-4px)_rotateX(1.5deg)_rotateY(2deg)_translateZ(4px)] active:[transform:translateY(-1px)_scale(0.99)] motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:active:transform-none"
+                                className="bg-card border-border group hover:border-owner-accent/40 flex gap-3 rounded-2xl border p-4 shadow-sm transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_14px_24px_rgba(90,166,122,0.16)] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:active:transform-none"
                             >
                                 {/* Avatar */}
-                                <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 text-sm font-bold text-owner-accent sm:flex [transform:translateZ(6px)]">
+                                <div className="bg-owner-accent/10 text-owner-accent hidden h-10 w-10 shrink-0 [transform:translateZ(6px)] items-center justify-center rounded-full text-sm font-bold sm:flex">
                                     {getInitials(post.user?.name || '?')}
                                 </div>
 
@@ -166,7 +166,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                 <div className="min-w-0 flex-1">
                                     <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
                                         {post.is_pinned && (
-                                            <span className="flex items-center gap-1 rounded-full bg-owner-accent/10 px-2 py-0.5 text-xs font-medium text-owner-accent dark:bg-owner-accent/20">
+                                            <span className="bg-owner-accent/10 text-owner-accent dark:bg-owner-accent/20 flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium">
                                                 <PinIcon size={9} /> {t('community.pinned')}
                                             </span>
                                         )}
@@ -177,12 +177,10 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                         </span>
                                     </div>
 
-                                    <h2 className="group-hover:text-owner-accent font-semibold leading-snug transition-colors [transform:translateZ(4px)]">
+                                    <h2 className="group-hover:text-owner-accent [transform:translateZ(4px)] leading-snug font-semibold transition-colors">
                                         {post.title}
                                     </h2>
-                                    <p className="text-muted-foreground mt-0.5 line-clamp-1 text-sm">
-                                        {truncate(post.content, 100)}
-                                    </p>
+                                    <p className="text-muted-foreground mt-0.5 line-clamp-1 text-sm">{truncate(post.content, 100)}</p>
 
                                     <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs text-slate-400">
                                         <span className="font-medium text-slate-500 dark:text-slate-400">
@@ -192,10 +190,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                         <span>{timeAgo(post.created_at, t, currentLocale)}</span>
                                         <span className="ml-auto flex items-center gap-2.5">
                                             <span className="flex items-center gap-1">
-                                                <Heart
-                                                    size={11}
-                                                    className={liked_post_ids.includes(post.id) ? 'fill-rose-500 text-rose-500' : ''}
-                                                />
+                                                <Heart size={11} className={liked_post_ids.includes(post.id) ? 'fill-rose-500 text-rose-500' : ''} />
                                                 {post.likes_count}
                                             </span>
                                             <span className="flex items-center gap-1">

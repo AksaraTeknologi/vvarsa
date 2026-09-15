@@ -87,7 +87,7 @@ export default function StockOut({ products }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('inventory.stockOutTitle')} />
-            <div className="w-full p-4 md:p-6">
+            <div className="stock-movement-page w-full p-4 md:p-6">
                 <div className="mb-6">
                     <div>
                         <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
@@ -100,104 +100,112 @@ export default function StockOut({ products }: Props) {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
                         <div className="p-5 md:p-6">
-                        <div className="space-y-4">
-                        <div>
-                            <Label htmlFor="product_id" className="mb-1.5 block text-sm font-medium">
-                                {t('inventory.product')} *
-                            </Label>
-                            <Select value={data.product_id} onValueChange={(val) => setData('product_id', val)}>
-                                <SelectTrigger id="product_id" className={`h-10 rounded-xl text-sm ${displayError('product_id') ? 'border-rose-500' : ''}`}>
-                                    <SelectValue placeholder={t('inventory.selectProductPlaceholder')} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {products.map((p) => (
-                                        <SelectItem key={p.id} value={String(p.id)}>
-                                            {p.name} ({t('inventory.stock')}: {p.current_stock} {p.unit})
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {displayError('product_id') && (
-                                <p className="mt-1 flex items-center gap-1 text-xs text-rose-500">
-                                    <AlertCircle size={12} />
-                                    {displayError('product_id')}
-                                </p>
-                            )}
-                        </div>
+                            <div className="space-y-4">
+                                <div>
+                                    <Label htmlFor="product_id" className="mb-1.5 block text-sm font-medium">
+                                        {t('inventory.product')} *
+                                    </Label>
+                                    <Select value={data.product_id} onValueChange={(val) => setData('product_id', val)}>
+                                        <SelectTrigger
+                                            id="product_id"
+                                            className={`h-10 rounded-xl text-sm ${displayError('product_id') ? 'border-rose-500' : ''}`}
+                                        >
+                                            <SelectValue placeholder={t('inventory.selectProductPlaceholder')} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {products.map((p) => (
+                                                <SelectItem key={p.id} value={String(p.id)}>
+                                                    {p.name} ({t('inventory.stock')}: {p.current_stock} {p.unit})
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {displayError('product_id') && (
+                                        <p className="mt-1 flex items-center gap-1 text-xs text-rose-500">
+                                            <AlertCircle size={12} />
+                                            {displayError('product_id')}
+                                        </p>
+                                    )}
+                                </div>
 
-                        {selectedProduct && (
-                            <div
-                                className={`rounded-xl p-3.5 text-sm ${isInsufficientStock ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-50 dark:bg-slate-800/50'}`}
-                            >
-                                <p className={`font-medium ${isInsufficientStock ? 'text-rose-700 dark:text-rose-400' : ''}`}>
-                                    {selectedProduct.name}
-                                </p>
-                                <p className={`mt-0.5 text-xs ${isInsufficientStock ? 'text-rose-600 dark:text-rose-300' : 'text-muted-foreground'}`}>
-                                    {t('inventory.availableStock')}: {selectedProduct.current_stock} {selectedProduct.unit}
-                                    {isInsufficientStock && ` — ${t('inventory.insufficientStock')}`}
-                                </p>
-                            </div>
-                        )}
-
-                        <div className="grid grid-cols-2 gap-3">
-                            <div>
-                                <Label htmlFor="qty" className="mb-1 block text-sm font-medium">
-                                    {t('inventory.qtyOut')} *
-                                </Label>
-                                <Input
-                                    id="qty"
-                                    type="number"
-                                    min={1}
-                                    max={selectedProduct?.current_stock}
-                                    value={data.qty}
-                                    onChange={(e) => setData('qty', parseInt(e.target.value) || 1)}
-                                    className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
-                                />
                                 {selectedProduct && (
-                                    <p className="text-muted-foreground mt-1 text-xs">
-                                        {t('inventory.stockAfter')}: {Math.max(0, selectedProduct.current_stock - (data.qty || 0))} {selectedProduct.unit}
-                                    </p>
+                                    <div
+                                        className={`rounded-xl p-3.5 text-sm ${isInsufficientStock ? 'bg-rose-50 dark:bg-rose-900/20' : 'bg-slate-50 dark:bg-slate-800/50'}`}
+                                    >
+                                        <p className={`font-medium ${isInsufficientStock ? 'text-rose-700 dark:text-rose-400' : ''}`}>
+                                            {selectedProduct.name}
+                                        </p>
+                                        <p
+                                            className={`mt-0.5 text-xs ${isInsufficientStock ? 'text-rose-600 dark:text-rose-300' : 'text-muted-foreground'}`}
+                                        >
+                                            {t('inventory.availableStock')}: {selectedProduct.current_stock} {selectedProduct.unit}
+                                            {isInsufficientStock && ` — ${t('inventory.insufficientStock')}`}
+                                        </p>
+                                    </div>
                                 )}
-                                {displayError('qty') && <p className="mt-1 text-xs text-rose-500">{displayError('qty')}</p>}
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="movement_date" className="block text-sm font-medium">
-                                    {t('common.date')} *
-                                </Label>
-                                <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
-                                {displayError('movement_date') && <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>}
-                            </div>
-                        </div>
 
-                        <div className="md:w-1/2">
-                            <Label htmlFor="reference" className="mb-1 block text-sm font-medium">
-                                {t('inventory.reference')}
-                            </Label>
-                            <Input
-                                id="reference"
-                                type="text"
-                                value={data.reference}
-                                onChange={(e) => setData('reference', e.target.value)}
-                                placeholder={t('inventory.referencePlaceholder')}
-                                className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
-                            />
-                        </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <Label htmlFor="qty" className="mb-1 block text-sm font-medium">
+                                            {t('inventory.qtyOut')} *
+                                        </Label>
+                                        <Input
+                                            id="qty"
+                                            type="number"
+                                            min={1}
+                                            max={selectedProduct?.current_stock}
+                                            value={data.qty}
+                                            onChange={(e) => setData('qty', parseInt(e.target.value) || 1)}
+                                            className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
+                                        />
+                                        {selectedProduct && (
+                                            <p className="text-muted-foreground mt-1 text-xs">
+                                                {t('inventory.stockAfter')}: {Math.max(0, selectedProduct.current_stock - (data.qty || 0))}{' '}
+                                                {selectedProduct.unit}
+                                            </p>
+                                        )}
+                                        {displayError('qty') && <p className="mt-1 text-xs text-rose-500">{displayError('qty')}</p>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="movement_date" className="block text-sm font-medium">
+                                            {t('common.date')} *
+                                        </Label>
+                                        <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
+                                        {displayError('movement_date') && (
+                                            <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>
+                                        )}
+                                    </div>
+                                </div>
 
-                        <div>
-                            <Label htmlFor="note" className="mb-1 block text-sm font-medium">
-                                {t('common.notes')}
-                            </Label>
-                            <Textarea
-                                id="note"
-                                rows={3}
-                                value={data.note}
-                                onChange={(e) => setData('note', e.target.value)}
-                                placeholder={t('inventory.stockOutNotePlaceholder')}
-                                className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
-                            />
+                                <div className="md:w-1/2">
+                                    <Label htmlFor="reference" className="mb-1 block text-sm font-medium">
+                                        {t('inventory.reference')}
+                                    </Label>
+                                    <Input
+                                        id="reference"
+                                        type="text"
+                                        value={data.reference}
+                                        onChange={(e) => setData('reference', e.target.value)}
+                                        placeholder={t('inventory.referencePlaceholder')}
+                                        className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="note" className="mb-1 block text-sm font-medium">
+                                        {t('common.notes')}
+                                    </Label>
+                                    <Textarea
+                                        id="note"
+                                        rows={3}
+                                        value={data.note}
+                                        onChange={(e) => setData('note', e.target.value)}
+                                        placeholder={t('inventory.stockOutNotePlaceholder')}
+                                        className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
                     </div>
 
                     <div className="mt-2 flex justify-end gap-3">

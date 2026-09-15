@@ -169,7 +169,7 @@ export function NotificationDropdown() {
                     {notifications.length === 0 ? <p className="px-3 py-6 text-center text-sm text-muted-foreground">Belum ada notifikasi.</p> : notifications.map((notification) => {
                         const Icon = eventIcon(notification.kind);
                         return <button key={notification.id} type="button" onClick={() => { void markRead(notification.id); if (notification.url) window.location.assign(notification.url); }} className={`flex w-full items-start gap-3 px-3 py-3 text-left hover:bg-muted ${notification.read ? 'opacity-60' : ''}`}>
-                            <Icon className="mt-0.5 size-4 shrink-0 text-primary" />
+                            <Icon className="mt-0.5 size-4 shrink-0 text-owner-accent" />
                             <span className="min-w-0 flex-1"><span className="block text-xs font-semibold">{eventLabel(notification.kind)}</span><span className="block text-sm">{notification.message}</span><span className="block text-[11px] text-muted-foreground">{notification.createdAt}</span></span>
                         </button>;
                     })}

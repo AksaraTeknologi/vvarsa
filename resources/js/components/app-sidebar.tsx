@@ -2,8 +2,6 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import { useEffect, useLayoutEffect, useRef } from 'react';
 import {
     BarChart3,
     BookOpen,
@@ -23,6 +21,8 @@ import {
     Users,
     Warehouse,
 } from 'lucide-react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppLogoIcon from './app-logo-icon';
 
 // ── Tema warna per role (dari app.css pastel palette) ──
@@ -72,32 +72,17 @@ const ROLE_THEME = {
 type RoleTheme = (typeof ROLE_THEME)[keyof typeof ROLE_THEME];
 
 // ── Komponen menu item elegan ──
-function NavSection({
-    title,
-    items,
-    theme,
-    currentUrl,
-}: {
-    title?: string;
-    items: NavItem[];
-    theme: RoleTheme;
-    currentUrl: string;
-}) {
+function NavSection({ title, items, theme, currentUrl }: { title?: string; items: NavItem[]; theme: RoleTheme; currentUrl: string }) {
     if (items.length === 0) return null;
 
     // Cari satu item paling spesifik (href terpanjang) yang cocok dengan currentUrl.
     const activeHref =
-        items
-            .filter((item) => currentUrl === item.href || currentUrl.startsWith(item.href + '/'))
-            .sort((a, b) => b.href.length - a.href.length)[0]?.href ?? null;
+        items.filter((item) => currentUrl === item.href || currentUrl.startsWith(item.href + '/')).sort((a, b) => b.href.length - a.href.length)[0]
+            ?.href ?? null;
 
     return (
         <div className="mb-2">
-            {title && (
-                <div className={`mb-1 px-3 text-[10px] font-semibold tracking-widest uppercase ${theme.text} opacity-55`}>
-                    {title}
-                </div>
-            )}
+            {title && <div className={`mb-1 px-3 text-[10px] font-semibold tracking-widest uppercase ${theme.text} opacity-55`}>{title}</div>}
             <div className="space-y-0.5 px-2">
                 {items.map((item) => {
                     const isActive = item.href === activeHref;
@@ -114,12 +99,12 @@ function NavSection({
                             }`}
                         >
                             {item.icon && (
-                                <item.icon className={`size-4 shrink-0 !text-[#3f9567] transition-colors ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`} />
+                                <item.icon
+                                    className={`size-4 shrink-0 !text-[#3f9567] transition-colors ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`}
+                                />
                             )}
                             <span className="truncate">{item.title}</span>
-                            {isActive && (
-                                <span className={`ml-auto size-1.5 shrink-0 rounded-full ${theme.bg}`} />
-                            )}
+                            {isActive && <span className={`ml-auto size-1.5 shrink-0 rounded-full ${theme.bg}`} />}
                         </Link>
                     );
                 })}
@@ -135,14 +120,12 @@ function SidebarLogo({ href, theme }: { href: string; theme: RoleTheme }) {
             <SidebarMenuItem>
                 <SidebarMenuButton size="lg" asChild className="hover:!bg-transparent active:!bg-transparent">
                     <Link href={href} prefetch className="flex items-center gap-2.5">
-                        <div className={`flex aspect-square size-9 items-center justify-center rounded-xl p-1.5 shadow-xs shrink-0 ${theme.bg}`}>
+                        <div className={`flex aspect-square size-9 shrink-0 items-center justify-center rounded-xl p-1.5 shadow-xs ${theme.bg}`}>
                             <AppLogoIcon className="size-full object-contain" />
                         </div>
                         <div className="ml-0.5 grid flex-1 text-left text-sm">
                             <span className="mb-0.5 truncate leading-none font-bold text-[#2c2c2e]">VVARSA</span>
-                            <span className={`text-[10px] font-semibold tracking-widest uppercase ${theme.text}`}>
-                                {theme.label}
-                            </span>
+                            <span className={`text-[10px] font-semibold tracking-widest uppercase ${theme.text}`}>{theme.label}</span>
                         </div>
                     </Link>
                 </SidebarMenuButton>
@@ -197,13 +180,7 @@ export function AppSidebar() {
     const isOwner = user?.roles?.includes('owner');
     const isSupervisor = user?.roles?.includes('supervisor');
 
-    const theme = isAdmin
-        ? ROLE_THEME.admin
-        : isOwner
-          ? ROLE_THEME.owner
-          : isSupervisor
-            ? ROLE_THEME.supervisor
-            : ROLE_THEME.staff;
+    const theme = isAdmin ? ROLE_THEME.admin : isOwner ? ROLE_THEME.owner : isSupervisor ? ROLE_THEME.supervisor : ROLE_THEME.staff;
 
     // ── Admin Navigation ──
     if (isAdmin) {
@@ -219,21 +196,18 @@ export function AppSidebar() {
 
         return (
             <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border}`}>
-                <SidebarHeader className="pb-0 pt-4">
+                <SidebarHeader className="pt-4 pb-0">
                     <SidebarLogo href="/admin" theme={theme} />
                     <div className={`mx-3 mt-3 h-px ${theme.dividerBg}`} />
                 </SidebarHeader>
 
                 <SidebarContent className="overflow-hidden py-0">
-                    <div
-                        ref={scrollRef}
-                        className="h-full overflow-y-auto py-3 [overflow-anchor:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                    >
+                    <div ref={scrollRef} className="h-full overflow-y-auto py-3 [overflow-anchor:none]">
                         <NavSection items={adminItems} theme={theme} currentUrl={currentUrl} />
                     </div>
                 </SidebarContent>
 
-                <SidebarFooter className={`border-t pb-3 pt-2 ${theme.border}`}>
+                <SidebarFooter className={`border-t pt-2 pb-3 ${theme.border}`}>
                     <NavUser />
                 </SidebarFooter>
             </Sidebar>
@@ -284,16 +258,13 @@ export function AppSidebar() {
 
     return (
         <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border} ${isOwner ? 'owner-sidebar' : ''}`}>
-            <SidebarHeader className="pb-0 pt-4">
+            <SidebarHeader className="pt-4 pb-0">
                 <SidebarLogo href="/dashboard" theme={theme} />
                 <div className={`mx-3 mt-3 h-px ${theme.dividerBg}`} />
             </SidebarHeader>
 
             <SidebarContent className="overflow-hidden py-0">
-                <div
-                    ref={scrollRef}
-                    className="h-full overflow-y-auto py-3 [overflow-anchor:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                >
+                <div ref={scrollRef} className="h-full overflow-y-auto py-3 [overflow-anchor:none]">
                     <NavSection items={mainItems} theme={theme} currentUrl={currentUrl} />
                     <NavSection title={t('navigation.inventory')} items={inventoryItems} theme={theme} currentUrl={currentUrl} />
                     <NavSection title={t('navigation.sales')} items={salesItems} theme={theme} currentUrl={currentUrl} />
@@ -302,10 +273,9 @@ export function AppSidebar() {
                 </div>
             </SidebarContent>
 
-            <SidebarFooter className={`border-t pb-3 pt-2 ${theme.border}`}>
+            <SidebarFooter className={`border-t pt-2 pb-3 ${theme.border}`}>
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
     );
 }
-

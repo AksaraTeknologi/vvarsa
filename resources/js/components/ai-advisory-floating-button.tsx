@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, router } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { toast } from 'sonner';
-import { 
-    Sparkles, 
-    AlertTriangle, 
-    TrendingUp, 
-    ShoppingBag, 
-    DollarSign, 
-    CheckCircle2, 
-    RefreshCw, 
-    BrainCircuit,
-    ChevronRight,
-    ShieldAlert,
-    Lightbulb,
-    X
-} from 'lucide-react';
 import { formatCurrency } from '@/lib/utils-mrp';
+import { Link, router } from '@inertiajs/react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import {
+    AlertTriangle,
+    CheckCircle2,
+    ChevronRight,
+    DollarSign,
+    Lightbulb,
+    RefreshCw,
+    ShieldAlert,
+    ShoppingBag,
+    Sparkles,
+    TrendingUp,
+    X,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 interface ReorderAlert {
     product_id: number;
@@ -156,8 +155,8 @@ export function AiAdvisoryFloatingButton() {
     const pricingRecs = data?.pricing_recommendations || [];
     const health = data?.health_summary;
 
-    const criticalReorderCount = reorderAlerts.filter(a => a.urgency === 'critical').length;
-    const warningPricingCount = pricingRecs.filter(p => p.action_needed).length;
+    const criticalReorderCount = reorderAlerts.filter((a) => a.urgency === 'critical').length;
+    const warningPricingCount = pricingRecs.filter((p) => p.action_needed).length;
     const totalAlertCount = criticalReorderCount + warningPricingCount;
 
     const toggleOpen = () => {
@@ -171,40 +170,39 @@ export function AiAdvisoryFloatingButton() {
         <>
             {/* Backdrop overlay for mobile / focus mode */}
             {isOpen && (
-                <div 
-                    className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 transition-opacity duration-300 sm:bg-black/20"
+                <div
+                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 sm:bg-black/20"
                     onClick={() => setIsOpen(false)}
                     aria-hidden="true"
                 />
             )}
 
             {/* ── Chatbot Floating Button (Bottom Right) ──────────────────── */}
-            <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
-
+            <div className="fixed right-6 bottom-6 z-50 flex items-center gap-3">
                 <button
                     ref={buttonRef}
                     onClick={toggleOpen}
                     aria-label={t('ai.title')}
                     className={`group relative flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 ${
                         isOpen
-                            ? 'bg-slate-950 border-2 border-cyan-500 text-white shadow-cyan-500/30 ring-4 ring-cyan-500/20'
-                            : 'bg-slate-900 border-2 border-cyan-500/40 text-white shadow-cyan-500/30 ring-4 ring-slate-800/80 hover:border-cyan-400 hover:bg-slate-950 hover:shadow-cyan-500/50'
+                            ? 'border-2 border-cyan-500 bg-slate-950 text-white ring-4 shadow-cyan-500/30 ring-cyan-500/20'
+                            : 'border-2 border-cyan-500/40 bg-slate-900 text-white ring-4 shadow-cyan-500/30 ring-slate-800/80 hover:border-cyan-400 hover:bg-slate-950 hover:shadow-cyan-500/50'
                     }`}
                 >
                     {/* Ambient Glow */}
-                    <div className="absolute -inset-1 -z-10 rounded-full bg-gradient-to-r from-cyan-500/40 via-blue-500/40 to-indigo-500/40 blur-md opacity-70 group-hover:opacity-100 transition duration-300" />
+                    <div className="absolute -inset-1 -z-10 rounded-full bg-gradient-to-r from-cyan-500/40 via-blue-500/40 to-indigo-500/40 opacity-70 blur-md transition duration-300 group-hover:opacity-100" />
 
                     {isOpen ? (
-                        <X className="h-6 w-6 transition-transform duration-300 rotate-90 text-cyan-400" />
+                        <X className="h-6 w-6 rotate-90 text-cyan-400 transition-transform duration-300" />
                     ) : (
-                        <div className="relative flex h-9 w-9 items-center justify-center pointer-events-none">
+                        <div className="pointer-events-none relative flex h-9 w-9 items-center justify-center">
                             <DotLottieReact src="/animation/auth/Ai.lottie" autoplay loop className="h-full w-full object-contain" />
                         </div>
                     )}
 
                     {/* Alert Badge Counter */}
                     {!isOpen && totalAlertCount > 0 && (
-                        <span className="absolute -top-1 -right-1 flex h-5.5 min-w-5.5 items-center justify-center rounded-full bg-rose-500 px-1 text-[11px] font-black text-white shadow-lg border-2 border-slate-950 animate-bounce">
+                        <span className="absolute -top-1 -right-1 flex h-5.5 min-w-5.5 animate-bounce items-center justify-center rounded-full border-2 border-slate-950 bg-rose-500 px-1 text-[11px] font-black text-white shadow-lg">
                             {totalAlertCount}
                         </span>
                     )}
@@ -217,17 +215,17 @@ export function AiAdvisoryFloatingButton() {
                     ref={popupRef}
                     role="dialog"
                     aria-modal="true"
-                    className="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 sm:w-[660px] max-h-[85vh] z-50 flex flex-col rounded-3xl border border-indigo-500/30 bg-slate-950/95 text-white shadow-2xl backdrop-blur-xl transition-all duration-300 animate-in fade-in slide-in-from-bottom-6 overflow-hidden"
+                    className="animate-in fade-in slide-in-from-bottom-6 fixed right-4 bottom-24 left-4 z-50 flex max-h-[85vh] flex-col overflow-hidden rounded-3xl border border-indigo-500/30 bg-slate-950/95 text-white shadow-2xl backdrop-blur-xl transition-all duration-300 sm:right-6 sm:left-auto sm:w-[660px]"
                 >
                     {/* Header */}
                     <div className="relative z-10 flex items-center justify-between border-b border-indigo-500/20 bg-gradient-to-r from-slate-900 via-indigo-950/80 to-slate-900 px-5 py-4">
                         <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 border border-slate-700/60 shadow-md overflow-hidden p-1">
+                            <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900 p-1 shadow-md">
                                 <DotLottieReact src="/animation/auth/Ai.lottie" autoplay loop className="h-full w-full object-contain" />
                             </div>
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <h3 className="font-bold text-white text-base tracking-tight">{t('ai.title')}</h3>
+                                    <h3 className="text-base font-bold tracking-tight text-white">{t('ai.title')}</h3>
                                 </div>
                                 <p className="text-[11px] text-indigo-200/70">{t('ai.subtitle')}</p>
                             </div>
@@ -237,7 +235,7 @@ export function AiAdvisoryFloatingButton() {
                             <button
                                 onClick={fetchAnalytics}
                                 disabled={loading}
-                                className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/20 transition backdrop-blur-md disabled:opacity-50"
+                                className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white/20 disabled:opacity-50"
                                 title={t('ai.sync')}
                             >
                                 <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -245,7 +243,7 @@ export function AiAdvisoryFloatingButton() {
                             </button>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white transition"
+                                className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 text-slate-300 transition hover:bg-white/20 hover:text-white"
                                 title="Close"
                             >
                                 <X className="h-4 w-4" />
@@ -254,10 +252,10 @@ export function AiAdvisoryFloatingButton() {
                     </div>
 
                     {/* Navigation Tabs (Scrollbar hidden) */}
-                    <div className="relative z-10 flex gap-1.5 border-b border-white/5 bg-slate-900/60 px-4 py-2.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="relative z-10 flex gap-1.5 overflow-x-auto border-b border-white/5 bg-slate-900/60 px-4 py-2.5">
                         <button
                             onClick={() => setActiveTab('reorder')}
-                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all whitespace-nowrap ${
+                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold whitespace-nowrap transition-all ${
                                 activeTab === 'reorder'
                                     ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25'
                                     : 'bg-white/5 text-slate-300 hover:bg-white/10'
@@ -266,15 +264,13 @@ export function AiAdvisoryFloatingButton() {
                             <ShoppingBag className="h-3.5 w-3.5" />
                             {t('ai.tabReorder')}
                             {reorderAlerts.length > 0 && (
-                                <span className="rounded-full bg-white/20 px-1.5 py-0.2 text-[10px] font-bold">
-                                    {reorderAlerts.length}
-                                </span>
+                                <span className="py-0.2 rounded-full bg-white/20 px-1.5 text-[10px] font-bold">{reorderAlerts.length}</span>
                             )}
                         </button>
 
                         <button
                             onClick={() => setActiveTab('pricing')}
-                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all whitespace-nowrap ${
+                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold whitespace-nowrap transition-all ${
                                 activeTab === 'pricing'
                                     ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/25'
                                     : 'bg-white/5 text-slate-300 hover:bg-white/10'
@@ -283,7 +279,7 @@ export function AiAdvisoryFloatingButton() {
                             <DollarSign className="h-3.5 w-3.5" />
                             {t('ai.tabPricing')}
                             {warningPricingCount > 0 && (
-                                <span className="rounded-full bg-rose-500/40 px-1.5 py-0.2 text-[10px] font-bold text-white">
+                                <span className="py-0.2 rounded-full bg-rose-500/40 px-1.5 text-[10px] font-bold text-white">
                                     {warningPricingCount}
                                 </span>
                             )}
@@ -291,7 +287,7 @@ export function AiAdvisoryFloatingButton() {
 
                         <button
                             onClick={() => setActiveTab('health')}
-                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all whitespace-nowrap ${
+                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold whitespace-nowrap transition-all ${
                                 activeTab === 'health'
                                     ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25'
                                     : 'bg-white/5 text-slate-300 hover:bg-white/10'
@@ -300,7 +296,7 @@ export function AiAdvisoryFloatingButton() {
                             <Sparkles className="h-3.5 w-3.5" />
                             {t('ai.tabHealth')}
                             {health && (
-                                <span className="rounded-full bg-emerald-500/30 px-1.5 py-0.2 text-[10px] font-bold text-emerald-200">
+                                <span className="py-0.2 rounded-full bg-emerald-500/30 px-1.5 text-[10px] font-bold text-emerald-200">
                                     {health.health_score}/100
                                 </span>
                             )}
@@ -308,10 +304,10 @@ export function AiAdvisoryFloatingButton() {
                     </div>
 
                     {/* Content Scrollable Body (Scrollbar hidden, but fully scrollable) */}
-                    <div className="relative z-10 flex-1 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden p-4 sm:p-5 space-y-4 max-h-[calc(85vh-140px)]">
+                    <div className="relative z-10 max-h-[calc(85vh-140px)] flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
                         {loading && !data && (
                             <div className="flex flex-col items-center justify-center py-12 text-slate-400">
-                                <RefreshCw className="h-8 w-8 text-indigo-400 animate-spin mb-3" />
+                                <RefreshCw className="mb-3 h-8 w-8 animate-spin text-indigo-400" />
                                 <p className="text-xs font-medium text-indigo-200">{t('ai.reloading')}</p>
                             </div>
                         )}
@@ -320,12 +316,12 @@ export function AiAdvisoryFloatingButton() {
                             <div className="rounded-2xl border border-rose-500/30 bg-rose-950/30 p-4 text-white">
                                 <div className="flex items-center gap-2 text-rose-400">
                                     <ShieldAlert className="h-5 w-5" />
-                                    <h4 className="font-semibold text-xs">{t('ai.errorTitle')}</h4>
+                                    <h4 className="text-xs font-semibold">{t('ai.errorTitle')}</h4>
                                 </div>
                                 <p className="mt-2 text-xs text-rose-300/80">{error}</p>
                                 <button
                                     onClick={fetchAnalytics}
-                                    className="mt-3 flex items-center gap-1.5 rounded-xl bg-slate-800 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-700 transition"
+                                    className="mt-3 flex items-center gap-1.5 rounded-xl bg-slate-800 px-3 py-1.5 text-xs text-slate-200 transition hover:bg-slate-700"
                                 >
                                     <RefreshCw className="h-3 w-3" /> {t('ai.retry')}
                                 </button>
@@ -339,11 +335,9 @@ export function AiAdvisoryFloatingButton() {
                                     <div className="space-y-3">
                                         {reorderAlerts.length === 0 ? (
                                             <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-md">
-                                                <CheckCircle2 className="h-9 w-9 text-emerald-400 mb-2" />
-                                                <h4 className="font-semibold text-white text-sm">{t('ai.reorderSafeTitle')}</h4>
-                                                <p className="text-xs text-slate-400 max-w-sm mt-1">
-                                                    {t('ai.reorderSafeDesc')}
-                                                </p>
+                                                <CheckCircle2 className="mb-2 h-9 w-9 text-emerald-400" />
+                                                <h4 className="text-sm font-semibold text-white">{t('ai.reorderSafeTitle')}</h4>
+                                                <p className="mt-1 max-w-sm text-xs text-slate-400">{t('ai.reorderSafeDesc')}</p>
                                             </div>
                                         ) : (
                                             <div className="grid gap-3">
@@ -356,45 +350,53 @@ export function AiAdvisoryFloatingButton() {
                                                             <div className="flex items-start justify-between gap-2">
                                                                 <div>
                                                                     <span
-                                                                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                                                                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase ${
                                                                             alert.urgency === 'critical'
-                                                                                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                                                                                : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                                                                                ? 'border border-rose-500/30 bg-rose-500/20 text-rose-300'
+                                                                                : 'border border-amber-500/30 bg-amber-500/20 text-amber-300'
                                                                         }`}
                                                                     >
                                                                         <AlertTriangle className="h-3 w-3" />
                                                                         {alert.urgency === 'critical' ? t('ai.critical') : t('ai.reorderAlert')}
                                                                     </span>
-                                                                    <h4 className="mt-1.5 font-bold text-white text-sm">{alert.product_name}</h4>
+                                                                    <h4 className="mt-1.5 text-sm font-bold text-white">{alert.product_name}</h4>
                                                                 </div>
 
                                                                 <div className="text-right">
                                                                     <p className="text-[10px] text-slate-400">{t('ai.remainingStock')}</p>
                                                                     <p className="text-xs font-bold text-amber-400">
-                                                                        {alert.current_stock} <span className="text-[10px] font-normal text-slate-300">{alert.unit}</span>
+                                                                        {alert.current_stock}{' '}
+                                                                        <span className="text-[10px] font-normal text-slate-300">{alert.unit}</span>
                                                                     </p>
                                                                 </div>
                                                             </div>
 
                                                             <p className="mt-2 text-xs text-slate-300">{alert.reason}</p>
 
-                                                            <div className="mt-2.5 flex items-center justify-between text-xs bg-black/20 rounded-xl p-2 border border-white/5">
+                                                            <div className="mt-2.5 flex items-center justify-between rounded-xl border border-white/5 bg-black/20 p-2 text-xs">
                                                                 <div>
-                                                                    <span className="text-slate-400 block text-[10px]">{t('ai.dailyUsage')}</span>
-                                                                    <span className="font-semibold text-white">{alert.daily_usage_avg} {alert.unit}{t('ai.perDay')}</span>
+                                                                    <span className="block text-[10px] text-slate-400">{t('ai.dailyUsage')}</span>
+                                                                    <span className="font-semibold text-white">
+                                                                        {alert.daily_usage_avg} {alert.unit}
+                                                                        {t('ai.perDay')}
+                                                                    </span>
                                                                 </div>
                                                                 <div className="text-right">
-                                                                    <span className="text-slate-400 block text-[10px]">{t('ai.suggestedPurchase')}</span>
-                                                                    <span className="font-bold text-amber-300">+{alert.recommended_reorder_qty} {alert.unit}</span>
+                                                                    <span className="block text-[10px] text-slate-400">
+                                                                        {t('ai.suggestedPurchase')}
+                                                                    </span>
+                                                                    <span className="font-bold text-amber-300">
+                                                                        +{alert.recommended_reorder_qty} {alert.unit}
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-end">
+                                                        <div className="mt-3 flex items-center justify-end border-t border-white/10 pt-2.5">
                                                             <Link
                                                                 href={`/inventory/stock-in?product_id=${alert.product_id}&qty=${alert.recommended_reorder_qty}`}
                                                                 onClick={() => setIsOpen(false)}
-                                                                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1.5 text-xs font-semibold text-white hover:from-amber-600 hover:to-orange-600 shadow-md shadow-amber-500/20 transition-all"
+                                                                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-amber-500/20 transition-all hover:from-amber-600 hover:to-orange-600"
                                                             >
                                                                 <ShoppingBag className="h-3.5 w-3.5" />
                                                                 {t('ai.btnCreateStockIn')}
@@ -412,11 +414,9 @@ export function AiAdvisoryFloatingButton() {
                                     <div className="space-y-3">
                                         {pricingRecs.length === 0 ? (
                                             <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-md">
-                                                <CheckCircle2 className="h-9 w-9 text-emerald-400 mb-2" />
-                                                <h4 className="font-semibold text-white text-sm">{t('ai.pricingOptimalTitle')}</h4>
-                                                <p className="text-xs text-slate-400 max-w-sm mt-1">
-                                                    {t('ai.pricingOptimalDesc')}
-                                                </p>
+                                                <CheckCircle2 className="mb-2 h-9 w-9 text-emerald-400" />
+                                                <h4 className="text-sm font-semibold text-white">{t('ai.pricingOptimalTitle')}</h4>
+                                                <p className="mt-1 max-w-sm text-xs text-slate-400">{t('ai.pricingOptimalDesc')}</p>
                                             </div>
                                         ) : (
                                             <div className="grid gap-3">
@@ -428,39 +428,49 @@ export function AiAdvisoryFloatingButton() {
                                                         <div>
                                                             <div className="flex items-start justify-between gap-2">
                                                                 <div>
-                                                                    <span className="inline-flex items-center gap-1 rounded-full bg-rose-500/20 border border-rose-500/30 px-2 py-0.5 text-[10px] font-bold text-rose-300 uppercase tracking-wider">
-                                                                        <TrendingUp className="h-3 w-3" /> {t('ai.lowMargin')} ({rec.current_margin_percent}%)
+                                                                    <span className="inline-flex items-center gap-1 rounded-full border border-rose-500/30 bg-rose-500/20 px-2 py-0.5 text-[10px] font-bold tracking-wider text-rose-300 uppercase">
+                                                                        <TrendingUp className="h-3 w-3" /> {t('ai.lowMargin')} (
+                                                                        {rec.current_margin_percent}%)
                                                                     </span>
-                                                                    <h4 className="mt-1.5 font-bold text-white text-sm">{rec.variant_name}</h4>
+                                                                    <h4 className="mt-1.5 text-sm font-bold text-white">{rec.variant_name}</h4>
                                                                 </div>
                                                                 <div className="text-right">
                                                                     <p className="text-[10px] text-slate-400">{t('ai.recipeCost')}</p>
-                                                                    <p className="text-xs font-semibold text-slate-300">{formatCurrency(rec.cost_price)}</p>
+                                                                    <p className="text-xs font-semibold text-slate-300">
+                                                                        {formatCurrency(rec.cost_price)}
+                                                                    </p>
                                                                 </div>
                                                             </div>
 
                                                             <p className="mt-2 text-xs text-slate-300">{rec.reason}</p>
 
-                                                            <div className="mt-2.5 grid grid-cols-2 gap-2 text-xs bg-black/20 rounded-xl p-2 border border-white/5">
+                                                            <div className="mt-2.5 grid grid-cols-2 gap-2 rounded-xl border border-white/5 bg-black/20 p-2 text-xs">
                                                                 <div>
-                                                                    <span className="text-slate-400 block text-[10px]">{t('ai.currentPrice')}</span>
-                                                                    <span className="font-semibold text-slate-300 line-through">{formatCurrency(rec.current_sell_price)}</span>
+                                                                    <span className="block text-[10px] text-slate-400">{t('ai.currentPrice')}</span>
+                                                                    <span className="font-semibold text-slate-300 line-through">
+                                                                        {formatCurrency(rec.current_sell_price)}
+                                                                    </span>
                                                                 </div>
                                                                 <div className="text-right">
-                                                                    <span className="text-slate-400 block text-[10px]">{t('ai.aiRecommendation')}</span>
-                                                                    <span className="font-bold text-emerald-400">{formatCurrency(rec.recommended_sell_price)}</span>
+                                                                    <span className="block text-[10px] text-slate-400">
+                                                                        {t('ai.aiRecommendation')}
+                                                                    </span>
+                                                                    <span className="font-bold text-emerald-400">
+                                                                        {formatCurrency(rec.recommended_sell_price)}
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between">
+                                                        <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-2.5">
                                                             <span className="text-[11px] text-indigo-200">
-                                                                {t('ai.targetMargin')}: <strong className="text-emerald-300">{rec.recommended_margin_percent}%</strong>
+                                                                {t('ai.targetMargin')}:{' '}
+                                                                <strong className="text-emerald-300">{rec.recommended_margin_percent}%</strong>
                                                             </span>
                                                             <Link
                                                                 href={`/inventory?search=${encodeURIComponent(rec.variant_name)}`}
                                                                 onClick={() => setIsOpen(false)}
-                                                                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500 shadow-md shadow-indigo-600/20 transition-all"
+                                                                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-500"
                                                             >
                                                                 {t('ai.btnFixPrice')}
                                                                 <ChevronRight className="h-3.5 w-3.5" />
@@ -475,51 +485,56 @@ export function AiAdvisoryFloatingButton() {
 
                                 {/* ── 3. Business Health Summary Tab ───────────────── */}
                                 {activeTab === 'health' && health && (
-                                    <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-teal-950/30 to-slate-900/90 p-4 backdrop-blur-md space-y-3">
+                                    <div className="space-y-3 rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-teal-950/30 to-slate-900/90 p-4 backdrop-blur-md">
                                         <div className="flex items-center justify-between border-b border-white/10 pb-3">
                                             <div>
-                                                <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider">
+                                                <span className="text-[10px] font-semibold tracking-wider text-emerald-400 uppercase">
                                                     {t('ai.performanceAnalysis')}
                                                 </span>
-                                                <h4 className="text-base font-bold text-white mt-0.5">{t('ai.executiveSummary')}</h4>
+                                                <h4 className="mt-0.5 text-base font-bold text-white">{t('ai.executiveSummary')}</h4>
                                             </div>
 
                                             <div className="flex items-center gap-2">
                                                 <div className="text-right">
                                                     <p className="text-[10px] text-slate-400">{t('ai.score')}</p>
-                                                    <p className="text-lg font-black text-emerald-400">{health.health_score}<span className="text-xs text-slate-400">/100</span></p>
+                                                    <p className="text-lg font-black text-emerald-400">
+                                                        {health.health_score}
+                                                        <span className="text-xs text-slate-400">/100</span>
+                                                    </p>
                                                 </div>
                                                 <span
                                                     className={`inline-flex rounded-xl px-2.5 py-1 text-[11px] font-bold capitalize ${
                                                         health.status_badge === 'excellent'
-                                                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                                                            ? 'border border-emerald-500/30 bg-emerald-500/20 text-emerald-300'
                                                             : health.status_badge === 'good'
-                                                            ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                                                            : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                                                              ? 'border border-blue-500/30 bg-blue-500/20 text-blue-300'
+                                                              : 'border border-rose-500/30 bg-rose-500/20 text-rose-300'
                                                     }`}
                                                 >
-                                                    {health.status_badge === 'excellent' ? t('ai.statusExcellent') : health.status_badge === 'good' ? t('ai.statusGood') : t('ai.statusAttention')}
+                                                    {health.status_badge === 'excellent'
+                                                        ? t('ai.statusExcellent')
+                                                        : health.status_badge === 'good'
+                                                          ? t('ai.statusGood')
+                                                          : t('ai.statusAttention')}
                                                 </span>
                                             </div>
                                         </div>
 
                                         {/* Narrative summary */}
-                                        <div className="rounded-xl bg-white/5 p-3 border border-white/5">
-                                            <p className="text-xs leading-relaxed text-indigo-100 italic">
-                                                &ldquo;{health.narrative_summary}&rdquo;
-                                            </p>
+                                        <div className="rounded-xl border border-white/5 bg-white/5 p-3">
+                                            <p className="text-xs leading-relaxed text-indigo-100 italic">&ldquo;{health.narrative_summary}&rdquo;</p>
                                         </div>
 
                                         {/* Key takeaways & Tips */}
-                                        <div className="grid gap-3 sm:grid-cols-2 pt-1">
+                                        <div className="grid gap-3 pt-1 sm:grid-cols-2">
                                             <div>
-                                                <h5 className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 mb-2">
+                                                <h5 className="mb-2 flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-slate-300 uppercase">
                                                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> {t('ai.keyTakeaways')}
                                                 </h5>
                                                 <ul className="space-y-1.5">
                                                     {health.key_takeaways.map((point, idx) => (
-                                                        <li key={idx} className="text-xs text-slate-300 flex items-start gap-1.5">
-                                                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+                                                        <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-300">
+                                                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
                                                             <span>{point}</span>
                                                         </li>
                                                     ))}
@@ -527,13 +542,13 @@ export function AiAdvisoryFloatingButton() {
                                             </div>
 
                                             <div>
-                                                <h5 className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 mb-2">
+                                                <h5 className="mb-2 flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-slate-300 uppercase">
                                                     <Lightbulb className="h-3.5 w-3.5 text-amber-400" /> {t('ai.actionableTips')}
                                                 </h5>
                                                 <ul className="space-y-1.5">
                                                     {health.actionable_tips.map((tip, idx) => (
-                                                        <li key={idx} className="text-xs text-slate-300 flex items-start gap-1.5">
-                                                            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                                                        <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-300">
+                                                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
                                                             <span>{tip}</span>
                                                         </li>
                                                     ))}

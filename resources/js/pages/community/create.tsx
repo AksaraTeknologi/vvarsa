@@ -89,7 +89,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                         key={catKey}
                                         type="button"
                                         onClick={() => setData('category', catKey as any)}
-                                        className={`group rounded-xl border bg-owner-accent/10 p-3 text-left [transform-style:preserve-3d] transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:border-owner-accent hover:bg-owner-accent/15 hover:shadow-[0_12px_20px_rgba(90,166,122,0.18)] hover:[transform:rotateX(2deg)_rotateY(-2deg)_translateZ(6px)] active:translate-y-0 active:scale-[0.985] motion-reduce:transition-none motion-reduce:hover:transform-none ${data.category === catKey ? 'border-owner-accent bg-owner-accent/20 shadow-[0_8px_16px_rgba(90,166,122,0.18)] [transform:translateZ(5px)]' : 'border-owner-accent/35'}`}
+                                        className={`group bg-owner-accent/10 hover:border-owner-accent hover:bg-owner-accent/15 rounded-xl border p-3 text-left transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_20px_rgba(90,166,122,0.18)] active:translate-y-0 active:scale-[0.985] motion-reduce:transition-none motion-reduce:hover:transform-none ${data.category === catKey ? 'border-owner-accent bg-owner-accent/20 shadow-[0_8px_16px_rgba(90,166,122,0.18)]' : 'border-owner-accent/35'}`}
                                     >
                                         <p className={`text-sm font-medium ${data.category === catKey ? 'text-owner-accent' : ''}`}>{catLabel}</p>
                                         <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{catDesc}</p>
@@ -135,12 +135,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                         <Button variant="outline" asChild className="rounded-xl">
                             <Link href="/community">{t('community.cancel')}</Link>
                         </Button>
-                        <Button
-                            type="submit"
-                            disabled={processing || !data.title || !data.content}
-                            variant="owner"
-                            className="rounded-xl px-5"
-                        >
+                        <Button type="submit" disabled={processing || !data.title || !data.content} variant="owner" className="rounded-xl px-5">
                             {processing ? t('community.posting') : t('community.postDiscussion')}
                         </Button>
                     </div>

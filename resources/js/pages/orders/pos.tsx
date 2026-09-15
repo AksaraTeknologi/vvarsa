@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import DeleteConfirmDialog from '@/components/delete-dialog';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
@@ -201,19 +201,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
     // Package & Cart derived status
     const packageCartItems = cart.filter((item) => item.package_id > 0);
     const activePackageItem = cart.find((c) => c.id === activeCartItemId);
-    const activePackageTotal = activePackageItem
-        ? Object.values(activePackageItem.quantities).reduce((sum, q) => sum + q, 0)
-        : 0;
+    const activePackageTotal = activePackageItem ? Object.values(activePackageItem.quantities).reduce((sum, q) => sum + q, 0) : 0;
     const activePackageRemaining = activePackageItem ? Math.max(0, activePackageItem.isi - activePackageTotal) : 0;
 
-    const cartItemCount =
-        packages.length > 0
-            ? cart.length
-            : cart.reduce((s, i) => s + (i.quantities[Object.keys(i.quantities)[0]] ?? 0), 0);
+    const cartItemCount = packages.length > 0 ? cart.length : cart.reduce((s, i) => s + (i.quantities[Object.keys(i.quantities)[0]] ?? 0), 0);
 
-    const filteredVariants = variants.filter((v) =>
-        v.name.toLowerCase().includes(searchQuery.toLowerCase().trim()),
-    );
+    const filteredVariants = variants.filter((v) => v.name.toLowerCase().includes(searchQuery.toLowerCase().trim()));
 
     const addPackageToCart = (pkg: PackageModel) => {
         const allowed = pkg.variants && pkg.variants.length > 0 ? pkg.variants : variants.filter((v) => Number(v.recipe_qty) === 1);
@@ -403,7 +396,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                     cash: formatRupiah(cashReceived),
                     total: formatRupiah(finalTotal),
                     defaultValue: `Uang diterima (${formatRupiah(cashReceived)}) kurang dari total belanja (${formatRupiah(finalTotal)})!`,
-                })
+                }),
             );
             return;
         }
@@ -512,19 +505,17 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
             <div className="pos-cart-content flex h-full min-h-0 w-full flex-col bg-[#fbfdfc]">
                 {/* Cart Header */}
                 <div className="relative flex shrink-0 items-center justify-between border-b-2 border-[#d9e5dd] bg-white px-4 py-3.5 sm:px-5 sm:py-4">
-                    <h2 className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                    <h2 className="text-foreground flex items-center gap-3 text-xs font-semibold">
                         <span className="flex size-9 items-center justify-center rounded-xl bg-[#e8f6ed] text-[#3f9567] shadow-[inset_0_0_0_1px_#c7e0ce]">
                             <ShoppingCart size={17} />
                         </span>
                         <span className="flex flex-col gap-0.5">
-                            <span className="text-xs font-bold leading-tight">{t('pos.cart')}</span>
+                            <span className="text-xs leading-tight font-bold">{t('pos.cart')}</span>
                             <span className="text-[10px] font-medium tracking-[0.08em] text-[#718178] uppercase">{t('pos.cartTitle')}</span>
                         </span>
                         {cart.length > 0 && (
                             <span className="rounded-full border border-[#c7e0ce] bg-[#f4faf6] px-2 py-1 text-xs font-bold text-[#3f9567]">
-                                {packages.length > 0
-                                    ? t('pos.packageCount', { count: cart.length })
-                                    : t('pos.itemCount', { count: cartItemCount })}
+                                {packages.length > 0 ? t('pos.packageCount', { count: cart.length }) : t('pos.itemCount', { count: cartItemCount })}
                             </span>
                         )}
                     </h2>
@@ -534,7 +525,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 trigger={
                                     <button
                                         type="button"
-                                        className="flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50/70 px-2.5 py-1 text-xs font-semibold text-rose-600 shadow-2xs transition-all hover:border-rose-300 hover:bg-rose-100 hover:text-rose-700 active:scale-95 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-400 dark:hover:bg-rose-900/60 cursor-pointer"
+                                        className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50/70 px-2.5 py-1 text-xs font-semibold text-rose-600 shadow-2xs transition-all hover:border-rose-300 hover:bg-rose-100 hover:text-rose-700 active:scale-95 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-400 dark:hover:bg-rose-900/60"
                                     >
                                         <Trash2 size={12} className="shrink-0 text-rose-500" />
                                         <span>{t('pos.clear')}</span>
@@ -555,29 +546,34 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                 {/* State A: Order Success View */}
                 {successOrder ? (
-                    <div className="bg-card min-h-0 flex-1 flex flex-col justify-between overflow-y-auto overscroll-contain scroll-auto p-4 sm:p-6">
+                    <div className="bg-card flex min-h-0 flex-1 flex-col justify-between overflow-y-auto overscroll-contain scroll-auto p-4 sm:p-6">
                         <div className="space-y-5">
                             <div className="space-y-2 pt-2 text-center">
-                                <div className="bg-[#f4faf6] text-[#3f9567] mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#c7e0ce] shadow-sm">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#c7e0ce] bg-[#f4faf6] text-[#3f9567] shadow-sm">
                                     <Check size={28} className="stroke-[2.5]" />
                                 </div>
                                 <h3 className="text-foreground text-lg font-bold">{t('pos.orderSuccess')}</h3>
                                 <p className="text-muted-foreground text-xs">{successOrder}</p>
                                 {lastOrderStatus && (
-                                    <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
-                                        {t('common.status')}: {lastOrderStatus === 'done' ? t('pos.statusDone') : lastOrderStatus === 'processing' ? t('pos.statusProcessing') : t('pos.statusPending')}
+                                    <div className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                                        {t('common.status')}:{' '}
+                                        {lastOrderStatus === 'done'
+                                            ? t('pos.statusDone')
+                                            : lastOrderStatus === 'processing'
+                                              ? t('pos.statusProcessing')
+                                              : t('pos.statusPending')}
                                     </div>
                                 )}
                             </div>
 
                             {/* Ringkasan Pembayaran Kasir */}
                             {lastCashReceived !== null && lastCashReceived > 0 && (
-                                <div className="bg-card border border-emerald-200 dark:border-emerald-800 rounded-2xl p-3.5 space-y-2 text-xs shadow-xs">
-                                    <div className="flex justify-between text-muted-foreground">
+                                <div className="bg-card space-y-2 rounded-2xl border border-emerald-200 p-3.5 text-xs shadow-xs dark:border-emerald-800">
+                                    <div className="text-muted-foreground flex justify-between">
                                         <span>{t('pos.cashReceived')}</span>
-                                        <span className="font-semibold text-foreground">{formatRupiah(lastCashReceived)}</span>
+                                        <span className="text-foreground font-semibold">{formatRupiah(lastCashReceived)}</span>
                                     </div>
-                                    <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-bold border-t border-border/50 pt-1.5 text-xs">
+                                    <div className="border-border/50 flex justify-between border-t pt-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                                         <span>{t('pos.change')}</span>
                                         <span>{formatRupiah(lastChange ?? 0)}</span>
                                     </div>
@@ -586,25 +582,23 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                             {/* Send Receipt Section */}
                             {lastOrderId && lastOrderEmail && (
-                                <div className="bg-card border-emerald-200 dark:border-emerald-800 space-y-3 rounded-2xl border p-4 shadow-xs">
+                                <div className="bg-card space-y-3 rounded-2xl border border-emerald-200 p-4 shadow-xs dark:border-emerald-800">
                                     <div className="space-y-1">
                                         <Label className="text-foreground flex items-center gap-1.5 text-xs font-semibold">
                                             <Mail size={14} className="text-[#3f9567]" />
                                             {t('pos.digitalReceipt')}
                                         </Label>
-                                        <p className="text-muted-foreground text-xs">
-                                            {t('pos.sendReceiptTo', { email: lastOrderEmail })}
-                                        </p>
+                                        <p className="text-muted-foreground text-xs">{t('pos.sendReceiptTo', { email: lastOrderEmail })}</p>
                                     </div>
                                     <button
                                         type="button"
                                         id="send-receipt-btn"
                                         onClick={handleSendReceipt}
                                         disabled={sendingReceipt || receiptSent}
-                                        className={`flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all shadow-xs cursor-pointer ${
+                                        className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold shadow-xs transition-all ${
                                             receiptSent
-                                                ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 cursor-default border border-emerald-300 dark:border-emerald-700'
-                                                : 'bg-[#3f9567] hover:bg-[#327d55] text-white disabled:opacity-60'
+                                                ? 'cursor-default border border-emerald-300 bg-emerald-100 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300'
+                                                : 'bg-[#3f9567] text-white hover:bg-[#327d55] disabled:opacity-60'
                                         }`}
                                     >
                                         {sendingReceipt ? (
@@ -630,7 +624,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     href={`/orders/${lastOrderId}/receipt`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="border-[#c7e0ce] text-[#3f9567] hover:bg-[#edf8f1] flex w-full items-center justify-center gap-2 rounded-xl border py-2.5 px-4 text-xs font-semibold shadow-xs transition-all"
+                                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#c7e0ce] px-4 py-2.5 text-xs font-semibold text-[#3f9567] shadow-xs transition-all hover:bg-[#edf8f1]"
                                 >
                                     <Package size={14} /> {t('pos.downloadPdf')}
                                 </a>
@@ -638,7 +632,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         </div>
 
                         {/* New Order Button */}
-                        <div className="border-border border-t pt-4 mt-4">
+                        <div className="border-border mt-4 border-t pt-4">
                             <Button
                                 type="button"
                                 id="new-order-btn"
@@ -646,7 +640,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     clearCart();
                                     if (options?.onClose) options.onClose();
                                 }}
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold shadow-xs cursor-pointer"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl text-sm font-semibold shadow-xs"
                             >
                                 <ShoppingCart size={16} /> {t('pos.newTransaction')}
                             </Button>
@@ -658,11 +652,11 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain scroll-auto bg-white p-3.5 sm:p-4">
                             {cart.length === 0 ? (
                                 <div className="text-muted-foreground flex flex-col items-center justify-center py-12 text-center text-sm">
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/60 mb-2">
+                                    <div className="bg-muted/60 mb-2 flex h-12 w-12 items-center justify-center rounded-full">
                                         <ShoppingCart size={22} className="opacity-40" />
                                     </div>
-                                    <span className="font-semibold text-foreground">{t('pos.emptyCart')}</span>
-                                    <span className="text-xs text-muted-foreground mt-1 max-w-[15rem]">
+                                    <span className="text-foreground font-semibold">{t('pos.emptyCart')}</span>
+                                    <span className="text-muted-foreground mt-1 max-w-[15rem] text-xs">
                                         {packages.length > 0 ? t('orders.selectPackageFirst') : t('orders.selectFlavorFirst')}
                                     </span>
                                     {options?.isMobile && (
@@ -671,7 +665,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             variant="outline"
                                             size="sm"
                                             onClick={options.onClose}
-                                            className="mt-4 rounded-xl text-xs cursor-pointer"
+                                            className="mt-4 cursor-pointer rounded-xl text-xs"
                                         >
                                             {t('orders.selectFlavorTitle')}
                                         </Button>
@@ -690,11 +684,18 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 if (!v) return null;
 
                                                 return (
-                                                    <div key={item.id} className="flex flex-col gap-2.5 overflow-hidden rounded-2xl border-2 border-[#d9e0dc] bg-white p-3.5 shadow-[0_2px_8px_rgb(31_42_35_/_0.06)]">
+                                                    <div
+                                                        key={item.id}
+                                                        className="flex flex-col gap-2.5 overflow-hidden rounded-2xl border-2 border-[#d9e0dc] bg-white p-3.5 shadow-[0_2px_8px_rgb(31_42_35_/_0.06)]"
+                                                    >
                                                         <div className="flex items-start justify-between gap-2">
                                                             <div className="min-w-0">
-                                                                <div className="truncate text-xs font-semibold text-foreground">{v.name.replace('Mochi ', '')}</div>
-                                                                <div className="text-muted-foreground mt-0.5 text-xs">{formatRupiah(Number(v.sell_price))}/pcs</div>
+                                                                <div className="text-foreground truncate text-xs font-semibold">
+                                                                    {v.name.replace('Mochi ', '')}
+                                                                </div>
+                                                                <div className="text-muted-foreground mt-0.5 text-xs">
+                                                                    {formatRupiah(Number(v.sell_price))}/pcs
+                                                                </div>
                                                             </div>
                                                             <button
                                                                 type="button"
@@ -702,7 +703,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                     e.stopPropagation();
                                                                     removeItem(item.id);
                                                                 }}
-                                                                className="shrink-0 p-1 text-rose-400 hover:text-rose-600 transition-colors cursor-pointer"
+                                                                className="shrink-0 cursor-pointer p-1 text-rose-400 transition-colors hover:text-rose-600"
                                                                 title={t('pos.removeItem', 'Hapus item')}
                                                             >
                                                                 <Trash2 size={14} />
@@ -716,7 +717,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                         e.stopPropagation();
                                                                         adjustDirectQty(item.id, variantId, -1);
                                                                     }}
-                                                                    className="bg-muted hover:bg-muted/80 flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold cursor-pointer"
+                                                                    className="bg-muted hover:bg-muted/80 flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-xs font-bold"
                                                                 >
                                                                     <Minus size={12} />
                                                                 </button>
@@ -727,12 +728,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                         e.stopPropagation();
                                                                         adjustDirectQty(item.id, variantId, 1);
                                                                     }}
-                                                                    className="bg-muted hover:bg-muted/80 flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold cursor-pointer"
+                                                                    className="bg-muted hover:bg-muted/80 flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-xs font-bold"
                                                                 >
                                                                     <Plus size={12} />
                                                                 </button>
                                                             </div>
-                                                            <div className="text-xs font-bold text-foreground">{formatRupiah(item.harga)}</div>
+                                                            <div className="text-foreground text-xs font-bold">{formatRupiah(item.harga)}</div>
                                                         </div>
                                                     </div>
                                                 );
@@ -747,9 +748,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 <div
                                                     key={item.id}
                                                     onClick={() => setActiveCartItemId(item.id)}
-                                                        className={`flex cursor-pointer flex-col gap-2.5 overflow-hidden rounded-2xl border-2 p-3.5 shadow-[0_2px_8px_rgb(31_42_35_/_0.06)] transition-all ${
+                                                    className={`flex cursor-pointer flex-col gap-2.5 overflow-hidden rounded-2xl border-2 p-3.5 shadow-[0_2px_8px_rgb(31_42_35_/_0.06)] transition-all ${
                                                         isActive
-                                                                ? 'border-[#76b58e] bg-[#f7fbf8]'
+                                                            ? 'border-[#76b58e] bg-[#f7fbf8]'
                                                             : 'border-[#d9e0dc] bg-white hover:border-[#a9cdb4] hover:shadow-[0_4px_12px_rgb(31_42_35_/_0.09)]'
                                                     }`}
                                                 >
@@ -758,29 +759,32 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         <div className="flex min-w-0 items-center gap-1.5">
                                                             <span
                                                                 className={`shrink-0 rounded px-2 py-0.5 text-xs font-bold ${
-                                                                    isActive ? 'border border-[#c7e0ce] bg-[#f4faf6] text-[#3f9567]' : 'bg-muted text-muted-foreground'
+                                                                    isActive
+                                                                        ? 'border border-[#c7e0ce] bg-[#f4faf6] text-[#3f9567]'
+                                                                        : 'bg-muted text-muted-foreground'
                                                                 }`}
                                                             >
                                                                 {item.name}
                                                             </span>
-                                                            <span className="truncate text-sm font-semibold text-foreground">
-                                                                #{(() => {
-                                                                    const pkgIdx = cart.filter((c) => c.package_id > 0).findIndex((c) => c.id === item.id);
+                                                            <span className="text-foreground truncate text-sm font-semibold">
+                                                                #
+                                                                {(() => {
+                                                                    const pkgIdx = cart
+                                                                        .filter((c) => c.package_id > 0)
+                                                                        .findIndex((c) => c.id === item.id);
                                                                     return pkgIdx >= 0 ? pkgIdx + 1 : cart.findIndex((c) => c.id === item.id) + 1;
                                                                 })()}
                                                             </span>
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <span className="text-xs font-bold text-[#3f9567]">
-                                                                {formatRupiah(item.harga)}
-                                                            </span>
+                                                            <span className="text-xs font-bold text-[#3f9567]">{formatRupiah(item.harga)}</span>
                                                             <button
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     removeItem(item.id);
                                                                 }}
-                                                                className="shrink-0 p-1 text-rose-400 transition-colors hover:text-rose-600 cursor-pointer"
+                                                                className="shrink-0 cursor-pointer p-1 text-rose-400 transition-colors hover:text-rose-600"
                                                                 title={t('pos.removePackage', 'Hapus paket')}
                                                             >
                                                                 <Trash2 size={14} />
@@ -819,7 +823,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                                 e.stopPropagation();
                                                                                 adjustQty(item.id, v.id, -1);
                                                                             }}
-                                                                            className="bg-background hover:bg-muted border-border flex h-6 w-6 items-center justify-center rounded border text-xs font-bold cursor-pointer"
+                                                                            className="bg-background hover:bg-muted border-border flex h-6 w-6 cursor-pointer items-center justify-center rounded border text-xs font-bold"
                                                                             title={t('pos.minusOne', 'Kurangi 1')}
                                                                         >
                                                                             <Minus size={11} />
@@ -832,7 +836,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                                 adjustQty(item.id, v.id, 1);
                                                                             }}
                                                                             disabled={isComplete}
-                                                                            className="bg-background hover:bg-muted border-border flex h-6 w-6 items-center justify-center rounded border text-xs font-bold disabled:opacity-30 cursor-pointer"
+                                                                            className="bg-background hover:bg-muted border-border flex h-6 w-6 cursor-pointer items-center justify-center rounded border text-xs font-bold disabled:opacity-30"
                                                                             title={t('pos.addOne', 'Tambah 1')}
                                                                         >
                                                                             <Plus size={11} />
@@ -843,7 +847,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                                 e.stopPropagation();
                                                                                 removeVariantFromPackage(item.id, v.id);
                                                                             }}
-                                                                            className="text-muted-foreground ml-1 p-0.5 hover:text-rose-500 cursor-pointer"
+                                                                            className="text-muted-foreground ml-1 cursor-pointer p-0.5 hover:text-rose-500"
                                                                             title={t('pos.removeFlavor', 'Hapus rasa ini')}
                                                                         >
                                                                             <Trash2 size={12} />
@@ -860,11 +864,11 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                             <b className="text-foreground">{totalSelected}</b> / {item.isi} pcs
                                                         </span>
                                                         {isComplete ? (
-                                                            <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400 text-[10px]">
+                                                            <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
                                                                 <Check size={12} /> {t('orders.complete')}
                                                             </span>
                                                         ) : (
-                                                            <span className="font-semibold text-amber-500 text-[10px]">
+                                                            <span className="text-[10px] font-semibold text-amber-500">
                                                                 {t('orders.missingPcs', { count: item.isi - totalSelected })}
                                                             </span>
                                                         )}
@@ -874,18 +878,18 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         })}
                                     </div>
 
-                                     {/* Status Pesanan Selector */}
+                                    {/* Status Pesanan Selector */}
                                     <div className="space-y-1.5 pt-1">
                                         <div className="flex items-center justify-between">
                                             <Label className="text-muted-foreground text-sm font-medium">{t('pos.orderStatus')}</Label>
                                         </div>
-                                        <div className="grid grid-cols-3 gap-1 rounded-xl border border-border bg-muted/30 p-1">
+                                        <div className="border-border bg-muted/30 grid grid-cols-3 gap-1 rounded-xl border p-1">
                                             <button
                                                 type="button"
                                                 onClick={() => setOrderStatus('done')}
-                                                    className={`flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                                                className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                                     orderStatus === 'done'
-                                                        ? 'border border-emerald-300 bg-background text-emerald-700 shadow-xs dark:border-emerald-700 dark:text-emerald-400'
+                                                        ? 'bg-background border border-emerald-300 text-emerald-700 shadow-xs dark:border-emerald-700 dark:text-emerald-400'
                                                         : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                                 }`}
                                             >
@@ -894,9 +898,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             <button
                                                 type="button"
                                                 onClick={() => setOrderStatus('processing')}
-                                                    className={`flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                                                className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                                     orderStatus === 'processing'
-                                                        ? 'border border-amber-300 bg-background text-amber-700 shadow-xs dark:border-amber-700 dark:text-amber-400'
+                                                        ? 'bg-background border border-amber-300 text-amber-700 shadow-xs dark:border-amber-700 dark:text-amber-400'
                                                         : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                                 }`}
                                             >
@@ -905,9 +909,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             <button
                                                 type="button"
                                                 onClick={() => setOrderStatus('pending')}
-                                                    className={`flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                                                className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                                     orderStatus === 'pending'
-                                                        ? 'border border-slate-300 bg-background text-slate-700 shadow-xs dark:border-slate-600 dark:text-slate-300'
+                                                        ? 'bg-background border border-slate-300 text-slate-700 shadow-xs dark:border-slate-600 dark:text-slate-300'
                                                         : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                                 }`}
                                             >
@@ -917,17 +921,17 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     </div>
 
                                     {/* Collapsible Customer Info & Notes */}
-                                    <div className="rounded-xl border border-border/70 bg-muted/20 overflow-hidden">
+                                    <div className="border-border/70 bg-muted/20 overflow-hidden rounded-xl border">
                                         <button
                                             type="button"
                                             onClick={() => setShowCustomerFields(!showCustomerFields)}
-                                            className="flex w-full items-center justify-between p-3 text-left transition-colors hover:bg-muted/40 cursor-pointer"
+                                            className="hover:bg-muted/40 flex w-full cursor-pointer items-center justify-between p-3 text-left transition-colors"
                                         >
-                                            <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                                            <div className="text-foreground flex items-center gap-2 text-xs font-semibold">
                                                 <User size={14} className="text-[#3f9567]" />
                                                 <span>{t('pos.customerInfo')}</span>
                                             </div>
-                                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                                 {(customerName || customerPhone || customerEmail || notes) && (
                                                     <span className="h-2 w-2 rounded-full bg-[#3f9567]" />
                                                 )}
@@ -936,7 +940,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         </button>
 
                                         {isCustomerActive && (
-                                            <div className="space-y-2 p-3 pt-0 border-t border-border/40">
+                                            <div className="border-border/40 space-y-2 border-t p-3 pt-0">
                                                 <Input
                                                     value={customerName}
                                                     onChange={(e) => setCustomerName(e.target.value)}
@@ -967,21 +971,21 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     </div>
 
                                     {/* Potongan / Diskon */}
-                                    <div className="space-y-1.5 rounded-xl border border-border/80 bg-muted/30 p-3">
+                                    <div className="border-border/80 bg-muted/30 space-y-1.5 rounded-xl border p-3">
                                         <div className="flex items-center justify-between">
-                                            <Label className="text-foreground text-xs font-semibold flex items-center gap-1.5">
+                                            <Label className="text-foreground flex items-center gap-1.5 text-xs font-semibold">
                                                 <Tag size={13} className="text-[#3f9567]" />
                                                 {t('pos.discount')}
                                             </Label>
                                             {/* Toggle Tipe Diskon: Nominal vs Persen */}
-                                                <div className="inline-flex rounded-lg border border-border bg-muted/80 p-0.5 text-xs">
+                                            <div className="border-border bg-muted/80 inline-flex rounded-lg border p-0.5 text-xs">
                                                 <button
                                                     type="button"
                                                     onClick={() => {
                                                         setDiscountType('nominal');
                                                         setDiscountInput('');
                                                     }}
-                                                    className={`px-2 py-0.5 rounded-md font-semibold transition-all cursor-pointer ${
+                                                    className={`cursor-pointer rounded-md px-2 py-0.5 font-semibold transition-all ${
                                                         discountType === 'nominal'
                                                             ? 'bg-background text-foreground shadow-xs'
                                                             : 'text-muted-foreground hover:text-foreground'
@@ -995,7 +999,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         setDiscountType('percent');
                                                         setDiscountInput('');
                                                     }}
-                                                    className={`px-2 py-0.5 rounded-md font-semibold transition-all cursor-pointer ${
+                                                    className={`cursor-pointer rounded-md px-2 py-0.5 font-semibold transition-all ${
                                                         discountType === 'percent'
                                                             ? 'bg-background text-foreground shadow-xs'
                                                             : 'text-muted-foreground hover:text-foreground'
@@ -1011,7 +1015,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 type="text"
                                                 value={
                                                     discountType === 'nominal'
-                                                        ? (discountInput ? formatInputRupiah(parseInt(discountInput, 10)) : '')
+                                                        ? discountInput
+                                                            ? formatInputRupiah(parseInt(discountInput, 10))
+                                                            : ''
                                                         : discountInput
                                                 }
                                                 onChange={(e) => {
@@ -1030,13 +1036,13 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 placeholder={discountType === 'nominal' ? 'Contoh: 10.000 (opsional)' : 'Contoh: 10% (opsional)'}
                                                 className="!bg-background h-9 rounded-xl pr-10 text-xs"
                                             />
-                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground pointer-events-none">
+                                            <div className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs font-bold">
                                                 {discountType === 'nominal' ? 'Rp' : '%'}
                                             </div>
                                         </div>
 
                                         {discountAmount > 0 && (
-                                            <div className="flex items-center justify-between text-xs text-emerald-600 dark:text-emerald-400 font-medium pt-0.5">
+                                            <div className="flex items-center justify-between pt-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
                                                 <span>{t('pos.discount')}:</span>
                                                 <span className="font-semibold">-{formatRupiah(discountAmount)}</span>
                                             </div>
@@ -1068,7 +1074,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                               key={pm.id}
                                                               type="button"
                                                               onClick={() => setPaymentMethod(value)}
-                                                              className={`flex flex-col items-center justify-center gap-1 rounded-xl border p-2.5 text-center text-xs font-medium transition-all cursor-pointer ${
+                                                              className={`flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border p-2.5 text-center text-xs font-medium transition-all ${
                                                                   paymentMethod === value
                                                                       ? 'border-[#3f9567] bg-[#3f9567] text-white shadow-xs'
                                                                       : 'bg-muted hover:bg-muted/80 border-border text-foreground'
@@ -1095,7 +1101,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                               key={method.key}
                                                               type="button"
                                                               onClick={() => setPaymentMethod(method.key)}
-                                                              className={`flex flex-col items-center gap-1 rounded-xl border p-2.5 text-xs font-medium transition-all cursor-pointer ${
+                                                              className={`flex cursor-pointer flex-col items-center gap-1 rounded-xl border p-2.5 text-xs font-medium transition-all ${
                                                                   paymentMethod === method.key
                                                                       ? 'border-[#3f9567] bg-[#3f9567] text-white shadow-xs'
                                                                       : 'bg-muted hover:bg-muted/80 border-border text-foreground'
@@ -1109,11 +1115,13 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         </div>
                                     </div>
 
-                                     {/* Cash Received (if cash) */}
+                                    {/* Cash Received (if cash) */}
                                     {isCash && (
-                                        <div className="space-y-2 rounded-xl border border-border/80 bg-muted/20 p-3">
+                                        <div className="border-border/80 bg-muted/20 space-y-2 rounded-xl border p-3">
                                             <div className="flex items-center justify-between">
-                                                <Label className="text-muted-foreground text-xs font-medium">{t('pos.cashReceived')} ({getCurrencySymbol()})</Label>
+                                                <Label className="text-muted-foreground text-xs font-medium">
+                                                    {t('pos.cashReceived')} ({getCurrencySymbol()})
+                                                </Label>
                                                 {cashReceived > 0 && cashReceived < finalTotal && (
                                                     <span className="text-[11px] font-semibold text-rose-500">
                                                         {t('pos.insufficientCash', { amount: formatRupiah(finalTotal - cashReceived) })}
@@ -1137,7 +1145,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 <button
                                                     type="button"
                                                     onClick={() => setCashReceived(finalTotal)}
-                                                    className={`truncate rounded-lg border px-1 py-1.5 text-center text-[11px] font-semibold transition-all cursor-pointer ${
+                                                    className={`cursor-pointer truncate rounded-lg border px-1 py-1.5 text-center text-[11px] font-semibold transition-all ${
                                                         cashReceived === finalTotal && finalTotal > 0
                                                             ? 'border-[#3f9567] bg-[#3f9567] text-white shadow-xs'
                                                             : 'bg-background hover:bg-muted text-foreground border-border'
@@ -1150,7 +1158,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         key={nominal}
                                                         type="button"
                                                         onClick={() => setCashReceived(nominal)}
-                                                        className={`truncate rounded-lg border px-1 py-1.5 text-center text-[11px] font-semibold transition-all cursor-pointer ${
+                                                        className={`cursor-pointer truncate rounded-lg border px-1 py-1.5 text-center text-[11px] font-semibold transition-all ${
                                                             cashReceived === nominal
                                                                 ? 'border-[#3f9567] bg-[#3f9567] text-white shadow-xs'
                                                                 : 'bg-background hover:bg-muted text-foreground border-border'
@@ -1162,7 +1170,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             </div>
 
                                             {cashReceived >= finalTotal && cashReceived > 0 && (
-                                                <div className="border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-800/50 dark:bg-emerald-950/30 flex items-center justify-between rounded-xl border px-3 py-1.5 text-xs font-semibold">
+                                                <div className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600 dark:border-emerald-800/50 dark:bg-emerald-950/30">
                                                     <span className="text-xs">{t('pos.change')}:</span>
                                                     <span>{formatRupiah(change)}</span>
                                                 </div>
@@ -1171,14 +1179,16 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     )}
 
                                     {/* Cost Breakdown Details */}
-                                    <div className="bg-muted/40 space-y-1.5 rounded-xl p-3 text-xs border border-border/50">
+                                    <div className="bg-muted/40 border-border/50 space-y-1.5 rounded-xl border p-3 text-xs">
                                         <div className="text-muted-foreground flex justify-between">
-                                            <span>{t('pos.subtotal')} ({cartItemCount} item)</span>
-                                            <span className="font-medium text-foreground">{formatRupiah(subtotal)}</span>
+                                            <span>
+                                                {t('pos.subtotal')} ({cartItemCount} item)
+                                            </span>
+                                            <span className="text-foreground font-medium">{formatRupiah(subtotal)}</span>
                                         </div>
 
                                         {discountAmount > 0 && (
-                                            <div className="text-rose-500 dark:text-rose-400 flex justify-between font-medium">
+                                            <div className="flex justify-between font-medium text-rose-500 dark:text-rose-400">
                                                 <span>
                                                     {t('pos.discount')} {discountType === 'percent' ? `(${discountInput}%)` : ''}
                                                 </span>
@@ -1192,17 +1202,13 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                         {/* Sticky Bottom Action Footer */}
                         {cart.length > 0 && (
-                            <div className="shrink-0 border-t border-border bg-card p-3.5 sm:p-4 space-y-2.5">
+                            <div className="border-border bg-card shrink-0 space-y-2.5 border-t p-3.5 sm:p-4">
                                 <div className="flex items-baseline justify-between">
-                                    <span className="text-xs text-muted-foreground">{t('pos.total')}</span>
+                                    <span className="text-muted-foreground text-xs">{t('pos.total')}</span>
                                     <div className="text-right">
-                                        <span className="text-lg font-bold text-[#3f9567]">
-                                            {formatRupiah(finalTotal)}
-                                        </span>
+                                        <span className="text-lg font-bold text-[#3f9567]">{formatRupiah(finalTotal)}</span>
                                         {discountAmount > 0 && (
-                                            <span className="block text-[11px] text-rose-500 line-through">
-                                                {formatRupiah(subtotal)}
-                                            </span>
+                                            <span className="block text-[11px] text-rose-500 line-through">{formatRupiah(subtotal)}</span>
                                         )}
                                     </div>
                                 </div>
@@ -1210,17 +1216,17 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 <Button
                                     onClick={handleCheckout}
                                     disabled={processing || !isCartComplete || (isCash && cashReceived < finalTotal)}
-                                    className="h-11 w-full rounded-xl bg-[#3f9567] text-sm font-semibold text-white hover:bg-[#327d55] disabled:opacity-50 shadow-xs cursor-pointer"
+                                    className="h-11 w-full cursor-pointer rounded-xl bg-[#3f9567] text-sm font-semibold text-white shadow-xs hover:bg-[#327d55] disabled:opacity-50"
                                 >
                                     {processing
                                         ? t('common.saving')
                                         : !isCartComplete
-                                            ? t('pos.subtitleWithPackages')
-                                            : isCash && cashReceived > 0 && cashReceived < finalTotal
-                                                ? t('pos.insufficientCash', { amount: formatRupiah(finalTotal - cashReceived) })
-                                                : isCash && cashReceived === 0
-                                                    ? t('pos.enterCashReceived')
-                                                    : t('pos.createOrderTotal', { total: formatRupiah(finalTotal) })}
+                                          ? t('pos.subtitleWithPackages')
+                                          : isCash && cashReceived > 0 && cashReceived < finalTotal
+                                            ? t('pos.insufficientCash', { amount: formatRupiah(finalTotal - cashReceived) })
+                                            : isCash && cashReceived === 0
+                                              ? t('pos.enterCashReceived')
+                                              : t('pos.createOrderTotal', { total: formatRupiah(finalTotal) })}
                                 </Button>
                             </div>
                         )}
@@ -1242,10 +1248,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         <div>
                             <div>
                                 <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">
-                                {t('pos.title')}
+                                    {t('pos.title')}
                                 </h1>
                                 <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">
-                                {packages.length > 0 ? t('pos.subtitleWithPackages') : t('pos.subtitleDirect')}
+                                    {packages.length > 0 ? t('pos.subtitleWithPackages') : t('pos.subtitleDirect')}
                                 </p>
                             </div>
                         </div>
@@ -1255,10 +1261,10 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             type="button"
                             variant="outline"
                             onClick={() => setMobileCartOpen(true)}
-                            className="relative flex h-9 shrink-0 items-center gap-2 rounded-xl border-[#c7e0ce] bg-card px-3 text-[#3f9567] hover:bg-[#f4faf6] lg:hidden cursor-pointer"
+                            className="bg-card relative flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-xl border-[#c7e0ce] px-3 text-[#3f9567] hover:bg-[#f4faf6] lg:hidden"
                         >
                             <ShoppingCart size={15} />
-                            <span className="font-semibold text-xs">{t('pos.cart')}</span>
+                            <span className="text-xs font-semibold">{t('pos.cart')}</span>
                             {cart.length > 0 && (
                                 <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#3f9567] px-1 text-[10px] font-bold text-white">
                                     {cartItemCount}
@@ -1271,7 +1277,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                     {packages.length > 0 && (
                         <div>
                             <div className="mb-2.5 flex items-center justify-between">
-                                <h2 className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-foreground">
+                                <h2 className="text-foreground flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
                                     <Package size={15} className="text-[#3f9567]" />
                                     {t('pos.selectPackage')}
                                 </h2>
@@ -1282,37 +1288,33 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 {packages.map((pkg) => {
                                     const pkgVariantIds = pkg.variants?.map((v) => v.id) || [];
                                     const availableVariantsCount =
-                                        pkgVariantIds.length > 0
-                                            ? pkgVariantIds.length
-                                            : variants.filter((v) => Number(v.recipe_qty) === 1).length;
+                                        pkgVariantIds.length > 0 ? pkgVariantIds.length : variants.filter((v) => Number(v.recipe_qty) === 1).length;
 
                                     return (
                                         <div
                                             key={pkg.id}
                                             onClick={() => addPackageToCart(pkg)}
-                                            className="group border-border bg-card hover:border-[#8fc7a5] relative flex cursor-pointer flex-col justify-between rounded-xl border p-3 sm:p-4 shadow-2xs transition-all hover:shadow-sm active:scale-[0.99]"
+                                            className="group border-border bg-card relative flex cursor-pointer flex-col justify-between rounded-xl border p-3 shadow-2xs transition-all hover:border-[#8fc7a5] hover:shadow-sm active:scale-[0.99] sm:p-4"
                                         >
                                             <div>
                                                 <div className="mb-2 flex items-center justify-between">
-                                                    <span className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-bold text-[#3f9567]">
+                                                    <span className="bg-muted rounded-md px-2 py-0.5 text-[11px] font-bold text-[#3f9567]">
                                                         {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                                     </span>
-                                                    <div className="rounded-full bg-muted p-1 text-[#3f9567] transition-colors group-hover:bg-[#3f9567] group-hover:text-white">
+                                                    <div className="bg-muted rounded-full p-1 text-[#3f9567] transition-colors group-hover:bg-[#3f9567] group-hover:text-white">
                                                         <Plus size={13} />
                                                     </div>
                                                 </div>
-                                                <h3 className="line-clamp-1 font-semibold text-xs sm:text-sm text-foreground transition-colors group-hover:text-[#3f9567]">
+                                                <h3 className="text-foreground line-clamp-1 text-xs font-semibold transition-colors group-hover:text-[#3f9567] sm:text-sm">
                                                     {pkg.name}
                                                 </h3>
-                                                <p className="text-muted-foreground mt-0.5 text-[11px] line-clamp-1 sm:line-clamp-2">
+                                                <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px] sm:line-clamp-2">
                                                     {pkg.description || `${availableVariantsCount} pilihan varian rasa.`}
                                                 </p>
                                             </div>
                                             <div className="border-border/60 mt-2.5 flex items-baseline justify-between border-t pt-2">
                                                 <span className="text-muted-foreground text-[10px]">Harga</span>
-                                                <span className="text-xs sm:text-sm font-bold text-[#3f9567]">
-                                                    {formatRupiah(Number(pkg.price))}
-                                                </span>
+                                                <span className="text-xs font-bold text-[#3f9567] sm:text-sm">{formatRupiah(Number(pkg.price))}</span>
                                             </div>
                                         </div>
                                     );
@@ -1323,27 +1325,28 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                     {/* Section 1.5: Active Package Switcher Chips (When packages in cart) */}
                     {packages.length > 0 && packageCartItems.length > 0 && (
-                        <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-2.5">
+                        <div className="border-border bg-card flex flex-col gap-2 rounded-xl border p-2.5">
                             <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-[#315d45] flex items-center gap-1.5">
+                                <span className="flex items-center gap-1.5 font-semibold text-[#315d45]">
                                     <Package size={13} className="text-[#3f9567]" />
                                     {t('pos.packageBeingFilled')}
                                 </span>
                                 <span className="text-[11px]">
                                     {activePackageRemaining === 0 ? (
-                                        <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                                        <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
                                             <Check size={12} /> {t('orders.complete')} ({activePackageTotal}/{activePackageItem?.isi})
                                         </span>
                                     ) : (
-                                        <span className="text-amber-600 dark:text-amber-400 font-medium">
-                                            {t('orders.missingPcs', { count: activePackageRemaining })} ({activePackageTotal}/{activePackageItem?.isi})
+                                        <span className="font-medium text-amber-600 dark:text-amber-400">
+                                            {t('orders.missingPcs', { count: activePackageRemaining })} ({activePackageTotal}/{activePackageItem?.isi}
+                                            )
                                         </span>
                                     )}
                                 </span>
                             </div>
 
                             {/* Horizontal scrollable chips for switching active package */}
-                            <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar">
+                            <div className="flex items-center gap-1.5 overflow-x-auto py-0.5">
                                 {packageCartItems.map((pkgItem, index) => {
                                     const count = Object.values(pkgItem.quantities).reduce((s, q) => s + q, 0);
                                     const isDone = count === pkgItem.isi;
@@ -1354,18 +1357,24 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             key={pkgItem.id}
                                             type="button"
                                             onClick={() => setActiveCartItemId(pkgItem.id)}
-                                            className={`flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${
+                                            className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
                                                 isCurrent
                                                     ? 'bg-[#3f9567] text-white shadow-xs ring-2 ring-[#a9d4b6]'
-                                                    : 'bg-background hover:bg-muted text-foreground border border-border'
+                                                    : 'bg-background hover:bg-muted text-foreground border-border border'
                                             }`}
                                         >
-                                            <span>#{index + 1} {pkgItem.name}</span>
+                                            <span>
+                                                #{index + 1} {pkgItem.name}
+                                            </span>
                                             <span
-                                                className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
+                                                className={`py-0.2 rounded-full px-1.5 text-[10px] font-bold ${
                                                     isCurrent
-                                                        ? isDone ? 'bg-emerald-500 text-white' : 'bg-white/25 text-white'
-                                                        : isDone ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-muted text-muted-foreground'
+                                                        ? isDone
+                                                            ? 'bg-emerald-500 text-white'
+                                                            : 'bg-white/25 text-white'
+                                                        : isDone
+                                                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                                                          : 'bg-muted text-muted-foreground'
                                                 }`}
                                             >
                                                 {count}/{pkgItem.isi}
@@ -1381,12 +1390,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                     <div>
                         <div className="mb-2.5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                             <div className="flex items-center gap-2">
-                                <h2 className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-foreground">
+                                <h2 className="text-foreground flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
                                     <ShoppingBag size={15} className="text-[#3f9567]" />
                                     {packages.length > 0 ? t('orders.selectFlavorTitle') : t('pos.variantListTitle')}
                                 </h2>
                                 {packages.length > 0 && activeCartItemId !== null && (
-                                                        <span className="hidden rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-[#3f9567] sm:inline-block">
+                                    <span className="bg-muted hidden rounded-full px-2 py-0.5 text-[11px] font-medium text-[#3f9567] sm:inline-block">
                                         {t('pos.fillingPackage', {
                                             name: cart.find((c) => c.id === activeCartItemId)?.name,
                                             num: cart.findIndex((c) => c.id === activeCartItemId) + 1,
@@ -1397,19 +1406,19 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                             {/* Search Filter Input */}
                             <div className="relative w-full sm:w-56">
-                                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={13} />
+                                <Search className="text-muted-foreground absolute top-1/2 left-2.5 -translate-y-1/2" size={13} />
                                 <Input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder={t('pos.searchMochiPlaceholder')}
-                                    className="!bg-background h-8 rounded-xl pl-8 pr-7 text-sm"
+                                    className="!bg-background h-8 rounded-xl pr-7 pl-8 text-sm"
                                 />
                                 {searchQuery && (
                                     <button
                                         type="button"
                                         onClick={() => setSearchQuery('')}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                                        className="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
                                     >
                                         <X size={13} />
                                     </button>
@@ -1423,7 +1432,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 <p>{searchQuery ? t('pos.noVariantMatch', { query: searchQuery }) : t('pos.noActiveVariants')}</p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 sm:grid-cols-3 xl:grid-cols-4">
+                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5 xl:grid-cols-4">
                                 {filteredVariants.map((v) => {
                                     // Calculate quantity in cart
                                     let currentQty = 0;
@@ -1448,14 +1457,14 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         <div
                                             key={v.id}
                                             onClick={() => handleVariantClick(v)}
-                                                className={`group relative rounded-xl border p-3 text-left transition-all select-none shadow-2xs active:scale-[0.99] ${
+                                            className={`group relative rounded-xl border p-3 text-left shadow-2xs transition-all select-none active:scale-[0.99] ${
                                                 currentQty > 0
                                                     ? 'pos-selection-pop border-[#8fc7a5] bg-[#f4faf6] shadow-xs'
                                                     : 'bg-card border-border cursor-pointer hover:border-[#a9d4b6] hover:shadow-xs'
                                             }`}
                                         >
                                             <div className="mb-1.5 flex items-start justify-between">
-                                                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+                                                <div className="bg-muted flex h-7 w-7 items-center justify-center rounded-lg">
                                                     <ShoppingBag size={13} className="text-[#3f9567]" />
                                                 </div>
                                                 {currentQty > 0 && packages.length > 0 && (
@@ -1470,7 +1479,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                     adjustQty(activeCartItemId, v.id, -1);
                                                                 }
                                                             }}
-                                                            className="flex h-6 w-6 items-center justify-center rounded text-xs font-bold transition-colors hover:bg-[#327d55] active:bg-[#286b47] cursor-pointer"
+                                                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded text-xs font-bold transition-colors hover:bg-[#327d55] active:bg-[#286b47]"
                                                             title={t('pos.variantCard.reduceVariant', 'Kurangi varian')}
                                                         >
                                                             <Minus size={11} />
@@ -1480,7 +1489,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                             type="button"
                                                             onClick={() => handleVariantClick(v)}
                                                             disabled={isPackageFull}
-                                                            className="flex h-6 w-6 items-center justify-center rounded text-xs font-bold transition-colors hover:bg-[#327d55] active:bg-[#286b47] disabled:opacity-40 cursor-pointer"
+                                                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded text-xs font-bold transition-colors hover:bg-[#327d55] active:bg-[#286b47] disabled:opacity-40"
                                                             title={t('pos.variantCard.addVariant', 'Tambah varian')}
                                                         >
                                                             <Plus size={11} />
@@ -1493,16 +1502,18 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="mb-0.5 truncate text-xs font-semibold text-foreground leading-tight">
+                                            <div className="text-foreground mb-0.5 truncate text-xs leading-tight font-semibold">
                                                 {v.name.replace('Mochi ', '')}
                                             </div>
-                                                <div className="text-[11px] font-bold text-[#3f9567]">
+                                            <div className="text-[11px] font-bold text-[#3f9567]">
                                                 {packages.length === 0
                                                     ? formatRupiah(Number(v.sell_price))
                                                     : `${v.recipe_qty ?? 1} ${t('pos.variantCard.pcsPerRecipe', 'pcs/resep')}`}
                                             </div>
                                             <div className="text-muted-foreground mt-1 flex items-center justify-between text-[10px]">
-                                                <span>{t('pos.variantCard.hpp', 'HPP')}: {formatRupiah(Number(v.hpp ?? 0))}</span>
+                                                <span>
+                                                    {t('pos.variantCard.hpp', 'HPP')}: {formatRupiah(Number(v.hpp ?? 0))}
+                                                </span>
                                             </div>
                                         </div>
                                     );
@@ -1513,39 +1524,39 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                 </div>
 
                 {/* Right Desktop: Cart & Checkout (Visible only on lg and above) */}
-                <div className="hidden h-full w-[24rem] shrink-0 flex-col overflow-hidden rounded-l-2xl border-2 border-[#b9d8c3] border-t border-t-[#3f9567] bg-[#fbfdfc] shadow-[-10px_0_24px_rgb(31_42_35_/_0.07)] lg:flex xl:w-[28rem] 2xl:w-[30rem]">
+                <div className="hidden h-full w-[24rem] shrink-0 flex-col overflow-hidden rounded-l-2xl border-2 border-t border-[#b9d8c3] border-t-[#3f9567] bg-[#fbfdfc] shadow-[-10px_0_24px_rgb(31_42_35_/_0.07)] lg:flex xl:w-[28rem] 2xl:w-[30rem]">
                     {renderCartContent()}
                 </div>
             </div>
 
             {/* Mobile Sticky Floating Bottom Bar (Visible on screens < lg) */}
-            <div className="fixed bottom-0 inset-x-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur-md shadow-lg lg:hidden">
+            <div className="border-border bg-background/95 fixed inset-x-0 bottom-0 z-30 border-t p-3 shadow-lg backdrop-blur-md lg:hidden">
                 <div className="flex items-center justify-between gap-2.5">
                     <button
                         type="button"
                         onClick={() => setMobileCartOpen(true)}
-                        className="flex items-center gap-2.5 min-w-0 flex-1 text-left cursor-pointer active:opacity-75 transition-opacity"
+                        className="flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 text-left transition-opacity active:opacity-75"
                     >
                         <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#c7e0ce] bg-[#f4faf6] text-[#3f9567] shadow-xs">
                             <ShoppingCart size={18} />
                             {cart.length > 0 && (
-                                <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white ring-2 ring-background">
+                                <span className="ring-background absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white ring-2">
                                     {cartItemCount}
                                 </span>
                             )}
                         </div>
                         <div className="min-w-0">
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                 <span className="truncate">
                                     {cart.length === 0
                                         ? t('pos.emptyCart', 'Keranjang Kosong')
                                         : packages.length > 0
-                                            ? `${cart.length} ${t('pos.packageUnit', 'Paket')}`
-                                            : `${cartItemCount} ${t('pos.itemUnit', 'Item')}`}
+                                          ? `${cart.length} ${t('pos.packageUnit', 'Paket')}`
+                                          : `${cartItemCount} ${t('pos.itemUnit', 'Item')}`}
                                 </span>
                                 {cart.length > 0 && (
                                     <span
-                                        className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
+                                        className={`py-0.2 rounded-full px-1.5 text-[10px] font-bold ${
                                             isCartComplete
                                                 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
                                                 : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
@@ -1555,9 +1566,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     </span>
                                 )}
                             </div>
-                            <div className="text-sm font-bold text-[#3f9567]">
-                                {formatRupiah(finalTotal)}
-                            </div>
+                            <div className="text-sm font-bold text-[#3f9567]">{formatRupiah(finalTotal)}</div>
                         </div>
                     </button>
 
@@ -1565,7 +1574,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                         type="button"
                         onClick={() => setMobileCartOpen(true)}
                         disabled={cart.length === 0}
-                        className="h-10 px-4 rounded-xl font-semibold bg-[#3f9567] text-white hover:bg-[#327d55] shrink-0 shadow-xs cursor-pointer"
+                        className="h-10 shrink-0 cursor-pointer rounded-xl bg-[#3f9567] px-4 font-semibold text-white shadow-xs hover:bg-[#327d55]"
                     >
                         {isCartComplete ? t('pos.payOrCheck', 'Bayar / Periksa') : t('pos.viewCart', 'Lihat Keranjang')}
                     </Button>
@@ -1574,10 +1583,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
             {/* Mobile Cart Sheet / Drawer (< lg) */}
             <Sheet open={mobileCartOpen} onOpenChange={setMobileCartOpen}>
-                <SheetContent
-                    side="right"
-                    className="w-full sm:max-w-md p-0 flex flex-col h-full z-50 border-l border-border bg-card"
-                >
+                <SheetContent side="right" className="border-border bg-card z-50 flex h-full w-full flex-col border-l p-0 sm:max-w-md">
                     <SheetHeader className="sr-only">
                         <SheetTitle>{t('pos.cartAndCheckout', 'Keranjang dan Pembayaran Kasir')}</SheetTitle>
                         <SheetDescription>{t('pos.mobileCartDescription', 'Daftar pesanan dan form pembayaran kasir POS')}</SheetDescription>
