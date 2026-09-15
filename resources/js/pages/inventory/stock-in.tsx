@@ -226,7 +226,7 @@ export default function StockIn({ products }: Props) {
 
                     <div className="mt-2 flex justify-end gap-3">
                         <Button variant="outline" asChild className="rounded-xl">
-                            <Link href="/inventory">{t('Inventory.Cancel')}</Link>
+                            <Link href="/inventory">{t('inventory.Cancel')}</Link>
                         </Button>
                         <Button
                             type="submit"

@@ -149,7 +149,7 @@ export const getColumns = (t: (key: string, options?: any) => string, onToggleAc
     },
     {
         accessorKey: 'cost_price',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Harga Modal / Unit" centered />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('inventory.modal')} centered />,
         cell: ({ row }) => {
             const product = row.original;
             const cost = product.cost_price || (product.purchase_qty > 0 ? product.purchase_price / product.purchase_qty : 0);

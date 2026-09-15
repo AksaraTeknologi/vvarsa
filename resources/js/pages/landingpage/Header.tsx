@@ -68,7 +68,7 @@ export function Header({ auth }: LandingProps) {
                                     Masuk
                                 </Link>
 
-                                <Button asChild variant="owner" size="sm" className="group !h-7 !px-3 !py-1 rounded-full text-[9px] !font-semibold shadow-md shadow-[#5E4BF2]/20 transition hover:-translate-y-0.5">
+                                <Button asChild variant="default" size="sm" className="group !h-7 !px-3 !py-1 rounded-full text-[9px] !font-semibold shadow-md shadow-[#5E4BF2]/20 transition hover:-translate-y-0.5">
                                     <Link href={route('register')} className="inline-flex items-center gap-1">
                                         Mulai Gratis
                                         <ArrowRight className="inline size-3 transition group-hover:translate-x-0.5" />
