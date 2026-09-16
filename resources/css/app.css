@@ -1535,6 +1535,13 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover {
     color: #2d6b49 !important;
 }
 
+.owner-theme [data-slot='sidebar-inset'],
+.owner-theme main,
+.owner-theme .owner-content {
+    background-color: #5aa67a !important;
+    background-image: linear-gradient(135deg, #5aa67a 0%, #4f966b 48%, #3f9567 100%) !important;
+}
+
 .owner-theme .owner-sidebar a[href='/pos'] svg,
 .owner-theme .owner-sidebar a[href='/pos']:hover svg,
 .owner-theme .owner-sidebar a[href='/pos']:focus-visible svg,

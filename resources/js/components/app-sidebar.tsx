@@ -40,7 +40,7 @@ const ROLE_THEME = {
     owner: {
         label: 'Owner Panel',
         text: 'text-[#2f7d57]',
-        bg: 'bg-[#dfeee4]',
+        bg: 'bg-owner-accent',
         bgSubtle: 'bg-[#edf7f0]',
         bgHover: 'hover:bg-[#f2f5f3]',
         textHover: 'hover:text-[#4a6655]',
