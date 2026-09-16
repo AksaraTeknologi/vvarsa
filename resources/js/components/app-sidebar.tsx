@@ -100,7 +100,11 @@ function NavSection({ title, items, theme, currentUrl }: { title?: string; items
                         >
                             {item.icon && (
                                 <item.icon
-                                    className={`size-4 shrink-0 !text-[#3f9567] transition-colors ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`}
+                                    className={`size-4 shrink-0 transition-colors ${
+                                        theme === ROLE_THEME.admin
+                                            ? `${theme.text} !text-[#5e4bf2]`
+                                            : `!text-[#3f9567] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
+                                    }`}
                                 />
                             )}
                             <span className="truncate">{item.title}</span>

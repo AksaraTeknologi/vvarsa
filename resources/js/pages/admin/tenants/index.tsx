@@ -69,9 +69,17 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.tenants.title')} />
-            <div className="flex flex-col gap-0">
+            <div className="relative isolate flex min-h-[calc(100vh-5rem)] w-full flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
+                </div>
                 {/* Page Header */}
-                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
+                <div className="admin-page-header relative z-10 overflow-hidden bg-transparent px-6 pt-6 pb-5 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -81,16 +89,16 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                                     {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.tenants.title')}</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">
-                                {t('admin.tenants.subtitle')}
-                            </p>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[2.1rem]">
+                                {t('admin.tenants.title')}
+                            </h1>
+                            <p className="mt-3 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.tenants.subtitle')}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content relative z-10 flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Filters */}
                     <div className="admin-filter-panel bg-card border-border flex flex-col items-center gap-3 rounded-2xl border p-4 shadow-sm sm:flex-row">
                         <div className="relative w-full flex-1">
@@ -121,7 +129,11 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                             </Select>
                         </div>
 
-                        <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
+                        <Button
+                            size="sm"
+                            onClick={handleFilter}
+                            className="admin-primary-button h-10 w-full rounded-xl px-4 text-sm font-semibold sm:w-auto"
+                        >
                             {t('common.filter')}
                         </Button>
                     </div>
@@ -147,7 +159,7 @@ export default function TenantsIndex({ tenants, plans, filters }: Props) {
                                             variant={link.active ? 'default' : 'outline'}
                                             disabled={!link.url}
                                             onClick={() => link.url && router.get(link.url)}
-                                            className="h-8 rounded-lg px-3 text-xs"
+                                            className="h-9 rounded-xl px-3 text-sm"
                                         >
                                             <span dangerouslySetInnerHTML={{ __html: link.label }} />
                                         </Button>

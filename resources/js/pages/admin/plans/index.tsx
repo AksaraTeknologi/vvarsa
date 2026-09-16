@@ -144,9 +144,17 @@ export default function PlansIndex({ plans }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.plans.title')} />
-            <div className="flex flex-col gap-0">
+            <div className="plans-admin-surface relative isolate flex min-h-[calc(100vh-5rem)] w-full flex-1 flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
+                </div>
                 {/* Page Header */}
-                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
+                <div className="admin-page-header relative z-10 overflow-hidden bg-transparent px-6 pt-6 pb-5 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -156,23 +164,20 @@ export default function PlansIndex({ plans }: Props) {
                                     {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.plans.title')}</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">
-                                {t('admin.plans.subtitle')}
-                            </p>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[2.1rem]">{t('admin.plans.title')}</h1>
+                            <p className="mt-3 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.plans.subtitle')}</p>
                         </div>
                         <Button
-                            size="sm"
                             onClick={() => setIsCreateOpen(true)}
-                            className="admin-primary-button gap-1.5 text-white"
+                            className="admin-primary-button inline-flex items-center gap-2 rounded-xl text-sm font-semibold text-white"
                         >
-                            <Plus size={14} /> {t('admin.plans.createPlan')}
+                            <Plus size={16} /> {t('admin.plans.createPlan')}
                         </Button>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content relative z-10 flex flex-1 flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Plans List Grid */}
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {plans.map((plan) => {
@@ -236,7 +241,7 @@ export default function PlansIndex({ plans }: Props) {
                                         <div className="grid gap-2 pr-2">
                                             {plan.features?.map((feat, idx) => (
                                                 <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-[#53556A]">
-                                                    <CheckCircle2 size={14} className="shrink-0 text-[#4C9A78]" />
+                                                    <CheckCircle2 size={14} className="shrink-0 text-[#5E4BF2]" />
                                                     <span>{getFeatureLabel(feat, t)}</span>
                                                 </div>
                                             ))}

@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { ArrowLeft, Save } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -37,17 +38,36 @@ export default function SupplierCreate() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.supplier.createTitle')} />
 
-            <div className="business-page mx-auto flex w-full max-w-4xl flex-col gap-4 p-4 md:p-6">
-                <div>
-                    <h1 className="text-foreground text-2xl font-bold tracking-tight">{t('admin.supplier.createTitle')}</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">{t('admin.supplier.createSubtitle')}</p>
+            <div className="relative isolate min-h-[calc(100vh-5rem)] w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)] p-4 md:p-6">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
                 </div>
 
-                <div className="bg-card border-border overflow-hidden rounded-xl border shadow-sm">
-                    <form onSubmit={submit} className="space-y-8 p-6">
+                <div className="relative z-10 flex w-full flex-col gap-4">
+                    <div className="mb-2 flex items-center gap-3">
+                        <Button variant="ghost" size="icon" asChild className="h-10 w-10 shrink-0 rounded-xl hover:bg-[#F1EFFD] hover:text-[#5E4BF2]">
+                            <Link href="/admin/supplier" aria-label={t('common.back')}>
+                                <ArrowLeft size={18} />
+                            </Link>
+                        </Button>
+                        <div>
+                            <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#17182A] md:text-[1.9rem]">
+                                {t('admin.supplier.createTitle')}
+                            </h1>
+                            <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('admin.supplier.createSubtitle')}</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-card border-[#DCD8FF] overflow-hidden rounded-2xl border p-5 shadow-sm md:p-6">
+                        <form onSubmit={submit} className="space-y-6">
                         {/* Section: Informasi Dasar */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.supplier.basicInfo')}</h2>
+                            <h2 className="mb-4 border-b border-[#DCD8FF] pb-2 text-lg font-semibold">{t('admin.supplier.basicInfo')}</h2>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <label htmlFor="name" className="text-sm font-medium">
@@ -71,7 +91,7 @@ export default function SupplierCreate() {
                                         id="business_type"
                                         value={data.business_type}
                                         onChange={(e) => setData('business_type', e.target.value)}
-                                        className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="border-[#DCD8FF] bg-white ring-offset-background placeholder:text-muted-foreground flex h-10 w-full items-center justify-between rounded-xl border px-3 py-2 text-sm focus:border-[#5E4BF2] focus:ring-2 focus:ring-[#5E4BF2]/20 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         <option value="">{t('admin.supplier.selectBusinessType')}</option>
                                         <option value="FNB">F&B ({t('admin.tenants.fnb')})</option>
@@ -86,7 +106,7 @@ export default function SupplierCreate() {
 
                         {/* Section: Kontak */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.supplier.contactAndLocation')}</h2>
+                            <h2 className="mb-4 border-b border-[#DCD8FF] pb-2 text-lg font-semibold">{t('admin.supplier.contactAndLocation')}</h2>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <label htmlFor="contact_name" className="text-sm font-medium">
@@ -158,7 +178,7 @@ export default function SupplierCreate() {
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
                                         placeholder={t('admin.supplier.addressPlaceholder')}
-                                        className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="border-[#DCD8FF] bg-white ring-offset-background placeholder:text-muted-foreground flex min-h-[80px] w-full rounded-xl border px-3 py-2 text-sm focus-visible:border-[#5E4BF2] focus-visible:ring-2 focus-visible:ring-[#5E4BF2]/20 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     ></textarea>
                                     {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
                                 </div>
@@ -167,7 +187,7 @@ export default function SupplierCreate() {
 
                         {/* Section: Pengaturan & Lainnya */}
                         <div className="space-y-4">
-                            <h2 className="border-b pb-2 text-lg font-semibold">{t('admin.supplier.others')}</h2>
+                            <h2 className="mb-4 border-b border-[#DCD8FF] pb-2 text-lg font-semibold">{t('admin.supplier.others')}</h2>
 
                             <div className="space-y-2">
                                 <label htmlFor="description" className="text-sm font-medium">
@@ -178,7 +198,7 @@ export default function SupplierCreate() {
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
                                     placeholder={t('admin.supplier.notesPlaceholder')}
-                                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="border-[#DCD8FF] bg-white ring-offset-background placeholder:text-muted-foreground flex min-h-[80px] w-full rounded-xl border px-3 py-2 text-sm focus-visible:border-[#5E4BF2] focus-visible:ring-2 focus-visible:ring-[#5E4BF2]/20 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                 ></textarea>
                                 {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
@@ -207,15 +227,17 @@ export default function SupplierCreate() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center justify-end gap-3 border-t pt-6">
+                        <div className="flex items-center justify-end gap-3 border-t border-[#DCD8FF] pt-6">
                             <Button type="button" variant="outline" asChild>
                                 <Link href="/admin/supplier">{t('common.cancel')}</Link>
                             </Button>
-                            <Button type="submit" disabled={processing}>
+                            <Button type="submit" disabled={processing} className="admin-primary-button rounded-xl">
+                                <Save size={16} />
                                 {processing ? t('common.saving') : t('admin.supplier.saveSupplier')}
                             </Button>
                         </div>
                     </form>
+                    </div>
                 </div>
             </div>
         </AppLayout>

@@ -1,24 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
-import {
-    ArrowRight,
-    Building2,
-    CreditCard,
-    DollarSign,
-    Plus,
-    TrendingUp,
-    Users,
-} from 'lucide-react';
+import { ArrowRight, Building2, CreditCard, DollarSign, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 import AppLayout from '@/layouts/app-layout';
 import { formatRupiah } from '@/lib/utils-mrp';
@@ -67,60 +53,77 @@ interface Props {
     recent_users: User[];
 }
 
-export default function AdminDashboard({
-    stats,
-    recent_tenants,
-    recent_users,
-}: Props) {
+function AdminStatCard({ title, value, subtitle, icon: Icon }: { title: string; value: string; subtitle: string; icon: React.ElementType }) {
+    return (
+        <div className="group rounded-2xl border border-[#E7E3FA] bg-white px-4 py-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="mb-4 flex items-center justify-between gap-3">
+                <p className="text-sm leading-none font-medium text-[#777584]">{title}</p>
+                <div className="flex size-10 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2] transition-transform duration-300 group-hover:scale-105">
+                    <Icon size={16} />
+                </div>
+            </div>
+
+            <div className="flex items-end justify-between gap-3">
+                <div className="min-w-0">
+                    <p className="text-[1.55rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[1.8rem]">{value}</p>
+                    <p className="mt-3 text-[10px] leading-none text-[#92909D] md:text-[11px]">{subtitle}</p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default function AdminDashboard({ stats, recent_tenants, recent_users }: Props) {
     const { t } = useTranslation();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.dashboardTitle')} />
 
-            <main className="min-h-full bg-[radial-gradient(circle_at_top_left,#E6E1FF_0%,#F8F5F1_42%,#FFFFFF_100%)] font-['Plus_Jakarta_Sans'] text-[#191827] p-4 md:p-6 flex flex-col gap-6">
-
+            <main className="relative flex min-h-full flex-col gap-6 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)] p-4 font-['Plus_Jakarta_Sans'] text-[#191827] md:p-6 lg:p-8">
                 {/* Soft decorative background */}
-                <div className="pointer-events-none absolute -left-32 -top-32 h-72 w-72 rounded-full bg-[#E9E5FF] opacity-55 blur-3xl" />
-                <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#F0EDFF] opacity-65 blur-3xl" />
-                <div className="pointer-events-none absolute bottom-[-100px] left-[42%] h-56 w-56 rounded-full bg-[#F3F0E9] opacity-75 blur-3xl" />
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble admin-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble admin-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble admin-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble admin-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble admin-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble admin-dashboard-bubble-six" />
+                </div>
 
                 {/* HERO */}
                 <section className="relative z-10">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                         {/* LEFT */}
                         <div>
-                            <h1 className="text-2xl font-bold tracking-tight">
-                                {t('admin.dashboardTitle')}
-                            </h1>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] md:text-[2.1rem]">{t('admin.dashboardTitle')}</h1>
 
-                            <p className="mt-1 text-sm font-medium text-[#777584]">
+                            <p className="mt-3 text-sm leading-relaxed font-medium text-[#777584] md:text-[0.95rem]">
                                 {t('admin.dashboardSubtitle')}
                             </p>
                         </div>
 
                         {/* ACTIONS */}
-                        <div className="flex shrink-0 flex-row gap-4 rounded-xl bg-transparent">
+                        <div className="flex shrink-0 flex-row gap-3 rounded-xl bg-transparent">
                             <Button
                                 asChild
                                 size="sm"
                                 variant="secondary"
-                                className="h-9 rounded-lg border border-[#DDD9E9] bg-white px-3 text-xs font-bold text-[#4D4B5A] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#CFC8F6] hover:bg-[#FDFCFF] hover:text-[#5E4BF2]"
+                                className="h-10 rounded-xl border border-[#DDD9E9] bg-white px-4 text-sm font-semibold text-[#4D4B5A] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#CFC8F6] hover:bg-[#FDFCFF] hover:text-[#5E4BF2]"
                             >
                                 <Link href="/admin/plans">
-                                    <CreditCard className="size-3.5 mr-1" />
+                                    <CreditCard className="mr-1 size-3.5" />
                                     {t('navigation.plans')}
                                 </Link>
                             </Button>
-                            
+
                             <Button
                                 asChild
                                 size="sm"
-                                className="h-9 rounded-lg px-3 text-xs font-bold shadow-[0_7px_18px_rgba(94,75,242,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_9px_22px_rgba(94,75,242,0.24)] bg-[#5E4BF2] text-white"
+                                className="h-10 rounded-xl bg-[#5E4BF2] px-4 text-sm font-semibold text-white shadow-[0_7px_18px_rgba(94,75,242,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_9px_22px_rgba(94,75,242,0.24)]"
                             >
                                 <Link href="/admin/tenants/create">
-                                    <Plus className="size-3.5 mr-1" />
+                                    <Plus className="mr-1 size-3.5" />
                                     {t('common.add')} Tenant
                                 </Link>
                             </Button>
@@ -130,330 +133,212 @@ export default function AdminDashboard({
 
                 {/* MAIN CONTENT */}
                 <div className="relative z-10 space-y-6">
+                    {/* RINGKASAN PLATFORM */}
+                    <section>
+                        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                            <AdminStatCard
+                                title={t('admin.totalTenants')}
+                                value={String(stats.total_tenants)}
+                                subtitle={`${stats.active_tenants} ${t('admin.active')}`}
+                                icon={Building2}
+                            />
+                            <AdminStatCard
+                                title={t('admin.totalUsers')}
+                                value={String(stats.total_users)}
+                                subtitle={t('admin.registeredUsers')}
+                                icon={Users}
+                            />
+                            <AdminStatCard
+                                title={t('admin.activePlans')}
+                                value={String(stats.total_plans)}
+                                subtitle={t('admin.subscriptionOptions')}
+                                icon={CreditCard}
+                            />
+                            <AdminStatCard
+                                title={t('admin.totalIncome')}
+                                value={formatRupiah(stats.monthly_revenue)}
+                                subtitle={t('admin.mrrSubtitle')}
+                                icon={DollarSign}
+                            />
+                        </div>
+                    </section>
 
-                        {/* RINGKASAN PLATFORM */}
-                        <section>
-                            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    {/* AKTIVITAS TERBARU */}
+                    <section>
+                        <div className="mb-4">
+                            <h2 className="text-xl font-bold tracking-tight">{t('admin.recentActivity')}</h2>
 
-                                {/* TOTAL TENANT */}
-                                <Card className="group rounded-2xl border-[#CFC7F5] bg-[#E2DDFF] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
-                                        <CardTitle className="text-sm font-medium text-[#777583]">
-                                            {t('admin.totalTenants')}
-                                        </CardTitle>
+                            <p className="mt-1 text-sm font-medium text-[#92909D]">{t('admin.recentActivitySub')}</p>
+                        </div>
 
-                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#5E4BF2] transition-transform duration-300 group-hover:scale-105">
-                                            <Building2 className="size-3.5" />
-                                        </div>
-                                    </CardHeader>
-
-                                    <CardContent className="px-5 pb-2.5 pt-1">
-                                        <p className="text-xl font-bold tracking-tight leading-none text-[#181725]">
-                                            {stats.total_tenants}
-                                        </p>
-
-                                        <div className="mt-1 flex items-center gap-1.5">
-                                            <TrendingUp className="size-3 text-[#5E4BF2]" />
-
-                                            <span className="text-[10px] font-medium text-[#85838F]">
-                                                <span className="font-bold text-[#5E4BF2]">
-                                                    {stats.active_tenants}
-                                                </span>{' '}
-                                                {t('admin.active')}
-                                            </span>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-
-                                {/* TOTAL PENGGUNA */}
-                                <Card className="group rounded-2xl border-[#C5E3D5] bg-[#E1F2EA] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
-                                        <CardTitle className="text-sm font-medium text-[#777583]">
-                                            {t('admin.totalUsers')}
-                                        </CardTitle>
-
-                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#4C9A78] transition-transform duration-300 group-hover:scale-105">
-                                            <Users className="size-3.5" />
-                                        </div>
-                                    </CardHeader>
-
-                                    <CardContent className="px-5 pb-2.5 pt-1">
-                                        <p className="text-xl font-bold tracking-tight leading-none text-[#181725]">
-                                            {stats.total_users}
-                                        </p>
-
-                                        <p className="mt-1 text-[10px] font-medium text-[#85838F]">
-                                            {t('admin.registeredUsers')}
-                                        </p>
-                                    </CardContent>
-                                </Card>
-
-                                {/* PAKET AKTIF */}
-                                <Card className="group rounded-2xl border-[#F0D69A] bg-[#FFF0C9] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
-                                        <CardTitle className="text-sm font-medium text-[#777583]">
-                                            {t('admin.activePlans')}
-                                        </CardTitle>
-
-                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#C18A2E] transition-transform duration-300 group-hover:scale-105">
-                                            <CreditCard className="size-3.5" />
-                                        </div>
-                                    </CardHeader>
-
-                                    <CardContent className="px-5 pb-2.5 pt-1">
-                                        <p className="text-xl font-bold tracking-tight leading-none text-[#181725]">
-                                            {stats.total_plans}
-                                        </p>
-
-                                        <p className="mt-1 text-[10px] font-medium text-[#85838F]">
-                                            {t('admin.subscriptionOptions')}
-                                        </p>
-                                    </CardContent>
-                                </Card>
-
-                                {/* MRR */}
-                                <Card className="group rounded-2xl border-[#EBC5D0] bg-[#F8E1E7] shadow-[0_5px_20px_rgba(35,30,70,0.035)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(35,30,70,0.07)]">
-                                    <CardHeader className="flex flex-row items-center justify-between px-5 pt-2.5 pb-0 space-y-0">
-                                        <CardTitle className="text-sm font-medium text-[#777583]">
-                                            {t('admin.totalIncome')}
-                                        </CardTitle>
-
-                                        <div className="flex size-7 items-center justify-center rounded-lg bg-white/80 text-[#C06D82] transition-transform duration-300 group-hover:scale-105">
-                                            <DollarSign className="size-3.5" />
-                                        </div>
-                                    </CardHeader>
-
-                                    <CardContent className="px-5 pb-2.5 pt-1">
-                                        <p className="text-xl font-bold tracking-tight leading-none text-[#5E4BF2]">
-                                            {formatRupiah(stats.monthly_revenue)}
-                                        </p>
-
-                                        <div className="mt-1 flex items-center gap-1.5">
-                                            <TrendingUp className="size-3 text-[#5E4BF2]" />
-
-                                            <span className="text-[10px] font-medium text-[#85838F]">
-                                                {t('admin.mrrSubtitle')}
-                                            </span>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </section>
-
-                        {/* AKTIVITAS TERBARU */}
-                        <section>
-
-                            <div className="mb-4">
-                                <h2 className="text-xl font-bold tracking-tight">
-                                    {t('admin.recentActivity')}
-                                </h2>
-
-                                <p className="mt-1 text-sm font-medium text-[#92909D]">
-                                    {t('admin.recentActivitySub')}
-                                </p>
-                            </div>
-
-                            <div className="grid items-start gap-4 xl:grid-cols-2">
-
-                                {/* TENANT BARU */}
-                                <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
-                                    <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
-                                        <div className="flex items-center justify-between gap-4">
-
-                                            <div className="flex min-w-0 items-center gap-3">
-                                                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EEFF] text-[#5E4BF2]">
-                                                    <Building2 className="size-[18px]" />
-                                                </div>
-
-                                                <div className="min-w-0">
-                                                    <CardTitle className="text-sm font-extrabold text-[#292737]">
-                                                        {t('admin.newTenant')}
-                                                    </CardTitle>
-
-                                                    <CardDescription className="mt-0.5 text-xs font-medium text-[#9997A4]">
-                                                        {t('admin.newTenantSub')}
-                                                    </CardDescription>
-                                                </div>
+                        <div className="grid items-start gap-4 xl:grid-cols-2">
+                            {/* TENANT BARU */}
+                            <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
+                                <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
+                                    <div className="flex items-center justify-between gap-4">
+                                        <div className="flex min-w-0 items-center gap-3">
+                                            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EEFF] text-[#5E4BF2]">
+                                                <Building2 className="size-[18px]" />
                                             </div>
 
-                                            <Link href="/admin/tenants">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="h-8 rounded-lg px-2.5 text-xs font-bold text-[#5E4BF2] hover:bg-[#F3F1FF] hover:text-[#5140E2]"
-                                                >
-                                                    {t('common.viewAll')}
-                                                    <ArrowRight className="ml-1.5 size-3.5" />
-                                                </Button>
-                                            </Link>
+                                            <div className="min-w-0">
+                                                <CardTitle className="text-sm font-semibold text-[#292737]">{t('admin.newTenant')}</CardTitle>
+
+                                                <CardDescription className="mt-0.5 text-xs font-medium text-[#9997A4]">
+                                                    {t('admin.newTenantSub')}
+                                                </CardDescription>
+                                            </div>
                                         </div>
-                                    </CardHeader>
 
-                                    <CardContent className="p-0">
-                                        {recent_tenants.length === 0 ? (
-                                            <p className="px-5 py-8 text-center text-sm text-[#9997A4]">
-                                                {t('common.noData')}
-                                            </p>
-                                        ) : (
-                                            <div className="divide-y divide-[#F0EDF4]">
-                                                {recent_tenants.map((tenant) => (
-                                                    <div
-                                                        key={tenant.id}
-                                                        className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors duration-200 hover:bg-[#FCFBFE]"
-                                                    >
-                                                        <div className="flex min-w-0 items-center gap-3">
+                                        <Link href="/admin/tenants">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="h-8 rounded-lg px-2.5 text-xs font-bold text-[#5E4BF2] hover:bg-[#F3F1FF] hover:text-[#5140E2]"
+                                            >
+                                                {t('common.viewAll')}
+                                                <ArrowRight className="ml-1.5 size-3.5" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardHeader>
 
-                                                            <div className="flex size-9.5 shrink-0 items-center justify-center rounded-xl bg-[#5E4BF2] text-sm font-black text-white shadow-[0_5px_14px_rgba(94,75,242,0.14)]">
-                                                                {tenant.name
-                                                                    .charAt(0)
-                                                                    .toUpperCase()}
-                                                            </div>
-
-                                                            <div className="min-w-0">
-                                                                <Link
-                                                                    href={`/admin/tenants/${tenant.id}`}
-                                                                    className="block truncate text-sm font-extrabold text-[#292737] transition-colors hover:text-[#5E4BF2]"
-                                                                >
-                                                                    {tenant.name}
-                                                                </Link>
-
-                                                                <p className="mt-0.5 text-xs font-medium text-[#9997A4]">
-                                                                    {new Date(
-                                                                        tenant.created_at,
-                                                                    ).toLocaleDateString(
-                                                                        'id-ID',
-                                                                        {
-                                                                            day: 'numeric',
-                                                                            month: 'short',
-                                                                            year: 'numeric',
-                                                                        },
-                                                                    )}
-                                                                </p>
-                                                            </div>
+                                <CardContent className="p-0">
+                                    {recent_tenants.length === 0 ? (
+                                        <p className="px-5 py-8 text-center text-sm text-[#9997A4]">{t('common.noData')}</p>
+                                    ) : (
+                                        <div className="divide-y divide-[#F0EDF4]">
+                                            {recent_tenants.map((tenant) => (
+                                                <div
+                                                    key={tenant.id}
+                                                    className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors duration-200 hover:bg-[#FCFBFE]"
+                                                >
+                                                    <div className="flex min-w-0 items-center gap-3">
+                                                        <div className="flex size-9.5 shrink-0 items-center justify-center rounded-xl bg-[#5E4BF2] text-sm font-black text-white shadow-[0_5px_14px_rgba(94,75,242,0.14)]">
+                                                            {tenant.name.charAt(0).toUpperCase()}
                                                         </div>
 
-                                                        <div className="flex shrink-0 items-center gap-1.5">
-                                                            <Badge
-                                                                variant="secondary"
-                                                                className="rounded-full border-0 bg-[#F3F1F7] px-2.5 py-1 text-[11px] font-bold text-[#686673]"
+                                                        <div className="min-w-0">
+                                                            <Link
+                                                                href={`/admin/tenants/${tenant.id}`}
+                                                                className="block truncate text-sm font-semibold text-[#292737] transition-colors hover:text-[#5E4BF2]"
                                                             >
-                                                                {tenant.plan?.name || 'Free'}
-                                                            </Badge>
+                                                                {tenant.name}
+                                                            </Link>
 
-                                                            <Badge
-                                                                className={
-                                                                    tenant.is_active
-                                                                        ? 'rounded-full border-0 bg-[#EEF8E9] px-2.5 py-1 text-[11px] font-bold text-[#4B8735] shadow-none'
-                                                                        : 'rounded-full border-0 bg-[#F7EFF0] px-2.5 py-1 text-[11px] font-bold text-[#A96A73] shadow-none'
-                                                                }
-                                                            >
-                                                                {tenant.is_active
-                                                                    ? t('admin.active')
-                                                                    : t('admin.inactive')}
-                                                            </Badge>
+                                                            <p className="mt-0.5 text-xs font-medium text-[#9997A4]">
+                                                                {new Date(tenant.created_at).toLocaleDateString('id-ID', {
+                                                                    day: 'numeric',
+                                                                    month: 'short',
+                                                                    year: 'numeric',
+                                                                })}
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </CardContent>
-                                </Card>
 
-                                {/* PENGGUNA BARU */}
-                                <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
-                                    <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
-                                        <div className="flex items-center justify-between gap-4">
+                                                    <div className="flex shrink-0 items-center gap-1.5">
+                                                        <Badge
+                                                            variant="secondary"
+                                                            className="rounded-full border-0 bg-[#F3F1F7] px-2.5 py-1 text-[11px] font-bold text-[#686673]"
+                                                        >
+                                                            {tenant.plan?.name || 'Free'}
+                                                        </Badge>
 
-                                            <div className="flex min-w-0 items-center gap-3">
-                                                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EEFF] text-[#5E4BF2]">
-                                                    <Users className="size-[18px]" />
+                                                        <Badge
+                                                            className={
+                                                                tenant.is_active
+                                                                    ? 'rounded-full border-0 bg-[#DCD8FF] px-2.5 py-1 text-xs font-semibold text-[#4938D9] shadow-none'
+                                                                    : 'rounded-full border-0 bg-[#F7EFF0] px-2.5 py-1 text-[11px] font-bold text-[#A96A73] shadow-none'
+                                                            }
+                                                        >
+                                                            {tenant.is_active ? t('admin.active') : t('admin.inactive')}
+                                                        </Badge>
+                                                    </div>
                                                 </div>
-
-                                                <div className="min-w-0">
-                                                    <CardTitle className="text-sm font-extrabold text-[#292737]">
-                                                        {t('admin.newUser')}
-                                                    </CardTitle>
-
-                                                    <CardDescription className="mt-0.5 text-xs font-medium text-[#9997A4]">
-                                                        {t('admin.newUserSub')}
-                                                    </CardDescription>
-                                                </div>
-                                            </div>
-
-                                            <Link href="/admin/users">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="h-8 rounded-lg px-2.5 text-xs font-bold text-[#5E4BF2] hover:bg-[#F3F1FF] hover:text-[#5140E2]"
-                                                >
-                                                    {t('common.viewAll')}
-                                                    <ArrowRight className="ml-1.5 size-3.5" />
-                                                </Button>
-                                            </Link>
+                                            ))}
                                         </div>
-                                    </CardHeader>
+                                    )}
+                                </CardContent>
+                            </Card>
 
-                                    <CardContent className="p-0">
-                                        {recent_users.length === 0 ? (
-                                            <p className="px-5 py-8 text-center text-sm text-[#9997A4]">
-                                                {t('common.noData')}
-                                            </p>
-                                        ) : (
-                                            <div className="divide-y divide-[#F0EDF4]">
-                                                {recent_users.map((u) => (
-                                                    <div
-                                                        key={u.id}
-                                                        className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors duration-200 hover:bg-[#FCFBFE]"
-                                                    >
-                                                        <div className="flex min-w-0 items-center gap-3">
+                            {/* PENGGUNA BARU */}
+                            <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
+                                <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
+                                    <div className="flex items-center justify-between gap-4">
+                                        <div className="flex min-w-0 items-center gap-3">
+                                            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EEFF] text-[#5E4BF2]">
+                                                <Users className="size-[18px]" />
+                                            </div>
 
-                                                            <div className="flex size-9.5 shrink-0 items-center justify-center rounded-full bg-[#EAE7FF] text-sm font-black text-[#5E4BF2]">
-                                                                {u.name
-                                                                    .charAt(0)
-                                                                    .toUpperCase()}
-                                                            </div>
+                                            <div className="min-w-0">
+                                                <CardTitle className="text-sm font-semibold text-[#292737]">{t('admin.newUser')}</CardTitle>
 
-                                                            <div className="min-w-0">
-                                                                <p className="truncate text-sm font-extrabold text-[#292737]">
-                                                                    {u.name}
-                                                                </p>
+                                                <CardDescription className="mt-0.5 text-xs font-medium text-[#9997A4]">
+                                                    {t('admin.newUserSub')}
+                                                </CardDescription>
+                                            </div>
+                                        </div>
 
-                                                                <p className="mt-0.5 truncate text-xs font-medium text-[#9997A4]">
-                                                                    {u.email}
-                                                                </p>
-                                                            </div>
+                                        <Link href="/admin/users">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="h-8 rounded-lg px-2.5 text-xs font-bold text-[#5E4BF2] hover:bg-[#F3F1FF] hover:text-[#5140E2]"
+                                            >
+                                                {t('common.viewAll')}
+                                                <ArrowRight className="ml-1.5 size-3.5" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardHeader>
+
+                                <CardContent className="p-0">
+                                    {recent_users.length === 0 ? (
+                                        <p className="px-5 py-8 text-center text-sm text-[#9997A4]">{t('common.noData')}</p>
+                                    ) : (
+                                        <div className="divide-y divide-[#F0EDF4]">
+                                            {recent_users.map((u) => (
+                                                <div
+                                                    key={u.id}
+                                                    className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors duration-200 hover:bg-[#FCFBFE]"
+                                                >
+                                                    <div className="flex min-w-0 items-center gap-3">
+                                                        <div className="flex size-9.5 shrink-0 items-center justify-center rounded-full bg-[#EAE7FF] text-sm font-black text-[#5E4BF2]">
+                                                            {u.name.charAt(0).toUpperCase()}
                                                         </div>
 
-                                                        <div className="flex shrink-0 flex-col items-end gap-1">
-                                                            <Badge
-                                                                variant="secondary"
-                                                                className="max-w-[145px] truncate rounded-full border-0 bg-[#F3F1F7] px-2.5 py-1 text-[11px] font-bold text-[#686673]"
-                                                            >
-                                                                {u.tenant?.name || 'Admin'}
-                                                            </Badge>
+                                                        <div className="min-w-0">
+                                                            <p className="truncate text-sm font-semibold text-[#292737]">{u.name}</p>
 
-                                                            <span className="text-[11px] font-medium text-[#A09EAA]">
-                                                                {new Date(
-                                                                    u.created_at,
-                                                                ).toLocaleDateString(
-                                                                    'id-ID',
-                                                                    {
-                                                                        day: 'numeric',
-                                                                        month: 'short',
-                                                                        year: 'numeric',
-                                                                    },
-                                                                )}
-                                                            </span>
+                                                            <p className="mt-0.5 truncate text-xs font-medium text-[#9997A4]">{u.email}</p>
                                                         </div>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </section>
-                    </div>
+
+                                                    <div className="flex shrink-0 flex-col items-end gap-1">
+                                                        <Badge
+                                                            variant="secondary"
+                                                            className="max-w-[145px] truncate rounded-full border-0 bg-[#F3F1F7] px-2.5 py-1 text-[11px] font-bold text-[#686673]"
+                                                        >
+                                                            {u.tenant?.name || 'Admin'}
+                                                        </Badge>
+
+                                                        <span className="text-[11px] font-medium text-[#A09EAA]">
+                                                            {new Date(u.created_at).toLocaleDateString('id-ID', {
+                                                                day: 'numeric',
+                                                                month: 'short',
+                                                                year: 'numeric',
+                                                            })}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </section>
+                </div>
             </main>
         </AppLayout>
     );

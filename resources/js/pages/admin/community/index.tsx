@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction } from '@/lib/toast';
 import { type BreadcrumbItem } from '@/types';
@@ -133,9 +134,17 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.community.title')} />
-            <div className="flex flex-col gap-0">
+            <div className="community-admin-surface relative isolate flex min-h-[calc(100vh-5rem)] w-full flex-1 flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
+                </div>
                 {/* Page Header */}
-                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
+                <div className="admin-page-header relative z-10 overflow-hidden bg-transparent px-6 pt-6 pb-5 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -145,14 +154,14 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                     {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight text-[#17182A] md:text-2xl">{t('admin.community.title')}</h1>
-                            <p className="mt-0.5 text-sm text-[#5F6073]">{t('admin.community.subtitle')}</p>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[2.1rem]">{t('admin.community.title')}</h1>
+                            <p className="mt-3 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.community.subtitle')}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content relative z-10 flex flex-1 flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Filters */}
                     <div className="admin-filter-panel bg-card border-border flex flex-col items-center gap-3 rounded-2xl border p-4 shadow-sm sm:flex-row">
                         <div className="relative w-full flex-1">
@@ -211,24 +220,24 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                             </Select>
                         </div>
 
-                        <Button size="sm" onClick={handleFilter} className="admin-primary-button w-full px-5 sm:w-auto">
+                        <Button onClick={handleFilter} className="admin-primary-button h-10 w-full rounded-xl px-4 text-sm font-semibold sm:w-auto">
                             {t('common.filter')}
                         </Button>
                     </div>
 
                     {/* Table */}
                     <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
-                        <table className="w-full min-w-[800px] border-collapse text-left text-sm">
+                        <table className="w-full min-w-[800px] border-collapse text-left text-xs">
                             <thead>
                                 <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
-                                    <th className="px-6 py-4">{t('admin.community.colTitle')}</th>
-                                    <th className="px-6 py-4">{t('admin.community.colAuthor')}</th>
-                                    <th className="px-6 py-4">{t('admin.community.colTenant')}</th>
-                                    <th className="px-6 py-4">{t('admin.community.colCategory')}</th>
-                                    <th className="px-6 py-4">{t('admin.community.colBusiness')}</th>
-                                    <th className="px-6 py-4 text-center">{t('admin.community.colStatus')}</th>
-                                    <th className="px-6 py-4 text-center">{t('admin.community.colViews')}</th>
-                                    <th className="px-6 py-4 text-right">{t('admin.community.colActions')}</th>
+                                    <th className="px-4 py-3">{t('admin.community.colTitle')}</th>
+                                    <th className="px-4 py-3">{t('admin.community.colAuthor')}</th>
+                                    <th className="px-4 py-3">{t('admin.community.colTenant')}</th>
+                                    <th className="px-4 py-3 text-center">{t('admin.community.colCategory')}</th>
+                                    <th className="px-4 py-3 text-center">{t('admin.community.colBusiness')}</th>
+                                    <th className="px-4 py-3 text-center">{t('admin.community.colStatus')}</th>
+                                    <th className="px-4 py-3 text-center">{t('admin.community.colViews')}</th>
+                                    <th className="px-4 py-3 text-center">{t('admin.community.colActions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-border divide-y">
@@ -241,7 +250,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                 ) : (
                                     posts.data.map((post) => (
                                         <tr key={post.id} className="hover:bg-muted/30 border-border border-b transition-colors">
-                                            <td className="max-w-[260px] px-6 py-4">
+                                            <td className="max-w-[260px] px-4 py-3">
                                                 <div className="flex items-start gap-2">
                                                     {post.is_pinned && (
                                                         <Pin className="mt-0.5 size-3.5 shrink-0 text-amber-500" />
@@ -249,9 +258,9 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                                     <span className="line-clamp-2 font-medium">{post.title}</span>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 text-muted-foreground">{post.user?.name ?? '—'}</td>
-                                            <td className="px-6 py-4 text-muted-foreground">{post.tenant?.name ?? '—'}</td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-4 py-3 text-muted-foreground">{post.user?.name ?? '—'}</td>
+                                            <td className="px-4 py-3 text-muted-foreground">{post.tenant?.name ?? '—'}</td>
+                                            <td className="px-4 py-3 text-center">
                                                 <Badge
                                                     variant="outline"
                                                     className={`px-1.5 py-0 ${categoryColors[post.category] ?? ''}`}
@@ -259,51 +268,56 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                                     {categoryLabels[post.category] ?? post.category}
                                                 </Badge>
                                             </td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-4 py-3 text-center">
                                                 {post.business_type ? (
-                                                    <Badge variant="secondary" className="uppercase px-1.5 py-0 text-[10px]">
+                                                    <Badge variant="outline" className="rounded-full border-[#DCD8FF] bg-[#F1EFFD] px-2 py-0.5 text-[10px] font-semibold text-[#5E4BF2] uppercase">
                                                         {post.business_type === 'fnb' ? 'F&B' : post.business_type}
                                                     </Badge>
                                                 ) : (
                                                     <span className="text-muted-foreground">—</span>
                                                 )}
                                             </td>
-                                            <td className="px-6 py-4 text-center">
-                                                <Badge variant={post.is_active ? 'default' : 'secondary'} className="px-1.5 py-0">
+                                            <td className="px-4 py-3 text-center">
+                                                <Badge variant="outline" className={`rounded-full border-[#DCD8FF] px-2 py-0.5 text-[10px] font-semibold ${post.is_active ? 'bg-[#DCD8FF] text-[#4938D9]' : 'bg-[#F7EFF0] text-[#A96A73]'}`}>
                                                     {post.is_active ? t('admin.active') : t('admin.inactive')}
                                                 </Badge>
                                             </td>
-                                            <td className="px-6 py-4 text-center text-muted-foreground">{post.views_count}</td>
-                                            <td className="px-6 py-4 text-right">
-                                                <div className="flex items-center justify-end gap-1.5">
-                                                    <Button
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        title={post.is_pinned ? 'Lepas pin' : 'Sematkan'}
-                                                        onClick={() => handleTogglePin(post)}
-                                                        className={`h-8 w-8 rounded-lg ${post.is_pinned ? 'text-amber-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20' : ''}`}
-                                                    >
-                                                        {post.is_pinned ? <PinOff size={14} /> : <Pin size={14} />}
-                                                    </Button>
-                                                    <Button
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        title={post.is_active ? 'Nonaktifkan' : 'Aktifkan'}
-                                                        onClick={() => handleToggleActive(post)}
-                                                        className="h-8 w-8 rounded-lg"
-                                                    >
-                                                        <Shield size={14} className={post.is_active ? 'text-emerald-500' : 'text-slate-400'} />
-                                                    </Button>
-                                                    <Button
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        title={t('common.delete')}
-                                                        onClick={() => handleDelete(post)}
-                                                        className="text-destructive hover:bg-destructive/10 hover:text-destructive h-8 w-8 rounded-lg"
-                                                    >
-                                                        <Trash2 size={14} />
-                                                    </Button>
-                                                </div>
+                                            <td className="px-4 py-3 text-center text-muted-foreground">{post.views_count}</td>
+                                            <td className="px-4 py-3 text-center">
+                                                <TooltipProvider delayDuration={150}>
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Button size="icon" variant="ghost" onClick={() => handleTogglePin(post)} className={`h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2] ${post.is_pinned ? 'text-amber-500' : ''}`}>
+                                                                    {post.is_pinned ? <PinOff size={15} /> : <Pin size={15} />}
+                                                                </Button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent arrowClassName="community-action-tooltip-arrow" className="community-action-tooltip">
+                                                                {post.is_pinned ? 'Lepas pin' : 'Sematkan'}
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Button size="icon" variant="ghost" onClick={() => handleToggleActive(post)} className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]">
+                                                                    <Shield size={15} className={post.is_active ? 'text-[#5E4BF2]' : 'text-slate-400'} />
+                                                                </Button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent arrowClassName="community-action-tooltip-arrow" className="community-action-tooltip">
+                                                                {post.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Button size="icon" variant="ghost" onClick={() => handleDelete(post)} className="h-8 w-8 text-rose-500 hover:bg-[#FDEBEC] hover:text-rose-600">
+                                                                    <Trash2 size={15} />
+                                                                </Button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent arrowClassName="community-action-tooltip-arrow" className="community-action-tooltip">
+                                                                {t('common.delete')}
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                    </div>
+                                                </TooltipProvider>
                                             </td>
                                         </tr>
                                     ))
@@ -326,7 +340,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                         variant={link.active ? 'default' : 'outline'}
                                         disabled={!link.url}
                                         onClick={() => link.url && router.get(link.url)}
-                                        className="h-8 rounded-lg px-3 text-xs"
+                                        className="h-9 rounded-xl px-3 text-sm"
                                     >
                                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
                                     </Button>

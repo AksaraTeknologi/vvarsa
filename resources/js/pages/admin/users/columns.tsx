@@ -3,6 +3,7 @@
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ColumnDef } from '@tanstack/react-table';
 import { Calendar, Edit, Shield, User as UserIcon } from 'lucide-react';
 
@@ -26,10 +27,10 @@ export const getColumns = (
 ): ColumnDef<UserItem>[] => [
     {
         accessorKey: 'no',
-        header: 'No',
+        header: () => <div className="text-center text-xs font-semibold">No</div>,
         cell: ({ row }) => {
             const index = row.index + 1;
-            return <div className="font-medium">{index}</div>;
+            return <div className="text-center font-medium">{index}</div>;
         },
     },
     {
@@ -66,37 +67,39 @@ export const getColumns = (
     },
     {
         accessorKey: 'role',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.users.colRole')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.users.colRole')} centered />,
         cell: ({ row }) => {
             const role = row.original.roles[0]?.name || 'staff';
             return (
-                <Badge
-                    variant={role === 'admin' ? 'destructive' : role === 'owner' ? 'default' : 'outline'}
-                    className={`border-transparent capitalize ${
-                        role === 'admin'
-                            ? 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
-                            : role === 'owner'
-                              ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400'
-                              : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
-                    }`}
-                >
-                    {role === 'admin' ? (
-                        <span className="flex items-center gap-1">
-                            <Shield size={12} />
-                            Admin
-                        </span>
-                    ) : role === 'owner' ? (
-                        <span className="flex items-center gap-1">
-                            <Shield size={12} />
-                            Owner
-                        </span>
-                    ) : (
-                        <span className="flex items-center gap-1">
-                            <UserIcon size={12} />
-                            Staff
-                        </span>
-                    )}
-                </Badge>
+                <div className="flex w-full justify-center">
+                    <Badge
+                        variant={role === 'admin' ? 'destructive' : role === 'owner' ? 'default' : 'outline'}
+                        className={`border-transparent capitalize ${
+                            role === 'admin'
+                                ? 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
+                                : role === 'owner'
+                                  ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400'
+                                  : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                        }`}
+                    >
+                        {role === 'admin' ? (
+                            <span className="flex items-center gap-1">
+                                <Shield size={12} />
+                                Admin
+                            </span>
+                        ) : role === 'owner' ? (
+                            <span className="flex items-center gap-1">
+                                <Shield size={12} />
+                                Owner
+                            </span>
+                        ) : (
+                            <span className="flex items-center gap-1">
+                                <UserIcon size={12} />
+                                Staff
+                            </span>
+                        )}
+                    </Badge>
+                </div>
             );
         },
     },
@@ -124,11 +127,29 @@ export const getColumns = (
         cell: ({ row }) => {
             const user = row.original;
             return (
-                <div className="flex items-center justify-center gap-2">
-                    <Button variant="ghost" size="icon" onClick={() => onEdit(user)} className="hover:bg-muted h-8 w-8" title={t('admin.users.editTitle')}>
-                        <Edit size={15} />
-                    </Button>
-                </div>
+                <TooltipProvider delayDuration={150}>
+                    <div className="flex items-center justify-center gap-2">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => onEdit(user)}
+                                    className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
+                                    title={t('admin.users.editTitle')}
+                                >
+                                    <Edit size={15} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent
+                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
+                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                            >
+                                {t('admin.users.editTitle')}
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                </TooltipProvider>
             );
         },
     },

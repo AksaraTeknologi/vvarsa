@@ -11,6 +11,7 @@ export function AppShell({ children, variant = 'header' }: AppShellProps) {
     const page = usePage<SharedData>();
     const isOpen = page.props.sidebarOpen;
     const isAdminRoute = page.url.startsWith('/admin');
+    const isAdmin = page.props.auth.user?.roles?.includes('admin');
     const isOwner = page.props.auth.user?.roles?.includes('owner');
 
     if (variant === 'header') {
@@ -20,7 +21,7 @@ export function AppShell({ children, variant = 'header' }: AppShellProps) {
     return (
         <SidebarProvider
             defaultOpen={isOpen}
-            className={isAdminRoute ? 'admin-theme' : isOwner ? 'owner-theme' : undefined}
+            className={isAdminRoute || isAdmin ? 'admin-theme' : isOwner ? 'owner-theme' : undefined}
         >
             {children}
         </SidebarProvider>

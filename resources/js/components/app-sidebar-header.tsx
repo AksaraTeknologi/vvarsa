@@ -17,17 +17,14 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
             }`}
         >
             <div className="flex flex-1 items-center gap-2">
-                <SidebarTrigger className={`-ml-1 ${isAdminRoute ? 'text-[#53556A] hover:bg-[#F1EFFD] hover:text-[#17182A]' : isOwnerRoute ? 'text-[#4A6B59] hover:bg-[#D4F0E1] hover:text-[#2D6B49]' : ''}`} />
+                <SidebarTrigger
+                    className={`-ml-1 ${isAdminRoute ? 'text-[#53556A] hover:bg-[#F1EFFD] hover:text-[#17182A]' : isOwnerRoute ? 'text-[#4A6B59] hover:bg-[#D4F0E1] hover:text-[#2D6B49]' : ''}`}
+                />
                 {isAdminRoute && breadcrumbs.length > 0 && <div className="mx-1 h-4 w-px bg-[#E7E3FA]" />}
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className="flex items-center gap-2">
-                <LanguageSwitcher />
-                {isAdminRoute && (
-                    <span className="rounded-md border border-[#5E4BF2]/20 bg-[#F1EFFD] px-2 py-0.5 text-[11px] font-semibold tracking-widest text-[#5E4BF2] uppercase">
-                        Admin
-                    </span>
-                )}
+                <LanguageSwitcher className={isAdminRoute ? 'admin-language-switcher' : undefined} />
                 <NotificationDropdown />
             </div>
         </header>

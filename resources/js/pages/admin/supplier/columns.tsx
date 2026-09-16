@@ -3,7 +3,7 @@
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import DeleteConfirmDialog from '@/components/delete-dialog';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
@@ -35,51 +35,68 @@ function SupplierActions({ supplier, t }: { supplier: Supplier; t: (key: string,
     };
 
     return (
-        <div className="flex items-center justify-center gap-1">
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon" asChild>
-                        <Link href={`/admin/supplier/${supplier.id}/edit`}>
-                            <Edit className="size-4" />
-                        </Link>
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>{t('admin.supplier.editTitle')}</p>
-                </TooltipContent>
-            </Tooltip>
+        <TooltipProvider delayDuration={150}>
+            <div className="flex items-center justify-center gap-2">
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            asChild
+                            className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
+                        >
+                            <Link href={`/admin/supplier/${supplier.id}/edit`}>
+                                <Edit size={15} />
+                            </Link>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                        arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
+                        className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                    >
+                        {t('admin.supplier.editTitle')}
+                    </TooltipContent>
+                </Tooltip>
 
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <div>
-                        <DeleteConfirmDialog
-                            trigger={
-                                <Button variant="link" size="icon" className="size-8 text-red-500 hover:cursor-pointer">
-                                    <Trash className="size-4" />
-                                    <span className="sr-only">{t('common.delete')}</span>
-                                </Button>
-                            }
-                            title={t('common.confirmDelete')}
-                            itemName={supplier.name}
-                            onConfirm={handleDelete}
-                        />
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>{t('common.delete')}</p>
-                </TooltipContent>
-            </Tooltip>
-        </div>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div>
+                            <DeleteConfirmDialog
+                                trigger={
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-rose-500 hover:bg-[#FDEBEC] hover:text-rose-600"
+                                    >
+                                        <Trash size={15} />
+                                        <span className="sr-only">{t('common.delete')}</span>
+                                    </Button>
+                                }
+                                title={t('common.confirmDelete')}
+                                itemName={supplier.name}
+                                onConfirm={handleDelete}
+                            />
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent
+                        arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
+                        className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                    >
+                        {t('common.delete')}
+                    </TooltipContent>
+                </Tooltip>
+            </div>
+        </TooltipProvider>
     );
 }
 
 export const getColumns = (t: (key: string, options?: any) => string): ColumnDef<Supplier>[] => [
     {
         accessorKey: 'no',
-        header: 'No',
+        header: () => <div className="text-center text-xs font-semibold">No</div>,
         cell: ({ row }) => {
             const index = row.index + 1;
-            return <div className="font-medium">{index}</div>;
+            return <div className="text-center font-medium">{index}</div>;
         },
     },
     {
@@ -119,18 +136,20 @@ export const getColumns = (t: (key: string, options?: any) => string): ColumnDef
     },
     {
         accessorKey: 'business_type',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.supplier.businessType')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('admin.supplier.businessType')} centered />,
         cell: ({ row }) => {
             return (
-                <span className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                    {row.original.business_type || t('admin.tenants.general')}
-                </span>
+                <div className="flex w-full justify-center">
+                    <span className="rounded-full border border-[#DCD8FF] bg-[#F1EFFD] px-2.5 py-1 text-xs font-semibold text-[#5E4BF2]">
+                        {row.original.business_type || t('admin.tenants.general')}
+                    </span>
+                </div>
             );
         },
     },
     {
         accessorKey: 'rating',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Rating" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Rating" centered />,
         cell: ({ row }) => {
             return (
                 <div className="text-center">
@@ -142,20 +161,18 @@ export const getColumns = (t: (key: string, options?: any) => string): ColumnDef
     },
     {
         accessorKey: 'is_active',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.status')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('common.status')} centered />,
         cell: ({ row }) => {
             const isActive = row.original.is_active;
             return (
-                <div className="text-center">
-                    {isActive ? (
-                        <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400">
-                            {t('admin.active')}
-                        </span>
-                    ) : (
-                        <span className="rounded-full bg-rose-100 px-2 py-1 text-xs font-medium text-rose-700 dark:bg-rose-500/20 dark:text-rose-400">
-                            {t('admin.inactive')}
-                        </span>
-                    )}
+                <div className="flex w-full justify-center">
+                    <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                            isActive ? 'bg-[#DCD8FF] text-[#4938D9]' : 'bg-[#F7EFF0] text-[#A96A73]'
+                        }`}
+                    >
+                        {isActive ? t('admin.active') : t('admin.inactive')}
+                    </span>
                 </div>
             );
         },

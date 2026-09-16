@@ -13,7 +13,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
     ];
 
     return (
-        <div className={cn('inline-flex gap-1 rounded-xl border border-[#d9e5dd] bg-white p-1 shadow-sm', className)} {...props}>
+        <div className={cn('appearance-tabs inline-flex gap-1 rounded-xl border border-[#d9e5dd] bg-white p-1 shadow-sm', className)} {...props}>
             {tabs.map(({ value, icon: Icon, label }) => (
                 <button
                     key={value}

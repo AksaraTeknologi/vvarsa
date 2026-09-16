@@ -7,6 +7,7 @@ import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatDateTime, formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Calendar, CalendarDays, Edit, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,10 +55,10 @@ interface Props {
 }
 
 const statusColors: Record<string, string> = {
-    upcoming: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800',
-    ongoing: 'bg-white text-[#3f9567] border-[#9bc9aa] dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800',
-    completed: 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-400 dark:border-slate-700',
-    cancelled: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/30 dark:text-rose-400 dark:border-rose-800',
+    upcoming: 'bg-[#F1EFFD] text-[#5E4BF2] dark:bg-[#5E4BF2]/20 dark:text-[#A99DFF]',
+    ongoing: 'bg-white text-[#3f9567] dark:bg-emerald-950/20 dark:text-emerald-400',
+    completed: 'bg-slate-50 text-slate-700 dark:bg-slate-800/50 dark:text-slate-400',
+    cancelled: 'bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400',
 };
 
 export default function EventIndex({ events, filters }: Props) {
@@ -99,9 +100,17 @@ export default function EventIndex({ events, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.event.title')} />
-            <div className="business-page flex flex-col gap-0">
+            <div className="relative isolate flex min-h-[calc(100vh-5rem)] w-full flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
+                </div>
                 {/* Page Header */}
-                <div className="admin-page-header relative overflow-hidden bg-[#F9F7F4] px-6 pt-6 pb-5 text-[#17182A] md:px-8">
+                <div className="admin-page-header relative z-10 overflow-hidden bg-transparent px-6 pt-6 pb-5 text-[#17182A] md:px-8">
                     <div className="pointer-events-none absolute -top-10 -left-10 h-48 w-48 rounded-full bg-[#1a56ff]/10 blur-3xl" />
                     <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -111,19 +120,19 @@ export default function EventIndex({ events, filters }: Props) {
                                     {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-[1.6rem] leading-none font-bold tracking-[-0.04em] text-[#1f2a23] md:text-[1.9rem]">{t('admin.event.title')}</h1>
-                            <p className="business-page-subtitle mt-1 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.event.subtitle')}</p>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[2.1rem]">{t('admin.event.title')}</h1>
+                            <p className="mt-3 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.event.subtitle')}</p>
                         </div>
                         <Link href="/admin/events/create">
-                            <Button size="sm" variant="owner" className="gap-1.5 text-white">
-                                <Plus size={14} /> {t('admin.event.add')}
+                            <Button className="admin-primary-button inline-flex items-center gap-2 rounded-xl text-sm font-semibold text-white">
+                                <Plus size={16} /> {t('admin.event.add')}
                             </Button>
                         </Link>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="admin-page-content flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
+                <div className="admin-page-content relative z-10 flex flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Filters */}
                     <div className="admin-filter-panel bg-card border-border flex flex-col items-center gap-3 rounded-2xl border p-4 shadow-sm sm:flex-row">
                         <div className="relative w-full flex-1">
@@ -153,23 +162,23 @@ export default function EventIndex({ events, filters }: Props) {
                             </Select>
                         </div>
 
-                        <Button size="sm" variant="owner" onClick={handleFilter} className="w-full px-5 sm:w-auto">
+                        <Button onClick={handleFilter} className="admin-primary-button h-10 w-full rounded-xl px-4 text-sm font-semibold sm:w-auto">
                             {t('common.filter')}
                         </Button>
                     </div>
 
                     {/* Events Table */}
                     <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
-                        <table className="w-full min-w-[800px] border-collapse text-left text-sm">
+                        <table className="w-full min-w-[800px] border-collapse text-left text-xs">
                             <thead>
                                 <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
-                                    <th className="px-6 py-4">Event</th>
-                                    <th className="px-6 py-4">{t('common.date')}</th>
-                                    <th className="px-6 py-4">{t('common.address')}</th>
-                                    <th className="px-6 py-4 text-center">{t('admin.plans.users')}</th>
-                                    <th className="px-6 py-4">{t('common.amount')}</th>
-                                    <th className="px-6 py-4 text-center">{t('common.status')}</th>
-                                    <th className="px-6 py-4 text-right">{t('common.actions')}</th>
+                                    <th className="px-4 py-3">Event</th>
+                                    <th className="px-4 py-3">{t('common.date')}</th>
+                                    <th className="px-4 py-3">{t('common.address')}</th>
+                                    <th className="px-4 py-3 text-center">{t('admin.plans.users')}</th>
+                                    <th className="px-4 py-3">{t('common.amount')}</th>
+                                    <th className="px-4 py-3 text-center">{t('common.status')}</th>
+                                    <th className="px-4 py-3 text-center">{t('common.actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-border divide-y">
@@ -177,16 +186,16 @@ export default function EventIndex({ events, filters }: Props) {
                                     events.data.map((event) => (
                                         <tr key={event.id} className="hover:bg-muted/30 border-border border-b transition-colors">
                                             {/* Event Detail */}
-                                            <td className="px-6 py-4">
+                                            <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
                                                     {event.image ? (
                                                         <img
                                                             src={event.image}
                                                             alt={event.title}
-                                                            className="h-12 w-12 rounded-lg border bg-slate-100 object-cover dark:bg-slate-800"
+                                                            className="h-10 w-10 rounded-lg border bg-slate-100 object-cover dark:bg-slate-800"
                                                         />
                                                     ) : (
-                                                        <div className="border-muted-foreground/30 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed bg-slate-100 dark:bg-slate-800">
+                                                        <div className="border-muted-foreground/30 flex h-10 w-10 items-center justify-center rounded-lg border border-dashed bg-slate-100 dark:bg-slate-800">
                                                             <Calendar size={18} className="text-muted-foreground" />
                                                         </div>
                                                     )}
@@ -206,7 +215,7 @@ export default function EventIndex({ events, filters }: Props) {
                                                         {event.business_types && event.business_types.length > 0 && (
                                                             <div className="mt-1 flex gap-1">
                                                                 {event.business_types.map((type) => (
-                                                                    <Badge key={type} variant="outline" className="px-1 py-0 text-[10px] uppercase">
+                                                                    <Badge key={type} variant="outline" className="rounded-full border-[#DCD8FF] bg-[#F1EFFD] px-2 py-0.5 text-[10px] font-semibold text-[#5E4BF2] uppercase">
                                                                         {type}
                                                                     </Badge>
                                                                 ))}
@@ -216,21 +225,21 @@ export default function EventIndex({ events, filters }: Props) {
                                                 </div>
                                             </td>
                                             {/* Date */}
-                                            <td className="px-6 py-4 whitespace-nowrap">
+                                            <td className="px-4 py-3 whitespace-nowrap">
                                                 <div className="text-foreground flex flex-col text-xs">
                                                     <span className="font-medium">{formatDateTime(event.start_date)}</span>
                                                     <span className="text-muted-foreground">{t('admin.event.until')} {formatDateTime(event.end_date)}</span>
                                                 </div>
                                             </td>
                                             {/* Location */}
-                                            <td className="px-6 py-4">
+                                            <td className="px-4 py-3">
                                                 <div className="flex flex-col text-xs">
                                                     <span className="text-foreground font-medium">{event.location}</span>
                                                     {event.city && <span className="text-muted-foreground">{event.city}</span>}
                                                 </div>
                                             </td>
                                             {/* Capacity */}
-                                            <td className="px-6 py-4 text-center whitespace-nowrap">
+                                            <td className="px-4 py-3 text-center whitespace-nowrap">
                                                 <div className="flex flex-col items-center">
                                                     <span className="text-foreground font-semibold">{event.registered_count}</span>
                                                     <span className="text-muted-foreground text-xs">
@@ -239,7 +248,7 @@ export default function EventIndex({ events, filters }: Props) {
                                                 </div>
                                             </td>
                                             {/* Fee */}
-                                            <td className="text-foreground px-6 py-4 font-medium whitespace-nowrap">
+                                            <td className="text-foreground px-4 py-3 font-medium whitespace-nowrap">
                                                 {Number(event.registration_fee) === 0 ? (
                                                     <span className="font-semibold text-emerald-600 dark:text-emerald-400">{t('admin.plans.free')}</span>
                                                 ) : (
@@ -247,30 +256,41 @@ export default function EventIndex({ events, filters }: Props) {
                                                 )}
                                             </td>
                                             {/* Status */}
-                                            <td className="px-6 py-4 text-center whitespace-nowrap">
+                                            <td className="px-4 py-3 text-center whitespace-nowrap">
                                                 <Badge
-                                                    className={`rounded-full border px-2 py-0.5 text-[10px] uppercase ${statusColors[event.status] || ''}`}
+                                                    className={`rounded-full !border-[#5E4BF2] px-2 py-0.5 text-[10px] uppercase ${statusColors[event.status] || ''}`}
                                                 >
                                                     {statusLabels[event.status] || event.status}
                                                 </Badge>
                                             </td>
                                             {/* Actions */}
-                                            <td className="px-6 py-4 text-right whitespace-nowrap">
-                                                <div className="flex justify-end gap-2">
-                                                    <Link href={`/admin/events/${event.id}/edit`}>
-                                                        <Button variant="outline" size="icon" className="h-8 w-8 rounded-lg">
-                                                            <Edit size={14} />
-                                                        </Button>
-                                                    </Link>
-                                                    <Button
-                                                        variant="outline"
-                                                        size="icon"
-                                                        onClick={() => handleDelete(event.id, event.title)}
-                                                        className="text-destructive hover:bg-destructive/10 hover:text-destructive h-8 w-8 rounded-lg"
-                                                    >
-                                                        <Trash2 size={14} />
-                                                    </Button>
-                                                </div>
+                                            <td className="px-4 py-3 text-center whitespace-nowrap">
+                                                <TooltipProvider delayDuration={150}>
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Button variant="ghost" size="icon" asChild className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]">
+                                                                    <Link href={`/admin/events/${event.id}/edit`}>
+                                                                        <Edit size={15} />
+                                                                    </Link>
+                                                                </Button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]" className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]">
+                                                                Edit event
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Button variant="ghost" size="icon" onClick={() => handleDelete(event.id, event.title)} className="h-8 w-8 text-rose-500 hover:bg-[#FDEBEC] hover:text-rose-600">
+                                                                    <Trash2 size={15} />
+                                                                </Button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]" className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]">
+                                                                Hapus event
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                    </div>
+                                                </TooltipProvider>
                                             </td>
                                         </tr>
                                     ))
@@ -299,7 +319,7 @@ export default function EventIndex({ events, filters }: Props) {
                                         variant={link.active ? 'owner' : 'outline'}
                                         disabled={!link.url}
                                         onClick={() => link.url && router.get(link.url)}
-                                        className="h-8 rounded-lg px-3 text-xs"
+                                        className="h-9 rounded-xl px-3 text-sm"
                                     >
                                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
                                     </Button>
