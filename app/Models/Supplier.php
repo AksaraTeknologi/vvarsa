@@ -12,6 +12,8 @@ class Supplier extends Model
 
     protected $fillable = [
         'tenant_id',
+        'created_by_user_id',
+        'added_by_role',
         'name',
         'contact_name',
         'phone',
@@ -39,6 +41,11 @@ class Supplier extends Model
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by_user_id');
     }
 
     // Global suppliers have tenant_id = null

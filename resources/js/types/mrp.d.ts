@@ -107,7 +107,7 @@ export interface Event {
 }
 
 export interface Supplier {
-    id: number;
+    id: number | string;
     name: string;
     contact_name: string | null;
     phone: string | null;
@@ -122,6 +122,9 @@ export interface Supplier {
     logo: string | null;
     description: string | null;
     is_verified: boolean;
+    created_by_user_id?: string | null;
+    added_by_role?: string | null;
+    creator?: { id: string | number; name: string } | null;
 }
 
 export interface CommunityPost {

@@ -38,7 +38,8 @@ class SupplierController extends Controller
             $query->where('city', $city);
         }
 
-        $suppliers = $query->orderByDesc('is_verified')
+        $suppliers = $query->with(['creator:id,name'])
+            ->orderByDesc('is_verified')
             ->orderByDesc('rating')
             ->paginate(9)
             ->withQueryString();
@@ -69,25 +70,31 @@ class SupplierController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $tenant = app('tenant');
+        $user = $request->user();
+        $roleName = $user?->roles?->pluck('name')->first() ?? 'owner';
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'contact_name' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:50',
             'email' => 'nullable|email|max:255',
-            'website' => 'nullable|url|max:255',
+            'website' => 'nullable|url|max:500',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:100',
-            'business_type' => 'nullable|string|in:fnb,retail,fashion,services,general',
+            'business_type' => 'nullable|string',
             'product_categories' => 'nullable|array',
             'description' => 'nullable|string',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'review_count' => 'nullable|integer|min:0',
         ]);
 
         $validated['tenant_id'] = $tenant->id;
+        $validated['created_by_user_id'] = $user?->id;
+        $validated['added_by_role'] = $roleName;
         $validated['is_active'] = true;
         $validated['is_verified'] = false;
-        $validated['rating'] = 0.0;
-        $validated['review_count'] = 0;
+        $validated['rating'] = $validated['rating'] ?? 0.0;
+        $validated['review_count'] = $validated['review_count'] ?? 0;
 
         Supplier::create($validated);
 
