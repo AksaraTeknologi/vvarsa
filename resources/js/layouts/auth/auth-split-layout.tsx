@@ -2,7 +2,7 @@ import AppLogoIcon from '@/components/app-logo-icon';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { type PropsWithChildren } from 'react';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 
 interface AuthSplitLayoutProps {
     title?: string;
@@ -19,9 +19,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
     return (
         <div
             className={`relative flex w-full max-w-[430px] flex-col items-center pt-12 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] select-none ${
-                isActive
-                    ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
-                    : 'pointer-events-none translate-y-4 scale-95 opacity-0'
+                isActive ? 'pointer-events-auto translate-y-0 scale-100 opacity-100' : 'pointer-events-none translate-y-4 scale-95 opacity-0'
             }`}
         >
             {/* Ambient Glow */}
@@ -55,18 +53,23 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
     );
 }
 
-
 export default function AuthSplitLayout({ children, title, description, reverse = false }: PropsWithChildren<AuthSplitLayoutProps>) {
     const { name, quote } = usePage<SharedData>().props;
+    const [panelVisible, setPanelVisible] = useState(false);
+
+    useEffect(() => {
+        const frame = window.requestAnimationFrame(() => setPanelVisible(true));
+        return () => window.cancelAnimationFrame(frame);
+    }, []);
 
     return (
-        <div className="relative min-h-dvh w-full overflow-hidden bg-purple font-sans antialiased">
-                {/* =========================================================================
+        <div className="auth-page relative min-h-dvh w-full overflow-hidden bg-[radial-gradient(circle_at_8%_12%,rgba(216,243,128,0.22),transparent_24%),radial-gradient(circle_at_88%_82%,rgba(121,215,255,0.18),transparent_25%),linear-gradient(135deg,#4736d4_0%,#5e4bf2_42%,#7166f4_70%,#dff7e6_145%)] font-sans antialiased">
+            {/* =========================================================================
                 1. BACKGROUND VISUAL (FADING LOTTIE CONTENT)
                ========================================================================= */}
             <div className="absolute inset-0 z-0 hidden h-dvh w-full grid-cols-2 lg:grid">
                 {/* Sisi Kiri (Tampilan saat form di kanan / Login) */}
-                <div className="relative flex h-full flex-col justify-between overflow-hidden border-r border-white/10 bg-purple p-12 text-white">
+                <div className="relative flex h-full flex-col justify-between overflow-hidden border-r border-white/15 bg-[radial-gradient(circle_at_18%_18%,rgba(216,243,128,0.2),transparent_25%),radial-gradient(circle_at_82%_78%,rgba(121,215,255,0.16),transparent_28%),linear-gradient(145deg,#4030c2_0%,#5e4bf2_48%,#766bf5_100%)] p-12 text-white">
                     <Link
                         href={route('home')}
                         className="relative z-20 flex items-center gap-3 text-lg font-semibold tracking-tight text-white transition-opacity hover:opacity-80"
@@ -93,7 +96,7 @@ export default function AuthSplitLayout({ children, title, description, reverse 
                 </div>
 
                 {/* Sisi Kanan (Tampilan saat form meluncur ke kiri / Register) */}
-                <div className="relative flex h-full flex-col justify-between overflow-hidden bg-purple p-12 text-white">
+                <div className="relative flex h-full flex-col justify-between overflow-hidden bg-[radial-gradient(circle_at_82%_18%,rgba(216,243,128,0.2),transparent_25%),radial-gradient(circle_at_18%_78%,rgba(121,215,255,0.16),transparent_28%),linear-gradient(215deg,#4030c2_0%,#5e4bf2_48%,#766bf5_100%)] p-12 text-white">
                     <div className="relative z-20 flex justify-end">
                         <Link
                             href={route('home')}
@@ -123,16 +126,27 @@ export default function AuthSplitLayout({ children, title, description, reverse 
             </div>
 
             <div
-                className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-white p-6 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
+                className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-[linear-gradient(145deg,#ffffff_0%,#ffffff_72%,#f3f1ff_100%)] p-6 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
                     reverse
-                        ? 'lg:-translate-x-full lg:rounded-l-none lg:rounded-r-[2.5rem]' // Meluncur ke kiri (Register)
-                        : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none' // Tetap di kanan (Login)
+                        ? panelVisible
+                            ? 'lg:-translate-x-full lg:rounded-l-none lg:rounded-r-[2.5rem]'
+                            : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'
+                        : panelVisible
+                          ? 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'
+                          : 'lg:translate-x-full lg:rounded-l-[2.5rem] lg:rounded-r-none'
                 }`}
             >
-                <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[380px]">
+                <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+                    <span className="auth-form-bubble auth-form-bubble-one" />
+                    <span className="auth-form-bubble auth-form-bubble-two" />
+                    <span className="auth-form-bubble auth-form-bubble-three" />
+                    <span className="auth-form-bubble auth-form-bubble-four" />
+                </div>
+
+                <div className="auth-form-content relative z-10 mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[380px]">
                     {/* Mobile Logo */}
                     <Link href={route('home')} className="relative z-20 flex items-center justify-center lg:hidden">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-purple shadow-md shadow-purple/30">
+                        <div className="bg-purple shadow-purple/30 flex size-12 items-center justify-center rounded-2xl shadow-md">
                             <AppLogoIcon className="size-7 fill-current text-white" />
                         </div>
                     </Link>
@@ -144,7 +158,7 @@ export default function AuthSplitLayout({ children, title, description, reverse 
                     </div>
 
                     {/* Inputs & Controls */}
-                    <div className="w-full text-neutral-900 [&_a]:font-semibold [&_a]:text-purple [&_a]:hover:text-purple/70 [&_a]:hover:underline [&_input]:rounded-xl [&_input]:border-neutral-300 [&_input]:bg-white [&_input]:text-neutral-900 [&_input]:placeholder:text-neutral-400 [&_input]:focus:border-purple [&_input]:focus:ring-purple/10 [&_input[type=checkbox]]:rounded [&_input[type=checkbox]]:border-neutral-300 [&_input[type=checkbox]]:text-purple [&_input[type=checkbox]]:focus:ring-purple [&_label]:font-medium [&_label]:text-neutral-900 [&_p.text-muted-foreground]:text-neutral-500">
+                    <div className="[&_a]:text-purple [&_a]:hover:text-purple/70 [&_input]:focus:border-purple [&_input]:focus:ring-purple/10 [&_input[type=checkbox]]:text-purple [&_input[type=checkbox]]:focus:ring-purple w-full text-neutral-900 [&_a]:font-semibold [&_a]:hover:underline [&_input]:rounded-xl [&_input]:border-neutral-300 [&_input]:bg-white [&_input]:text-neutral-900 [&_input]:placeholder:text-neutral-400 [&_input[type=checkbox]]:rounded [&_input[type=checkbox]]:border-neutral-300 [&_label]:font-medium [&_label]:text-neutral-900 [&_p.text-muted-foreground]:text-neutral-500">
                         {children}
                     </div>
                 </div>
