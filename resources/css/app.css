@@ -2030,6 +2030,28 @@ body:has(.stock-movement-page)::-webkit-scrollbar {
     background: #3f9567 !important;
 }
 
+body:has(.landing-motion) {
+    scrollbar-color: #5e4bf2 #f1effd !important;
+}
+
+body:has(.landing-motion)::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+}
+
+body:has(.landing-motion)::-webkit-scrollbar-track {
+    background: #f1effd !important;
+}
+
+body:has(.landing-motion)::-webkit-scrollbar-thumb {
+    border-color: #f1effd !important;
+    background: #5e4bf2 !important;
+}
+
+body:has(.landing-motion)::-webkit-scrollbar-thumb:hover {
+    background: #4938d9 !important;
+}
+
 [data-slot='sidebar-content'],
 [data-slot='sidebar-content'] * {
     scrollbar-width: none !important;
@@ -2548,9 +2570,9 @@ body {
 
 .hero-panel {
     transform-style: preserve-3d;
-    animation: vvarsa-drift 9s ease-in-out infinite;
+    animation: none;
     filter: drop-shadow(0 35px 80px rgba(94, 75, 242, 0.2));
-    will-change: transform;
+    will-change: auto;
 }
 
 /* ---------------------------------------------------------
