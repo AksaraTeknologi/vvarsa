@@ -179,19 +179,22 @@ export default function PlansIndex({ plans }: Props) {
                 {/* Content */}
                 <div className="admin-page-content relative z-10 flex flex-1 flex-col gap-5 px-6 pt-4 pb-6 md:px-8">
                     {/* Plans List Grid */}
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="plans-card-grid grid gap-6 py-6 sm:grid-cols-2 lg:grid-cols-3">
                         {plans.map((plan) => {
                             const isFeatured = plan.id === featuredPlanId;
 
                             return (
                             <Card
                                 key={plan.id}
-                                className={`relative flex flex-col overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_8px_24px_rgba(35,30,70,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(35,30,70,0.1)] ${
+                                data-featured={isFeatured || undefined}
+                                className={`admin-plan-card relative flex flex-col overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_8px_24px_rgba(35,30,70,0.04)] transition-all duration-300 ${
                                     isFeatured
-                                        ? 'border-[#BDB5FF] shadow-[0_12px_32px_rgba(94,75,242,0.14)]'
+                                        ? 'admin-plan-card-featured border-[#BDB5FF] shadow-[0_12px_32px_rgba(94,75,242,0.14)]'
                                         : 'border-[#E9E5F0]'
                                 }`}
                             >
+                                <div className="admin-plan-card-glow" aria-hidden="true" />
+                                <div className="admin-plan-card-sheen" aria-hidden="true" />
                                 <div className={`h-1.5 w-full ${isFeatured ? 'bg-[#5E4BF2]' : 'bg-[#F0EEFF]'}`} />
                                 {isFeatured && (
                                     <div className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-[#F0EEFF] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#5E4BF2]">

@@ -1091,6 +1091,13 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover {
     box-shadow: 0 8px 24px rgb(35 30 70 / 0.04);
 }
 
+.admin-theme .admin-dashboard-surface {
+    background:
+        radial-gradient(circle at top left, rgb(94 75 242 / 0.1), transparent 28%),
+        radial-gradient(circle at bottom right, rgb(121 215 255 / 0.18), transparent 32%),
+        linear-gradient(180deg, #f6f2ff 0%, #f9f8fc 100%) !important;
+}
+
 .admin-bubble-surface {
     position: relative;
     overflow: hidden;
@@ -1236,6 +1243,96 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover {
     font-size: 1.8rem !important;
     line-height: 1 !important;
     font-weight: 700 !important;
+}
+
+.admin-theme .plans-card-grid {
+    perspective: 1400px;
+}
+
+.admin-theme .admin-plan-card {
+    isolation: isolate;
+    transform: none;
+    transform-style: preserve-3d;
+    transition:
+        transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 420ms ease,
+        border-color 420ms ease;
+}
+
+.admin-theme .admin-plan-card:hover {
+    border-color: #bdb5ff;
+    transform: perspective(1200px) rotateX(2deg) rotateY(-1.5deg) translateY(-10px) translateZ(10px);
+    box-shadow: 0 24px 46px rgb(35 30 70 / 0.14), 0 8px 18px rgb(94 75 242 / 0.1);
+}
+
+.admin-theme .admin-plan-card:nth-child(2n):hover {
+    transform: perspective(1200px) rotateX(2deg) rotateY(1.5deg) translateY(-10px) translateZ(10px);
+}
+
+.admin-theme .admin-plan-card-featured {
+    transform: none;
+    box-shadow: 0 18px 36px rgb(94 75 242 / 0.16);
+}
+
+.admin-theme .admin-plan-card-featured:hover {
+    transform: perspective(1200px) rotateX(2deg) rotateY(-1deg) translateY(-14px) translateZ(14px);
+    box-shadow: 0 30px 54px rgb(94 75 242 / 0.22), 0 8px 18px rgb(121 215 255 / 0.12);
+}
+
+.admin-theme .admin-plan-card-glow {
+    position: absolute;
+    z-index: -1;
+    top: -5rem;
+    right: -4rem;
+    width: 13rem;
+    height: 13rem;
+    border-radius: 9999px;
+    background: rgb(121 215 255 / 0.18);
+    filter: blur(22px);
+    opacity: 0.55;
+    pointer-events: none;
+    transition: transform 500ms ease, opacity 500ms ease;
+}
+
+.admin-theme .admin-plan-card:hover .admin-plan-card-glow {
+    opacity: 0.9;
+    transform: translate(-1rem, 1rem) scale(1.18);
+}
+
+.admin-theme .admin-plan-card-sheen {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: -75%;
+    width: 45%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 20%, rgb(255 255 255 / 0.5) 50%, transparent 80%);
+    transform: skewX(-18deg);
+    transition: left 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.admin-theme .admin-plan-card:hover .admin-plan-card-sheen {
+    left: 135%;
+}
+
+.admin-theme .admin-plan-card > :not(.admin-plan-card-glow):not(.admin-plan-card-sheen) {
+    position: relative;
+    z-index: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-theme .admin-plan-card,
+    .admin-theme .admin-plan-card-featured,
+    .admin-theme .admin-plan-card:hover,
+    .admin-theme .admin-plan-card-featured:hover {
+        transform: none;
+        transition: none;
+    }
+
+    .admin-theme .admin-plan-card-sheen {
+        display: none;
+    }
 }
 
 @media (min-width: 768px) {

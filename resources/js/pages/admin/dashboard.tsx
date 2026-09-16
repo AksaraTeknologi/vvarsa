@@ -80,15 +80,15 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.dashboardTitle')} />
 
-            <main className="relative flex min-h-full flex-col gap-6 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)] p-4 font-['Plus_Jakarta_Sans'] text-[#191827] md:p-6 lg:p-8">
+            <main className="admin-dashboard-surface relative flex min-h-full flex-col gap-6 overflow-hidden p-4 font-['Plus_Jakarta_Sans'] text-[#191827] md:p-6 lg:p-8">
                 {/* Soft decorative background */}
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-                    <div className="admin-dashboard-bubble admin-dashboard-bubble-one" />
-                    <div className="admin-dashboard-bubble admin-dashboard-bubble-two" />
-                    <div className="admin-dashboard-bubble admin-dashboard-bubble-three" />
-                    <div className="admin-dashboard-bubble admin-dashboard-bubble-four" />
-                    <div className="admin-dashboard-bubble admin-dashboard-bubble-five" />
-                    <div className="admin-dashboard-bubble admin-dashboard-bubble-six" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
                 </div>
 
                 {/* HERO */}
