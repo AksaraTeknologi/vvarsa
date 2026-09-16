@@ -3,6 +3,8 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+import { usePage } from "@inertiajs/react"
+import { type SharedData } from "@/types"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-200 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:ring-4 focus-visible:ring-black/10 dark:focus-visible:ring-white/10",
@@ -59,12 +61,16 @@ function Button({
     asChild?: boolean
   }) {
   const Comp = asChild ? Slot : "button"
+  const { auth } = usePage<SharedData>().props
+  const isSupervisor = auth.user?.roles?.includes("supervisor")
+  const supervisorVariants = ["default", "admin", "owner", "save", "edit"]
+  const effectiveVariant = isSupervisor && supervisorVariants.includes(variant ?? "") ? "supervisor" : variant
 
   return (
     <Comp
       data-slot="button"
       data-variant={variant}
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant: effectiveVariant, size, className }))}
       {...props}
     />
   )

@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
-                                className="border-border border-b transition-colors hover:bg-owner-accent/[0.04]"
+                                className="border-border border-b transition-colors hover:bg-blue-50/70"
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id} className="px-5 py-4 align-middle text-sm">

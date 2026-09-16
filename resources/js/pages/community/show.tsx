@@ -121,7 +121,7 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={post.title} />
-            <div className="business-page flex h-[calc(100vh-64px)] flex-col">
+                <div className="business-page community-show-page flex h-[calc(100vh-64px)] flex-col">
                 {/* Top bar */}
                 <div className="border-border bg-card mx-4 mt-4 flex shrink-0 items-center gap-3 rounded-2xl border px-4 py-3 shadow-[0_8px_22px_rgba(90,166,122,0.08)] md:mx-6 md:px-5">
                     <Link href="/community" className="hover:bg-muted flex size-9 shrink-0 items-center justify-center rounded-xl transition-colors">
@@ -155,7 +155,12 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                         <span>{post.likes_count}</span>
                     </button>
                     {is_member ? (
-                        <Button variant="outline" size="sm" onClick={() => router.delete(`/community/${post.id}/leave`, { preserveScroll: true })}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => router.delete(`/community/${post.id}/leave`, { preserveScroll: true })}
+                            className="!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700"
+                        >
                             <LogOut className="size-4" /> {t('community.leave')}
                         </Button>
                     ) : (

@@ -136,7 +136,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('members.title')} />
-            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
+            <div className="business-page members-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -165,7 +165,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
                                 {/* Banner info untuk supervisor */}
                                 {is_supervisor && (
-                                    <div className="mt-3 flex items-start gap-2 rounded-xl border border-owner-accent/30 bg-owner-accent/10 px-4 py-3 text-sm text-owner-accent">
+                                    <div className="mt-3 flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700">
                                         <ShieldCheck size={16} className="mt-0.5 shrink-0" />
                                         <span>{t('members.supervisorBanner')}</span>
                                     </div>
@@ -179,7 +179,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                             value={addForm.data.name}
                                             onChange={(e) => addForm.setData('name', e.target.value)}
                                             placeholder={t('members.fullName')}
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-blue-600 focus-visible:!ring-blue-600/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.name || addForm.errors.name) && (
@@ -194,7 +194,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                             value={addForm.data.email}
                                             onChange={(e) => addForm.setData('email', e.target.value)}
                                             placeholder="name@example.com"
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-blue-600 focus-visible:!ring-blue-600/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.email || addForm.errors.email) && (
@@ -209,7 +209,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                             value={addForm.data.password}
                                             onChange={(e) => addForm.setData('password', e.target.value)}
                                             placeholder={t('members.passwordHint')}
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-blue-600 focus-visible:!ring-blue-600/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.password || addForm.errors.password) && (
@@ -219,7 +219,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                     <div className="grid gap-2">
                                         <Label htmlFor="role" className="text-sm font-medium">{t('members.roleLabel')}</Label>
                                         <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
-                                            <SelectTrigger id="role" className="h-10 rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20">
+                                            <SelectTrigger id="role" className="h-10 rounded-xl !border-[#d9e5dd] bg-white text-sm text-slate-700 focus:!border-blue-600 focus:!ring-blue-600/20">
                                                 <SelectValue placeholder={t('members.selectRole')} />
                                             </SelectTrigger>
                                             <SelectContent>

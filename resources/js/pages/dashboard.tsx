@@ -1,9 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
 import { AiAnalyticsWidget } from '@/components/ai-analytics-widget';
 import { formatRupiah } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Event, type Product, type Transaction } from '@/types/mrp';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowDownRight, ArrowUpRight, CalendarDays, Package, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -80,12 +80,14 @@ function StatCard({
 
 export default function Dashboard({ stats, chart_data, recent_transactions, upcoming_events, low_stock_list }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isSupervisor = auth.user?.roles?.includes('supervisor');
     const netPositive = stats.net_today >= 0;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('dashboard.title')} />
-            <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-8">
+            <div className={`supervisor-dashboard flex flex-col gap-6 p-4 md:p-6 lg:p-8 ${isSupervisor ? 'is-supervisor' : ''}`}>
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
                     <h1 className="text-[1.8rem] font-bold leading-none tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
@@ -146,15 +148,15 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                             <AreaChart data={chart_data} margin={{ top: 12, right: 8, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        <stop offset="5%" stopColor={isSupervisor ? '#2596be' : '#10b981'} stopOpacity={0.2} />
+                                        <stop offset="95%" stopColor={isSupervisor ? '#2596be' : '#10b981'} stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
                                 <XAxis dataKey="date" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                                 <Tooltip
-                                    cursor={{ stroke: '#10b981', strokeOpacity: 0.55, strokeWidth: 2.5 }}
+                                    cursor={{ stroke: isSupervisor ? '#2596be' : '#10b981', strokeOpacity: 0.55, strokeWidth: 2.5 }}
                                     content={({ active, payload }) => {
                                         if (!active || !payload || payload.length === 0) return null;
 
@@ -163,9 +165,9 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                         const label = String(point.payload?.date ?? '');
 
                                         return (
-                                            <div className="rounded-xl border border-emerald-200 bg-white/95 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+                                            <div className={`rounded-xl bg-white/95 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm ${isSupervisor ? 'border border-[#B9E2F2]' : 'border border-emerald-200'}`}>
                                                 <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500">{label}</div>
-                                                <div className="mt-0.5 text-[14px] font-extrabold tracking-[-0.03em] text-emerald-600">
+                                                <div className={`mt-0.5 text-[14px] font-extrabold tracking-[-0.03em] ${isSupervisor ? 'text-[#2596BE]' : 'text-emerald-600'}`}>
                                                     {formatRupiah(value, true)}
                                                 </div>
                                             </div>
@@ -175,14 +177,14 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                 <Area
                                     type="monotone"
                                     dataKey="sales"
-                                    stroke="#10b981"
+                                    stroke={isSupervisor ? '#2596be' : '#10b981'}
                                     strokeWidth={2.5}
                                     fill="url(#salesGradient)"
                                     isAnimationActive={false}
                                     dot={false}
                                     activeDot={{
                                         r: 5,
-                                        fill: '#10b981',
+                                        fill: isSupervisor ? '#2596be' : '#10b981',
                                         stroke: '#ffffff',
                                         strokeWidth: 3,
                                     }}
@@ -201,7 +203,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         </div>
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
-                                <Package size={32} className="mb-2 text-emerald-500" />
+                                <Package size={32} className="mb-2 text-blue-500" />
                                 <p className="text-muted-foreground text-sm">{t('dashboard.allStockSafe')}</p>
                             </div>
                         ) : (

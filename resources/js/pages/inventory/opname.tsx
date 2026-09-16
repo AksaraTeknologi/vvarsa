@@ -115,8 +115,13 @@ export default function Opname({ products }: Props) {
                             <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('inventory.opnameSubtitle')}</p>
                         </div>
                     </div>
-                    <div className="flex w-full items-center gap-3 sm:w-auto">
-                        <DatePicker value={opname_date} onChange={(val) => setOpnameDate(val)} />
+                    <div className="flex w-full flex-col gap-1.5 sm:w-auto">
+                        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">{t('common.date')}</label>
+                        <DatePicker
+                            value={opname_date}
+                            onChange={(val) => setOpnameDate(val)}
+                            className="!border-blue-200 !bg-white !text-blue-700 hover:!bg-blue-50 hover:!text-blue-700"
+                        />
                     </div>
                 </div>
 
@@ -127,10 +132,10 @@ export default function Opname({ products }: Props) {
                 )}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
+                    <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
                         <Table>
                             <TableHeader>
-                                <TableRow className="border-border bg-slate-50/70 hover:bg-slate-50/70">
+                                <TableRow className="border-border !bg-white hover:!bg-white">
                                     <TableHead className="text-muted-foreground px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase">
                                         {t('inventory.product')}
                                     </TableHead>
@@ -155,7 +160,7 @@ export default function Opname({ products }: Props) {
                                     return (
                                         <TableRow
                                             key={product.id}
-                                            className={`${diff !== 0 ? 'bg-rose-50/40 dark:bg-rose-900/10' : ''} hover:bg-[#edf8f1]/70`}
+                                            className={`${diff !== 0 ? 'bg-rose-50/40 dark:bg-rose-900/10' : ''} hover:bg-slate-50/70`}
                                         >
                                             <TableCell className="px-4 py-3">
                                                 <p className="text-sm font-medium">{product.name}</p>

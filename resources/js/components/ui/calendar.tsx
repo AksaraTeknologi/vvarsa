@@ -34,16 +34,16 @@ function Calendar({
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "relative space-y-4",
         month_caption: "flex justify-center pt-1 relative items-center gap-1 px-10",
-        caption_label: "text-sm font-semibold text-[#315d45]",
+        caption_label: "text-sm font-semibold text-blue-700",
         dropdowns: "flex justify-center gap-1.5 z-10",
         nav: "absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none",
         button_previous: cn(
           buttonVariants({ variant: "outline" }),
-          "h-8 w-8 rounded-full border-[#d4e8da] bg-white p-0 text-[#3f9567] opacity-100 shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51] pointer-events-auto"
+          "h-8 w-8 rounded-full border-blue-200 bg-white p-0 text-blue-600 opacity-100 shadow-sm hover:bg-blue-50 hover:text-blue-700 pointer-events-auto"
         ),
         button_next: cn(
           buttonVariants({ variant: "outline" }),
-          "h-8 w-8 rounded-full border-[#d4e8da] bg-white p-0 text-[#3f9567] opacity-100 shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51] pointer-events-auto"
+          "h-8 w-8 rounded-full border-blue-200 bg-white p-0 text-blue-600 opacity-100 shadow-sm hover:bg-blue-50 hover:text-blue-700 pointer-events-auto"
         ),
         month_grid: "w-full border-collapse space-y-1",
         weekdays: "flex",
@@ -58,12 +58,12 @@ function Calendar({
         ),
         day_button: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#5aa67a] aria-selected:!text-white aria-selected:hover:!bg-[#4b946a] aria-selected:opacity-100"
+          "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-blue-50 hover:text-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600/30 aria-selected:!bg-blue-600 aria-selected:!text-white aria-selected:hover:!bg-blue-700 aria-selected:opacity-100"
         ),
         range_start: "day-range-start",
         range_end: "day-range-end",
         selected: "bg-transparent",
-        today: "!bg-[#e8f6ed] !text-[#315d45]",
+        today: "!bg-blue-100 !text-blue-700",
         outside:
           "day-outside !text-[#9ca3af] [&>button]:!text-[#9ca3af] [&>button:hover]:!text-[#7f8a83] aria-selected:!bg-transparent aria-selected:!text-[#b7c0bb] aria-selected:opacity-70",
         disabled: "text-muted-foreground opacity-50",

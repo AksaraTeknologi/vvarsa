@@ -61,7 +61,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('community.createDiscussion')} />
-            <div className="business-page w-full p-4 md:p-6">
+            <div className="business-page community-create-page w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="h-10 w-10 rounded-xl">
                         <Link href="/community">
@@ -89,7 +89,7 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                         key={catKey}
                                         type="button"
                                         onClick={() => setData('category', catKey as any)}
-                                        className={`group bg-owner-accent/10 hover:border-owner-accent hover:bg-owner-accent/15 rounded-xl border p-3 text-left transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_20px_rgba(90,166,122,0.18)] active:translate-y-0 active:scale-[0.985] motion-reduce:transition-none motion-reduce:hover:transform-none ${data.category === catKey ? 'border-owner-accent bg-owner-accent/20 shadow-[0_8px_16px_rgba(90,166,122,0.18)]' : 'border-owner-accent/35'}`}
+                                        className={`community-category-card group bg-owner-accent/10 hover:border-owner-accent hover:bg-owner-accent/15 rounded-xl border p-3 text-left transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_20px_rgba(90,166,122,0.18)] active:translate-y-0 active:scale-[0.985] motion-reduce:transition-none motion-reduce:hover:transform-none ${data.category === catKey ? 'community-category-card-selected border-owner-accent bg-owner-accent/20 shadow-[0_8px_16px_rgba(90,166,122,0.18)]' : 'border-owner-accent/35'}`}
                                     >
                                         <p className={`text-sm font-medium ${data.category === catKey ? 'text-owner-accent' : ''}`}>{catLabel}</p>
                                         <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{catDesc}</p>

@@ -59,7 +59,7 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
                         </Link>
                     </Button>
                 </TooltipTrigger>
-                <TooltipContent className="bg-[#5aa67a] text-white" arrowClassName="!bg-[#5aa67a] !fill-[#5aa67a]">
+                <TooltipContent className="bg-blue-600 text-white" arrowClassName="!bg-blue-600 !fill-blue-600">
                     <p>{t('inventory.editProduct')}</p>
                 </TooltipContent>
             </Tooltip>
@@ -77,7 +77,7 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
                     </Button>
                 </TooltipTrigger>
 
-                <TooltipContent className="bg-[#5aa67a] text-white" arrowClassName="!bg-[#5aa67a] !fill-[#5aa67a]">
+                <TooltipContent className="bg-blue-600 text-white" arrowClassName="!bg-blue-600 !fill-blue-600">
                     <p>{product.is_active ? t('common.inactive') : t('admin.active')}</p>
                 </TooltipContent>
             </Tooltip>
@@ -99,7 +99,7 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
                         />
                     </div>
                 </TooltipTrigger>
-                <TooltipContent className="bg-[#5aa67a] text-white" arrowClassName="!bg-[#5aa67a] !fill-[#5aa67a]">
+                <TooltipContent className="bg-blue-600 text-white" arrowClassName="!bg-blue-600 !fill-blue-600">
                     <p>{t('inventory.deleteProduct')}</p>
                 </TooltipContent>
             </Tooltip>

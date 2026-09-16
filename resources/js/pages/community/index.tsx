@@ -79,7 +79,7 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('community.title')} />
-            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
+            <div className="business-page community-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">

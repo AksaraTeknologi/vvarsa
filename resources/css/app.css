@@ -571,6 +571,222 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover {
     stroke: #5e4bf2 !important;
 }
 
+.supervisor-theme {
+    --color-supervisor-accent: #2596be;
+    --color-supervisor-bg: #f0f9ff;
+    --color-supervisor-hover: #e0f2fe;
+    background: radial-gradient(circle at top left, #dff4ff 0%, #f7fcff 42%, #ffffff 100%);
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+.supervisor-theme [data-slot='sidebar-inset'],
+.supervisor-theme main,
+.supervisor-content {
+    position: relative;
+    isolation: isolate;
+    min-height: calc(100vh - 0.5rem);
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 8% 10%, rgb(37 150 190 / 0.3) 0%, transparent 34%),
+        radial-gradient(circle at 88% 70%, rgb(125 211 252 / 0.34) 0%, transparent 38%),
+        linear-gradient(135deg, #e9f8ff 0%, #f8fcff 48%, #dff4ff 100%) !important;
+    color: #17384a;
+}
+
+.supervisor-theme [data-slot='sidebar'],
+.supervisor-sidebar {
+    background: #ffffff !important;
+    border-color: #c7e8f5 !important;
+}
+
+.supervisor-theme [data-slot='sidebar-menu-button'],
+.supervisor-theme [data-slot='sidebar-menu-button'] svg {
+    color: #356477 !important;
+}
+
+.supervisor-theme [data-slot='sidebar-menu-button']:hover,
+.supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'] {
+    background: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme [data-slot='sidebar-menu-button']:hover svg,
+.supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'] svg {
+    color: #2596be !important;
+    stroke: #2596be !important;
+}
+
+.supervisor-theme .supervisor-user-menu,
+.supervisor-theme .supervisor-user-menu:hover,
+.supervisor-theme .supervisor-user-menu[data-state='open'] {
+    background: rgb(37 150 190 / 0.12) !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .supervisor-user-menu svg {
+    color: #2596be !important;
+    stroke: #2596be !important;
+}
+
+.supervisor-theme [data-slot='avatar-fallback'] {
+    background: #d7f0fb !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme [data-variant='owner'],
+.supervisor-theme .bg-owner-accent {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme .text-owner-accent {
+    background-color: transparent !important;
+    color: #2596be !important;
+}
+
+.supervisor-theme .border-owner-accent,
+.supervisor-theme .border-owner-accent\/25,
+.supervisor-theme .border-owner-accent\/30,
+.supervisor-theme input,
+.supervisor-theme textarea,
+.supervisor-theme [data-slot='select-trigger'] {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme input:focus-visible,
+.supervisor-theme textarea:focus-visible,
+.supervisor-theme [data-slot='select-trigger']:focus-visible {
+    border-color: #2596be !important;
+    box-shadow: 0 0 0 3px rgb(37 150 190 / 0.16) !important;
+}
+
+.supervisor-theme,
+.supervisor-theme * {
+    scrollbar-color: #2596be #e0f2fe !important;
+}
+
+.supervisor-theme::-webkit-scrollbar,
+.supervisor-theme *::-webkit-scrollbar {
+    width: 9px !important;
+    height: 9px !important;
+}
+
+.supervisor-theme::-webkit-scrollbar-track,
+.supervisor-theme *::-webkit-scrollbar-track {
+    background: #e0f2fe !important;
+}
+
+.supervisor-theme::-webkit-scrollbar-thumb,
+.supervisor-theme *::-webkit-scrollbar-thumb {
+    border: 2px solid #e0f2fe !important;
+    border-radius: 9999px;
+    background: #2596be !important;
+}
+
+.supervisor-theme [class*='bg-owner-accent'],
+.supervisor-theme [class*='bg-[#5aa67a]'],
+.supervisor-theme [data-variant='owner'] {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme [class*='text-owner-accent'],
+.supervisor-theme [class*='text-[#5aa67a]'] {
+    color: #2596be !important;
+}
+
+.supervisor-theme [class*='border-owner-accent'],
+.supervisor-theme [class*='border-[#d9e5dd]'],
+.supervisor-theme [class*='border-[#dfeee4]'] {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme [class*='hover:bg-owner-accent']:hover,
+.supervisor-theme [class*='hover:bg-[#edf8f1]']:hover,
+.supervisor-theme [class*='hover:bg-[#f2f5f3]']:hover {
+    background-color: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme [class*='hover:text-owner-accent']:hover,
+.supervisor-theme [class*='focus-visible:border-owner-accent']:focus-visible,
+.supervisor-theme [class*='focus:border-owner-accent']:focus {
+    color: #16749b !important;
+    border-color: #2596be !important;
+}
+
+.supervisor-theme [class*='shadow-[0_'][class*='90,166,122'],
+.supervisor-theme [class*='rgba(90,166,122'] {
+    --tw-shadow-color: rgb(37 150 190 / 0.2) !important;
+}
+
+.supervisor-theme [data-slot='checkbox'][data-state='checked'] {
+    border-color: #2596be !important;
+    background: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-settings-page h1,
+.supervisor-settings-page h2,
+.supervisor-settings-page h3 {
+    color: #17182a !important;
+}
+
+.supervisor-settings-page .text-owner-accent {
+    background-color: transparent !important;
+    color: #2596be !important;
+}
+
+.supervisor-settings-page [class*='bg-owner-accent/'] {
+    background-color: #effaff !important;
+    color: #16749b !important;
+}
+
+.supervisor-settings-page [class*='bg-[#f7fbf8]'] {
+    background-color: #effaff !important;
+}
+
+.supervisor-settings-page .appearance-tabs button:not([class*='bg-owner-accent']) {
+    background-color: transparent !important;
+    color: #1f2a23 !important;
+}
+
+.supervisor-settings-page .appearance-tabs button:not([class*='bg-owner-accent']):hover {
+    background-color: #effaff !important;
+    color: #16749b !important;
+}
+
+.supervisor-settings-page .appearance-tabs button[class*='bg-owner-accent'] {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-settings-page [data-slot='card'],
+.supervisor-settings-page form,
+.supervisor-settings-page nav {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-settings-page input,
+.supervisor-settings-page textarea,
+.supervisor-settings-page select {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+}
+
+.supervisor-settings-page [data-variant='owner'],
+.supervisor-settings-page .bg-owner-accent {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-settings-page input:focus-visible,
+.supervisor-settings-page textarea:focus-visible,
+.supervisor-settings-page select:focus-visible {
+    border-color: #2596be !important;
+    box-shadow: 0 0 0 3px rgb(37 150 190 / 0.16) !important;
+}
+
 .admin-theme .admin-user-menu [data-slot='avatar-fallback'] {
     background: #dcd8ff !important;
     color: #4938d9 !important;
@@ -1787,6 +2003,289 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover {
     }
 }
 
+/* Final supervisor palette overrides shared owner workflows. */
+.supervisor-theme,
+.supervisor-theme [data-slot='sidebar-inset'],
+.supervisor-theme main,
+.supervisor-content,
+.supervisor-settings-page {
+    background-color: #cfeefa !important;
+    background-image:
+        radial-gradient(circle at 8% 10%, rgb(37 150 190 / 0.38) 0%, transparent 34%),
+        radial-gradient(circle at 88% 70%, rgb(56 189 248 / 0.34) 0%, transparent 38%),
+        linear-gradient(135deg, #cfeefa 0%, #edf9ff 48%, #bfe5f5 100%) !important;
+}
+
+.supervisor-theme [data-slot='sidebar'],
+.supervisor-theme .supervisor-sidebar {
+    background: #ffffff !important;
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme [class*='bg-owner-accent'],
+.supervisor-theme [class*='bg-[#5aa67a]'],
+.supervisor-theme [data-variant='owner'],
+.supervisor-settings-page [class*='bg-owner-accent'] {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme [class*='text-owner-accent'],
+.supervisor-theme [class*='text-[#5aa67a]'],
+.supervisor-settings-page .text-owner-accent {
+    color: #2596be !important;
+}
+
+.supervisor-theme [class*='border-owner-accent'],
+.supervisor-theme [class*='border-[#d9e5dd]'],
+.supervisor-theme [class*='border-[#dfeee4]'],
+.supervisor-settings-page form,
+.supervisor-settings-page nav {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme [class*='hover:bg-owner-accent']:hover,
+.supervisor-theme [class*='hover:bg-[#edf8f1]']:hover,
+.supervisor-theme [class*='hover:bg-[#f2f5f3]']:hover {
+    background-color: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .community-page [class*='bg-owner-accent/10'],
+.supervisor-theme .community-page [class*='bg-owner-accent/20'] {
+    background-color: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .community-page [class*='border-owner-accent/35'],
+.supervisor-theme .community-page [class*='border-owner-accent/40'] {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme .community-create-page [class*='bg-owner-accent/10'] {
+    background-color: #ffffff !important;
+    color: #1f2a23 !important;
+}
+
+.supervisor-theme .community-create-page [class*='bg-owner-accent/15']:hover {
+    background-color: #effaff !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .community-create-page [class*='bg-owner-accent/20'] {
+    background-color: #2596be !important;
+    border-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme .community-create-page [class*='bg-owner-accent/20'] p {
+    color: #ffffff !important;
+}
+
+.supervisor-theme .community-create-page [class*='bg-owner-accent/20'] p.text-owner-accent {
+    background-color: transparent !important;
+}
+
+.supervisor-theme .community-create-page [class*='bg-owner-accent/20'] p.text-muted-foreground {
+    color: rgb(255 255 255 / 0.8) !important;
+}
+
+.supervisor-theme .community-create-page button.community-category-card-selected,
+.supervisor-theme .community-create-page button.community-category-card-selected:hover {
+    background-color: #2596be !important;
+    border-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme .community-create-page button.community-category-card-selected p,
+.supervisor-theme .community-create-page button.community-category-card-selected p.text-owner-accent,
+.supervisor-theme .community-create-page button.community-category-card-selected p.text-muted-foreground {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme .community-show-page [class*='bg-owner-accent/10'],
+.supervisor-theme .community-show-page [class*='bg-owner-accent/20'] {
+    background-color: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .community-show-page [class*='text-owner-accent'] {
+    background-color: transparent !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .community-show-page [class*='border-owner-accent/35'] {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme .supplier-page [class*='text-owner-accent'] {
+    background-color: transparent !important;
+    color: #2596be !important;
+}
+
+.supervisor-theme .tax-consultation-page [class*='text-owner-accent'] {
+    background-color: transparent !important;
+    color: #2596be !important;
+}
+
+.supervisor-theme .members-page [class*='bg-owner-accent/10'] {
+    background-color: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .members-page [class*='text-owner-accent'] {
+    background-color: transparent !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme .members-page [data-slot='table'] thead th {
+    background-color: #effaff !important;
+    border-color: #b9e2f2 !important;
+    color: #16749b !important;
+}
+
+.members-page table thead tr,
+.members-page table thead th {
+    background-color: #effaff !important;
+    border-color: #b9e2f2 !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme [data-slot='checkbox'][data-state='checked'] {
+    border-color: #2596be !important;
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-theme [data-slot='sidebar-menu-button']:hover,
+.supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'] {
+    background: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme [data-slot='sidebar-menu-button']:hover svg,
+.supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'] svg,
+.supervisor-theme .supervisor-user-menu svg {
+    color: #2596be !important;
+    stroke: #2596be !important;
+}
+
+.supervisor-settings-page .tenant-dashboard-bubble {
+    background: rgb(37 150 190 / 0.24) !important;
+    border-color: rgb(37 150 190 / 0.2) !important;
+    box-shadow: 0 16px 38px rgb(37 150 190 / 0.16) !important;
+}
+
+.supervisor-theme,
+.supervisor-theme * {
+    scrollbar-color: #2596be #e0f2fe !important;
+}
+
+.supervisor-theme::-webkit-scrollbar-thumb,
+.supervisor-theme *::-webkit-scrollbar-thumb {
+    border-color: #e0f2fe !important;
+    background: #2596be !important;
+}
+
+.supervisor-theme > [data-slot='sidebar-inset'] > header,
+.supervisor-theme [data-slot='sidebar-inset'] > header {
+    border-bottom: 2px solid #9fd5e8 !important;
+    box-shadow: 0 1px 0 rgb(37 150 190 / 0.12) !important;
+}
+
+body:has(.supervisor-theme),
+body:has(.supervisor-theme) * {
+    scrollbar-color: #2596be #e0f2fe !important;
+}
+
+body:has(.supervisor-theme)::-webkit-scrollbar,
+body:has(.supervisor-theme) *::-webkit-scrollbar {
+    width: 9px !important;
+    height: 9px !important;
+}
+
+body:has(.supervisor-theme)::-webkit-scrollbar-track,
+body:has(.supervisor-theme) *::-webkit-scrollbar-track {
+    background: #e0f2fe !important;
+}
+
+body:has(.supervisor-theme)::-webkit-scrollbar-thumb,
+body:has(.supervisor-theme) *::-webkit-scrollbar-thumb {
+    border: 2px solid #e0f2fe !important;
+    border-radius: 9999px !important;
+    background: #2596be !important;
+}
+
+body:has(.supervisor-theme)::-webkit-scrollbar-thumb:hover,
+body:has(.supervisor-theme) *::-webkit-scrollbar-thumb:hover {
+    background: #16749b !important;
+}
+
+.supervisor-theme {
+    --primary: #2596be;
+    --primary-foreground: #ffffff;
+    --ring: #2596be;
+}
+
+.supervisor-dashboard.is-supervisor [class*='text-primary'],
+.supervisor-dashboard.is-supervisor [class*='text-emerald'] {
+    color: #2596be !important;
+}
+
+.supervisor-dashboard.is-supervisor [class*='bg-emerald-500'],
+.supervisor-dashboard.is-supervisor [class*='bg-emerald-100'],
+.supervisor-dashboard.is-supervisor [class*='bg-emerald-900'] {
+    background-color: #d7f0fb !important;
+    color: #16749b !important;
+}
+
+.supervisor-dashboard.is-supervisor [class*='bg-emerald-500'] {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.supervisor-dashboard.is-supervisor [class*='hover:bg-emerald']:hover {
+    background-color: #e0f2fe !important;
+}
+
+.supervisor-dashboard.is-supervisor [class*='hover:border-emerald']:hover {
+    border-color: #9fd5e8 !important;
+}
+
+.supervisor-dashboard.is-supervisor [class*='rgba(16,185,129'] {
+    --tw-shadow-color: rgb(37 150 190 / 0.14) !important;
+}
+
+/* Full supervisor batik texture: soft floral rosettes and geometric petals over blue. */
+.supervisor-theme,
+.supervisor-theme [data-slot='sidebar-inset'],
+.supervisor-content,
+.supervisor-settings-page {
+    background-color: #cfeefa !important;
+    background-image:
+        radial-gradient(circle at 18px 18px, transparent 0 7px, rgb(255 255 255 / 0.32) 7px 10px, transparent 10px 17px),
+        radial-gradient(circle at 58px 58px, transparent 0 12px, rgb(255 255 255 / 0.25) 12px 15px, transparent 15px 28px),
+        repeating-conic-gradient(from 15deg at 58px 58px, rgb(255 255 255 / 0.2) 0deg 8deg, transparent 8deg 30deg),
+        repeating-linear-gradient(45deg, transparent 0 32px, rgb(255 255 255 / 0.14) 32px 35px, transparent 35px 68px),
+        radial-gradient(ellipse at 92px 20px, transparent 0 9px, rgb(255 255 255 / 0.2) 9px 11px, transparent 11px 23px),
+        repeating-radial-gradient(ellipse at 22px 92px, rgb(255 255 255 / 0.13) 0 2px, transparent 2px 11px),
+        repeating-conic-gradient(from 5deg at 145px 112px, transparent 0deg 14deg, rgb(255 255 255 / 0.12) 14deg 20deg, transparent 20deg 42deg),
+        linear-gradient(135deg, #c5eaf7 0%, #dff5fc 48%, #b7dfef 100%) !important;
+    background-size: 116px 116px, 174px 174px, 174px 174px, 144px 144px, 210px 180px, 180px 180px, 260px 230px, 100% 100% !important;
+}
+
+.supervisor-theme [data-slot='sidebar'] {
+    background-color: #cfeefa !important;
+    background-image:
+        radial-gradient(circle at 15px 15px, transparent 0 6px, rgb(255 255 255 / 0.28) 6px 9px, transparent 9px 16px),
+        repeating-conic-gradient(from 15deg at 48px 48px, rgb(255 255 255 / 0.17) 0deg 8deg, transparent 8deg 30deg),
+        repeating-radial-gradient(ellipse at 72px 18px, rgb(255 255 255 / 0.12) 0 2px, transparent 2px 10px),
+        repeating-conic-gradient(from 5deg at 96px 96px, transparent 0deg 14deg, rgb(255 255 255 / 0.1) 14deg 20deg, transparent 20deg 42deg),
+        linear-gradient(135deg, #c5eaf7 0%, #dff5fc 52%, #b7dfef 100%) !important;
+    background-size: 96px 96px, 144px 144px, 150px 150px, 190px 190px, 100% 100% !important;
+}
+
 /*
 .dark .admin-theme {
     background: radial-gradient(circle at top left, #29234a 0%, #171624 45%, #101018 100%);
@@ -2746,12 +3245,64 @@ body:has(.plans-dialog) .plans-dialog *::-webkit-scrollbar-track {
     animation: posSelectionPop 220ms ease-out;
 }
 
-.pos-page :where(h2, h3, p, span, label, button, a, input, textarea, select, option) {
-    font-size: 0.875rem !important;
+.pos-page [class*='text-[#3f9567]'] {
+    color: #2596be !important;
 }
 
-.pos-cart-content :where(h2, h3, p, span, label, button, a, input, textarea, select, option) {
-    font-size: 0.75rem !important;
+.pos-page [class*='bg-[#3f9567]'] {
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+.pos-page [class*='border-[#3f9567]'] {
+    border-color: #2596be !important;
+}
+
+.pos-page [class*='bg-[#e8f6ed]'],
+.pos-page [class*='bg-[#f4faf6]'] {
+    background-color: #effaff !important;
+}
+
+.pos-page [class*='border-[#c7e0ce]'],
+.pos-page [class*='border-[#d9e5dd]'],
+.pos-page [class*='border-[#a9d4b6]'],
+.pos-page [class*='border-[#8fc7a5]'],
+.pos-page [class*='border-[#76b58e]'],
+.pos-page [class*='border-[#d9e0dc]'],
+.pos-page [class*='border-[#a9cdb4]'] {
+    border-color: #b9e2f2 !important;
+}
+
+.pos-page [class*='bg-[#f7fbf8]'] {
+    background-color: #f3faff !important;
+}
+
+.pos-page [class*='text-[#315d45]'] {
+    color: #145b78 !important;
+}
+
+.pos-page [class*='bg-emerald-100'],
+.pos-page [class*='bg-emerald-500'] {
+    background-color: #d7f0fb !important;
+}
+
+.pos-page [class*='text-emerald-600'],
+.pos-page [class*='text-emerald-700'] {
+    color: #16749b !important;
+}
+
+.pos-page [class*='border-emerald-200'],
+.pos-page [class*='border-emerald-300'] {
+    border-color: #9fd5e8 !important;
+}
+
+.pos-page [class*='hover:bg-[#edf8f1]']:hover,
+.pos-page [class*='hover:bg-[#f4faf6]']:hover {
+    background-color: #e0f2fe !important;
+}
+
+.pos-page [class*='hover:bg-[#327d55]']:hover {
+    background-color: #1d789b !important;
 }
 
 .finance-page {
@@ -3297,4 +3848,47 @@ button {
         opacity: 1;
         transform: none;
     }
+}
+
+.supervisor-theme [class*='from-[#4aaa7a]'],
+.supervisor-theme [class*='via-[#4fa96f]'] {
+    background-image: linear-gradient(135deg, #2596be 0%, #3aa9ce 52%, #d7f0fb 100%) !important;
+}
+
+.supervisor-theme [class*='text-[#3f9567]'],
+.supervisor-theme [class*='text-[#2f7d51]'] {
+    color: #2596be !important;
+}
+
+.supervisor-theme [class*='bg-[#edf8f1]'],
+.supervisor-theme [class*='bg-[#e7f7ee]'],
+.supervisor-theme [class*='bg-[#e9f3ed]'],
+.supervisor-theme [class*='bg-emerald-50'],
+.supervisor-theme [class*='bg-emerald-900'] {
+    background-color: #e0f2fe !important;
+    color: #16749b !important;
+}
+
+.supervisor-theme [class*='border-[#dfeae1]'],
+.supervisor-theme [class*='border-[#edf4ef]'],
+.supervisor-theme [class*='border-[#edf1ef]'] {
+    border-color: #b9e2f2 !important;
+}
+
+.supervisor-theme [class*='shadow-[0_18px_35px_rgba(63,149,103'] {
+    box-shadow: 0 18px 35px rgb(37 150 190 / 0.14) !important;
+}
+
+.supervisor-theme [class*='bg-[#3f9567]'] {
+    background-color: #2596be !important;
+}
+
+.supervisor-theme .business-event-card > div:first-child {
+    border-bottom: 2px solid #0f6686 !important;
+    background: #16749b !important;
+}
+
+.supervisor-theme .business-event-card > div:first-child p,
+.supervisor-theme .business-event-card > div:first-child span {
+    color: #ffffff !important;
 }

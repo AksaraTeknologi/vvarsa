@@ -11,10 +11,11 @@ interface AppContentProps extends React.ComponentProps<'main'> {
 export function AppContent({ variant = 'header', children, className, ...props }: AppContentProps) {
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner');
+    const isSupervisor = auth.user?.roles?.includes('supervisor');
 
     if (variant === 'sidebar') {
         return (
-            <SidebarInset className={cn(isOwner && 'owner-content', className)} {...props}>
+            <SidebarInset className={cn(isOwner && 'owner-content', isSupervisor && 'supervisor-content', className)} {...props}>
                 {children}
             </SidebarInset>
         );

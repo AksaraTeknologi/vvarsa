@@ -58,7 +58,7 @@ export default function TaxConsultation() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('tax.consultation')} />
-            <div className="business-page w-full p-4 md:p-6">
+            <div className="business-page tax-consultation-page w-full p-4 md:p-6">
                 <div className="mb-6">
                     <Button variant="ghost" asChild className="h-10 rounded-xl px-3 text-sm">
                         <Link href="/tax" aria-label={t('tax.backToReports')}>

@@ -23,7 +23,7 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className,
                         variant="ghost"
                         size="sm"
                         className={cn(
-                            'data-[state=open]:bg-[#e8f5ec] h-8 rounded-lg px-2 text-[11px] font-extrabold tracking-[0.06em] text-[#686673] uppercase hover:cursor-pointer hover:bg-[#edf8f1] hover:text-[#3f9567]',
+                            'h-8 rounded-none bg-transparent px-2 text-[11px] font-extrabold tracking-[0.06em] text-[#686673] uppercase hover:cursor-pointer hover:bg-transparent hover:text-[#686673] data-[state=open]:bg-transparent',
                             !centered && '-ml-3',
                             centered && 'relative w-full justify-center pr-8',
                         )}

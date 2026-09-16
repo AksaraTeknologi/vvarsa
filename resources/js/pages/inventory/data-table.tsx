@@ -21,9 +21,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     return (
         <div className="border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
             <Table>
-                <TableHeader>
+                <TableHeader className="[&_tr]:border-0">
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-border border-b bg-slate-50/50 hover:bg-transparent dark:bg-slate-800/10">
+                        <TableRow key={headerGroup.id} className="border-0 bg-slate-50/50 hover:bg-transparent dark:bg-slate-800/10">
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}

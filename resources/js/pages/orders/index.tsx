@@ -107,7 +107,11 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                         <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('orders.subtitle')}</p>
                     </div>
                     <div className="flex gap-2">
-                        <Button asChild variant="outline" className="gap-1.5 rounded-xl border-[#c7e0ce] text-[#3f9567] hover:bg-[#edf8f1]">
+                        <Button
+                            asChild
+                            variant="outline"
+                            className="gap-1.5 rounded-xl !border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700"
+                        >
                             <Link href="/pos">
                                 <ShoppingBag size={15} />
                                 {t('orders.posButton')}
@@ -149,7 +153,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                 {/* Filters */}
                 <div className="flex flex-wrap gap-2">
                     <Select value={filters.status ?? 'all'} onValueChange={(v) => applyFilter('status', v)}>
-                        <SelectTrigger className="h-9 w-40 rounded-xl text-sm">
+                        <SelectTrigger className="!h-9 !w-40 !rounded-xl !border-border !bg-white !text-sm !text-foreground hover:!bg-slate-50">
                             <SelectValue placeholder={t('orders.allStatuses')} />
                         </SelectTrigger>
                         <SelectContent>
@@ -161,7 +165,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                         </SelectContent>
                     </Select>
                     <Select value={filters.payment_status ?? 'all'} onValueChange={(v) => applyFilter('payment_status', v)}>
-                        <SelectTrigger className="h-9 w-44 rounded-xl text-sm">
+                        <SelectTrigger className="!h-9 !w-44 !rounded-xl !border-border !bg-white !text-sm !text-foreground hover:!bg-slate-50">
                             <SelectValue placeholder={t('orders.allPayments')} />
                         </SelectTrigger>
                         <SelectContent>

@@ -1,5 +1,5 @@
 import { formatCurrency } from '@/lib/utils-mrp';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import {
     AlertTriangle,
@@ -61,6 +61,7 @@ interface AnalyticsData {
 
 export function AiAdvisoryFloatingButton() {
     const { t } = useTranslation();
+    const { url } = usePage();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [data, setData] = useState<AnalyticsData | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -150,6 +151,8 @@ export function AiAdvisoryFloatingButton() {
         });
         return () => unbind();
     }, []);
+
+    if (url.startsWith('/pos')) return null;
 
     const reorderAlerts = data?.reorder_alerts || [];
     const pricingRecs = data?.pricing_recommendations || [];

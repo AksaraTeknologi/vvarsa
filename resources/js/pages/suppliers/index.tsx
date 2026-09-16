@@ -47,7 +47,7 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('supplier.recommendations')} />
-            <div className="business-page flex flex-col gap-6 p-4 md:p-6">
+            <div className="business-page supplier-page flex flex-col gap-6 p-4 md:p-6">
                 {/* Header & Add Button */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>

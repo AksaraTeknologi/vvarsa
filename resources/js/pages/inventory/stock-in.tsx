@@ -240,7 +240,7 @@ export default function StockIn({ products }: Props) {
                         <Button
                             type="submit"
                             disabled={processing}
-                            className="rounded-xl bg-emerald-600 px-5 text-white hover:bg-emerald-700 disabled:opacity-70"
+                            className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700 disabled:opacity-70"
                         >
                             {processing ? t('inventory.saving') : t('inventory.saveStockIn')}
                         </Button>

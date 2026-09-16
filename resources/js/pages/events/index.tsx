@@ -20,10 +20,10 @@ interface Props {
 const BUSINESS_TYPE_KEYS = ['', 'fnb', 'retail', 'fashion', 'general', 'service'];
 
 const STATUS_STYLES: Record<string, string> = {
-    upcoming: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    ongoing: 'bg-white/90 text-[#3f9567]',
-    completed: 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
-    cancelled: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400',
+    upcoming: 'border border-white/40 bg-white/20 text-white',
+    ongoing: 'border border-white/40 bg-white/20 text-white',
+    completed: 'border border-white/40 bg-white/20 text-white',
+    cancelled: 'border border-white/40 bg-white/20 text-white',
 };
 
 export const getCalculatedStatus = (event: {
@@ -102,7 +102,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         onClick={() => handleTabChange(false)}
                         className={`-mb-[1px] border-b-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
                             !onlyRegistered
-                                ? 'border-primary text-primary font-bold'
+                                ? 'border-[#2596be] text-[#2596be] font-bold'
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
@@ -112,7 +112,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         onClick={() => handleTabChange(true)}
                         className={`-mb-[1px] border-b-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
                             onlyRegistered
-                                ? 'border-primary text-primary font-bold'
+                                ? 'border-[#2596be] text-[#2596be] font-bold'
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
@@ -197,7 +197,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                     </div>
 
                                     <div className="p-5 [transform:translateZ(6px)]">
-                                        <h3 className="group-hover:text-primary line-clamp-2 leading-snug font-semibold transition-colors">
+                                        <h3 className="group-hover:text-[#2596be] line-clamp-2 leading-snug font-semibold transition-colors">
                                             {event.title}
                                         </h3>
                                         <p className="text-muted-foreground mt-1 text-sm">{event.organizer}</p>
@@ -229,7 +229,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                                     {t('events.fullBadge')}
                                                 </span>
                                             ) : (
-                                                <span className="text-primary text-xs font-medium">{t('events.viewDetail')}</span>
+                                                <span className="text-[#2596be] text-xs font-medium">{t('events.viewDetail')}</span>
                                             )}
                                         </div>
                                     </div>

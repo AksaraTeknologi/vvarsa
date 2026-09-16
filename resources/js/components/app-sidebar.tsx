@@ -94,16 +94,18 @@ function NavSection({ title, items, theme, currentUrl }: { title?: string; items
                             preserveScroll
                             className={`group flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 ${
                                 isActive
-                                    ? `${theme.bgSubtle} !text-[#2d6b49] hover:!text-[#2d6b49] focus-visible:!text-[#2d6b49]`
-                                    : `text-[#4a4e69] ${theme.textHover} ${theme.bgHover} hover:!text-[#2d6b49] focus-visible:!text-[#2d6b49]`
+                                    ? `${theme.bgSubtle} ${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'} hover:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'} focus-visible:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'}`
+                                    : `text-[#4a4e69] ${theme.textHover} ${theme.bgHover} hover:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'} focus-visible:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'}`
                             }`}
                         >
                             {item.icon && (
                                 <item.icon
                                     className={`size-4 shrink-0 transition-colors ${
-                                        theme === ROLE_THEME.admin
-                                            ? `${theme.text} !text-[#5e4bf2]`
-                                            : `!text-[#3f9567] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
+                                                                                theme === ROLE_THEME.admin
+                                                                                        ? `${theme.text} !text-[#5e4bf2]`
+                                                                                        : theme === ROLE_THEME.supervisor
+                                                                                            ? `!text-[#2596be] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
+                                                                                            : `!text-[#3f9567] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
                                     }`}
                                 />
                             )}
@@ -261,7 +263,7 @@ export function AppSidebar() {
     }
 
     return (
-        <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border} ${isOwner ? 'owner-sidebar' : ''}`}>
+        <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border} ${isOwner ? 'owner-sidebar' : ''} ${isSupervisor ? 'supervisor-sidebar' : ''}`}>
             <SidebarHeader className="pt-4 pb-0">
                 <SidebarLogo href="/dashboard" theme={theme} />
                 <div className={`mx-3 mt-3 h-px ${theme.dividerBg}`} />

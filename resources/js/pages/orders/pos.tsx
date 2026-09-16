@@ -502,9 +502,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
         const isCustomerActive = showCustomerFields || Boolean(customerName || customerPhone || customerEmail || notes);
 
         return (
-            <div className="pos-cart-content flex h-full min-h-0 w-full flex-col bg-[#fbfdfc]">
+            <div className="pos-cart-content flex h-full min-h-0 w-full flex-col bg-white">
                 {/* Cart Header */}
-                <div className="relative flex shrink-0 items-center justify-between border-b-2 border-[#d9e5dd] bg-white px-4 py-3.5 sm:px-5 sm:py-4">
+                <div className="border-border relative flex shrink-0 items-center justify-between border-b bg-white px-4 py-3.5 sm:px-5 sm:py-4">
                     <h2 className="text-foreground flex items-center gap-3 text-xs font-semibold">
                         <span className="flex size-9 items-center justify-center rounded-xl bg-[#e8f6ed] text-[#3f9567] shadow-[inset_0_0_0_1px_#c7e0ce]">
                             <ShoppingCart size={17} />
@@ -1240,9 +1240,9 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('pos.title')} />
 
-            <div className="pos-page relative flex h-[calc(100vh-4rem)] min-h-0 w-full overflow-hidden bg-white">
+                <div className="pos-page relative flex h-[calc(100vh-4rem)] min-h-0 w-full overflow-hidden bg-transparent">
                 {/* Left: Product & Package Grid */}
-                <div className="min-w-0 flex-1 space-y-5 overflow-hidden bg-[radial-gradient(circle_at_8%_0%,#dff3e6_0%,#ffffff_42%,#f3faf5_100%)] p-4 pb-28 md:p-6 lg:pb-6">
+                <div className="min-h-0 min-w-0 flex-1 space-y-5 overflow-y-auto bg-transparent p-4 pb-28 md:p-6 lg:pb-6">
                     {/* Header with Mobile Cart Trigger */}
                     <div className="flex items-center justify-between gap-3">
                         <div>
@@ -1301,7 +1301,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     <span className="bg-muted rounded-md px-2 py-0.5 text-[11px] font-bold text-[#3f9567]">
                                                         {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                                     </span>
-                                                    <div className="bg-muted rounded-full p-1 text-[#3f9567] transition-colors group-hover:bg-[#3f9567] group-hover:text-white">
+                                                    <div className="flex size-7 items-center justify-center rounded-full !bg-[#2596BE] !p-1 text-white transition-colors group-hover:!bg-[#1f83a8]">
                                                         <Plus size={13} />
                                                     </div>
                                                 </div>
@@ -1524,7 +1524,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                 </div>
 
                 {/* Right Desktop: Cart & Checkout (Visible only on lg and above) */}
-                <div className="hidden h-full w-[24rem] shrink-0 flex-col overflow-hidden rounded-l-2xl border-2 border-t border-[#b9d8c3] border-t-[#3f9567] bg-[#fbfdfc] shadow-[-10px_0_24px_rgb(31_42_35_/_0.07)] lg:flex xl:w-[28rem] 2xl:w-[30rem]">
+                <div className="border-border hidden h-full w-[24rem] shrink-0 flex-col overflow-hidden rounded-l-2xl border bg-white shadow-sm lg:flex xl:w-[28rem] 2xl:w-[30rem]">
                     {renderCartContent()}
                 </div>
             </div>

@@ -79,8 +79,14 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="secondary" asChild className="rounded-xl">
-                            <Link href="/inventory/stock-in">{t('navigation.stockIn')}</Link>
+                        <Button
+                            asChild
+                            className="!h-10 !rounded-xl !border !border-blue-600 !bg-white !px-4 !font-semibold !text-blue-600 shadow-sm hover:!bg-blue-50"
+                        >
+                            <Link href="/inventory/stock-in">
+                                <Package size={16} />
+                                {t('navigation.stockIn')}
+                            </Link>
                         </Button>
                         <Button asChild variant="owner" className="rounded-xl">
                             <Link href="/inventory/create">
@@ -202,7 +208,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
 
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
-                                <Package size={32} className="mb-2 text-emerald-500" />
+                                <Package size={32} className="mb-2 text-blue-500" />
                                 <p className="text-muted-foreground text-sm">{t('inventory.allStockSafe')}</p>
                             </div>
                         ) : (
