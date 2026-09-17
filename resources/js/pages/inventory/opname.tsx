@@ -4,9 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Product } from '@/types/mrp';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Save } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +35,8 @@ const opnameSchema = z.object({
 
 export default function Opname({ products }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner') ?? false;
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('navigation.inventory'), href: '/inventory' },
@@ -116,11 +118,16 @@ export default function Opname({ products }: Props) {
                         </div>
                     </div>
                     <div className="flex w-full flex-col gap-1.5 sm:w-auto">
-                        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">{t('common.date')}</label>
+                        <label className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{t('common.date')}</label>
                         <DatePicker
                             value={opname_date}
                             onChange={(val) => setOpnameDate(val)}
-                            className="!border-blue-200 !bg-white !text-blue-700 hover:!bg-blue-50 hover:!text-blue-700"
+                            theme={isOwner ? 'owner-green' : 'owner'}
+                            className={
+                                isOwner
+                                    ? '!border-[#d9e5dd] !bg-white !text-[#315d45] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]'
+                                    : '!border-blue-200 !bg-white !text-blue-700 hover:!bg-blue-50 hover:!text-blue-700'
+                            }
                         />
                     </div>
                 </div>
@@ -210,7 +217,12 @@ export default function Opname({ products }: Props) {
                         <Button variant="outline" asChild className="rounded-xl">
                             <Link href="/inventory">{t('common.cancel')}</Link>
                         </Button>
-                        <Button type="submit" variant="owner" disabled={processing || changedCount === 0} className="inline-flex items-center gap-2 rounded-xl">
+                        <Button
+                            type="submit"
+                            variant="owner"
+                            disabled={processing || changedCount === 0}
+                            className="inline-flex items-center gap-2 rounded-xl"
+                        >
                             <Save size={16} />
                             {processing ? t('common.saving') : t('inventory.saveOpnameCount', { count: changedCount })}
                         </Button>

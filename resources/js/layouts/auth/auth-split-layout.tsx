@@ -2,7 +2,7 @@ import AppLogoIcon from '@/components/app-logo-icon';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 interface AuthSplitLayoutProps {
     title?: string;
@@ -55,12 +55,6 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
 
 export default function AuthSplitLayout({ children, title, description, reverse = false }: PropsWithChildren<AuthSplitLayoutProps>) {
     const { name, quote } = usePage<SharedData>().props;
-    const [panelVisible, setPanelVisible] = useState(false);
-
-    useEffect(() => {
-        const frame = window.requestAnimationFrame(() => setPanelVisible(true));
-        return () => window.cancelAnimationFrame(frame);
-    }, []);
 
     return (
         <div className="auth-page relative min-h-dvh w-full overflow-hidden bg-[radial-gradient(circle_at_8%_12%,rgba(216,243,128,0.22),transparent_24%),radial-gradient(circle_at_88%_82%,rgba(121,215,255,0.18),transparent_25%),linear-gradient(135deg,#4736d4_0%,#5e4bf2_42%,#7166f4_70%,#dff7e6_145%)] font-sans antialiased">
@@ -126,14 +120,10 @@ export default function AuthSplitLayout({ children, title, description, reverse 
             </div>
 
             <div
-                className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-[linear-gradient(145deg,#ffffff_0%,#ffffff_72%,#f3f1ff_100%)] p-6 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
+                className={`relative z-20 flex min-h-dvh w-full items-center justify-center bg-[linear-gradient(145deg,#ffffff_0%,#ffffff_72%,#f3f1ff_100%)] p-6 shadow-2xl transition-transform duration-500 ease-out lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2 lg:p-12 ${
                     reverse
-                        ? panelVisible
-                            ? 'lg:-translate-x-full lg:rounded-l-none lg:rounded-r-[2.5rem]'
-                            : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'
-                        : panelVisible
-                          ? 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'
-                          : 'lg:translate-x-full lg:rounded-l-[2.5rem] lg:rounded-r-none'
+                        ? 'lg:-translate-x-full lg:rounded-l-none lg:rounded-r-[2.5rem]'
+                        : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'
                 }`}
             >
                 <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">

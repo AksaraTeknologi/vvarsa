@@ -3,9 +3,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type InventoryFilters, type PaginatedData, type Product, type ProductCategory } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, Package, PackagePlus, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,8 @@ interface Props {
 
 export default function InventoryIndex({ products, categories, filters, low_stock_list, total_count, max_products }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner') ?? false;
     const [search, setSearch] = useState(filters.search || '');
     const [category, setCategory] = useState(filters.category || 'all');
 
@@ -53,7 +55,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
         });
     };
 
-    const tableColumns = getColumns(t, handleToggleActive);
+    const tableColumns = getColumns(t, handleToggleActive, isOwner);
 
     const usagePercent = Math.round((total_count / max_products) * 100);
 
@@ -72,16 +74,18 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                             </Button>
                         )}
                         <div>
-                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('navigation.products')}</h1>
-                        <p className="text-muted-foreground mt-1 text-sm">
-                            {t('inventory.productsUsed', { current: total_count, max: max_products })}
-                        </p>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
+                                {t('navigation.products')}
+                            </h1>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                {t('inventory.productsUsed', { current: total_count, max: max_products })}
+                            </p>
                         </div>
                     </div>
                     <div className="flex gap-2">
                         <Button
                             asChild
-                            className="!h-10 !rounded-xl !border !border-blue-600 !bg-white !px-4 !font-semibold !text-blue-600 shadow-sm hover:!bg-blue-50"
+                            className={`!h-10 !rounded-xl !border !bg-white !px-4 !font-semibold shadow-sm ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50'}`}
                         >
                             <Link href="/inventory/stock-in">
                                 <Package size={16} />
@@ -208,7 +212,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
 
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
-                                <Package size={32} className="mb-2 text-blue-500" />
+                                <Package size={32} className={`mb-2 ${isOwner ? 'text-emerald-500' : 'text-blue-500'}`} />
                                 <p className="text-muted-foreground text-sm">{t('inventory.allStockSafe')}</p>
                             </div>
                         ) : (

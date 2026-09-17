@@ -1,5 +1,4 @@
 import AppLayout from '@/layouts/app-layout';
-import { AiAnalyticsWidget } from '@/components/ai-analytics-widget';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Event, type Product, type Transaction } from '@/types/mrp';
@@ -52,7 +51,7 @@ function StatCard({
     return (
         <div className="bg-card border-border rounded-2xl border px-4 py-5 shadow-sm transition-shadow hover:shadow-md">
             <div className="mb-4 flex items-center justify-between gap-3">
-                <p className="text-muted-foreground text-sm font-medium leading-none">{title}</p>
+                <p className="text-muted-foreground text-sm leading-none font-medium">{title}</p>
                 <div className={`flex size-10 items-center justify-center rounded-xl ${color}`}>
                     <Icon size={16} className="text-white" />
                 </div>
@@ -60,9 +59,7 @@ function StatCard({
 
             <div className="flex items-end justify-between gap-3">
                 <div className="min-w-0">
-                    <p className="text-[1.55rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[1.8rem]">
-                        {value}
-                    </p>
+                    <p className="text-[1.55rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[1.8rem]">{value}</p>
                     {subtitle && <p className="text-muted-foreground mt-3 text-[10px] leading-none md:text-[11px]">{subtitle}</p>}
                 </div>
 
@@ -81,6 +78,7 @@ function StatCard({
 export default function Dashboard({ stats, chart_data, recent_transactions, upcoming_events, low_stock_list }: Props) {
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner');
     const isSupervisor = auth.user?.roles?.includes('supervisor');
     const netPositive = stats.net_today >= 0;
 
@@ -90,12 +88,10 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
             <div className={`supervisor-dashboard flex flex-col gap-6 p-4 md:p-6 lg:p-8 ${isSupervisor ? 'is-supervisor' : ''}`}>
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
-                    <h1 className="text-[1.8rem] font-bold leading-none tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
+                    <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
                         {t('dashboard.title')}
                     </h1>
-                    <p className="text-muted-foreground text-sm leading-relaxed md:text-[0.95rem]">
-                        {t('dashboard.subtitle')}
-                    </p>
+                    <p className="text-muted-foreground text-sm leading-relaxed md:text-[0.95rem]">{t('dashboard.subtitle')}</p>
                 </div>
 
                 {/* ── Stats Cards ─────────────────────────────────────── */}
@@ -165,9 +161,13 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                         const label = String(point.payload?.date ?? '');
 
                                         return (
-                                            <div className={`rounded-xl bg-white/95 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm ${isSupervisor ? 'border border-[#B9E2F2]' : 'border border-emerald-200'}`}>
-                                                <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500">{label}</div>
-                                                <div className={`mt-0.5 text-[14px] font-extrabold tracking-[-0.03em] ${isSupervisor ? 'text-[#2596BE]' : 'text-emerald-600'}`}>
+                                            <div
+                                                className={`rounded-xl bg-white/95 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm ${isSupervisor ? 'border border-[#B9E2F2]' : 'border border-emerald-200'}`}
+                                            >
+                                                <div className="text-[11px] font-bold tracking-[0.08em] text-slate-500 uppercase">{label}</div>
+                                                <div
+                                                    className={`mt-0.5 text-[14px] font-extrabold tracking-[-0.03em] ${isSupervisor ? 'text-[#2596BE]' : 'text-emerald-600'}`}
+                                                >
                                                     {formatRupiah(value, true)}
                                                 </div>
                                             </div>
@@ -203,15 +203,18 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         </div>
                         {low_stock_list.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
-                                <Package size={32} className="mb-2 text-blue-500" />
+                                <Package size={32} className={`mb-2 ${isOwner ? 'text-emerald-500' : 'text-blue-500'}`} />
                                 <p className="text-muted-foreground text-sm">{t('dashboard.allStockSafe')}</p>
                             </div>
                         ) : (
                             <div className="space-y-3">
                                 {low_stock_list.map((p) => (
-                                    <div key={p.id} className="flex items-center justify-between gap-3 rounded-2xl border border-border/80 bg-muted/30 px-3 py-2.5">
+                                    <div
+                                        key={p.id}
+                                        className="border-border/80 bg-muted/30 flex items-center justify-between gap-3 rounded-2xl border px-3 py-2.5"
+                                    >
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm font-semibold text-foreground">{p.name}</p>
+                                            <p className="text-foreground truncate text-sm font-semibold">{p.name}</p>
                                             <p className="text-muted-foreground mt-0.5 text-xs">{p.category?.name}</p>
                                         </div>
                                         <div className="shrink-0 text-right">
@@ -243,7 +246,10 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         ) : (
                             <div className="space-y-3">
                                 {recent_transactions.map((tItem) => (
-                                    <div key={tItem.id} className="flex items-center gap-3 rounded-2xl border border-border/80 bg-muted/20 px-3 py-2.5">
+                                    <div
+                                        key={tItem.id}
+                                        className="border-border/80 bg-muted/20 flex items-center gap-3 rounded-2xl border px-3 py-2.5"
+                                    >
                                         <div
                                             className={`flex size-10 items-center justify-center rounded-xl ${tItem.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
                                         >
@@ -287,10 +293,10 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                     <Link
                                         key={e.id}
                                         href={`/events/${e.id}`}
-                                        className="hover:bg-emerald-50/80 flex items-start gap-3 rounded-2xl border border-border/80 bg-muted/20 p-3 transition-colors"
+                                        className="border-border/80 bg-muted/20 flex items-start gap-3 rounded-2xl border p-3 transition-colors hover:bg-emerald-50/80"
                                     >
                                         <div className="flex h-12 w-12 flex-col items-center justify-center rounded-2xl bg-emerald-100 text-center text-emerald-700">
-                                            <span className="text-[10px] font-bold uppercase tracking-[0.08em]">
+                                            <span className="text-[10px] font-bold tracking-[0.08em] uppercase">
                                                 {new Date(e.start_date).toLocaleString('id-ID', { month: 'short' })}
                                             </span>
                                             <span className="text-base leading-none font-extrabold">{new Date(e.start_date).getDate()}</span>

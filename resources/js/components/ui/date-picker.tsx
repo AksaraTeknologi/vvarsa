@@ -18,10 +18,11 @@ interface DatePickerProps {
     placeholder?: string;
     disabled?: boolean;
     className?: string;
-  theme?: "owner" | "admin";
+  theme?: "owner" | "owner-green" | "admin";
 }
 
 export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", disabled = false, className, theme = "owner" }: DatePickerProps) {
+  const isOwnerGreen = theme === "owner-green"
   const dateValue = React.useMemo(() => {
     if (!value) return undefined;
     if (value instanceof Date) return value;
@@ -74,6 +75,12 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
             button_next: "h-8 w-8 rounded-full border-[#DCD8FF] bg-white p-0 text-[#5E4BF2] shadow-sm hover:bg-[#F1EFFD] hover:text-[#4938D9]",
             day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#F1EFFD] hover:text-[#4938D9] focus-visible:ring-2 focus-visible:ring-[#5E4BF2]/30 aria-selected:!bg-[#5E4BF2] aria-selected:!text-white aria-selected:hover:!bg-[#4938D9]",
             today: "!bg-[#F1EFFD] !text-[#5E4BF2]",
+          } : isOwnerGreen ? {
+            caption_label: "text-sm font-semibold text-[#3f9567]",
+            button_previous: "h-8 w-8 rounded-full border-[#d9e5dd] bg-white p-0 text-[#3f9567] shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51]",
+            button_next: "h-8 w-8 rounded-full border-[#d9e5dd] bg-white p-0 text-[#3f9567] shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51]",
+            day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#3f9567] aria-selected:!text-white aria-selected:hover:!bg-[#2f7d51] aria-selected:opacity-100",
+            today: "!bg-[#edf8f1] !text-[#3f9567]",
           } : undefined}
         />
       </PopoverContent>

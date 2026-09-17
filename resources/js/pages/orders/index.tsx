@@ -3,9 +3,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Order, type OrderSummaryItem, type PaginatedData } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { AlertCircle, Banknote, ClipboardList, CreditCard, PlusCircle, ShoppingBag, Smartphone } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,8 @@ interface Props {
 
 export default function OrdersIndex({ orders, summary, filters, paymentMethods = [] }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner') ?? false;
 
     const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.orders'), href: '/orders' }];
 
@@ -110,7 +112,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                         <Button
                             asChild
                             variant="outline"
-                            className="gap-1.5 rounded-xl !border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700"
+                            className={`gap-1.5 rounded-xl ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700'}`}
                         >
                             <Link href="/pos">
                                 <ShoppingBag size={15} />
@@ -144,16 +146,14 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                                 </div>
                             ))}
                         </div>
-                        <p className="text-muted-foreground mt-2 text-xs">
-                            {t('orders.productionSummaryHint')}
-                        </p>
+                        <p className="text-muted-foreground mt-2 text-xs">{t('orders.productionSummaryHint')}</p>
                     </div>
                 )}
 
                 {/* Filters */}
                 <div className="flex flex-wrap gap-2">
                     <Select value={filters.status ?? 'all'} onValueChange={(v) => applyFilter('status', v)}>
-                        <SelectTrigger className="!h-9 !w-40 !rounded-xl !border-border !bg-white !text-sm !text-foreground hover:!bg-slate-50">
+                        <SelectTrigger className="!border-border !text-foreground !h-9 !w-40 !rounded-xl !bg-white !text-sm hover:!bg-slate-50">
                             <SelectValue placeholder={t('orders.allStatuses')} />
                         </SelectTrigger>
                         <SelectContent>
@@ -165,7 +165,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                         </SelectContent>
                     </Select>
                     <Select value={filters.payment_status ?? 'all'} onValueChange={(v) => applyFilter('payment_status', v)}>
-                        <SelectTrigger className="!h-9 !w-44 !rounded-xl !border-border !bg-white !text-sm !text-foreground hover:!bg-slate-50">
+                        <SelectTrigger className="!border-border !text-foreground !h-9 !w-44 !rounded-xl !bg-white !text-sm hover:!bg-slate-50">
                             <SelectValue placeholder={t('orders.allPayments')} />
                         </SelectTrigger>
                         <SelectContent>

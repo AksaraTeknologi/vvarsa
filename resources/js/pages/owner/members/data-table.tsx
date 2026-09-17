@@ -25,10 +25,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id} className="border-border border-b bg-[#f7fbf8] hover:bg-[#f7fbf8]">
                             {headerGroup.headers.map((header) => (
-                                <TableHead
-                                    key={header.id}
-                                    className="text-muted-foreground h-11 px-5 py-3 text-sm font-semibold tracking-normal"
-                                >
+                                <TableHead key={header.id} className="text-muted-foreground h-11 px-5 py-3 text-sm font-semibold tracking-normal">
                                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                 </TableHead>
                             ))}
@@ -41,7 +38,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
-                                className="border-border border-b transition-colors hover:bg-blue-50/70"
+                                className="border-border border-b transition-colors hover:bg-[#edf8f1]"
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id} className="px-5 py-4 align-middle text-sm">

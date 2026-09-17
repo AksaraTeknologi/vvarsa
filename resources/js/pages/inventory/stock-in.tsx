@@ -7,9 +7,9 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Product } from '@/types/mrp';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +30,8 @@ const stockInSchema = z.object({
 
 export default function StockIn({ products }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner') ?? false;
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('navigation.inventory'), href: '/inventory' },
         { title: t('inventory.stockInTitle'), href: '/inventory/stock-in' },
@@ -132,9 +134,11 @@ export default function StockIn({ products }: Props) {
                                 </div>
 
                                 {selectedProduct && (
-                                    <div className="rounded-xl bg-blue-50 p-3.5 text-sm dark:bg-blue-900/20">
-                                        <p className="font-medium text-blue-700 dark:text-blue-400">{selectedProduct.name}</p>
-                                        <p className="mt-1 text-xs text-blue-600 dark:text-blue-300">
+                                    <div className={`rounded-xl p-3.5 text-sm ${isOwner ? 'bg-[#edf8f1]' : 'bg-blue-50 dark:bg-blue-900/20'}`}>
+                                        <p className={`font-medium ${isOwner ? 'text-[#2f7d51]' : 'text-blue-700 dark:text-blue-400'}`}>
+                                            {selectedProduct.name}
+                                        </p>
+                                        <p className={`mt-1 text-xs ${isOwner ? 'text-[#3f9567]' : 'text-blue-600 dark:text-blue-300'}`}>
                                             {t('inventory.currentStockLabel', {
                                                 stock: selectedProduct.current_stock,
                                                 unit: selectedProduct.unit,
@@ -195,7 +199,12 @@ export default function StockIn({ products }: Props) {
                                         <Label htmlFor="movement_date" className="block text-sm font-medium">
                                             {t('common.date')} *
                                         </Label>
-                                        <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
+                                        <DatePicker
+                                            value={data.movement_date}
+                                            onChange={(val) => setData('movement_date', val)}
+                                            theme={isOwner ? 'owner-green' : 'owner'}
+                                            className={isOwner ? '!border-[#d9e5dd] !text-[#315d45] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]' : ''}
+                                        />
                                         {displayError('movement_date') && (
                                             <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>
                                         )}
@@ -240,7 +249,11 @@ export default function StockIn({ products }: Props) {
                         <Button
                             type="submit"
                             disabled={processing}
-                            className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700 disabled:opacity-70"
+                            className={
+                                isOwner
+                                    ? 'h-10 rounded-xl bg-[#3f9567] px-5 font-semibold text-white shadow-sm shadow-[#3f9567]/20 hover:bg-[#2f7d51] disabled:opacity-70'
+                                    : 'h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700 disabled:opacity-70'
+                            }
                         >
                             {processing ? t('inventory.saving') : t('inventory.saveStockIn')}
                         </Button>

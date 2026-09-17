@@ -6,9 +6,9 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah, getCurrencySymbol } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type ProductVariant } from '@/types/mrp';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import {
     Banknote,
     Check,
@@ -74,6 +74,8 @@ interface Props {
 
 export default function PosPage({ variants, packages, paymentMethods = [] }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner') ?? false;
     const [cart, setCart] = useState<CartItem[]>([]);
     const [activeCartItemId, setActiveCartItemId] = useState<number | null>(null);
     const [customerName, setCustomerName] = useState('');
@@ -1240,7 +1242,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('pos.title')} />
 
-                <div className="pos-page relative flex h-[calc(100vh-4rem)] min-h-0 w-full overflow-hidden bg-transparent">
+            <div className="pos-page relative flex h-[calc(100vh-4rem)] min-h-0 w-full overflow-hidden bg-transparent">
                 {/* Left: Product & Package Grid */}
                 <div className="min-h-0 min-w-0 flex-1 space-y-5 overflow-y-auto bg-transparent p-4 pb-28 md:p-6 lg:pb-6">
                     {/* Header with Mobile Cart Trigger */}
@@ -1301,7 +1303,13 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     <span className="bg-muted rounded-md px-2 py-0.5 text-[11px] font-bold text-[#3f9567]">
                                                         {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                                     </span>
-                                                    <div className="flex size-7 items-center justify-center rounded-full !bg-[#2596BE] !p-1 text-white transition-colors group-hover:!bg-[#1f83a8]">
+                                                    <div
+                                                        className={`flex size-7 items-center justify-center rounded-full !p-1 text-white transition-colors ${
+                                                            isOwner
+                                                                ? '!bg-[#3f9567] group-hover:!bg-[#327d55]'
+                                                                : '!bg-[#2596BE] group-hover:!bg-[#1f83a8]'
+                                                        }`}
+                                                    >
                                                         <Plus size={13} />
                                                     </div>
                                                 </div>

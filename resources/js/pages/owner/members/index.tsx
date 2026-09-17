@@ -140,8 +140,12 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                 {/* Header section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('members.title')}</h1>
-                        <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('members.subtitle')}</p>
+                        <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
+                            {t('members.title')}
+                        </h1>
+                        <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">
+                            {t('members.subtitle')}
+                        </p>
                     </div>
 
                     {/* Tombol Tambah Anggota */}
@@ -157,9 +161,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                 <DialogHeader className="space-y-2">
                                     <DialogTitle className="text-lg font-semibold">{t('members.addTitle')}</DialogTitle>
                                     <DialogDescription className="text-sm leading-relaxed">
-                                        {is_supervisor
-                                            ? t('members.supervisorNoticeDesc')
-                                            : t('members.ownerNoticeDesc')}
+                                        {is_supervisor ? t('members.supervisorNoticeDesc') : t('members.ownerNoticeDesc')}
                                     </DialogDescription>
                                 </DialogHeader>
 
@@ -173,13 +175,15 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
                                 <div className="grid gap-4 py-5">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name" className="text-sm font-medium">{t('members.fullName')}</Label>
+                                        <Label htmlFor="name" className="text-sm font-medium">
+                                            {t('members.fullName')}
+                                        </Label>
                                         <Input
                                             id="name"
                                             value={addForm.data.name}
                                             onChange={(e) => addForm.setData('name', e.target.value)}
                                             placeholder={t('members.fullName')}
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-blue-600 focus-visible:!ring-blue-600/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.name || addForm.errors.name) && (
@@ -187,14 +191,16 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email" className="text-sm font-medium">{t('members.email')}</Label>
+                                        <Label htmlFor="email" className="text-sm font-medium">
+                                            {t('members.email')}
+                                        </Label>
                                         <Input
                                             id="email"
                                             type="email"
                                             value={addForm.data.email}
                                             onChange={(e) => addForm.setData('email', e.target.value)}
                                             placeholder="name@example.com"
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-blue-600 focus-visible:!ring-blue-600/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.email || addForm.errors.email) && (
@@ -202,14 +208,16 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password" className="text-sm font-medium">{t('members.tempPassword')}</Label>
+                                        <Label htmlFor="password" className="text-sm font-medium">
+                                            {t('members.tempPassword')}
+                                        </Label>
                                         <Input
                                             id="password"
                                             type="password"
                                             value={addForm.data.password}
                                             onChange={(e) => addForm.setData('password', e.target.value)}
                                             placeholder={t('members.passwordHint')}
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-blue-600 focus-visible:!ring-blue-600/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
+                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
                                             required
                                         />
                                         {(clientErrors.password || addForm.errors.password) && (
@@ -217,15 +225,24 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                         )}
                                     </div>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="role" className="text-sm font-medium">{t('members.roleLabel')}</Label>
+                                        <Label htmlFor="role" className="text-sm font-medium">
+                                            {t('members.roleLabel')}
+                                        </Label>
                                         <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
-                                            <SelectTrigger id="role" className="h-10 rounded-xl !border-[#d9e5dd] bg-white text-sm text-slate-700 focus:!border-blue-600 focus:!ring-blue-600/20">
+                                            <SelectTrigger
+                                                id="role"
+                                                className="h-10 rounded-xl !border-[#d9e5dd] bg-white text-sm text-slate-700 focus:!border-[#5aa67a] focus:!ring-[#5aa67a]/20"
+                                            >
                                                 <SelectValue placeholder={t('members.selectRole')} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="staff" className="text-sm">{t('members.staffRoleDesc')}</SelectItem>
+                                                <SelectItem value="staff" className="text-sm">
+                                                    {t('members.staffRoleDesc')}
+                                                </SelectItem>
                                                 {is_owner && (
-                                                    <SelectItem value="supervisor" className="text-sm">{t('members.supervisorRoleDesc')}</SelectItem>
+                                                    <SelectItem value="supervisor" className="text-sm">
+                                                        {t('members.supervisorRoleDesc')}
+                                                    </SelectItem>
                                                 )}
                                             </SelectContent>
                                         </Select>
@@ -256,27 +273,25 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
                 {/* ── Pending Requests Section (hanya owner) ── */}
                 {is_owner && pending_requests.length > 0 && (
-                    <Card className="border-owner-accent/30 bg-white rounded-2xl shadow-sm">
+                    <Card className="border-owner-accent/30 rounded-2xl bg-white shadow-sm">
                         <CardHeader className="pb-3">
-                            <CardTitle className="flex items-center gap-2 text-sm font-semibold text-owner-accent">
+                            <CardTitle className="text-owner-accent flex items-center gap-2 text-sm font-semibold">
                                 <Clock size={18} />
                                 {t('members.pendingTitle')}
-                                <Badge className="ml-1 bg-owner-accent text-white hover:bg-owner-accent">{pending_requests.length}</Badge>
+                                <Badge className="bg-owner-accent hover:bg-owner-accent ml-1 text-white">{pending_requests.length}</Badge>
                             </CardTitle>
-                            <CardDescription className="text-sm leading-relaxed">
-                                {t('members.pendingDesc')}
-                            </CardDescription>
+                            <CardDescription className="text-sm leading-relaxed">{t('members.pendingDesc')}</CardDescription>
                         </CardHeader>
                         <CardContent className="pt-0">
                             <div className="flex flex-col gap-3">
                                 {pending_requests.map((req) => (
                                     <div
                                         key={req.id}
-                                        className="flex flex-col gap-3 rounded-xl border border-border bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                                        className="border-border flex flex-col gap-3 rounded-xl border bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                                     >
                                         <div className="flex items-start gap-3">
                                             {/* Avatar */}
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-owner-accent/10 text-sm font-bold text-owner-accent">
+                                            <div className="bg-owner-accent/10 text-owner-accent flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold">
                                                 {req.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
@@ -329,13 +344,11 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                                 <Users size={16} />
                                 {t('members.capacityLabel')}
                             </span>
-                            <span className="text-foreground font-semibold">
-                                {t('members.capacityCount', { count: member_count, limit })}
-                            </span>
+                            <span className="text-foreground font-semibold">{t('members.capacityCount', { count: member_count, limit })}</span>
                         </div>
                         <div className="bg-muted h-2.5 overflow-hidden rounded-full">
                             <div
-                                className="h-full rounded-full bg-owner-accent transition-all duration-500"
+                                className="bg-owner-accent h-full rounded-full transition-all duration-500"
                                 style={{ width: `${Math.min(capacityPercent, 100)}%` }}
                             />
                         </div>

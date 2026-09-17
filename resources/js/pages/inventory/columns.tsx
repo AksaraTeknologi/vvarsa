@@ -39,7 +39,17 @@ const getStockBadge = (product: Product, t: (key: string, options?: any) => stri
     );
 };
 
-function ProductActions({ product, onToggleActive, t }: { product: Product; onToggleActive: (product: Product) => void; t: (key: string, options?: any) => string }) {
+function ProductActions({
+    product,
+    onToggleActive,
+    t,
+    isOwner,
+}: {
+    product: Product;
+    onToggleActive: (product: Product) => void;
+    t: (key: string, options?: any) => string;
+    isOwner: boolean;
+}) {
     const handleDelete = () => {
         handleAsyncAction(() => routerPromise('delete', `/inventory/${product.id}`, {}, { preserveScroll: true }), {
             loading: `Menghapus produk "${product.name}"...`,
@@ -59,7 +69,10 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
                         </Link>
                     </Button>
                 </TooltipTrigger>
-                <TooltipContent className="bg-blue-600 text-white" arrowClassName="!bg-blue-600 !fill-blue-600">
+                <TooltipContent
+                    className={isOwner ? 'bg-[#3f9567] text-white' : 'bg-blue-600 text-white'}
+                    arrowClassName={isOwner ? '!bg-[#3f9567] !fill-[#3f9567]' : '!bg-blue-600 !fill-blue-600'}
+                >
                     <p>{t('inventory.editProduct')}</p>
                 </TooltipContent>
             </Tooltip>
@@ -77,7 +90,10 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
                     </Button>
                 </TooltipTrigger>
 
-                <TooltipContent className="bg-blue-600 text-white" arrowClassName="!bg-blue-600 !fill-blue-600">
+                <TooltipContent
+                    className={isOwner ? 'bg-[#3f9567] text-white' : 'bg-blue-600 text-white'}
+                    arrowClassName={isOwner ? '!bg-[#3f9567] !fill-[#3f9567]' : '!bg-blue-600 !fill-blue-600'}
+                >
                     <p>{product.is_active ? t('common.inactive') : t('admin.active')}</p>
                 </TooltipContent>
             </Tooltip>
@@ -99,7 +115,10 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
                         />
                     </div>
                 </TooltipTrigger>
-                <TooltipContent className="bg-blue-600 text-white" arrowClassName="!bg-blue-600 !fill-blue-600">
+                <TooltipContent
+                    className={isOwner ? 'bg-[#3f9567] text-white' : 'bg-blue-600 text-white'}
+                    arrowClassName={isOwner ? '!bg-[#3f9567] !fill-[#3f9567]' : '!bg-blue-600 !fill-blue-600'}
+                >
                     <p>{t('inventory.deleteProduct')}</p>
                 </TooltipContent>
             </Tooltip>
@@ -107,7 +126,11 @@ function ProductActions({ product, onToggleActive, t }: { product: Product; onTo
     );
 }
 
-export const getColumns = (t: (key: string, options?: any) => string, onToggleActive: (product: Product) => void): ColumnDef<Product>[] => [
+export const getColumns = (
+    t: (key: string, options?: any) => string,
+    onToggleActive: (product: Product) => void,
+    isOwner = false,
+): ColumnDef<Product>[] => [
     {
         accessorKey: 'no',
         header: 'No',
@@ -175,7 +198,7 @@ export const getColumns = (t: (key: string, options?: any) => string, onToggleAc
     {
         id: 'actions',
         header: () => <div className="text-center">{t('common.actions')}</div>,
-        cell: ({ row }) => <ProductActions product={row.original} onToggleActive={onToggleActive} t={t} />,
+        cell: ({ row }) => <ProductActions product={row.original} onToggleActive={onToggleActive} t={t} isOwner={isOwner} />,
     },
 ];
 

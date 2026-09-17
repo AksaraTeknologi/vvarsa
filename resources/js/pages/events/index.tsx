@@ -3,9 +3,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { formatDate, formatRupiah } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Event, type PaginatedData } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { CalendarDays, MapPin, Search, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -52,6 +52,8 @@ export const getCalculatedStatus = (event: {
 
 export default function EventsIndex({ events, registered_event_ids, cities, filters }: Props) {
     const { t, i18n } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner') ?? false;
     const [search, setSearch] = useState(filters.search || '');
     const [city, setCity] = useState(filters.city || '');
     const [businessType, setBusinessType] = useState(filters.business_type || '');
@@ -92,8 +94,12 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
             <Head title={t('events.pageTitle')} />
             <div className="business-page flex flex-col gap-4 p-4 md:p-6">
                 <div>
-                    <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">{t('events.pageTitle')}</h1>
-                    <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">{t('events.pageSubtitle')}</p>
+                    <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
+                        {t('events.pageTitle')}
+                    </h1>
+                    <p className="business-page-subtitle text-muted-foreground mt-2 text-sm leading-relaxed md:text-[0.95rem]">
+                        {t('events.pageSubtitle')}
+                    </p>
                 </div>
 
                 {/* Navigation Tabs */}
@@ -102,7 +108,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         onClick={() => handleTabChange(false)}
                         className={`-mb-[1px] border-b-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
                             !onlyRegistered
-                                ? 'border-[#2596be] text-[#2596be] font-bold'
+                                ? `${isOwner ? 'border-[#3f9567] text-[#3f9567]' : 'border-[#2596be] text-[#2596be]'} font-bold`
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
@@ -112,7 +118,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                         onClick={() => handleTabChange(true)}
                         className={`-mb-[1px] border-b-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
                             onlyRegistered
-                                ? 'border-[#2596be] text-[#2596be] font-bold'
+                                ? `${isOwner ? 'border-[#3f9567] text-[#3f9567]' : 'border-[#2596be] text-[#2596be]'} font-bold`
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
@@ -130,7 +136,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="!bg-white h-10 w-full rounded-xl border-[#c7e0ce] pl-9 text-[#254533] placeholder:text-[#9aa9a0] focus-visible:border-[#6bb789] focus-visible:ring-[#5aa67a]/20"
+                            className="h-10 w-full rounded-xl border-[#c7e0ce] !bg-white pl-9 text-[#254533] placeholder:text-[#9aa9a0] focus-visible:border-[#6bb789] focus-visible:ring-[#5aa67a]/20"
                         />
                     </div>
                     <Select value={businessType || 'all'} onValueChange={(val) => setBusinessType(val === 'all' ? '' : val)}>
@@ -179,10 +185,10 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                 <Link
                                     key={event.id}
                                     href={`/events/${event.id}`}
-                                    className="business-event-card bg-card border-border group overflow-hidden rounded-2xl border shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:border-[#a9d4b6] hover:shadow-[0_18px_30px_rgba(63,149,103,0.18)] hover:[transform:translateY(-6px)_rotateX(2deg)_rotateY(3deg)_translateZ(6px)] motion-reduce:transition-none motion-reduce:hover:transform-none"
+                                    className="business-event-card bg-card border-border group overflow-hidden rounded-2xl border shadow-sm transition-[transform,box-shadow,border-color] duration-300 ease-out [transform-style:preserve-3d] hover:[transform:translateY(-6px)_rotateX(2deg)_rotateY(3deg)_translateZ(6px)] hover:border-[#a9d4b6] hover:shadow-[0_18px_30px_rgba(63,149,103,0.18)] motion-reduce:transition-none motion-reduce:hover:transform-none"
                                 >
                                     {/* Date banner */}
-                                    <div className="flex items-center justify-between border-b border-[#3f9567] bg-[#5aa67a] px-5 py-3 text-white [transform:translateZ(8px)]">
+                                    <div className="flex [transform:translateZ(8px)] items-center justify-between border-b border-[#3f9567] bg-[#5aa67a] px-5 py-3 text-white">
                                         <div>
                                             <p className="text-xs font-medium text-white/80">
                                                 {new Date(event.start_date).toLocaleString(currentLocale, { weekday: 'long' })}
@@ -196,8 +202,10 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                         </span>
                                     </div>
 
-                                    <div className="p-5 [transform:translateZ(6px)]">
-                                        <h3 className="group-hover:text-[#2596be] line-clamp-2 leading-snug font-semibold transition-colors">
+                                    <div className="[transform:translateZ(6px)] p-5">
+                                        <h3
+                                            className={`line-clamp-2 leading-snug font-semibold transition-colors ${isOwner ? 'group-hover:text-[#3f9567]' : 'group-hover:text-[#2596be]'}`}
+                                        >
                                             {event.title}
                                         </h3>
                                         <p className="text-muted-foreground mt-1 text-sm">{event.organizer}</p>
@@ -209,8 +217,9 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                             </div>
                                             <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                                 <Users size={12} />
-                                                <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[calculatedStatus]}`}>
-                                                </span>
+                                                <span
+                                                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[calculatedStatus]}`}
+                                                ></span>
                                             </div>
                                         </div>
 
@@ -229,7 +238,9 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                                     {t('events.fullBadge')}
                                                 </span>
                                             ) : (
-                                                <span className="text-[#2596be] text-xs font-medium">{t('events.viewDetail')}</span>
+                                                <span className={`${isOwner ? 'text-[#3f9567]' : 'text-[#2596be]'} text-xs font-medium`}>
+                                                    {t('events.viewDetail')}
+                                                </span>
                                             )}
                                         </div>
                                     </div>
