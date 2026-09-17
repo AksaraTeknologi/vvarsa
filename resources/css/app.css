@@ -2886,6 +2886,28 @@ body:has(.landing-motion)::-webkit-scrollbar-thumb:hover {
     background: #4938d9 !important;
 }
 
+/* Keep the landing page visually unchanged while reducing scroll-time paint work. */
+.landing-motion {
+    isolation: isolate;
+}
+
+.landing-motion > .pointer-events-none {
+    contain: paint;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.landing-motion > .pointer-events-none > .blur-3xl,
+.landing-motion .hero-orb {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.landing-motion main > section[data-reveal] {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
+}
+
 body:has(.auth-page) {
     scrollbar-color: #5e4bf2 #f1effd !important;
 }

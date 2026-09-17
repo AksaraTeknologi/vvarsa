@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
 import { formatRupiah } from '@/lib/utils-mrp';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { Activity, ArrowLeft, CreditCard, Package, Shield, ToggleLeft, ToggleRight, User, Users } from 'lucide-react';
+import { Activity, ArrowLeft, CalendarDays, CreditCard, MapPin, Package, Phone, Shield, ToggleLeft, ToggleRight, User, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -84,36 +85,52 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('admin.tenants.detailTitle')}: ${tenant.name}`} />
-            <div className="flex flex-col gap-6 p-4 md:p-6">
+            <main className="admin-dashboard-surface relative flex min-h-full flex-col gap-6 overflow-hidden p-4 font-['Plus_Jakarta_Sans'] text-[#191827] md:p-6 lg:p-8">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-three" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-four" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-five" />
+                    <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-six" />
+                </div>
+
                 {/* Back button */}
-                <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" onClick={() => router.get('/admin/tenants')} className="rounded-xl">
+                <div className="relative z-10 flex items-center gap-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => router.get('/admin/tenants')}
+                        className="h-9 rounded-xl border-[#DDD9E9] bg-white px-3 text-[#4D4B5A] shadow-sm hover:border-[#CFC8F6] hover:bg-[#FDFCFF] hover:text-[#5E4BF2]"
+                    >
                         <ArrowLeft size={16} className="mr-1" />
                         {t('common.back')}
                     </Button>
                 </div>
 
                 {/* Header Profile */}
-                <div className="bg-card border-border flex flex-col gap-6 rounded-2xl border p-6 shadow-sm md:flex-row md:items-center md:justify-between">
+                <div className="relative z-10 flex flex-col gap-5 rounded-2xl border border-[#E7E3FA] bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between md:p-6">
                     <div className="flex items-center gap-4">
-                        <div className="bg-primary/10 text-primary flex h-16 w-16 items-center justify-center rounded-2xl text-2xl font-bold">
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#F1EFFD] text-xl font-bold text-[#5E4BF2]">
                             {tenant.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-2xl font-bold tracking-tight">{tenant.name}</h1>
+                                <h1 className="text-[1.45rem] leading-tight font-bold tracking-[-0.04em] text-[#17182A] md:text-[1.65rem]">
+                                    {tenant.name}
+                                </h1>
                                 <Badge
                                     variant={tenant.is_active ? 'default' : 'destructive'}
                                     className={
                                         tenant.is_active
-                                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400'
-                                            : 'bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
+                                            ? 'rounded-full border-0 bg-[#DCD8FF] px-2.5 py-1 text-xs font-semibold text-[#4938D9] hover:bg-[#DCD8FF]'
+                                            : 'rounded-full border-0 bg-[#F7EFF0] px-2.5 py-1 text-xs font-semibold text-[#A96A73] hover:bg-[#F7EFF0]'
                                     }
                                 >
                                     {tenant.is_active ? t('admin.active') : t('admin.inactive')}
                                 </Badge>
                             </div>
-                            <p className="text-muted-foreground text-sm">{tenant.slug}.vvarsa.com</p>
+                            <p className="mt-1 text-sm text-[#92909D]">{tenant.slug}.vvarsa.com</p>
                         </div>
                     </div>
 
@@ -122,7 +139,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         <Button
                             variant="outline"
                             onClick={handleToggleActive}
-                            className={`rounded-xl ${tenant.is_active ? 'text-rose-500 hover:text-rose-600' : 'text-emerald-500 hover:text-emerald-600'}`}
+                            className={`h-10 rounded-xl border-[#DDD9E9] bg-white text-sm font-semibold shadow-sm ${tenant.is_active ? 'text-[#A96A73] hover:border-[#E7C9CE] hover:bg-[#FFF8F8] hover:text-[#963F4C]' : 'text-[#2B8A62] hover:border-[#BFE6D2] hover:bg-[#F4FFF8] hover:text-[#18704A]'}`}
                         >
                             {tenant.is_active ? (
                                 <span className="flex items-center gap-1.5">
@@ -140,38 +157,59 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         {/* Upgrade plan dialog */}
                         <Dialog open={isPlanOpen} onOpenChange={setIsPlanOpen}>
                             <DialogTrigger asChild>
-                                <Button className="rounded-xl">{t('admin.tenants.changePlan')}</Button>
+                                <Button className="h-10 rounded-xl bg-[#5E4BF2] px-4 text-sm font-semibold text-white shadow-[0_7px_18px_rgba(94,75,242,0.18)] hover:bg-[#4938D9]">
+                                    {t('admin.tenants.changePlan')}
+                                </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[400px]">
+                            <DialogContent className="border-[#DCD8FF] bg-white p-6 shadow-[0_18px_50px_rgba(43,35,94,0.18)] sm:max-w-[420px]">
                                 <form onSubmit={handleUpdatePlan}>
-                                    <DialogHeader>
-                                        <DialogTitle>{t('admin.tenants.changePlan')}</DialogTitle>
-                                        <DialogDescription>Sesuaikan tingkat fitur dan batas kapasitas untuk tenant {tenant.name}.</DialogDescription>
+                                    <DialogHeader className="gap-2 pr-6">
+                                        <DialogTitle className="text-xl font-bold tracking-[-0.03em] text-[#17182A]">
+                                            {t('admin.tenants.changePlan')}
+                                        </DialogTitle>
+                                        <DialogDescription className="text-sm leading-relaxed text-[#92909D]">
+                                            Sesuaikan tingkat fitur dan batas kapasitas untuk tenant {tenant.name}.
+                                        </DialogDescription>
                                     </DialogHeader>
 
-                                    <div className="grid gap-4 py-4">
+                                    <div className="grid gap-2.5 py-5">
                                         <div className="grid gap-2">
-                                            <Label htmlFor="plan_id">Pilih Paket</Label>
-                                            <select
-                                                id="plan_id"
-                                                value={planForm.data.plan_id}
-                                                onChange={(e) => planForm.setData('plan_id', e.target.value)}
-                                                className="border-border bg-background rounded-xl border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                            >
-                                                {plans.map((plan) => (
-                                                    <option key={plan.id} value={plan.id}>
-                                                        {plan.name}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            <Label htmlFor="plan_id" className="text-sm font-semibold text-[#303042]">
+                                                Pilih Paket
+                                            </Label>
+                                            <Select value={planForm.data.plan_id} onValueChange={(value) => planForm.setData('plan_id', value)}>
+                                                <SelectTrigger className="h-11 w-full rounded-xl border-[#DCD8FF] bg-white text-sm text-[#303042] hover:border-[#BDB4FF] focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20">
+                                                    <SelectValue placeholder="Pilih Paket" />
+                                                </SelectTrigger>
+                                                <SelectContent className="border-[#DCD8FF] bg-white text-[#303042]">
+                                                    {plans.map((plan) => (
+                                                        <SelectItem
+                                                            key={plan.id}
+                                                            value={plan.id.toString()}
+                                                            className="focus:bg-[#F1EFFD] focus:text-[#4938D9] data-[state=checked]:bg-[#F1EFFD] data-[state=checked]:text-[#4938D9]"
+                                                        >
+                                                            {plan.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                         </div>
                                     </div>
 
-                                    <DialogFooter>
-                                        <Button type="button" variant="outline" onClick={() => setIsPlanOpen(false)}>
+                                    <DialogFooter className="gap-2 sm:gap-2">
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() => setIsPlanOpen(false)}
+                                            className="h-10 rounded-xl border-[#DCD8FF] bg-white px-4 text-sm font-semibold text-[#4D4B5A] hover:border-[#BDB4FF] hover:bg-[#F8F7FF] hover:text-[#5E4BF2]"
+                                        >
                                             {t('common.cancel')}
                                         </Button>
-                                        <Button type="submit" disabled={planForm.processing}>
+                                        <Button
+                                            type="submit"
+                                            disabled={planForm.processing}
+                                            className="h-10 rounded-xl bg-[#5E4BF2] px-5 text-sm font-semibold text-white shadow-[0_7px_18px_rgba(94,75,242,0.18)] hover:bg-[#4938D9]"
+                                        >
                                             {planForm.processing ? t('common.saving') : t('common.save')}
                                         </Button>
                                     </DialogFooter>
@@ -182,80 +220,100 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <Card className="border-border">
+                <div className="relative z-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">{t('admin.tenants.productLimit')}</CardTitle>
-                            <Package className="text-muted-foreground h-4.5 w-4.5" />
+                            <CardTitle className="text-sm font-medium text-[#777584]">{t('admin.tenants.productLimit')}</CardTitle>
+                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
+                                <Package size={16} />
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.product_count}</div>
-                            <p className="text-muted-foreground mt-1 text-xs">
+                            <div className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A]">{stats.product_count}</div>
+                            <p className="mt-3 text-[11px] text-[#92909D]">
                                 Batas maksimal paket: {tenant.max_products >= 9999 ? '∞' : tenant.max_products}
                             </p>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-border">
+                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">{t('admin.tenants.userLimit')}</CardTitle>
-                            <Users className="text-muted-foreground h-4.5 w-4.5" />
+                            <CardTitle className="text-sm font-medium text-[#777584]">{t('admin.tenants.userLimit')}</CardTitle>
+                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
+                                <Users size={16} />
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.user_count}</div>
-                            <p className="text-muted-foreground mt-1 text-xs">
-                                Batas maksimal paket: {tenant.max_users >= 99 ? '∞' : tenant.max_users}
-                            </p>
+                            <div className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A]">{stats.user_count}</div>
+                            <p className="mt-3 text-[11px] text-[#92909D]">Batas maksimal paket: {tenant.max_users >= 99 ? '∞' : tenant.max_users}</p>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-border">
+                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">{t('navigation.transactions')}</CardTitle>
-                            <Activity className="text-muted-foreground h-4.5 w-4.5" />
+                            <CardTitle className="text-sm font-medium text-[#777584]">{t('navigation.transactions')}</CardTitle>
+                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
+                                <Activity size={16} />
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.transaction_count}</div>
-                            <p className="text-muted-foreground mt-1 text-xs">Total riwayat transaksi bisnis</p>
+                            <div className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A]">{stats.transaction_count}</div>
+                            <p className="mt-3 text-[11px] text-[#92909D]">Total riwayat transaksi bisnis</p>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-border">
+                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">{t('finance.totalRevenue')}</CardTitle>
-                            <CreditCard className="text-muted-foreground h-4.5 w-4.5" />
+                            <CardTitle className="text-sm font-medium text-[#777584]">{t('finance.totalRevenue')}</CardTitle>
+                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
+                                <CreditCard size={16} />
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{formatRupiah(stats.total_sales)}</div>
-                            <p className="text-muted-foreground mt-1 text-xs">Total omset tenant bisnis</p>
+                            <div className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A]">
+                                {formatRupiah(stats.total_sales)}
+                            </div>
+                            <p className="mt-3 text-[11px] text-[#92909D]">Total omset tenant bisnis</p>
                         </CardContent>
                     </Card>
                 </div>
 
                 {/* Details & Member List Grid */}
-                <div className="grid gap-6 md:grid-cols-3">
+                <div className="relative z-10 grid gap-6 md:grid-cols-3">
                     {/* Left: General info */}
-                    <Card className="border-border md:col-span-1">
+                    <Card className="border-[#E7E3FA] bg-white shadow-sm md:col-span-1">
                         <CardHeader>
-                            <CardTitle className="text-lg">{t('admin.tenants.detailTitle')}</CardTitle>
-                            <CardDescription>Informasi umum bisnis</CardDescription>
+                            <CardTitle className="text-lg font-bold tracking-[-0.03em] text-[#17182A]">{t('admin.tenants.detailTitle')}</CardTitle>
+                            <CardDescription className="text-sm text-[#92909D]">Informasi umum bisnis</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
-                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.colPlan')}</Label>
-                                <p className="text-sm font-semibold capitalize">{tenant.plan?.name || 'Free'}</p>
+                                <Label className="flex items-center gap-2 text-xs font-medium text-[#92909D]">
+                                    <CreditCard size={14} className="text-[#5E4BF2]" />
+                                    {t('admin.tenants.colPlan')}
+                                </Label>
+                                <p className="mt-1 text-sm font-semibold text-[#303042] capitalize">{tenant.plan?.name || 'Free'}</p>
                             </div>
                             <div>
-                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.contact')}</Label>
-                                <p className="text-sm">{tenant.phone || '—'}</p>
+                                <Label className="flex items-center gap-2 text-xs font-medium text-[#92909D]">
+                                    <Phone size={14} className="text-[#5E4BF2]" />
+                                    {t('admin.tenants.contact')}
+                                </Label>
+                                <p className="mt-1 text-sm text-[#303042]">{tenant.phone || '—'}</p>
                             </div>
                             <div>
-                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.address')}</Label>
-                                <p className="text-sm">{tenant.address || '—'}</p>
+                                <Label className="flex items-center gap-2 text-xs font-medium text-[#92909D]">
+                                    <MapPin size={14} className="text-[#5E4BF2]" />
+                                    {t('admin.tenants.address')}
+                                </Label>
+                                <p className="mt-1 text-sm text-[#303042]">{tenant.address || '—'}</p>
                             </div>
                             <div>
-                                <Label className="text-muted-foreground text-xs">{t('admin.tenants.registeredSince')}</Label>
-                                <p className="text-sm">
+                                <Label className="flex items-center gap-2 text-xs font-medium text-[#92909D]">
+                                    <CalendarDays size={14} className="text-[#5E4BF2]" />
+                                    {t('admin.tenants.registeredSince')}
+                                </Label>
+                                <p className="mt-1 text-sm text-[#303042]">
                                     {new Date(tenant.created_at).toLocaleDateString('id-ID', {
                                         day: 'numeric',
                                         month: 'long',
@@ -267,18 +325,22 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                     </Card>
 
                     {/* Right: Team Members */}
-                    <Card className="border-border md:col-span-2">
+                    <Card className="border-[#E7E3FA] bg-white shadow-sm md:col-span-2">
                         <CardHeader>
-                            <CardTitle className="text-lg">{t('admin.tenants.memberList')}</CardTitle>
-                            <CardDescription>{t('admin.tenants.memberListSub')}</CardDescription>
+                            <CardTitle className="text-lg font-bold tracking-[-0.03em] text-[#17182A]">{t('admin.tenants.memberList')}</CardTitle>
+                            <CardDescription className="text-sm text-[#92909D]">{t('admin.tenants.memberListSub')}</CardDescription>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
                                     <thead>
-                                        <tr className="border-border border-b bg-slate-50/50 dark:bg-slate-800/20">
-                                            <th className="text-muted-foreground px-6 py-3 text-xs font-semibold uppercase">{t('admin.users.colNameEmail')}</th>
-                                            <th className="text-muted-foreground px-6 py-3 text-xs font-semibold uppercase">{t('admin.users.colRole')}</th>
+                                        <tr className="border-b border-[#EEEAF8] bg-[#FBFAFE]">
+                                            <th className="px-6 py-3 text-xs font-semibold tracking-wide text-[#92909D] uppercase">
+                                                {t('admin.users.colNameEmail')}
+                                            </th>
+                                            <th className="px-6 py-3 text-xs font-semibold tracking-wide text-[#92909D] uppercase">
+                                                {t('admin.users.colRole')}
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-border divide-y">
@@ -292,15 +354,15 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                             tenant.users.map((u) => {
                                                 const role = u.roles[0]?.name || 'staff';
                                                 return (
-                                                    <tr key={u.id} className="transition-colors hover:bg-slate-50/30 dark:hover:bg-slate-800/10">
+                                                    <tr key={u.id} className="border-[#F0EDF8] transition-colors hover:bg-[#FBFAFE]">
                                                         <td className="px-6 py-3.5">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold">
+                                                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F1EFFD] text-xs font-bold text-[#5E4BF2]">
                                                                     {u.name.charAt(0).toUpperCase()}
                                                                 </div>
                                                                 <div>
-                                                                    <div className="text-sm font-semibold">{u.name}</div>
-                                                                    <span className="text-muted-foreground text-xs">{u.email}</span>
+                                                                    <div className="text-sm font-semibold text-[#303042]">{u.name}</div>
+                                                                    <span className="text-xs text-[#92909D]">{u.email}</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -309,8 +371,8 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                                                 variant={role === 'owner' ? 'default' : 'outline'}
                                                                 className={`capitalize ${
                                                                     role === 'owner'
-                                                                        ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400'
-                                                                        : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                                                                        ? 'border-0 bg-[#E8F1FF] text-[#3564B8] hover:bg-[#E8F1FF]'
+                                                                        : 'border-0 bg-[#F1EFFD] text-[#5E4BF2] hover:bg-[#F1EFFD]'
                                                                 }`}
                                                             >
                                                                 {role === 'owner' ? (
@@ -336,7 +398,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardContent>
                     </Card>
                 </div>
-            </div>
+            </main>
         </AppLayout>
     );
 }

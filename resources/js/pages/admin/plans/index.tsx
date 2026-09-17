@@ -35,58 +35,58 @@ interface Props {
 }
 
 export const FEATURE_MAP: Record<string, string> = {
-    'inventory': 'inventory',
+    inventory: 'inventory',
     'Manajemen Inventori': 'inventory',
-    'stock_in': 'stock_in',
+    stock_in: 'stock_in',
     'Stok Masuk': 'stock_in',
-    'stock_out': 'stock_out',
+    stock_out: 'stock_out',
     'Stok Keluar': 'stock_out',
-    'stock_opname': 'stock_opname',
+    stock_opname: 'stock_opname',
     'Stok Opname': 'stock_opname',
-    'finance_daily': 'finance_daily',
+    finance_daily: 'finance_daily',
     'Keuangan Harian': 'finance_daily',
     'Laporan Keuangan Harian': 'finance_daily',
-    'finance_monthly': 'finance_monthly',
+    finance_monthly: 'finance_monthly',
     'Keuangan Bulanan': 'finance_monthly',
     'Laporan Keuangan Bulanan': 'finance_monthly',
-    'finance_export': 'finance_export',
+    finance_export: 'finance_export',
     'Ekspor Keuangan': 'finance_export',
     'Export Laporan': 'finance_export',
-    'events_view': 'events_view',
+    events_view: 'events_view',
     'Lihat Event': 'events_view',
-    'events_register': 'events_register',
+    events_register: 'events_register',
     'Daftar Event': 'events_register',
-    'events_organizer': 'events_organizer',
+    events_organizer: 'events_organizer',
     'Penyelenggara Event': 'events_organizer',
     'Selenggarakan Event': 'events_organizer',
-    'community_read': 'community_read',
+    community_read: 'community_read',
     'Baca Komunitas': 'community_read',
     'Baca Diskusi Komunitas': 'community_read',
-    'community_join': 'community_join',
+    community_join: 'community_join',
     'Bergabung Komunitas': 'community_join',
-    'community_post': 'community_post',
+    community_post: 'community_post',
     'Posting Komunitas': 'community_post',
     'Posting Diskusi': 'community_post',
-    'suppliers_view': 'suppliers_view',
+    suppliers_view: 'suppliers_view',
     'Rekomendasi Supplier': 'suppliers_view',
     'Lihat Rekomendasi Supplier': 'suppliers_view',
-    'suppliers_add': 'suppliers_add',
+    suppliers_add: 'suppliers_add',
     'Tambah Supplier': 'suppliers_add',
-    'tax_reports': 'tax_reports',
+    tax_reports: 'tax_reports',
     'Laporan Pajak': 'tax_reports',
-    'tax_consultation': 'tax_consultation',
+    tax_consultation: 'tax_consultation',
     'Konsultasi Pajak': 'tax_consultation',
-    'tax_priority': 'tax_priority',
+    tax_priority: 'tax_priority',
     'Prioritas Konsultasi Pajak': 'tax_priority',
     'Konsultasi Pajak Prioritas': 'tax_priority',
-    'multi_user': 'multi_user',
+    multi_user: 'multi_user',
     'Multi Pengguna': 'multi_user',
-    'export_pdf': 'export_pdf',
+    export_pdf: 'export_pdf',
     'Ekspor PDF': 'export_pdf',
     'Export PDF': 'export_pdf',
-    'api_access': 'api_access',
+    api_access: 'api_access',
     'Akses API': 'api_access',
-    'dedicated_support': 'dedicated_support',
+    dedicated_support: 'dedicated_support',
     'Dedicated Support': 'dedicated_support',
     'Dukungan Khusus': 'dedicated_support',
 };
@@ -164,7 +164,9 @@ export default function PlansIndex({ plans }: Props) {
                                     {t('admin.platformAdmin')}
                                 </span>
                             </div>
-                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[2.1rem]">{t('admin.plans.title')}</h1>
+                            <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#17182A] md:text-[2.1rem]">
+                                {t('admin.plans.title')}
+                            </h1>
                             <p className="mt-3 text-sm leading-relaxed text-[#5F6073] md:text-[0.95rem]">{t('admin.plans.subtitle')}</p>
                         </div>
                         <Button
@@ -184,97 +186,123 @@ export default function PlansIndex({ plans }: Props) {
                             const isFeatured = plan.id === featuredPlanId;
 
                             return (
-                            <Card
-                                key={plan.id}
-                                data-featured={isFeatured || undefined}
-                                className={`admin-plan-card relative flex flex-col overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_8px_24px_rgba(35,30,70,0.04)] transition-all duration-300 ${
-                                    isFeatured
-                                        ? 'admin-plan-card-featured border-[#BDB5FF] shadow-[0_12px_32px_rgba(94,75,242,0.14)]'
-                                        : 'border-[#E9E5F0]'
-                                }`}
-                            >
-                                <div className="admin-plan-card-glow" aria-hidden="true" />
-                                <div className="admin-plan-card-sheen" aria-hidden="true" />
-                                <div className={`h-1.5 w-full ${isFeatured ? 'bg-[#5E4BF2]' : 'bg-[#F0EEFF]'}`} />
-                                {isFeatured && (
-                                    <div className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-[#F0EEFF] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#5E4BF2]">
-                                        <Sparkles className="size-3" />
-                                        {t('admin.plans.mostPopular')}
-                                    </div>
-                                )}
-                                {!plan.is_active && (
-                                    <div className="absolute left-5 top-5 rounded-full bg-[#F7EFF0] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#A96A73]">
-                                        {t('admin.inactive')}
-                                    </div>
-                                )}
-                                <CardHeader className="gap-4 px-6 pt-6 pb-3">
-                                    <div className="flex items-start justify-between gap-3">
-                                        <div>
-                                            <p className="mb-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#9693AA]">{t('admin.plans.businessPlan')}</p>
-                                            <CardTitle className="text-2xl font-black text-[#17182A]">{plan.name}</CardTitle>
+                                <Card
+                                    key={plan.id}
+                                    data-featured={isFeatured || undefined}
+                                    className={`admin-plan-card relative flex flex-col overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_8px_24px_rgba(35,30,70,0.04)] transition-all duration-300 ${
+                                        isFeatured
+                                            ? 'admin-plan-card-featured border-[#BDB5FF] shadow-[0_12px_32px_rgba(94,75,242,0.14)]'
+                                            : 'border-[#E9E5F0]'
+                                    }`}
+                                >
+                                    <div className="admin-plan-card-glow" aria-hidden="true" />
+                                    <div className="admin-plan-card-sheen" aria-hidden="true" />
+                                    <div className={`h-1.5 w-full ${isFeatured ? 'bg-[#5E4BF2]' : 'bg-[#F0EEFF]'}`} />
+                                    {isFeatured && (
+                                        <div className="mx-5 mt-4 inline-flex w-fit items-center gap-1.5 self-end rounded-full bg-[#F0EEFF] px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em] text-[#5E4BF2] uppercase">
+                                            <Sparkles className="size-3" />
+                                            {t('admin.plans.mostPopular')}
                                         </div>
-                                        {!isFeatured && <Badge variant="outline" className="rounded-full border-[#E4E0F1] px-2.5 py-1 text-[10px] font-bold text-[#686673]">{plan.billing_cycle === 'monthly' ? t('admin.plans.monthly') : t('admin.plans.yearly')}</Badge>}
-                                    </div>
-                                    <CardDescription className="text-3xl font-black tracking-[-0.04em] text-[#17182A]">
-                                        {plan.price === 0 || Number(plan.price) === 0 ? t('admin.plans.free') : formatRupiah(plan.price)}
-                                        <span className="ml-1 text-xs font-semibold tracking-normal text-[#9693AA]">/{plan.billing_cycle === 'monthly' ? t('admin.plans.perMonth') : t('admin.plans.perYear')}</span>
-                                    </CardDescription>
-                                </CardHeader>
+                                    )}
+                                    {!plan.is_active && (
+                                        <div className="mx-5 mt-4 inline-flex w-fit self-start rounded-full bg-[#F7EFF0] px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em] text-[#A96A73] uppercase">
+                                            {t('admin.inactive')}
+                                        </div>
+                                    )}
+                                    <CardHeader className={`gap-4 px-6 pb-3 ${isFeatured || !plan.is_active ? 'pt-3' : 'pt-6'}`}>
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p className="mb-1 text-[10px] font-extrabold tracking-[0.16em] text-[#9693AA] uppercase">
+                                                    {t('admin.plans.businessPlan')}
+                                                </p>
+                                                <CardTitle className="text-2xl font-black text-[#17182A]">{plan.name}</CardTitle>
+                                            </div>
+                                            {!isFeatured && (
+                                                <Badge
+                                                    variant="outline"
+                                                    className="rounded-full border-[#E4E0F1] px-2.5 py-1 text-[10px] font-bold text-[#686673]"
+                                                >
+                                                    {plan.billing_cycle === 'monthly' ? t('admin.plans.monthly') : t('admin.plans.yearly')}
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        <CardDescription className="text-3xl font-black tracking-[-0.04em] text-[#17182A]">
+                                            {plan.price === 0 || Number(plan.price) === 0 ? t('admin.plans.free') : formatRupiah(plan.price)}
+                                            <span className="ml-1 text-xs font-semibold tracking-normal text-[#9693AA]">
+                                                /{plan.billing_cycle === 'monthly' ? t('admin.plans.perMonth') : t('admin.plans.perYear')}
+                                            </span>
+                                        </CardDescription>
+                                    </CardHeader>
 
-                                <CardContent className="flex-1 space-y-5 px-6 pb-5">
-                                    <div className={`grid grid-cols-3 divide-x rounded-xl border p-3 text-center ${isFeatured ? 'border-[#DCD8FF] bg-[#F4F2FF]' : 'border-[#EEEAF3] bg-[#F8F7FC]'}`}>
-                                        <div className="flex justify-between">
-                                            <span className="sr-only">Maks. Pengguna:</span>
-                                            <span className="w-full"><strong className="block text-base font-black text-[#17182A]">{plan.max_users >= 99 ? '∞' : plan.max_users}</strong><small className="text-[10px] font-semibold text-[#9693AA]">{t('admin.plans.users')}</small></span>
+                                    <CardContent className="flex-1 space-y-5 px-6 pb-5">
+                                        <div
+                                            className={`grid grid-cols-3 divide-x rounded-xl border p-3 text-center ${isFeatured ? 'border-[#DCD8FF] bg-[#F4F2FF]' : 'border-[#EEEAF3] bg-[#F8F7FC]'}`}
+                                        >
+                                            <div className="flex justify-between">
+                                                <span className="sr-only">Maks. Pengguna:</span>
+                                                <span className="w-full">
+                                                    <strong className="block text-base font-black text-[#17182A]">
+                                                        {plan.max_users >= 99 ? '∞' : plan.max_users}
+                                                    </strong>
+                                                    <small className="text-[10px] font-semibold text-[#9693AA]">{t('admin.plans.users')}</small>
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="sr-only">Maks. Produk:</span>
+                                                <span className="w-full">
+                                                    <strong className="block text-base font-black text-[#17182A]">
+                                                        {plan.max_products >= 9999 ? '∞' : plan.max_products}
+                                                    </strong>
+                                                    <small className="text-[10px] font-semibold text-[#9693AA]">{t('admin.plans.products')}</small>
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="sr-only">Digunakan Oleh:</span>
+                                                <span className="w-full">
+                                                    <strong className="block text-base font-black text-[#17182A]">{plan.tenants_count}</strong>
+                                                    <small className="text-[10px] font-semibold text-[#9693AA]">{t('admin.plans.tenants')}</small>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="flex justify-between">
-                                            <span className="sr-only">Maks. Produk:</span>
-                                            <span className="w-full"><strong className="block text-base font-black text-[#17182A]">{plan.max_products >= 9999 ? '∞' : plan.max_products}</strong><small className="text-[10px] font-semibold text-[#9693AA]">{t('admin.plans.products')}</small></span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="sr-only">Digunakan Oleh:</span>
-                                            <span className="w-full"><strong className="block text-base font-black text-[#17182A]">{plan.tenants_count}</strong><small className="text-[10px] font-semibold text-[#9693AA]">{t('admin.plans.tenants')}</small></span>
-                                        </div>
-                                    </div>
 
-                                    <div className="space-y-2">
-                                        <p className="text-xs font-extrabold tracking-[0.12em] text-[#777583] uppercase">
-                                            {t('admin.plans.includes', { count: plan.features?.length || 0 })}
-                                        </p>
-                                        <div className="grid gap-2 pr-2">
-                                            {plan.features?.map((feat, idx) => (
-                                                <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-[#53556A]">
-                                                    <CheckCircle2 size={14} className="shrink-0 text-[#5E4BF2]" />
-                                                    <span>{getFeatureLabel(feat, t)}</span>
-                                                </div>
-                                            ))}
+                                        <div className="space-y-2">
+                                            <p className="text-xs font-extrabold tracking-[0.12em] text-[#777583] uppercase">
+                                                {t('admin.plans.includes', { count: plan.features?.length || 0 })}
+                                            </p>
+                                            <div className="grid gap-2 pr-2">
+                                                {plan.features?.map((feat, idx) => (
+                                                    <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-[#53556A]">
+                                                        <CheckCircle2 size={14} className="shrink-0 text-[#5E4BF2]" />
+                                                        <span>{getFeatureLabel(feat, t)}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                </CardContent>
+                                    </CardContent>
 
-                                <div className="border-border grid grid-cols-2 gap-2 border-t bg-[#FCFBFE] px-5 py-3">
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleOpenEdit(plan)}
-                                        className="admin-plan-edit h-10 rounded-xl px-3 text-xs font-extrabold"
-                                    >
-                                        <Edit3 size={14} className="mr-1" />
-                                        {t('common.edit')}
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleDelete(plan)}
-                                        disabled={plan.tenants_count > 0}
-                                        className="admin-plan-delete h-10 rounded-xl px-3 text-xs font-extrabold"
-                                        title={plan.tenants_count > 0 ? 'Paket sedang digunakan oleh tenant' : t('admin.plans.deletePlan')}
-                                    >
-                                        <Trash2 size={14} className="mr-1" />
-                                        {t('common.delete')}
-                                    </Button>
-                                </div>
-                            </Card>
+                                    <div className="border-border grid grid-cols-2 gap-2 border-t bg-[#FCFBFE] px-5 py-3">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => handleOpenEdit(plan)}
+                                            className="admin-plan-edit h-10 rounded-xl px-3 text-xs font-extrabold"
+                                        >
+                                            <Edit3 size={14} className="mr-1" />
+                                            {t('common.edit')}
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => handleDelete(plan)}
+                                            disabled={plan.tenants_count > 0}
+                                            className="admin-plan-delete h-10 rounded-xl px-3 text-xs font-extrabold"
+                                            title={plan.tenants_count > 0 ? 'Paket sedang digunakan oleh tenant' : t('admin.plans.deletePlan')}
+                                        >
+                                            <Trash2 size={14} className="mr-1" />
+                                            {t('common.delete')}
+                                        </Button>
+                                    </div>
+                                </Card>
                             );
                         })}
                     </div>
