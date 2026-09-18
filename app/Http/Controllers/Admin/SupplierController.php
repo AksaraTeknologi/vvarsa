@@ -31,14 +31,22 @@ class SupplierController extends Controller
             'contact_name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'website' => 'nullable|string|max:255',
+            'website' => 'nullable|string|max:2048',
             'city' => 'nullable|string|max:255',
             'address' => 'nullable|string',
             'business_type' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'is_verified' => 'boolean',
             'is_active' => 'boolean',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
+
+        $user = $request->user();
+        $roleName = $user ? ($user->getRoleNames()->first() ?? $user->primaryRole()) : 'admin';
+
+        $validated['created_by_user_id'] = $user?->id;
+        $validated['added_by_role'] = $roleName;
 
         // Simpan data
         Supplier::create($validated);
@@ -62,13 +70,15 @@ class SupplierController extends Controller
             'contact_name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'website' => 'nullable|string|max:255',
+            'website' => 'nullable|string|max:2048',
             'city' => 'nullable|string|max:255',
             'address' => 'nullable|string',
             'business_type' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'is_verified' => 'boolean',
             'is_active' => 'boolean',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         // Update data

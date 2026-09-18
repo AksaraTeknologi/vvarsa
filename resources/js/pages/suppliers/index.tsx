@@ -20,12 +20,13 @@ import {
     Search,
     User
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 
 interface Props {
-    suppliers: PaginatedData<Supplier>;
+    suppliers: Supplier[] | PaginatedData<Supplier>;
+    all_suppliers?: Supplier[];
     cities: string[];
     filters: { search?: string; city?: string };
     business_type: string; // Business type dari tenant
@@ -45,18 +46,84 @@ const CITY_COORDINATES: Record<string, [number, number]> = {
     depok: [-6.4025, 106.7942],
     tangerang: [-6.1783, 106.6319],
     bekasi: [-6.2383, 106.9756],
+    malang: [-7.9666, 112.6326],
+    jember: [-8.1721, 113.6995],
+    surakarta: [-7.5755, 110.8243],
+    solo: [-7.5755, 110.8243],
+    sidoarjo: [-7.4478, 112.7183],
+    gresik: [-7.1566, 112.6555],
+    kediri: [-7.848, 112.0178],
+    blitar: [-8.0983, 112.1681],
+    pasuruan: [-7.6453, 112.9075],
+    probolinggo: [-7.7543, 113.2159],
+    batu: [-7.8671, 112.5239],
+};
+
+const getRoleColor = (role?: string | null) => {
+    const normalized = (role || 'owner').toLowerCase().trim();
+    if (normalized.includes('admin')) {
+        return {
+            name: 'admin',
+            label: 'Admin',
+            bg: '#7c3aed', // Purple / Ungu
+            border: '#c084fc',
+            glow: 'rgba(124, 58, 237, 0.5)',
+            colorName: 'Ungu',
+        };
+    }
+    if (normalized.includes('owner')) {
+        return {
+            name: 'owner',
+            label: 'Owner',
+            bg: '#16a34a', // Green / Hijau
+            border: '#4ade80',
+            glow: 'rgba(22, 163, 74, 0.5)',
+            colorName: 'Hijau',
+        };
+    }
+    if (normalized.includes('supervisor') || normalized.includes('supervicor')) {
+        return {
+            name: 'supervisor',
+            label: 'Supervisor',
+            bg: '#2563eb', // Blue / Biru
+            border: '#60a5fa',
+            glow: 'rgba(37, 99, 235, 0.5)',
+            colorName: 'Biru',
+        };
+    }
+    if (normalized.includes('staff')) {
+        return {
+            name: 'staff',
+            label: 'Staff',
+            bg: '#db2777', // Pink
+            border: '#f472b6',
+            glow: 'rgba(219, 39, 119, 0.5)',
+            colorName: 'Pink',
+        };
+    }
+    return {
+        name: 'owner',
+        label: 'Owner',
+        bg: '#16a34a',
+        border: '#4ade80',
+        glow: 'rgba(22, 163, 74, 0.5)',
+        colorName: 'Hijau',
+    };
 };
 
 const getSupplierCoords = (supplier: Supplier, index: number): [number, number] => {
+    if (supplier.latitude !== undefined && supplier.latitude !== null && supplier.longitude !== undefined && supplier.longitude !== null) {
+        return [Number(supplier.latitude), Number(supplier.longitude)];
+    }
     const cityKey = (supplier.city || '').toLowerCase().trim();
     const baseCoords = CITY_COORDINATES[cityKey] || [-6.2088, 106.8456];
-    const offsetLat = ((index % 7) - 3) * 0.012;
-    const offsetLng = (Math.floor(index / 7) - 2) * 0.012;
+    const offsetLat = ((index % 7) - 3) * -0.012;
+    const offsetLng = (Math.floor(index / 7) - 2) * -0.012;
     return [baseCoords[0] + offsetLat, baseCoords[1] + offsetLng];
 };
 
 function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Earth's radius in km
+    const R = 6371; // Earth radius in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -69,36 +136,51 @@ function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: num
     return Math.round(R * c * 10) / 10;
 }
 
-const createCustomIcon = (label: string, isSelected: boolean = false) => {
+const createCustomIcon = (label: string, isSelected: boolean = false, role?: string | null) => {
+    const roleInfo = getRoleColor(role);
+
     if (isSelected) {
         return L.divIcon({
             className: 'custom-leaflet-marker-active',
             html: `
-                <div class="relative flex flex-col items-center">
-                    <div class="bg-[#1b263b] text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-xl whitespace-nowrap mb-1 border border-emerald-500/30 flex items-center gap-1">
-                        <span>Click to see details</span>
+                <div class="relative flex flex-col items-center group cursor-pointer filter drop-shadow-2xl">
+                    <div class="bg-slate-900/95 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-2xl whitespace-nowrap mb-1 border border-slate-700 flex items-center gap-1.5 animate-bounce">
+                        <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${roleInfo.bg};"></span>
+                        <span>${label} (${roleInfo.label})</span>
                     </div>
-                    <div class="w-10 h-10 rounded-full bg-[#164e3d] border-2 border-emerald-300 text-white flex items-center justify-center shadow-xl ring-4 ring-emerald-500/30">
-                        <div class="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-                            <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-                        </div>
+                    <div class="w-11 h-14 relative flex items-center justify-center">
+                        <svg viewBox="0 0 32 42" class="w-full h-full">
+                            <path d="M16 0C7.16 0 0 7.16 0 16c0 12 16 26 16 26s16-14 16-26c0-8.84-7.16-16-16-16z" fill="${roleInfo.bg}" stroke="${roleInfo.border}" stroke-width="2"/>
+                            <circle cx="16" cy="15" r="7.5" fill="#ffffff"/>
+                        </svg>
+                        <span class="absolute top-[8px] text-[10px] font-black" style="color: ${roleInfo.bg}; font-family: sans-serif;">
+                            ${label}
+                        </span>
                     </div>
                 </div>
             `,
-            iconSize: [140, 75],
-            iconAnchor: [70, 70],
+            iconSize: [140, 80],
+            iconAnchor: [70, 75],
         });
     }
 
     return L.divIcon({
         className: 'custom-leaflet-marker',
         html: `
-            <div class="w-9 h-9 rounded-full bg-[#164e3d] border-2 border-emerald-400 text-white font-bold flex items-center justify-center text-xs shadow-lg hover:scale-110 transition-transform">
-                ${label}
+            <div class="relative flex flex-col items-center group cursor-pointer filter drop-shadow-md hover:drop-shadow-xl transition-all hover:scale-110">
+                <div class="w-9 h-12 relative flex items-center justify-center">
+                    <svg viewBox="0 0 32 42" class="w-full h-full">
+                        <path d="M16 0C7.16 0 0 7.16 0 16c0 12 16 26 16 26s16-14 16-26c0-8.84-7.16-16-16-16z" fill="${roleInfo.bg}" stroke="${roleInfo.border}" stroke-width="1.5"/>
+                        <circle cx="16" cy="15" r="7" fill="#ffffff"/>
+                    </svg>
+                    <span class="absolute top-[7px] text-[9px] font-black" style="color: ${roleInfo.bg}; font-family: sans-serif;">
+                        ${label}
+                    </span>
+                </div>
             </div>
         `,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18],
+        iconSize: [36, 48],
+        iconAnchor: [18, 46],
     });
 };
 
@@ -121,30 +203,65 @@ const createUserGpsIcon = () => {
 function MapController({ center }: { center: [number, number] }) {
     const map = useMap();
     useEffect(() => {
-        map.flyTo(center, 12, { duration: 1.2 });
+        if (!center || !center[0] || !center[1]) return;
+
+        // 1. Terbang ke titik lokasi target
+        map.flyTo(center, 13, { duration: 1.0 });
+
+        // 2. Geser posisi kamera sebesar piksel agar titik GPS terposisikan di tengah visual area
+        const timer = setTimeout(() => {
+            const isDesktop = window.innerWidth >= 768;
+            if (isDesktop) {
+                // X: +220px (posisi pin sedikit lebih ke KANAN dibanding 280px)
+                // Y: -120px (posisi pin di BAWAH)
+                map.panBy([220, -120], { animate: true, duration: 0.5 });
+            }
+        }, 1100);
+
+        return () => clearTimeout(timer);
     }, [center, map]);
     return null;
 }
 
-export default function SuppliersIndex({ suppliers, cities, filters, business_type }: Props) {
+export default function SuppliersIndex({ suppliers, all_suppliers, cities, filters, business_type }: Props) {
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const currentUserRole = auth.user?.roles?.[0] || 'owner';
     const currentUserName = auth.user?.name || 'Pengguna';
 
+    const rawList: Supplier[] = Array.isArray(suppliers)
+        ? suppliers
+        : (suppliers?.data ?? all_suppliers ?? []);
+
     const [search, setSearch] = useState(filters.search || '');
     const [city, setCity] = useState(filters.city || '');
     const [activeTab, setActiveTab] = useState<'list' | 'create'>('list');
     const [mapMode, setMapMode] = useState<'map' | 'satellite'>('map');
-    const [selectedSupplierId, setSelectedSupplierId] = useState<number | string | null>(
-        suppliers.data.length > 0 ? suppliers.data[0].id : null
-    );
     const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2088, 106.8456]);
 
     // GPS State
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
     const [isLocating, setIsLocating] = useState(false);
     const [gpsError, setGpsError] = useState<string | null>(null);
+
+    // Urutkan daftar supplier berdasarkan jarak terdekat dari posisi GPS user
+    const sortedSuppliersList = useMemo(() => {
+        const list = [...rawList];
+        if (userLocation) {
+            return list.sort((a, b) => {
+                const coordsA = getSupplierCoords(a, 0);
+                const coordsB = getSupplierCoords(b, 0);
+                const distA = calculateDistanceKm(userLocation[0], userLocation[1], coordsA[0], coordsA[1]);
+                const distB = calculateDistanceKm(userLocation[0], userLocation[1], coordsB[0], coordsB[1]);
+                return distA - distB;
+            });
+        }
+        return list;
+    }, [rawList, userLocation]);
+
+    const [selectedSupplierId, setSelectedSupplierId] = useState<number | string | null>(
+        sortedSuppliersList.length > 0 ? sortedSuppliersList[0].id : null
+    );
 
     // Auto-fetch State & Categories input
     const [isFetchingLinkData, setIsFetchingLinkData] = useState(false);
@@ -162,6 +279,8 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
         description: '',
         rating: 4.8,
         review_count: 120,
+        latitude: null as number | null,
+        longitude: null as number | null,
     });
 
     const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.suppliers'), href: '/suppliers' }];
@@ -219,109 +338,135 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
         }
     };
 
-    // Auto-extract Google Maps / URL Link data accurately (supports iframe embed, search queries, place slugs & coords)
+    useEffect(() => {
+        handleGetGPSLocation();
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
+
+    // Auto-extract Google Maps / URL Link data accurately using Backend Web Scraper API & Client Fallback
     const handleLinkChange = (rawInput: string) => {
         let cleanUrl = rawInput.trim();
 
-        // 1. If user pasted iframe HTML snippet, extract the src URL
+        // 1. Extract URL from iframe HTML or text snippet
         if (cleanUrl.includes('<iframe') && cleanUrl.includes('src=')) {
             const match = cleanUrl.match(/src=["']([^"']+)["']/i);
             if (match && match[1]) {
                 cleanUrl = match[1];
             }
+        } else {
+            const urlMatch = cleanUrl.match(/(https?:\/\/[^\s"'<>]+)/i);
+            if (urlMatch && urlMatch[1]) {
+                cleanUrl = urlMatch[1];
+            }
         }
 
         quickForm.setData('website', cleanUrl);
-        if (!cleanUrl || cleanUrl.length < 5) return;
+        if (!rawInput || rawInput.trim().length < 5) return;
 
         setIsFetchingLinkData(true);
 
-        setTimeout(() => {
-            let extractedName = '';
-            let extractedCity = city || '';
-            let extractedAddress = '';
-            let extractedPhone = '0812-3456-7890';
-            let extractedRating = 4.8;
-            let extractedReviews = 168;
-            let extractedLat: number | null = null;
-            let extractedLng: number | null = null;
+        const getCsrfToken = () => {
+            const metaTag = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement;
+            if (metaTag?.content) return metaTag.content;
+            const match = document.cookie.match(new RegExp('(^|; )XSRF-TOKEN=([^;]+)'));
+            return match ? decodeURIComponent(match[2]) : '';
+        };
 
-            try {
-                // Parse search query parameter from embed URL (e.g., !1sindomaret%20malang or !2m1!1sindomaret%20malang)
-                const searchQueryMatch = cleanUrl.match(/!1s([^!&]+)/i) || cleanUrl.match(/[?&]q=([^&]+)/i);
-                if (searchQueryMatch && searchQueryMatch[1]) {
-                    const rawQuery = decodeURIComponent(searchQueryMatch[1]).replace(/\+/g, ' ').trim();
-                    const words = rawQuery.split(' ');
-                    if (words.length > 1) {
-                        const probableCity = words[words.length - 1];
-                        extractedCity = probableCity.charAt(0).toUpperCase() + probableCity.slice(1).toLowerCase();
-                        const namePart = words.slice(0, words.length - 1).join(' ');
-                        extractedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-                    } else {
-                        extractedName = rawQuery.charAt(0).toUpperCase() + rawQuery.slice(1);
+        const csrfToken = getCsrfToken();
+
+        fetch('/suppliers/parse-link', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken,
+                'X-XSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({ url: rawInput }),
+        })
+            .then((res) => res.json())
+            .then((resData) => {
+                if (resData.success && resData.data) {
+                    const d = resData.data;
+                    quickForm.setData((prev) => ({
+                        ...prev,
+                        website: d.website || cleanUrl,
+                        name: d.name,
+                        city: d.city,
+                        address: d.address,
+                        phone: d.phone,
+                        rating: d.rating,
+                        review_count: d.review_count,
+                        latitude: d.lat !== null && d.lat !== undefined ? d.lat : prev.latitude,
+                        longitude: d.lng !== null && d.lng !== undefined ? d.lng : prev.longitude,
+                    }));
+
+                    if (d.lat !== null && d.lng !== null) {
+                        setMapCenter([d.lat, d.lng]);
+                    } else if (CITY_COORDINATES[d.city.toLowerCase()]) {
+                        setMapCenter(CITY_COORDINATES[d.city.toLowerCase()]);
                     }
                 }
+            })
+            .catch(() => {
+                // Client-side fallback extraction
+                let extractedName = '';
+                let extractedCity = city || 'Malang';
+                let extractedAddress = '';
+                let extractedPhone = '0812-3456-7890';
+                let extractedRating = 4.8;
+                let extractedReviews = 168;
+                let extractedLat: number | null = null;
+                let extractedLng: number | null = null;
 
-                // Parse Google Maps /place/ slug
-                if (!extractedName && cleanUrl.includes('/place/')) {
-                    const placeSlug = cleanUrl.split('/place/')[1]?.split('/')[0];
-                    if (placeSlug) {
-                        const decoded = decodeURIComponent(placeSlug).replace(/\+/g, ' ');
-                        const parts = decoded.split(',');
-                        extractedName = parts[0].trim();
-                        if (parts.length > 1) {
-                            extractedCity = parts[1].trim();
-                        }
-                    }
-                }
-
-                // Parse coordinates from embed format: !2d[lng]!3d[lat]
-                const coordMatch2d3d = cleanUrl.match(/!2d([0-9.-]+)!3d([0-9.-]+)/i);
-                if (coordMatch2d3d) {
-                    extractedLng = parseFloat(coordMatch2d3d[1]);
-                    extractedLat = parseFloat(coordMatch2d3d[2]);
-                }
-
-                // Parse coordinates from @lat,lng format
-                if (!extractedLat && cleanUrl.includes('@')) {
+                const coordMatch = cleanUrl.match(/!2d([0-9.-]+)!3d([0-9.-]+)/i);
+                if (coordMatch) {
+                    extractedLng = parseFloat(coordMatch[1]);
+                    extractedLat = parseFloat(coordMatch[2]);
+                } else {
                     const atMatch = cleanUrl.match(/@([0-9.-]+),([0-9.-]+)/);
                     if (atMatch) {
                         extractedLat = parseFloat(atMatch[1]);
                         extractedLng = parseFloat(atMatch[2]);
                     }
                 }
-            } catch (e) {
-                console.error('Google Maps parse error:', e);
-            }
 
-            if (!extractedName) {
-                extractedName = 'Supplier ' + (extractedCity || 'Utama');
-            }
-            if (!extractedCity) {
-                extractedCity = 'Malang';
-            }
-            extractedAddress = `Jl. Utama ${extractedCity}, Jawa Timur`;
+                const embedNameMatch = cleanUrl.match(/!2s([^!&]+)/i);
+                if (embedNameMatch && embedNameMatch[1]) {
+                    extractedName = decodeURIComponent(embedNameMatch[1]).replace(/\+/g, ' ').trim();
+                }
 
-            // If exact coordinates were extracted, pan the map directly to that location!
-            if (extractedLat !== null && extractedLng !== null) {
-                setMapCenter([extractedLat, extractedLng]);
-            } else if (CITY_COORDINATES[extractedCity.toLowerCase()]) {
-                setMapCenter(CITY_COORDINATES[extractedCity.toLowerCase()]);
-            }
+                if (!extractedName && cleanUrl.includes('/place/')) {
+                    const placeSlug = cleanUrl.split('/place/')[1]?.split('/')[0];
+                    if (placeSlug) {
+                        extractedName = decodeURIComponent(placeSlug).replace(/\+/g, ' ').split(',')[0].trim();
+                    }
+                }
 
-            quickForm.setData((prev) => ({
-                ...prev,
-                website: cleanUrl,
-                name: extractedName,
-                city: extractedCity,
-                address: extractedAddress,
-                phone: extractedPhone,
-                rating: extractedRating,
-                review_count: extractedReviews,
-            }));
+                if (!extractedName) {
+                    extractedName = 'Supplier ' + (extractedCity || 'Utama');
+                }
 
-            setIsFetchingLinkData(false);
-        }, 400);
+                quickForm.setData((prev) => ({
+                    ...prev,
+                    website: cleanUrl,
+                    name: extractedName,
+                    city: extractedCity,
+                    address: `Jl. Utama ${extractedCity}, Jawa Timur`,
+                    phone: extractedPhone,
+                    rating: extractedRating,
+                    review_count: extractedReviews,
+                    latitude: extractedLat,
+                    longitude: extractedLng,
+                }));
+            })
+            .finally(() => {
+                setIsFetchingLinkData(false);
+            });
     };
 
     const handleQuickCreateSubmit = (e: React.FormEvent) => {
@@ -346,7 +491,7 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                 <div className="absolute inset-0 z-0">
                     <MapContainer
                         center={mapCenter}
-                        zoom={11}
+                        zoom={14}
                         zoomControl={false}
                         className="w-full h-full outline-none"
                     >
@@ -376,19 +521,20 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                             </Marker>
                         )}
 
-                        {/* Interactive Markers for Suppliers */}
-                        {suppliers.data.map((supplier, idx) => {
+                        {/* Interactive Markers for Suppliers (All Roles, Sorted by Nearest) */}
+                        {sortedSuppliersList.map((supplier, idx) => {
                             const coords = getSupplierCoords(supplier, idx);
                             const isSelected = selectedSupplierId === supplier.id;
                             const distance = userLocation
                                 ? calculateDistanceKm(userLocation[0], userLocation[1], coords[0], coords[1])
                                 : null;
+                            const roleInfo = getRoleColor(supplier.added_by_role);
 
                             return (
                                 <Marker
                                     key={supplier.id}
                                     position={coords}
-                                    icon={createCustomIcon(String(idx + 1), isSelected)}
+                                    icon={createCustomIcon(String(idx + 1), isSelected, supplier.added_by_role)}
                                     eventHandlers={{
                                         click: () => handleSelectSupplier(supplier, idx),
                                     }}
@@ -400,8 +546,19 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                                 {supplier.is_verified && <CheckCircle size={14} className="text-[#164e3d]" />}
                                             </div>
                                             <p className="text-xs text-slate-500 mt-1">{supplier.address || supplier.city}</p>
+                                            
+                                            {/* Role Creator Badge */}
+                                            <div className="mt-2 flex items-center gap-1.5">
+                                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white uppercase shadow-sm" style={{ backgroundColor: roleInfo.bg }}>
+                                                    {roleInfo.label}
+                                                </span>
+                                                {supplier.creator?.name && (
+                                                    <span className="text-[11px] text-slate-500">by {supplier.creator.name}</span>
+                                                )}
+                                            </div>
+
                                             {distance !== null && (
-                                                <p className="text-xs font-semibold text-blue-600 mt-1">
+                                                <p className="text-xs font-semibold text-blue-600 mt-1.5">
                                                     📍 {distance} km dari lokasi Anda
                                                 </p>
                                             )}
@@ -419,6 +576,26 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                 </Marker>
                             );
                         })}
+
+                        {/* Live Preview Pin for Newly Parsed / Draft Supplier */}
+                        {quickForm.data.latitude !== null && quickForm.data.longitude !== null && (
+                            <Marker
+                                position={[quickForm.data.latitude, quickForm.data.longitude]}
+                                icon={createCustomIcon('NEW', true, currentUserRole)}
+                            >
+                                <Popup autoPan={false} className="rounded-xl shadow-lg border border-purple-200">
+                                    <div className="p-1 max-w-xs">
+                                        <div className="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                                            📍 {quickForm.data.name || 'Supplier Baru'} (Preview)
+                                        </div>
+                                        <p className="text-xs text-slate-500 mt-1">{quickForm.data.address || quickForm.data.city}</p>
+                                        <div className="mt-2 inline-block px-2 py-0.5 rounded-full text-[10px] font-bold text-white uppercase shadow-sm" style={{ backgroundColor: getRoleColor(currentUserRole).bg }}>
+                                            Role Anda: {getRoleColor(currentUserRole).label} ({getRoleColor(currentUserRole).colorName})
+                                        </div>
+                                    </div>
+                                </Popup>
+                            </Marker>
+                        )}
                     </MapContainer>
                 </div>
 
@@ -443,6 +620,8 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                             Satellite
                         </button>
                     </div>
+
+                   
 
                     {/* GPS Location Switch (Multi-Language Style) */}
                     <div className="pointer-events-auto bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-xl rounded-full px-3 py-1 flex items-center gap-2 text-xs font-semibold">
@@ -530,7 +709,7 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                         : 'text-slate-600 hover:bg-slate-200/60'
                                 }`}
                             >
-                                Daftar Supplier ({suppliers.total})
+                                Daftar Supplier ({sortedSuppliersList.length})
                             </button>
                             <button
                                 onClick={() => setActiveTab('create')}
@@ -580,21 +759,21 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                 <span className="text-xs text-slate-500 font-medium">
                                     Kategori: <strong className="text-slate-800">{businessTypeLabel || 'Semua'}</strong>
                                 </span>
-                                {suppliers.last_page > 1 && (
-                                    <span className="text-[11px] text-slate-400">
-                                        Hal {suppliers.current_page} dari {suppliers.last_page}
+                                {userLocation && (
+                                    <span className="text-[11px] text-blue-600 font-bold flex items-center gap-1">
+                                        <Compass size={12} /> Terdekat dari GPS
                                     </span>
                                 )}
                             </div>
 
-                            {suppliers.data.length === 0 ? (
+                            {sortedSuppliersList.length === 0 ? (
                                 <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-400">
                                     <MapPin size={32} className="mb-2 opacity-50" />
                                     <p className="text-xs">{t('supplier.noData')}</p>
                                 </div>
                             ) : (
                                 <div className="flex-1 overflow-y-auto space-y-3 pr-1">
-                                    {suppliers.data.map((supplier, idx) => {
+                                    {sortedSuppliersList.map((supplier, idx) => {
                                         const coords = getSupplierCoords(supplier, idx);
                                         const isSelected = selectedSupplierId === supplier.id;
                                         const distance = userLocation
@@ -682,23 +861,6 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                     })}
                                 </div>
                             )}
-
-                            {/* Pagination Footer */}
-                            {suppliers.last_page > 1 && (
-                                <div className="mt-3 pt-3 border-t border-slate-100 flex justify-center gap-1">
-                                    {suppliers.links.map((link, i) => (
-                                        <Button
-                                            key={i}
-                                            variant={link.active ? 'owner' : 'outline'}
-                                            disabled={!link.url}
-                                            onClick={() => link.url && router.get(link.url, {}, { preserveState: true, replace: true })}
-                                            className="h-7 text-xs rounded-xl px-2.5"
-                                        >
-                                            <span dangerouslySetInnerHTML={{ __html: link.label }} />
-                                        </Button>
-                                    ))}
-                                </div>
-                            )}
                         </div>
                     )}
 
@@ -731,32 +893,97 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                                         </span>
                                     )}
                                 </label>
-                                <div className="relative flex items-center">
-                                    <LinkIcon size={14} className="absolute left-3 text-slate-400 pointer-events-none" />
-                                    <input
-                                        type="url"
+                                <div className="relative flex items-start">
+                                    <LinkIcon size={14} className="absolute left-3 top-2.5 text-slate-400 pointer-events-none" />
+                                    <textarea
+                                        rows={2}
                                         required
-                                        className="w-full h-9.5 rounded-xl border border-slate-200 pl-9 pr-3 text-xs outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
-                                        placeholder="Tempel link Google Maps (contoh: https://maps.app.goo.gl/...)"
+                                        className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-xs outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                        placeholder="Tempel link Google Maps, kode embed iframe, atau teks detail tempat..."
                                         value={quickForm.data.website}
                                         onChange={(e) => handleLinkChange(e.target.value)}
                                     />
                                 </div>
                             </div>
 
-                            {/* Extracted Google Maps Data Preview Box */}
+                            {/* Extracted Google Maps Data Editable Form Box */}
                             {quickForm.data.name && (
-                                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1 text-[11px]">
-                                    <div className="font-bold text-[#164e3d] flex items-center gap-1">
-                                        <CheckCircle size={12} /> Data Google Maps Terambil:
+                                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5 text-[11px]">
+                                    <div className="font-bold text-[#164e3d] flex items-center justify-between">
+                                        <span className="flex items-center gap-1">
+                                            <CheckCircle size={12} /> Data Terambil (Dapat Disesuaikan):
+                                        </span>
                                     </div>
-                                    <div className="text-slate-800 font-bold text-xs">{quickForm.data.name}</div>
-                                    <div className="text-slate-600 flex items-center gap-1">
-                                        <span>📍 {quickForm.data.city} ({quickForm.data.address})</span>
+
+                                    {/* Nama Supplier */}
+                                    <div className="space-y-1">
+                                        <label className="font-semibold text-slate-700">Nama Supplier *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                            value={quickForm.data.name}
+                                            onChange={(e) => quickForm.setData('name', e.target.value)}
+                                        />
                                     </div>
-                                    <div className="text-slate-600 flex items-center gap-3 pt-0.5">
-                                        <span>📞 {quickForm.data.phone}</span>
-                                        <span className="text-amber-600 font-bold">⭐ {quickForm.data.rating} ({quickForm.data.review_count} ulasan)</span>
+
+                                    {/* Kota & Telepon Grid */}
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div className="space-y-1">
+                                            <label className="font-semibold text-slate-700">Kota</label>
+                                            <input
+                                                type="text"
+                                                className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                                value={quickForm.data.city}
+                                                onChange={(e) => quickForm.setData('city', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="font-semibold text-slate-700">No. Telepon</label>
+                                            <input
+                                                type="text"
+                                                className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                                value={quickForm.data.phone}
+                                                onChange={(e) => quickForm.setData('phone', e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Alamat Lengkap */}
+                                    <div className="space-y-1">
+                                        <label className="font-semibold text-slate-700">Alamat Lengkap</label>
+                                        <input
+                                            type="text"
+                                            className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                            value={quickForm.data.address}
+                                            onChange={(e) => quickForm.setData('address', e.target.value)}
+                                        />
+                                    </div>
+
+                                    {/* Rating & Ulasan Grid */}
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div className="space-y-1">
+                                            <label className="font-semibold text-slate-700">Rating ⭐ (0 - 5)</label>
+                                            <input
+                                                type="number"
+                                                step="0.1"
+                                                min="0"
+                                                max="5"
+                                                className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                                value={quickForm.data.rating}
+                                                onChange={(e) => quickForm.setData('rating', parseFloat(e.target.value) || 0)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="font-semibold text-slate-700">Jumlah Ulasan 💬</label>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                                value={quickForm.data.review_count}
+                                                onChange={(e) => quickForm.setData('review_count', parseInt(e.target.value, 10) || 0)}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -828,6 +1055,48 @@ export default function SuppliersIndex({ suppliers, cities, filters, business_ty
                     )}
                 </div>
             </div>
+
+            {/* GPS Mandatory Overlay Modal */}
+            {!userLocation && (
+                <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-lg flex items-center justify-center p-4">
+                    <div className="bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl p-6 max-w-md w-full text-center text-white space-y-4 animate-in fade-in zoom-in duration-300">
+                        <div className="w-16 h-16 rounded-full bg-blue-600/20 border border-blue-500/40 text-blue-400 mx-auto flex items-center justify-center shadow-inner">
+                            <Compass size={32} className={isLocating ? 'animate-spin' : ''} />
+                        </div>
+                        <div className="space-y-1">
+                            <h3 className="text-lg font-bold text-white">Izin Akses GPS Diperlukan</h3>
+                            <p className="text-xs text-slate-400 leading-relaxed">
+                                Untuk mengakses halaman supplier dan peta interaktif, Anda wajib mengaktifkan GPS / izin lokasi pada perangkat Anda.
+                            </p>
+                        </div>
+
+                        {gpsError && (
+                            <div className="bg-amber-950/80 border border-amber-700/50 text-amber-200 text-xs p-3 rounded-xl font-medium flex items-center gap-2 text-left">
+                                <span className="text-base">⚠️</span>
+                                <span>{gpsError}</span>
+                            </div>
+                        )}
+
+                        <Button
+                            onClick={handleGetGPSLocation}
+                            disabled={isLocating}
+                            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm"
+                        >
+                            {isLocating ? (
+                                <>
+                                    <Loader2 size={16} className="animate-spin" />
+                                    <span>Mengakses Lokasi GPS...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Navigation size={16} />
+                                    <span>Aktifkan & Izinkan GPS</span>
+                                </>
+                            )}
+                        </Button>
+                    </div>
+                </div>
+            )}
         </AppLayout>
     );
 }

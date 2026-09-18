@@ -138,6 +138,7 @@ Route::middleware(['auth', 'verified', EnsureTenantMiddleware::class])
                 Route::get('/', [SupplierController::class, 'index'])->name('index');
                 Route::get('/create', [SupplierController::class, 'create'])->name('create');
                 Route::post('/', [SupplierController::class, 'store'])->name('store');
+                Route::post('/parse-link', [SupplierController::class, 'parseLink'])->name('parse-link');
                 Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit'); // Tambahan rute Edit
                 Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update'); // Tambahan rute Update
             });

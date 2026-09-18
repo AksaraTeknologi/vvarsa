@@ -17,35 +17,38 @@ class SupplierController extends Controller
         // Selalu gunakan business_type dari tenant — tidak bisa di-override dari request
         $businessType = $tenant->business_type ?? 'fnb';
 
-        $query = Supplier::where('is_active', true)
+        $baseQuery = Supplier::where('is_active', true)
             ->where(function ($q) use ($tenant) {
                 $q->whereNull('tenant_id')
                     ->orWhere('tenant_id', $tenant->id);
             });
 
         if ($search = $request->get('search')) {
-            $query->where(function ($q) use ($search) {
+            $baseQuery->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('city', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        // Filter selalu berdasarkan business_type tenant
-        $query->where('business_type', $businessType);
-
-        if ($city = $request->get('city')) {
-            $query->where('city', $city);
+        if ($businessType) {
+            $baseQuery->where(function ($q) use ($businessType) {
+                $q->where('business_type', $businessType)
+                    ->orWhereNull('business_type');
+            });
         }
 
-        $suppliers = $query->with(['creator:id,name'])
+        if ($city = $request->get('city')) {
+            $baseQuery->where('city', $city);
+        }
+
+        // Semuanya diambil tanpa pagination untuk ditampilkan di daftar dan peta
+        $suppliers = (clone $baseQuery)->with(['creator:id,name'])
             ->orderByDesc('is_verified')
             ->orderByDesc('rating')
-            ->paginate(9)
-            ->withQueryString();
+            ->get();
 
         $cities = Supplier::where('is_active', true)
-            ->where('business_type', $businessType)
             ->distinct()
             ->whereNotNull('city')
             ->pluck('city')
@@ -53,6 +56,7 @@ class SupplierController extends Controller
 
         return Inertia::render('suppliers/index', [
             'suppliers' => $suppliers,
+            'all_suppliers' => $suppliers,
             'cities' => $cities,
             'filters' => [
                 'search' => $request->get('search', ''),
@@ -71,14 +75,14 @@ class SupplierController extends Controller
     {
         $tenant = app('tenant');
         $user = $request->user();
-        $roleName = $user?->roles?->pluck('name')->first() ?? 'owner';
+        $roleName = $user ? ($user->getRoleNames()->first() ?? $user->primaryRole()) : 'owner';
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'contact_name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:50',
             'email' => 'nullable|email|max:255',
-            'website' => 'nullable|url|max:500',
+            'website' => 'nullable|url|max:2048',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:100',
             'business_type' => 'nullable|string',
@@ -86,11 +90,14 @@ class SupplierController extends Controller
             'description' => 'nullable|string',
             'rating' => 'nullable|numeric|min:0|max:5',
             'review_count' => 'nullable|integer|min:0',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         $validated['tenant_id'] = $tenant->id;
         $validated['created_by_user_id'] = $user?->id;
         $validated['added_by_role'] = $roleName;
+        $validated['business_type'] = !empty($validated['business_type']) ? $validated['business_type'] : ($tenant->business_type ?? 'fnb');
         $validated['is_active'] = true;
         $validated['is_verified'] = false;
         $validated['rating'] = $validated['rating'] ?? 0.0;
@@ -130,7 +137,7 @@ class SupplierController extends Controller
             'contact_name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
-            'website' => 'nullable|url|max:255',
+            'website' => 'nullable|url|max:2048',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:100',
             'business_type' => 'nullable|string|in:fnb,retail,fashion,services,general',
@@ -142,5 +149,19 @@ class SupplierController extends Controller
 
         return redirect()->route('suppliers.index')
             ->with('success', 'Supplier berhasil diperbarui.');
+    }
+
+    public function parseLink(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'url' => 'required|string',
+        ]);
+
+        $scrapedData = \App\Services\GoogleMapsScraperService::scrape($request->input('url'));
+
+        return response()->json([
+            'success' => true,
+            'data' => $scrapedData,
+        ]);
     }
 }

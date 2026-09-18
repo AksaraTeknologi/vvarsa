@@ -21,6 +21,8 @@ class Supplier extends Model
         'website',
         'address',
         'city',
+        'latitude',
+        'longitude',
         'product_categories',
         'business_type',
         'rating',
@@ -34,6 +36,8 @@ class Supplier extends Model
     protected $casts = [
         'product_categories' => 'array',
         'rating' => 'double',
+        'latitude' => 'double',
+        'longitude' => 'double',
         'is_verified' => 'boolean',
         'is_active' => 'boolean',
     ];

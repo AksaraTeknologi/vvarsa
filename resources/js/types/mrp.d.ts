@@ -115,6 +115,8 @@ export interface Supplier {
     website: string | null;
     address: string | null;
     city: string | null;
+    latitude?: number | string | null;
+    longitude?: number | string | null;
     product_categories: string[];
     business_type: string | null;
     rating: number;
