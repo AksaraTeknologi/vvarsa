@@ -124,7 +124,7 @@ export interface Supplier {
     logo: string | null;
     description: string | null;
     is_verified: boolean;
-    created_by_user_id?: string | null;
+    created_by_user_id?: string | number | null;
     added_by_role?: string | null;
     creator?: { id: string | number; name: string } | null;
 }

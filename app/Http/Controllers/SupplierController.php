@@ -66,9 +66,9 @@ class SupplierController extends Controller
         ]);
     }
 
-    public function create(): Response
+    public function create(): RedirectResponse
     {
-        return Inertia::render('suppliers/create');
+        return redirect()->route('suppliers.index');
     }
 
     public function store(Request $request): RedirectResponse
@@ -109,46 +109,87 @@ class SupplierController extends Controller
             ->with('success', 'Supplier berhasil ditambahkan.');
     }
 
-    public function edit(Supplier $supplier): Response
+    public function edit(Supplier $supplier): RedirectResponse
     {
         $tenant = app('tenant');
+        $user = auth()->user();
+        $isAdmin = $user && ($user->hasRole('admin') || $user->isPlatformAdmin());
 
-        // Proteksi: Pastikan tenant hanya bisa mengedit supplier miliknya sendiri
-        if ($supplier->tenant_id !== $tenant->id) {
-            abort(403, 'Anda tidak memiliki izin untuk mengedit supplier ini.');
+        // Proteksi: Admin bisa mengedit semua tempat/supplier.
+        // Role owner, supervisor, & staff hanya bisa mengedit tempat yang dibuatnya sendiri.
+        if (!$isAdmin) {
+            if ($supplier->tenant_id && $supplier->tenant_id !== $tenant->id) {
+                abort(403, 'Anda tidak memiliki izin untuk mengedit supplier ini.');
+            }
+            if ($supplier->created_by_user_id !== $user?->id) {
+                abort(403, 'Anda hanya memiliki izin untuk mengedit tempat/lokasi yang Anda buat sendiri.');
+            }
         }
 
-        return Inertia::render('suppliers/edit', [
-            'supplier' => $supplier,
-        ]);
+        return redirect()->route('suppliers.index');
     }
 
     public function update(Request $request, Supplier $supplier): RedirectResponse
     {
         $tenant = app('tenant');
+        $user = $request->user();
+        $isAdmin = $user && ($user->hasRole('admin') || $user->isPlatformAdmin());
 
-        // Proteksi: Pastikan tenant hanya bisa mengubah supplier miliknya sendiri
-        if ($supplier->tenant_id !== $tenant->id) {
-            abort(403, 'Anda tidak memiliki izin untuk mengubah supplier ini.');
+        // Proteksi: Admin bisa mengubah semua tempat/supplier.
+        // Role owner, supervisor, & staff hanya bisa mengubah tempat yang dibuatnya sendiri.
+        if (!$isAdmin) {
+            if ($supplier->tenant_id && $supplier->tenant_id !== $tenant->id) {
+                abort(403, 'Anda tidak memiliki izin untuk mengubah supplier ini.');
+            }
+            if ($supplier->created_by_user_id !== $user?->id) {
+                abort(403, 'Anda hanya memiliki izin untuk mengubah tempat/lokasi yang Anda buat sendiri.');
+            }
         }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'contact_name' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:50',
             'email' => 'nullable|email|max:255',
-            'website' => 'nullable|url|max:2048',
+            'website' => 'nullable|string',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:100',
-            'business_type' => 'nullable|string|in:fnb,retail,fashion,services,general',
+            'business_type' => 'nullable|string',
             'product_categories' => 'nullable|array',
             'description' => 'nullable|string',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'review_count' => 'nullable|integer|min:0',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         $supplier->update($validated);
 
         return redirect()->route('suppliers.index')
             ->with('success', 'Supplier berhasil diperbarui.');
+    }
+
+    public function destroy(Request $request, Supplier $supplier): RedirectResponse
+    {
+        $tenant = app('tenant');
+        $user = $request->user();
+        $isAdmin = $user && ($user->hasRole('admin') || $user->isPlatformAdmin());
+
+        // Proteksi: Admin bisa menghapus semua tempat/supplier.
+        // Role owner, supervisor, & staff hanya bisa menghapus tempat yang dibuatnya sendiri.
+        if (!$isAdmin) {
+            if ($supplier->tenant_id && $supplier->tenant_id !== $tenant->id) {
+                abort(403, 'Anda tidak memiliki izin untuk menghapus supplier ini.');
+            }
+            if ($supplier->created_by_user_id !== $user?->id) {
+                abort(403, 'Anda hanya memiliki izin untuk menghapus tempat/lokasi yang Anda buat sendiri.');
+            }
+        }
+
+        $supplier->delete();
+
+        return redirect()->route('suppliers.index')
+            ->with('success', 'Supplier / Tempat berhasil dihapus.');
     }
 
     public function parseLink(Request $request): \Illuminate\Http\JsonResponse

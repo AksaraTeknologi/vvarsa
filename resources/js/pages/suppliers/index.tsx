@@ -1,3 +1,4 @@
+import DeleteConfirmDialog from '@/components/delete-dialog';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
@@ -18,6 +19,7 @@ import {
     Phone,
     Plus,
     Search,
+    Trash2,
     User
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -29,7 +31,7 @@ interface Props {
     all_suppliers?: Supplier[];
     cities: string[];
     filters: { search?: string; city?: string };
-    business_type: string; // Business type dari tenant
+    business_type: string;
 }
 
 const CITY_COORDINATES: Record<string, [number, number]> = {
@@ -65,7 +67,7 @@ const getRoleColor = (role?: string | null) => {
         return {
             name: 'admin',
             label: 'Admin',
-            bg: '#7c3aed', // Purple / Ungu
+            bg: '#7c3aed',
             border: '#c084fc',
             glow: 'rgba(124, 58, 237, 0.5)',
             colorName: 'Ungu',
@@ -75,7 +77,7 @@ const getRoleColor = (role?: string | null) => {
         return {
             name: 'owner',
             label: 'Owner',
-            bg: '#16a34a', // Green / Hijau
+            bg: '#16a34a',
             border: '#4ade80',
             glow: 'rgba(22, 163, 74, 0.5)',
             colorName: 'Hijau',
@@ -85,7 +87,7 @@ const getRoleColor = (role?: string | null) => {
         return {
             name: 'supervisor',
             label: 'Supervisor',
-            bg: '#2563eb', // Blue / Biru
+            bg: '#2563eb',
             border: '#60a5fa',
             glow: 'rgba(37, 99, 235, 0.5)',
             colorName: 'Biru',
@@ -95,7 +97,7 @@ const getRoleColor = (role?: string | null) => {
         return {
             name: 'staff',
             label: 'Staff',
-            bg: '#db2777', // Pink
+            bg: '#db2777',
             border: '#f472b6',
             glow: 'rgba(219, 39, 119, 0.5)',
             colorName: 'Pink',
@@ -123,7 +125,7 @@ const getSupplierCoords = (supplier: Supplier, index: number): [number, number] 
 };
 
 function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Earth radius in km
+    const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -205,15 +207,11 @@ function MapController({ center }: { center: [number, number] }) {
     useEffect(() => {
         if (!center || !center[0] || !center[1]) return;
 
-        // 1. Terbang ke titik lokasi target
         map.flyTo(center, 13, { duration: 1.0 });
 
-        // 2. Geser posisi kamera sebesar piksel agar titik GPS terposisikan di tengah visual area
         const timer = setTimeout(() => {
             const isDesktop = window.innerWidth >= 768;
             if (isDesktop) {
-                // X: +220px (posisi pin sedikit lebih ke KANAN dibanding 280px)
-                // Y: -120px (posisi pin di BAWAH)
                 map.panBy([220, -120], { animate: true, duration: 0.5 });
             }
         }, 1100);
@@ -235,7 +233,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
 
     const [search, setSearch] = useState(filters.search || '');
     const [city, setCity] = useState(filters.city || '');
-    const [activeTab, setActiveTab] = useState<'list' | 'create'>('list');
+    const [activeTab, setActiveTab] = useState<'list' | 'create' | 'edit'>('list');
     const [mapMode, setMapMode] = useState<'map' | 'satellite'>('map');
     const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2088, 106.8456]);
 
@@ -244,7 +242,6 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
     const [isLocating, setIsLocating] = useState(false);
     const [gpsError, setGpsError] = useState<string | null>(null);
 
-    // Urutkan daftar supplier berdasarkan jarak terdekat dari posisi GPS user
     const sortedSuppliersList = useMemo(() => {
         const list = [...rawList];
         if (userLocation) {
@@ -263,7 +260,25 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
         sortedSuppliersList.length > 0 ? sortedSuppliersList[0].id : null
     );
 
-    // Auto-fetch State & Categories input
+    const canManageSupplier = (supplier: Supplier) => {
+        const userRoles = auth.user?.roles || [];
+        const isUserAdmin = userRoles.includes('admin') || userRoles.includes('Platform Admin') || currentUserRole === 'admin';
+        if (isUserAdmin) return true;
+        return Boolean(supplier.created_by_user_id && auth.user?.id && String(supplier.created_by_user_id) === String(auth.user.id));
+    };
+
+    const handleDeleteSupplier = (supplier: Supplier) => {
+        router.delete(`/suppliers/${supplier.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                if (selectedSupplierId === supplier.id) {
+                    setSelectedSupplierId(null);
+                }
+            },
+        });
+    };
+
+    // Auto-fetch State & Categories input (Quick Add)
     const [isFetchingLinkData, setIsFetchingLinkData] = useState(false);
     const [categoryInput, setCategoryInput] = useState('');
 
@@ -282,6 +297,97 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
         latitude: null as number | null,
         longitude: null as number | null,
     });
+
+    // Inline Edit State
+    const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
+    const [isFetchingEditLinkData, setIsFetchingEditLinkData] = useState(false);
+    const [editCategoryInput, setEditCategoryInput] = useState('');
+
+    const editForm = useForm({
+        name: '',
+        phone: '',
+        email: '',
+        website: '',
+        city: city || '',
+        address: '',
+        business_type: 'fnb',
+        product_categories: [] as string[],
+        description: '',
+        rating: 4.8,
+        review_count: 120,
+        latitude: null as number | null,
+        longitude: null as number | null,
+    });
+
+    const handleStartEditSupplier = (supplier: Supplier) => {
+        setEditingSupplier(supplier);
+        const cats = Array.isArray(supplier.product_categories) ? supplier.product_categories : [];
+        editForm.setData({
+            name: supplier.name || '',
+            phone: supplier.phone || '',
+            email: supplier.email || '',
+            website: supplier.website || '',
+            city: supplier.city || '',
+            address: supplier.address || '',
+            business_type: supplier.business_type || 'fnb',
+            product_categories: cats,
+            description: supplier.description || '',
+            rating: supplier.rating ?? 4.8,
+            review_count: supplier.review_count ?? 120,
+            latitude: supplier.latitude ? Number(supplier.latitude) : null,
+            longitude: supplier.longitude ? Number(supplier.longitude) : null,
+        });
+        setEditCategoryInput(cats.join(', '));
+        setActiveTab('edit');
+    };
+
+    const handleEditSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editingSupplier) return;
+        editForm.put(`/suppliers/${editingSupplier.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                editForm.reset();
+                setEditingSupplier(null);
+                setActiveTab('list');
+            },
+        });
+    };
+
+    const handleEditLinkChange = (rawUrl: string) => {
+        editForm.setData('website', rawUrl);
+        if (!rawUrl) return;
+
+        setIsFetchingEditLinkData(true);
+        fetch('/suppliers/parse-link', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
+            },
+            body: JSON.stringify({ url: rawUrl }),
+        })
+            .then((res) => res.json())
+            .then((result) => {
+                if (result.success && result.data) {
+                    const scraped = result.data;
+                    editForm.setData((prev) => ({
+                        ...prev,
+                        name: scraped.name || prev.name,
+                        city: scraped.city || prev.city,
+                        address: scraped.address || prev.address,
+                        phone: scraped.phone || prev.phone,
+                        website: scraped.website || prev.website || rawUrl,
+                        rating: scraped.rating !== undefined ? scraped.rating : prev.rating,
+                        review_count: scraped.review_count !== undefined ? scraped.review_count : prev.review_count,
+                        latitude: scraped.latitude || prev.latitude,
+                        longitude: scraped.longitude || prev.longitude,
+                    }));
+                }
+            })
+            .catch((err) => console.error('Gagal parse link edit:', err))
+            .finally(() => setIsFetchingEditLinkData(false));
+    };
 
     const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.suppliers'), href: '/suppliers' }];
 
@@ -346,11 +452,10 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
         };
     }, []);
 
-    // Auto-extract Google Maps / URL Link data accurately using Backend Web Scraper API & Client Fallback
     const handleLinkChange = (rawInput: string) => {
         let cleanUrl = rawInput.trim();
+        if (!cleanUrl) return;
 
-        // 1. Extract URL from iframe HTML or text snippet
         if (cleanUrl.includes('<iframe') && cleanUrl.includes('src=')) {
             const match = cleanUrl.match(/src=["']([^"']+)["']/i);
             if (match && match[1]) {
@@ -364,7 +469,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
         }
 
         quickForm.setData('website', cleanUrl);
-        if (!rawInput || rawInput.trim().length < 5) return;
+        if (cleanUrl.length < 5) return;
 
         setIsFetchingLinkData(true);
 
@@ -392,28 +497,36 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
             .then((resData) => {
                 if (resData.success && resData.data) {
                     const d = resData.data;
-                    quickForm.setData((prev) => ({
-                        ...prev,
-                        website: d.website || cleanUrl,
-                        name: d.name,
-                        city: d.city,
-                        address: d.address,
-                        phone: d.phone,
-                        rating: d.rating,
-                        review_count: d.review_count,
-                        latitude: d.lat !== null && d.lat !== undefined ? d.lat : prev.latitude,
-                        longitude: d.lng !== null && d.lng !== undefined ? d.lng : prev.longitude,
-                    }));
+                    const name = d.name || 'Supplier Utama';
+                    const cityName = d.city || city || 'Malang';
+                    const addressStr = d.address || `Jl. Utama ${cityName}, Jawa Timur`;
+                    const phoneStr = d.phone || '0812-3456-7890';
+                    const ratingVal = d.rating ?? 4.8;
+                    const reviewVal = d.review_count ?? 120;
+                    const latVal = d.lat !== null && d.lat !== undefined ? d.lat : quickForm.data.latitude;
+                    const lngVal = d.lng !== null && d.lng !== undefined ? d.lng : quickForm.data.longitude;
 
-                    if (d.lat !== null && d.lng !== null) {
+                    quickForm.setData({
+                        ...quickForm.data,
+                        website: cleanUrl,
+                        name: name,
+                        city: cityName,
+                        address: addressStr,
+                        phone: phoneStr,
+                        rating: ratingVal,
+                        review_count: reviewVal,
+                        latitude: latVal,
+                        longitude: lngVal,
+                    });
+
+                    if (d.lat !== null && d.lng !== null && d.lat !== undefined && d.lng !== undefined) {
                         setMapCenter([d.lat, d.lng]);
-                    } else if (CITY_COORDINATES[d.city.toLowerCase()]) {
-                        setMapCenter(CITY_COORDINATES[d.city.toLowerCase()]);
+                    } else if (CITY_COORDINATES[cityName.toLowerCase()]) {
+                        setMapCenter(CITY_COORDINATES[cityName.toLowerCase()]);
                     }
                 }
             })
             .catch(() => {
-                // Client-side fallback extraction
                 let extractedName = '';
                 let extractedCity = city || 'Malang';
                 let extractedAddress = '';
@@ -451,18 +564,18 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                     extractedName = 'Supplier ' + (extractedCity || 'Utama');
                 }
 
-                quickForm.setData((prev) => ({
-                    ...prev,
+                quickForm.setData({
+                    ...quickForm.data,
                     website: cleanUrl,
                     name: extractedName,
                     city: extractedCity,
-                    address: `Jl. Utama ${extractedCity}, Jawa Timur`,
+                    address: extractedAddress || `Jl. Utama ${extractedCity}, Jawa Timur`,
                     phone: extractedPhone,
                     rating: extractedRating,
                     review_count: extractedReviews,
                     latitude: extractedLat,
                     longitude: extractedLng,
-                }));
+                });
             })
             .finally(() => {
                 setIsFetchingLinkData(false);
@@ -472,6 +585,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
     const handleQuickCreateSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         quickForm.post('/suppliers', {
+            preserveScroll: true,
             onSuccess: () => {
                 quickForm.reset();
                 setCategoryInput('');
@@ -480,14 +594,12 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
         });
     };
 
-    const businessTypeLabel = getBusinessTypeLabel(business_type);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs} className="h-svh max-h-svh overflow-hidden flex flex-col">
             <Head title={t('supplier.recommendations')} />
             <div className="relative w-full flex-1 min-h-0 overflow-hidden bg-slate-900 font-sans">
                 
-                {/* 1. Konsep UI/UX & Peta Full Screen React-Leaflet Background */}
+                {/* 1. Map Container */}
                 <div className="absolute inset-0 z-0">
                     <MapContainer
                         center={mapCenter}
@@ -521,7 +633,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                             </Marker>
                         )}
 
-                        {/* Interactive Markers for Suppliers (All Roles, Sorted by Nearest) */}
+                        {/* Interactive Markers for Suppliers */}
                         {sortedSuppliersList.map((supplier, idx) => {
                             const coords = getSupplierCoords(supplier, idx);
                             const isSelected = selectedSupplierId === supplier.id;
@@ -539,11 +651,14 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                         click: () => handleSelectSupplier(supplier, idx),
                                     }}
                                 >
-                                    <Popup autoPan={false} className="rounded-xl shadow-lg border border-slate-200">
+                                     <Popup autoPan={false} className="rounded-xl shadow-lg border border-slate-200">
                                         <div className="p-1 max-w-xs">
-                                            <div className="font-bold text-slate-800 text-sm flex items-center gap-1.5">
-                                                {supplier.name}
-                                                {supplier.is_verified && <CheckCircle size={14} className="text-[#164e3d]" />}
+                                            <div className="font-bold text-slate-800 text-sm flex items-center justify-between gap-1.5">
+                                                <span className="flex items-center gap-1.5 truncate">
+                                                    {supplier.name}
+                                                    {supplier.is_verified && <CheckCircle size={14} className="text-[#164e3d] shrink-0" />}
+                                                </span>
+                                                <span className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm ring-1 ring-slate-200 inline-block" style={{ backgroundColor: roleInfo.bg }} title={`Dibuat oleh role ${roleInfo.label}`} />
                                             </div>
                                             <p className="text-xs text-slate-500 mt-1">{supplier.address || supplier.city}</p>
                                             
@@ -563,14 +678,30 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                                 </p>
                                             )}
                                             {supplier.phone && <p className="text-xs text-slate-600 mt-0.5">📞 {supplier.phone}</p>}
-                                            <div className="mt-2 pt-2 border-t flex justify-end">
-                                                <Link
-                                                    href={`/suppliers/${supplier.id}/edit`}
-                                                    className="text-xs text-[#164e3d] font-semibold hover:underline flex items-center gap-1"
-                                                >
-                                                    <Edit size={12} /> Edit Supplier
-                                                </Link>
-                                            </div>
+                                            {canManageSupplier(supplier) && (
+                                                <div className="mt-2 pt-2 border-t flex items-center justify-end gap-2 text-xs">
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleStartEditSupplier(supplier);
+                                                        }}
+                                                        className="text-[#164e3d] font-semibold hover:underline flex items-center gap-1"
+                                                    >
+                                                        <Edit size={12} /> Edit
+                                                    </button>
+                                                    <DeleteConfirmDialog
+                                                        trigger={
+                                                            <button className="text-red-600 font-semibold hover:underline flex items-center gap-1">
+                                                                <Trash2 size={12} /> Hapus
+                                                            </button>
+                                                        }
+                                                        title="Hapus Tempat / Supplier"
+                                                        itemName={supplier.name}
+                                                        onConfirm={() => handleDeleteSupplier(supplier)}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </Popup>
                                 </Marker>
@@ -599,7 +730,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                     </MapContainer>
                 </div>
 
-                {/* 2. Top Header Controls Overlay (Melayang di Atas Peta) */}
+                {/* 2. Top Header Controls Overlay */}
                 <div className="absolute top-4 left-4 z-20 pointer-events-none flex flex-wrap items-center gap-2.5">
                     {/* Map Mode Switcher */}
                     <div className="pointer-events-auto bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-xl rounded-full p-1 flex items-center text-xs font-semibold">
@@ -621,9 +752,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                         </button>
                     </div>
 
-                   
-
-                    {/* GPS Location Switch (Multi-Language Style) */}
+                    {/* GPS Location Switch */}
                     <div className="pointer-events-auto bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-xl rounded-full px-3 py-1 flex items-center gap-2 text-xs font-semibold">
                         <span className="text-slate-600 font-bold flex items-center gap-1.5">
                             <Compass size={14} className={userLocation ? 'text-[#164e3d]' : 'text-slate-400'} />
@@ -647,7 +776,6 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                 userLocation ? 'bg-[#164e3d]' : 'bg-slate-300 hover:bg-slate-400/80'
                             )}
                         >
-                            {/* Label text inside track */}
                             <span
                                 className={cn(
                                     'select-none text-[10px] font-extrabold tracking-wider text-white transition-opacity duration-200 px-2',
@@ -657,7 +785,6 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                 {isLocating ? '...' : userLocation ? 'ON' : 'OFF'}
                             </span>
 
-                            {/* Circular sliding knob */}
                             <span
                                 className={cn(
                                     'pointer-events-none inline-flex items-center justify-center h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ease-in-out',
@@ -675,10 +802,10 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                         </button>
                     </div>
 
-                    {/* City Selector */}
-                    <div className="pointer-events-auto bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-xl rounded-full px-4 py-1.5 flex items-center gap-2 text-xs font-semibold">
+                    {/* Filter Kota Selector */}
+                    <div className="pointer-events-auto bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-xl rounded-full px-3.5 py-1 flex items-center gap-2 text-xs font-semibold">
                         <MapPin size={14} className="text-[#164e3d]" />
-                        <span className="text-slate-500">Kota:</span>
+                        <span className="text-slate-600 font-bold">Kota:</span>
                         <Select value={city || 'all'} onValueChange={(value) => handleCityChange(value === 'all' ? '' : value)}>
                             <SelectTrigger className="h-6 border-none shadow-none bg-transparent hover:bg-slate-50 text-slate-800 font-bold focus:ring-0 p-0 px-1 text-xs">
                                 <SelectValue placeholder={t('supplier.allCities')} />
@@ -695,25 +822,29 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                     </div>
                 </div>
 
-                {/* 3. Floating Side Panel (Permanent / Tidak Bisa Disembunyikan) */}
+                {/* 3. Floating Side Panel */}
                 <div className="absolute right-4 top-4 bottom-4 w-80 sm:w-96 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col z-30">
                     
-                    {/* Header Tabs */}
+                    {/* Header Tabs (Switches between List, Create, and Edit without full page reload) */}
                     <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 overflow-x-auto">
                             <button
                                 onClick={() => setActiveTab('list')}
-                                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
                                     activeTab === 'list'
                                         ? 'bg-[#164e3d] text-white shadow-sm'
                                         : 'text-slate-600 hover:bg-slate-200/60'
                                 }`}
                             >
-                                Daftar Supplier ({sortedSuppliersList.length})
+                                Daftar ({sortedSuppliersList.length})
                             </button>
                             <button
-                                onClick={() => setActiveTab('create')}
-                                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                                onClick={() => {
+                                    quickForm.reset();
+                                    setCategoryInput('');
+                                    setActiveTab('create');
+                                }}
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
                                     activeTab === 'create'
                                         ? 'bg-[#164e3d] text-white shadow-sm'
                                         : 'text-slate-600 hover:bg-slate-200/60'
@@ -721,10 +852,22 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                             >
                                 + Tambah Baru
                             </button>
+                            {editingSupplier && (
+                                <button
+                                    onClick={() => setActiveTab('edit')}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1 ${
+                                        activeTab === 'edit'
+                                            ? 'bg-[#164e3d] text-white shadow-sm'
+                                            : 'text-slate-600 hover:bg-slate-200/60'
+                                    }`}
+                                >
+                                    <Edit size={11} /> Edit
+                                </button>
+                            )}
                         </div>
                     </div>
 
-                    {/* Search Bar (Terletak Di Dalam Panel) */}
+                    {/* Search Bar */}
                     <div className="px-4 pt-3 pb-1">
                         <div className="bg-slate-100/90 border border-slate-200 rounded-xl px-3 py-1.5 flex items-center gap-2">
                             <Search size={14} className="text-slate-400 shrink-0" />
@@ -754,54 +897,53 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
 
                     {/* Tab Content 1: Daftar Supplier */}
                     {activeTab === 'list' && (
-                        <div className="flex-1 flex flex-col overflow-hidden p-4 pt-2">
-                            <div className="mb-3 flex items-center justify-between">
-                                <span className="text-xs text-slate-500 font-medium">
-                                    Kategori: <strong className="text-slate-800">{businessTypeLabel || 'Semua'}</strong>
-                                </span>
-                                {userLocation && (
-                                    <span className="text-[11px] text-blue-600 font-bold flex items-center gap-1">
-                                        <Compass size={12} /> Terdekat dari GPS
-                                    </span>
-                                )}
-                            </div>
-
+                        <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
                             {sortedSuppliersList.length === 0 ? (
-                                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-400">
-                                    <MapPin size={32} className="mb-2 opacity-50" />
-                                    <p className="text-xs">{t('supplier.noData')}</p>
+                                <div className="text-center py-12 px-4 space-y-3">
+                                    <MapPin size={32} className="mx-auto text-slate-300" />
+                                    <p className="text-xs text-slate-500 font-medium">Tidak ada supplier ditemukan untuk kriteria pencarian/lokasi ini.</p>
                                 </div>
                             ) : (
-                                <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+                                <div className="space-y-3">
                                     {sortedSuppliersList.map((supplier, idx) => {
-                                        const coords = getSupplierCoords(supplier, idx);
                                         const isSelected = selectedSupplierId === supplier.id;
-                                        const distance = userLocation
-                                            ? calculateDistanceKm(userLocation[0], userLocation[1], coords[0], coords[1])
-                                            : null;
+                                        const roleInfo = getRoleColor(supplier.added_by_role);
+                                        const canManage = canManageSupplier(supplier);
+                                        const coords = getSupplierCoords(supplier, idx);
+                                        const distance = userLocation ? calculateDistanceKm(userLocation[0], userLocation[1], coords[0], coords[1]) : null;
 
                                         return (
                                             <div
                                                 key={supplier.id}
                                                 onClick={() => handleSelectSupplier(supplier, idx)}
-                                                className={`p-3.5 rounded-2xl border text-xs cursor-pointer transition-all ${
+                                                className={`p-3.5 rounded-2xl border transition-all cursor-pointer relative group ${
                                                     isSelected
-                                                        ? 'bg-emerald-50/90 border-[#164e3d] shadow-md ring-1 ring-[#164e3d]/30'
+                                                        ? 'bg-slate-50/90 border-[#164e3d] shadow-md ring-1 ring-[#164e3d]/20'
                                                         : 'bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-sm'
                                                 }`}
                                             >
                                                 <div className="flex items-start justify-between gap-2 mb-1.5">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-6 h-6 rounded-full bg-[#164e3d] text-white font-bold text-[10px] flex items-center justify-center shrink-0">
+                                                    <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                                                        <span
+                                                            className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold text-white shrink-0 shadow-sm"
+                                                            style={{ backgroundColor: roleInfo.bg }}
+                                                        >
                                                             {idx + 1}
-                                                        </div>
-                                                        <h4 className="font-bold text-slate-800 text-sm line-clamp-1">
+                                                        </span>
+                                                        <h4 className="font-bold text-slate-800 text-xs truncate group-hover:text-[#164e3d]">
                                                             {supplier.name}
                                                         </h4>
                                                     </div>
-                                                    {supplier.is_verified && (
-                                                        <CheckCircle size={14} className="text-[#164e3d] shrink-0" />
-                                                    )}
+                                                    <div className="flex items-center gap-1.5 shrink-0">
+                                                        <span
+                                                            className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm inline-block"
+                                                            style={{ backgroundColor: roleInfo.bg }}
+                                                            title={`Dibuat oleh role ${roleInfo.label} (${roleInfo.colorName})`}
+                                                        />
+                                                        {supplier.is_verified && (
+                                                            <CheckCircle size={14} className="text-[#164e3d] shrink-0" />
+                                                        )}
+                                                    </div>
                                                 </div>
 
                                                 <p className="text-slate-500 text-[11px] mb-2 line-clamp-2">
@@ -830,15 +972,19 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                                 </div>
 
                                                 <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
-                                                    <div className="flex items-center gap-1">
-                                                        <User size={11} className="text-slate-400 shrink-0" />
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span
+                                                            className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm inline-block"
+                                                            style={{ backgroundColor: roleInfo.bg }}
+                                                        />
                                                         <span>
-                                                            Oleh: <strong className="text-slate-700 capitalize">{supplier.added_by_role || 'Owner'}</strong>
+                                                            Oleh: <strong className="capitalize" style={{ color: roleInfo.bg }}>{roleInfo.label}</strong>
                                                             {supplier.creator?.name ? ` (${supplier.creator.name})` : ''}
                                                         </span>
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <button
+                                                            type="button"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 handleSelectSupplier(supplier, idx);
@@ -847,13 +993,39 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                                         >
                                                             <Navigation size={10} /> Sorot
                                                         </button>
-                                                        <Link
-                                                            href={`/suppliers/${supplier.id}/edit`}
-                                                            onClick={(e) => e.stopPropagation()}
-                                                            className="text-slate-500 hover:text-slate-800 font-medium flex items-center gap-0.5"
-                                                        >
-                                                            <Edit size={10} /> Edit
-                                                        </Link>
+                                                        {canManage ? (
+                                                            <>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleStartEditSupplier(supplier);
+                                                                    }}
+                                                                    className="text-slate-600 hover:text-slate-900 font-medium flex items-center gap-0.5 hover:underline"
+                                                                >
+                                                                    <Edit size={10} /> Edit
+                                                                </button>
+                                                                <div onClick={(e) => e.stopPropagation()}>
+                                                                    <DeleteConfirmDialog
+                                                                        trigger={
+                                                                            <button
+                                                                                type="button"
+                                                                                className="text-red-600 hover:text-red-700 font-medium flex items-center gap-0.5"
+                                                                            >
+                                                                                <Trash2 size={10} /> Hapus
+                                                                            </button>
+                                                                        }
+                                                                        title="Hapus Tempat / Supplier"
+                                                                        itemName={supplier.name}
+                                                                        onConfirm={() => handleDeleteSupplier(supplier)}
+                                                                    />
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <span className="text-slate-400 text-[9px] italic" title="Hanya pembuat tempat ini atau Admin yang dapat mengedit/menghapus">
+                                                                Read-only
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
@@ -864,7 +1036,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                         </div>
                     )}
 
-                    {/* Tab Content 2: Form Penambahan Supplier (Otomatis dari Google Maps Link) */}
+                    {/* Tab Content 2: Form Penambahan Supplier (State SPA tanpa reload) */}
                     {activeTab === 'create' && (
                         <form onSubmit={handleQuickCreateSubmit} className="flex-1 flex flex-col overflow-y-auto p-4 space-y-3.5 text-xs">
                             <div>
@@ -883,7 +1055,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                 </span>
                             </div>
 
-                            {/* 1. Link Google Maps Input */}
+                            {/* Link Google Maps Input */}
                             <div className="space-y-1">
                                 <label className="font-semibold text-slate-700 flex items-center justify-between">
                                     <span>Link Google Maps / Website Supplier *</span>
@@ -903,6 +1075,25 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                         value={quickForm.data.website}
                                         onChange={(e) => handleLinkChange(e.target.value)}
                                     />
+                                </div>
+                                <div className="flex justify-end pt-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleLinkChange(quickForm.data.website)}
+                                        disabled={isFetchingLinkData || !quickForm.data.website}
+                                        className="text-[11px] bg-[#164e3d] hover:bg-[#0f382c] disabled:opacity-50 text-white font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition-all"
+                                    >
+                                        {isFetchingLinkData ? (
+                                            <>
+                                                <Loader2 size={11} className="animate-spin" />
+                                                <span>Mengambil Data...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span> Extract / Ambil Data Link</span>
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
                             </div>
 
@@ -988,7 +1179,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                 </div>
                             )}
 
-                            {/* 2. Tipe Bisnis Dropdown */}
+                            {/* Tipe Bisnis Dropdown */}
                             <div className="space-y-1">
                                 <label className="font-semibold text-slate-700">Tipe Bisnis *</label>
                                 <Select
@@ -1008,7 +1199,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                 </Select>
                             </div>
 
-                            {/* 3. Kategori Produk */}
+                            {/* Kategori Produk */}
                             <div className="space-y-1">
                                 <label className="font-semibold text-slate-700">Kategori Produk</label>
                                 <input
@@ -1024,7 +1215,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                 />
                             </div>
 
-                            {/* 4. Deskripsi Singkat */}
+                            {/* Deskripsi Singkat */}
                             <div className="space-y-1">
                                 <label className="font-semibold text-slate-700">Deskripsi Singkat</label>
                                 <textarea
@@ -1037,18 +1228,220 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                             </div>
 
                             <div className="pt-2 flex items-center justify-between gap-2">
-                                <Link
-                                    href="/suppliers/create"
-                                    className="text-xs text-slate-500 hover:text-slate-800 underline font-medium"
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab('list')}
+                                    className="text-xs text-slate-500 hover:text-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-200 font-medium"
                                 >
-                                    Buka Form Penuh
-                                </Link>
+                                    Batal
+                                </button>
                                 <Button
                                     type="submit"
                                     disabled={quickForm.processing || !quickForm.data.website}
                                     className="bg-[#164e3d] hover:bg-[#0f382c] text-white rounded-xl px-4 py-2 text-xs font-bold"
                                 >
                                     {quickForm.processing ? 'Menyimpan...' : 'Simpan Supplier'}
+                                </Button>
+                            </div>
+                        </form>
+                    )}
+
+                    {/* Tab Content 3: Form Edit Supplier (State SPA tanpa reload) */}
+                    {activeTab === 'edit' && editingSupplier && (
+                        <form onSubmit={handleEditSubmit} className="flex-1 flex flex-col overflow-y-auto p-4 space-y-3.5 text-xs">
+                            <div>
+                                <h3 className="font-bold text-slate-800 text-sm">Edit Supplier / Tempat</h3>
+                                <p className="text-slate-500 text-[11px]">Perbarui informasi tempat, alamat, telp, rating, & link Google Maps.</p>
+                            </div>
+
+                            {/* Role Badge Indicator */}
+                            <div className="p-2 bg-emerald-50 border border-emerald-200/80 rounded-xl flex items-center justify-between text-[11px]">
+                                <span className="text-slate-600 font-medium flex items-center gap-1">
+                                    <User size={12} className="text-[#164e3d]" />
+                                    Pembuat Tempat:
+                                </span>
+                                <span className="font-bold text-[#164e3d] capitalize bg-white px-2 py-0.5 rounded-md border border-emerald-300">
+                                    {editingSupplier.added_by_role || 'Owner'} {editingSupplier.creator?.name ? `(${editingSupplier.creator.name})` : ''}
+                                </span>
+                            </div>
+
+                            {/* Link Google Maps Input for Edit */}
+                            <div className="space-y-1">
+                                <label className="font-semibold text-slate-700 flex items-center justify-between">
+                                    <span>Link Google Maps / Website Supplier</span>
+                                    {isFetchingEditLinkData && (
+                                        <span className="text-[10px] text-[#164e3d] font-bold flex items-center gap-1">
+                                            <Loader2 size={10} className="animate-spin" /> Mengambil data...
+                                        </span>
+                                    )}
+                                </label>
+                                <div className="relative flex items-start">
+                                    <LinkIcon size={14} className="absolute left-3 top-2.5 text-slate-400 pointer-events-none" />
+                                    <textarea
+                                        rows={2}
+                                        className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-xs outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                        placeholder="Tempel link Google Maps atau kode embed..."
+                                        value={editForm.data.website}
+                                        onChange={(e) => handleEditLinkChange(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex justify-end pt-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleEditLinkChange(editForm.data.website)}
+                                        disabled={isFetchingEditLinkData || !editForm.data.website}
+                                        className="text-[11px] bg-[#164e3d] hover:bg-[#0f382c] disabled:opacity-50 text-white font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition-all"
+                                    >
+                                        {isFetchingEditLinkData ? (
+                                            <>
+                                                <Loader2 size={11} className="animate-spin" />
+                                                <span>Mengambil Data...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>Extract / Ambil Data Link</span>
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Extracted / Editable Form Data Box */}
+                            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5 text-[11px]">
+                                {/* Nama Supplier */}
+                                <div className="space-y-1">
+                                    <label className="font-semibold text-slate-700">Nama Supplier *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                        value={editForm.data.name}
+                                        onChange={(e) => editForm.setData('name', e.target.value)}
+                                    />
+                                </div>
+
+                                {/* Kota & Telepon Grid */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="space-y-1">
+                                        <label className="font-semibold text-slate-700">Kota</label>
+                                        <input
+                                            type="text"
+                                            className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                            value={editForm.data.city}
+                                            onChange={(e) => editForm.setData('city', e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="font-semibold text-slate-700">No. Telepon</label>
+                                        <input
+                                            type="text"
+                                            className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                            value={editForm.data.phone}
+                                            onChange={(e) => editForm.setData('phone', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Alamat Lengkap */}
+                                <div className="space-y-1">
+                                    <label className="font-semibold text-slate-700">Alamat Lengkap</label>
+                                    <input
+                                        type="text"
+                                        className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                        value={editForm.data.address}
+                                        onChange={(e) => editForm.setData('address', e.target.value)}
+                                    />
+                                </div>
+
+                                {/* Rating & Ulasan Grid */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="space-y-1">
+                                        <label className="font-semibold text-slate-700">Rating ⭐ (0 - 5)</label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="5"
+                                            className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                            value={editForm.data.rating}
+                                            onChange={(e) => editForm.setData('rating', parseFloat(e.target.value) || 0)}
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="font-semibold text-slate-700">Jumlah Ulasan 💬</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            className="w-full h-8 rounded-lg border border-slate-200 px-2.5 text-xs bg-white outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                            value={editForm.data.review_count}
+                                            onChange={(e) => editForm.setData('review_count', parseInt(e.target.value, 10) || 0)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Tipe Bisnis Dropdown */}
+                            <div className="space-y-1">
+                                <label className="font-semibold text-slate-700">Tipe Bisnis *</label>
+                                <Select
+                                    value={editForm.data.business_type || 'fnb'}
+                                    onValueChange={(val) => editForm.setData('business_type', val)}
+                                >
+                                    <SelectTrigger className="h-9 rounded-xl border-slate-200 text-xs">
+                                        <SelectValue placeholder="Pilih Tipe Bisnis" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="fnb">Food & Beverage (FnB)</SelectItem>
+                                        <SelectItem value="retail">Retail / Toko</SelectItem>
+                                        <SelectItem value="fashion">Fashion & Tekstil</SelectItem>
+                                        <SelectItem value="services">Jasa / Services</SelectItem>
+                                        <SelectItem value="general">Manufaktur / Umum</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* Kategori Produk */}
+                            <div className="space-y-1">
+                                <label className="font-semibold text-slate-700">Kategori Produk</label>
+                                <input
+                                    type="text"
+                                    className="w-full h-9 rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                    placeholder="Contoh: Bahan Baku, Kemasan, Grosir"
+                                    value={editCategoryInput}
+                                    onChange={(e) => {
+                                        setEditCategoryInput(e.target.value);
+                                        const cats = e.target.value.split(',').map((s) => s.trim()).filter(Boolean);
+                                        editForm.setData('product_categories', cats);
+                                    }}
+                                />
+                            </div>
+
+                            {/* Deskripsi Singkat */}
+                            <div className="space-y-1">
+                                <label className="font-semibold text-slate-700">Deskripsi Singkat</label>
+                                <textarea
+                                    rows={2}
+                                    className="w-full rounded-xl border border-slate-200 p-2.5 text-xs outline-none focus:border-[#164e3d] focus:ring-1 focus:ring-[#164e3d]"
+                                    placeholder="Deskripsi singkat mengenai supplier ini..."
+                                    value={editForm.data.description}
+                                    onChange={(e) => editForm.setData('description', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="pt-2 flex items-center justify-end gap-1.5">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab('list')}
+                                    className="text-xs text-slate-500 hover:text-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-200 font-medium"
+                                >
+                                    Batal
+                                </button>
+                                <Button
+                                    type="submit"
+                                    disabled={editForm.processing}
+                                    className="bg-[#164e3d] hover:bg-[#0f382c] text-white rounded-xl px-4 py-2 text-xs font-bold"
+                                >
+                                    {editForm.processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                 </Button>
                             </div>
                         </form>

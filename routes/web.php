@@ -141,6 +141,7 @@ Route::middleware(['auth', 'verified', EnsureTenantMiddleware::class])
                 Route::post('/parse-link', [SupplierController::class, 'parseLink'])->name('parse-link');
                 Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit'); // Tambahan rute Edit
                 Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update'); // Tambahan rute Update
+                Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy'); // Tambahan rute Delete
             });
 
             // Tax Consultation (Everyone can access consultation)
