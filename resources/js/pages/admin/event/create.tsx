@@ -195,7 +195,7 @@ export default function EventCreate() {
                                             }}
                                             theme="admin"
                                             placeholder="Pilih tanggal"
-                                            className="h-10 flex-1 border-[#DCD8FF] text-sm text-slate-700 hover:bg-[#F1EFFD] hover:text-[#5E4BF2] focus-visible:border-[#5E4BF2]"
+                                            className="admin-event-date-picker h-10 flex-1 border-[#DCD8FF] text-sm text-slate-700 hover:bg-[#F1EFFD] hover:text-[#5E4BF2] focus-visible:border-[#5E4BF2]"
                                         />
                                         <Input
                                             aria-label="Waktu mulai"
@@ -209,7 +209,7 @@ export default function EventCreate() {
                                                 const time = normalizeTimeInput(e.target.value);
                                                 setData('start_date', date ? `${date}T${time}` : `T${time}`);
                                             }}
-                                            className="h-10 w-32 rounded-xl border-[#DCD8FF] bg-white text-sm text-slate-700 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20"
+                                            className="admin-event-time h-10 w-32 rounded-xl border-[#DCD8FF] bg-white text-sm text-slate-700 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20"
                                         />
                                     </div>
                                     {errors.start_date && <p className="text-xs text-red-500">{errors.start_date}</p>}
@@ -228,7 +228,7 @@ export default function EventCreate() {
                                             }}
                                             theme="admin"
                                             placeholder="Pilih tanggal"
-                                            className="h-10 flex-1 border-[#DCD8FF] text-sm text-slate-700 hover:bg-[#F1EFFD] hover:text-[#5E4BF2] focus-visible:border-[#5E4BF2]"
+                                            className="admin-event-date-picker h-10 flex-1 border-[#DCD8FF] text-sm text-slate-700 hover:bg-[#F1EFFD] hover:text-[#5E4BF2] focus-visible:border-[#5E4BF2]"
                                         />
                                         <Input
                                             aria-label="Waktu selesai"
@@ -242,7 +242,7 @@ export default function EventCreate() {
                                                 const time = normalizeTimeInput(e.target.value);
                                                 setData('end_date', date ? `${date}T${time}` : `T${time}`);
                                             }}
-                                            className="h-10 w-32 rounded-xl border-[#DCD8FF] bg-white text-sm text-slate-700 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20"
+                                            className="admin-event-time h-10 w-32 rounded-xl border-[#DCD8FF] bg-white text-sm text-slate-700 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20"
                                         />
                                     </div>
                                     {errors.end_date && <p className="text-xs text-red-500">{errors.end_date}</p>}

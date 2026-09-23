@@ -18,11 +18,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     });
 
     return (
-        <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
-            <Table>
-                <TableHeader>
+        <div className="admin-data-table border-border w-full overflow-x-auto rounded-2xl border bg-white shadow-sm">
+            <Table className="bg-white">
+                <TableHeader className="bg-[#F8F7FC]">
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-border border-b bg-[#F8F7FC] hover:bg-transparent">
+                        <TableRow key={headerGroup.id} className="border-border border-b bg-[#F8F7FC] hover:bg-[#F8F7FC]">
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}
@@ -34,13 +34,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                         </TableRow>
                     ))}
                 </TableHeader>
-                <TableBody className="divide-border divide-y">
+                <TableBody className="divide-border divide-y bg-white">
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
-                                className="hover:bg-muted/30 border-border border-b transition-colors"
+                                className="border-border border-b bg-white transition-colors hover:bg-[#F4F2FF]"
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id} className="px-4 py-3 align-middle">
@@ -50,7 +50,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             </TableRow>
                         ))
                     ) : (
-                        <TableRow>
+                        <TableRow className="bg-white">
                             <TableCell colSpan={columns.length} className="text-muted-foreground h-24 text-center text-sm">
                                 {t('admin.supplier.noData')}
                             </TableCell>

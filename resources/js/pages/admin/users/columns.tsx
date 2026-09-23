@@ -135,15 +135,15 @@ export const getColumns = (
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => onEdit(user)}
-                                    className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
+                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
                                     title={t('admin.users.editTitle')}
                                 >
-                                    <Edit size={15} />
+                                    <Edit size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent
-                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
-                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
                             >
                                 {t('admin.users.editTitle')}
                             </TooltipContent>

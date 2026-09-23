@@ -221,7 +221,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
 
                 {/* Stats Grid */}
                 <div className="relative z-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
+                    <Card className="admin-tenant-card border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium text-[#777584]">{t('admin.tenants.productLimit')}</CardTitle>
                             <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
@@ -236,7 +236,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
+                    <Card className="admin-tenant-card border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium text-[#777584]">{t('admin.tenants.userLimit')}</CardTitle>
                             <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
@@ -249,7 +249,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
+                    <Card className="admin-tenant-card border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium text-[#777584]">{t('navigation.transactions')}</CardTitle>
                             <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
@@ -262,7 +262,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-[#E7E3FA] bg-white shadow-sm">
+                    <Card className="admin-tenant-card border-[#E7E3FA] bg-white shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium text-[#777584]">{t('finance.totalRevenue')}</CardTitle>
                             <div className="flex size-9 items-center justify-center rounded-xl bg-[#F1EFFD] text-[#5E4BF2]">
@@ -281,8 +281,8 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                 {/* Details & Member List Grid */}
                 <div className="relative z-10 grid gap-6 md:grid-cols-3">
                     {/* Left: General info */}
-                    <Card className="border-[#E7E3FA] bg-white shadow-sm md:col-span-1">
-                        <CardHeader>
+                    <Card className="admin-tenant-card border-[#E7E3FA] bg-white shadow-sm md:col-span-1">
+                        <CardHeader className="pb-4">
                             <CardTitle className="text-lg font-bold tracking-[-0.03em] text-[#17182A]">{t('admin.tenants.detailTitle')}</CardTitle>
                             <CardDescription className="text-sm text-[#92909D]">Informasi umum bisnis</CardDescription>
                         </CardHeader>
@@ -325,8 +325,8 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                     </Card>
 
                     {/* Right: Team Members */}
-                    <Card className="border-[#E7E3FA] bg-white shadow-sm md:col-span-2">
-                        <CardHeader>
+                    <Card className="admin-tenant-card border-[#E7E3FA] bg-white shadow-sm md:col-span-2">
+                        <CardHeader className="pb-4">
                             <CardTitle className="text-lg font-bold tracking-[-0.03em] text-[#17182A]">{t('admin.tenants.memberList')}</CardTitle>
                             <CardDescription className="text-sm text-[#92909D]">{t('admin.tenants.memberListSub')}</CardDescription>
                         </CardHeader>

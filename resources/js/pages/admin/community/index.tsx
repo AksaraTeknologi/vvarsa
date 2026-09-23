@@ -134,7 +134,7 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.community.title')} />
-            <div className="community-admin-surface relative isolate flex min-h-[calc(100vh-5rem)] w-full flex-1 flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
+            <div className="community-admin-surface relative flex min-h-[calc(100vh-5rem)] w-full flex-1 flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
                     <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
                     <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
@@ -226,9 +226,9 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                     </div>
 
                     {/* Table */}
-                    <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
-                        <table className="w-full min-w-[800px] border-collapse text-left text-xs">
-                            <thead>
+                    <div className="admin-data-table border-border w-full overflow-x-auto rounded-2xl border bg-white shadow-sm">
+                        <table className="w-full min-w-[800px] border-collapse bg-white text-left text-xs">
+                            <thead className="bg-[#F8F7FC]">
                                 <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
                                     <th className="px-4 py-3">{t('admin.community.colTitle')}</th>
                                     <th className="px-4 py-3">{t('admin.community.colAuthor')}</th>
@@ -240,16 +240,16 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                     <th className="px-4 py-3 text-center">{t('admin.community.colActions')}</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-border divide-y">
+                            <tbody className="divide-border divide-y bg-white">
                                 {posts.data.length === 0 ? (
-                                    <tr>
+                                    <tr className="bg-white">
                                         <td colSpan={8} className="text-muted-foreground h-32 text-center text-sm">
                                             {t('admin.community.noData')}
                                         </td>
                                     </tr>
                                 ) : (
                                     posts.data.map((post) => (
-                                        <tr key={post.id} className="hover:bg-muted/30 border-border border-b transition-colors">
+                                        <tr key={post.id} className="border-border border-b bg-white transition-colors hover:bg-[#F4F2FF]">
                                             <td className="max-w-[260px] px-4 py-3">
                                                 <div className="flex items-start gap-2">
                                                     {post.is_pinned && (
@@ -288,31 +288,59 @@ export default function AdminCommunityIndex({ posts, filters }: Props) {
                                                     <div className="flex items-center justify-center gap-2">
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Button size="icon" variant="ghost" onClick={() => handleTogglePin(post)} className={`h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2] ${post.is_pinned ? 'text-amber-500' : ''}`}>
-                                                                    {post.is_pinned ? <PinOff size={15} /> : <Pin size={15} />}
+                                                                <Button
+                                                                    size="icon"
+                                                                    variant="ghost"
+                                                                    onClick={() => handleTogglePin(post)}
+                                                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
+                                                                >
+                                                                    {post.is_pinned ? (
+                                                                        <PinOff size={15} className="text-[#5E4BF2] dark:text-[#C084FC]" />
+                                                                    ) : (
+                                                                        <Pin size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
+                                                                    )}
                                                                 </Button>
                                                             </TooltipTrigger>
-                                                            <TooltipContent arrowClassName="community-action-tooltip-arrow" className="community-action-tooltip">
+                                                            <TooltipContent
+                                                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
+                                                            >
                                                                 {post.is_pinned ? 'Lepas pin' : 'Sematkan'}
                                                             </TooltipContent>
                                                         </Tooltip>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Button size="icon" variant="ghost" onClick={() => handleToggleActive(post)} className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]">
-                                                                    <Shield size={15} className={post.is_active ? 'text-[#5E4BF2]' : 'text-slate-400'} />
+                                                                <Button
+                                                                    size="icon"
+                                                                    variant="ghost"
+                                                                    onClick={() => handleToggleActive(post)}
+                                                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
+                                                                >
+                                                                    <Shield size={15} className={post.is_active ? 'text-[#5E4BF2] dark:text-[#C084FC]' : 'text-[#8B85A3] dark:text-[#A78BFA]/60'} />
                                                                 </Button>
                                                             </TooltipTrigger>
-                                                            <TooltipContent arrowClassName="community-action-tooltip-arrow" className="community-action-tooltip">
+                                                            <TooltipContent
+                                                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
+                                                            >
                                                                 {post.is_active ? 'Nonaktifkan' : 'Aktifkan'}
                                                             </TooltipContent>
                                                         </Tooltip>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Button size="icon" variant="ghost" onClick={() => handleDelete(post)} className="h-8 w-8 text-rose-500 hover:bg-[#FDEBEC] hover:text-rose-600">
-                                                                    <Trash2 size={15} />
+                                                                <Button
+                                                                    size="icon"
+                                                                    variant="ghost"
+                                                                    onClick={() => handleDelete(post)}
+                                                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
+                                                                >
+                                                                    <Trash2 size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                                                 </Button>
                                                             </TooltipTrigger>
-                                                            <TooltipContent arrowClassName="community-action-tooltip-arrow" className="community-action-tooltip">
+                                                            <TooltipContent
+                                                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
+                                                            >
                                                                 {t('common.delete')}
                                                             </TooltipContent>
                                                         </Tooltip>

@@ -10,7 +10,7 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
         <>
             {breadcrumbs.length > 0 && (
                 <Breadcrumb>
-                    <BreadcrumbList>
+                    <BreadcrumbList className="text-[#646678] dark:text-[#d4d0e6]">
                         {breadcrumbs.map((item, index) => {
                             const isLast = index === breadcrumbs.length - 1;
                             const translatedTitle = t(item.title, { defaultValue: item.title });
@@ -18,14 +18,16 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
                                 <Fragment key={index}>
                                     <BreadcrumbItem>
                                         {isLast ? (
-                                            <BreadcrumbPage>{translatedTitle}</BreadcrumbPage>
+                                            <BreadcrumbPage className="font-semibold text-[#17182A] dark:text-[#ffffff]">
+                                                {translatedTitle}
+                                            </BreadcrumbPage>
                                         ) : (
-                                            <BreadcrumbLink asChild>
+                                            <BreadcrumbLink asChild className="font-medium text-[#646678] hover:text-[#5E4BF2] dark:text-[#c4b5fd] dark:hover:text-[#ffffff]">
                                                 <Link href={item.href}>{translatedTitle}</Link>
                                             </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>
-                                    {!isLast && <BreadcrumbSeparator />}
+                                    {!isLast && <BreadcrumbSeparator className="text-[#92909D] dark:text-[#a78bfa]" />}
                                 </Fragment>
                             );
                         })}

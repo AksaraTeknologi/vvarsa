@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -87,18 +88,17 @@ export default function SupplierCreate() {
                                     <label htmlFor="business_type" className="text-sm font-medium">
                                         {t('admin.supplier.businessType')}
                                     </label>
-                                    <select
-                                        id="business_type"
-                                        value={data.business_type}
-                                        onChange={(e) => setData('business_type', e.target.value)}
-                                        className="border-[#DCD8FF] bg-white ring-offset-background placeholder:text-muted-foreground flex h-10 w-full items-center justify-between rounded-xl border px-3 py-2 text-sm focus:border-[#5E4BF2] focus:ring-2 focus:ring-[#5E4BF2]/20 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                                    >
-                                        <option value="">{t('admin.supplier.selectBusinessType')}</option>
-                                        <option value="FNB">F&B ({t('admin.tenants.fnb')})</option>
-                                        <option value="Retail">Retail ({t('admin.tenants.retail')})</option>
-                                        <option value="Grosir">Grosir</option>
-                                        <option value="Lainnya">{t('common.all')}</option>
-                                    </select>
+                                    <Select value={data.business_type} onValueChange={(value) => setData('business_type', value)}>
+                                        <SelectTrigger id="business_type" className="admin-business-type-select h-10 w-full rounded-xl border-[#DCD8FF] bg-white text-sm">
+                                            <SelectValue placeholder={t('admin.supplier.selectBusinessType')} />
+                                        </SelectTrigger>
+                                        <SelectContent className="admin-business-type-options">
+                                            <SelectItem value="FNB">F&B ({t('admin.tenants.fnb')})</SelectItem>
+                                            <SelectItem value="Retail">Retail ({t('admin.tenants.retail')})</SelectItem>
+                                            <SelectItem value="Grosir">Grosir</SelectItem>
+                                            <SelectItem value="Lainnya">{t('common.all')}</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                     {errors.business_type && <p className="text-xs text-red-500">{errors.business_type}</p>}
                                 </div>
                             </div>

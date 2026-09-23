@@ -43,16 +43,16 @@ function SupplierActions({ supplier, t }: { supplier: Supplier; t: (key: string,
                             variant="ghost"
                             size="icon"
                             asChild
-                            className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
+                            className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
                         >
                             <Link href={`/admin/supplier/${supplier.id}/edit`}>
-                                <Edit size={15} />
+                                <Edit size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                             </Link>
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent
-                        arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
-                        className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                        arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                        className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
                     >
                         {t('admin.supplier.editTitle')}
                     </TooltipContent>
@@ -66,9 +66,9 @@ function SupplierActions({ supplier, t }: { supplier: Supplier; t: (key: string,
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-8 w-8 text-rose-500 hover:bg-[#FDEBEC] hover:text-rose-600"
+                                        className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
                                     >
-                                        <Trash size={15} />
+                                        <Trash size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                         <span className="sr-only">{t('common.delete')}</span>
                                     </Button>
                                 }
@@ -79,8 +79,8 @@ function SupplierActions({ supplier, t }: { supplier: Supplier; t: (key: string,
                         </div>
                     </TooltipTrigger>
                     <TooltipContent
-                        arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
-                        className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                        arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                        className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
                     >
                         {t('common.delete')}
                     </TooltipContent>

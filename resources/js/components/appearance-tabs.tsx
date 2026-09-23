@@ -13,11 +13,16 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
     ];
 
     return (
-        <div className={cn('appearance-tabs inline-flex gap-1 rounded-xl border border-[#d9e5dd] bg-white p-1 shadow-sm', className)} {...props}>
+        <div
+            className={cn('appearance-tabs inline-flex gap-1 rounded-xl border border-[#d9e5dd] bg-white p-1 shadow-sm', className)}
+            data-appearance={appearance}
+            {...props}
+        >
             {tabs.map(({ value, icon: Icon, label }) => (
                 <button
                     key={value}
                     onClick={() => updateAppearance(value)}
+                    data-appearance-value={value}
                     className={cn(
                         'flex items-center rounded-md px-3.5 py-1.5 transition-colors',
                         appearance === value
@@ -32,3 +37,4 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
         </div>
     );
 }
+

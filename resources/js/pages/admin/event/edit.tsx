@@ -218,6 +218,7 @@ export default function EventEdit({ event }: Props) {
                                             type="datetime-local"
                                             value={data.start_date}
                                             onChange={(e) => setData('start_date', e.target.value)}
+                                            className="admin-event-datetime"
                                         />
                                         {errors.start_date && <p className="text-xs text-red-500">{errors.start_date}</p>}
                                     </div>
@@ -231,6 +232,7 @@ export default function EventEdit({ event }: Props) {
                                             type="datetime-local"
                                             value={data.end_date}
                                             onChange={(e) => setData('end_date', e.target.value)}
+                                            className="admin-event-datetime"
                                         />
                                         {errors.end_date && <p className="text-xs text-red-500">{errors.end_date}</p>}
                                     </div>

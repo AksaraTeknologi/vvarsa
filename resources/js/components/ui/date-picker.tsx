@@ -69,18 +69,27 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           {dateValue ? format(dateValue, "dd MMMM yyyy", { locale: id }) : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="staff-date-picker-popover w-auto p-0" align="start">
+      <PopoverContent className={cn("staff-date-picker-popover w-auto p-0", resolvedTheme === "admin" && "admin-date-picker-popover")} align="start">
         <Calendar
           mode="single"
           selected={dateValue}
           onSelect={handleSelect}
           captionLayout="label"
           classNames={resolvedTheme === "admin" ? {
-            caption_label: "text-sm font-semibold text-[#5E4BF2]",
-            button_previous: "h-8 w-8 rounded-full border-[#DCD8FF] bg-white p-0 text-[#5E4BF2] shadow-sm hover:bg-[#F1EFFD] hover:text-[#4938D9]",
-            button_next: "h-8 w-8 rounded-full border-[#DCD8FF] bg-white p-0 text-[#5E4BF2] shadow-sm hover:bg-[#F1EFFD] hover:text-[#4938D9]",
-            day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#F1EFFD] hover:text-[#4938D9] focus-visible:ring-2 focus-visible:ring-[#5E4BF2]/30 aria-selected:!bg-[#5E4BF2] aria-selected:!text-white aria-selected:hover:!bg-[#4938D9]",
-            today: "!bg-[#F1EFFD] !text-[#5E4BF2]",
+            months: "flex flex-col",
+            month: "relative space-y-3",
+            month_caption: "relative flex h-9 items-center justify-center px-10",
+            nav: "absolute inset-x-2 top-0.5 z-10 flex h-8 items-center justify-between pointer-events-none",
+            caption_label: "text-sm font-semibold text-[#c4b5fd]",
+            button_previous: "pointer-events-auto h-7 w-7 rounded-md border-[#8b5cf6] bg-[#24194a] p-0 text-[#e9d5ff] shadow-sm hover:bg-[#7c3aed] hover:text-white",
+            button_next: "pointer-events-auto h-7 w-7 rounded-md border-[#8b5cf6] bg-[#24194a] p-0 text-[#e9d5ff] shadow-sm hover:bg-[#7c3aed] hover:text-white",
+            month_grid: "w-[252px] table-fixed border-collapse",
+            weekdays: "flex w-full",
+            weekday: "flex h-7 flex-1 items-center justify-center text-xs font-medium text-[#a79fbd]",
+            week: "mt-1 flex w-full",
+            day: "flex h-8 flex-1 items-center justify-center p-0 text-center",
+            day_button: "h-7 w-7 rounded-full bg-transparent p-0 font-normal text-[#e9d5ff] hover:bg-[#6d28d9] hover:text-white focus-visible:ring-2 focus-visible:ring-[#a78bfa]/40 aria-selected:!bg-[#8b5cf6] aria-selected:!text-white aria-selected:hover:!bg-[#a855f7]",
+            today: "!bg-[#6d28d9] !text-white",
           } : resolvedTheme === "staff-pink" ? {
             caption_label: "text-sm font-semibold text-[#d94f83]",
             button_previous: "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",

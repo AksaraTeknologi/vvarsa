@@ -56,7 +56,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                             <Input
                                 id="name"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm !text-[#17182A] dark:!text-white focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 required
@@ -73,7 +73,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <Input
                                 id="email"
                                 type="email"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm !text-[#17182A] dark:!text-white focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 required
@@ -86,7 +86,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
-                                <p className="text-muted-foreground -mt-4 text-sm">
+                                <p className="text-muted-foreground -mt-4 text-sm dark:text-[#d4d0e6]">
                                     {t('profile.emailUnverified')}{' '}
                                     <Link
                                         href={route('verification.send')}
@@ -116,7 +116,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 leave="transition ease-in-out"
                                 leaveTo="opacity-0"
                             >
-                                <p className="text-sm text-neutral-600">{t('common.saved')}</p>
+                                <p className="text-sm text-neutral-600 dark:text-[#d4d0e6]">{t('common.saved')}</p>
                             </Transition>
                         </div>
                     </form>

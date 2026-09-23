@@ -80,7 +80,7 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.dashboardTitle')} />
 
-            <main className="admin-dashboard-surface relative flex min-h-full flex-col gap-6 overflow-hidden p-4 font-['Plus_Jakarta_Sans'] text-[#191827] md:p-6 lg:p-8">
+            <main className="admin-dashboard-surface relative flex min-h-full flex-col gap-6 overflow-hidden px-4 pt-0 pb-4 font-['Plus_Jakarta_Sans'] text-[#191827] md:px-6 md:pt-0 md:pb-6 lg:px-8 lg:pt-0 lg:pb-8">
                 {/* Soft decorative background */}
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
                     <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
@@ -108,8 +108,7 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
                             <Button
                                 asChild
                                 size="sm"
-                                variant="secondary"
-                                className="h-10 rounded-xl border border-[#DDD9E9] bg-white px-4 text-sm font-semibold text-[#4D4B5A] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#CFC8F6] hover:bg-[#FDFCFF] hover:text-[#5E4BF2]"
+                                className="h-10 rounded-xl bg-[#5E4BF2] px-4 text-sm font-semibold text-white shadow-[0_7px_18px_rgba(94,75,242,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_9px_22px_rgba(94,75,242,0.24)]"
                             >
                                 <Link href="/admin/plans">
                                     <CreditCard className="mr-1 size-3.5" />
@@ -174,7 +173,7 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
                         <div className="grid items-start gap-4 xl:grid-cols-2">
                             {/* TENANT BARU */}
                             <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
-                                <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
+                                <CardHeader className="border-b border-[#EEEAF3] px-5 pt-0 pb-4">
                                     <div className="flex items-center justify-between gap-4">
                                         <div className="flex min-w-0 items-center gap-3">
                                             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EEFF] text-[#5E4BF2]">
@@ -263,7 +262,7 @@ export default function AdminDashboard({ stats, recent_tenants, recent_users }: 
 
                             {/* PENGGUNA BARU */}
                             <Card className="overflow-hidden rounded-[18px] border-[#E7E3EC] bg-white shadow-[0_5px_22px_rgba(35,30,70,0.035)] transition-shadow duration-300 hover:shadow-[0_10px_28px_rgba(35,30,70,0.06)]">
-                                <CardHeader className="border-b border-[#EEEAF3] px-5 py-4">
+                                <CardHeader className="border-b border-[#EEEAF3] px-5 pt-0 pb-4">
                                     <div className="flex items-center justify-between gap-4">
                                         <div className="flex min-w-0 items-center gap-3">
                                             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#F0EEFF] text-[#5E4BF2]">

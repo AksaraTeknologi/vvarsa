@@ -1186,10 +1186,10 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                     value={quickForm.data.business_type || 'fnb'}
                                     onValueChange={(val) => quickForm.setData('business_type', val)}
                                 >
-                                    <SelectTrigger className="h-9 rounded-xl border-slate-200 text-xs">
+                                    <SelectTrigger className="admin-business-type-select h-9 rounded-xl border-slate-200 text-xs">
                                         <SelectValue placeholder="Pilih Tipe Bisnis" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="admin-business-type-options">
                                         <SelectItem value="fnb">Food & Beverage (FnB)</SelectItem>
                                         <SelectItem value="retail">Retail / Toko</SelectItem>
                                         <SelectItem value="fashion">Fashion & Tekstil</SelectItem>

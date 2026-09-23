@@ -126,14 +126,14 @@ export const getColumns = (onEdit: (tenant: Tenant) => void, t: (key: string, op
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => onEdit(tenant)}
-                                    className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]"
+                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
                                 >
-                                    <Edit size={15} />
+                                    <Edit size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent
-                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
-                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
                             >
                                 {t('admin.tenants.editTitle')}
                             </TooltipContent>
@@ -141,15 +141,20 @@ export const getColumns = (onEdit: (tenant: Tenant) => void, t: (key: string, op
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" asChild className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    asChild
+                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
+                                >
                                     <Link href={`/admin/tenants/${tenant.id}`}>
-                                        <Eye size={15} />
+                                        <Eye size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                     </Link>
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent
-                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
-                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
                             >
                                 {t('admin.tenants.detailTitle')}
                             </TooltipContent>
@@ -161,14 +166,14 @@ export const getColumns = (onEdit: (tenant: Tenant) => void, t: (key: string, op
                                     variant="ghost"
                                     size="icon"
                                     onClick={handleToggleActive}
-                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9]"
+                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
                                 >
-                                    {tenant.is_active ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                                    {tenant.is_active ? <ToggleRight size={20} className="text-[#5E4BF2] dark:text-[#C084FC]" /> : <ToggleLeft size={20} className="text-[#8B85A3] dark:text-[#A78BFA]/60" />}
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent
-                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]"
-                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]"
+                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
                             >
                                 {tenant.is_active ? t('admin.inactive') : t('admin.active')}
                             </TooltipContent>

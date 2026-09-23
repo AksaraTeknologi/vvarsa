@@ -100,7 +100,7 @@ export default function EventIndex({ events, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('admin.event.title')} />
-            <div className="relative isolate flex min-h-[calc(100vh-5rem)] w-full flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
+            <div className="relative flex min-h-[calc(100vh-5rem)] w-full flex-col gap-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]">
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
                     <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />
                     <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-two" />
@@ -168,9 +168,9 @@ export default function EventIndex({ events, filters }: Props) {
                     </div>
 
                     {/* Events Table */}
-                    <div className="admin-data-table border-border bg-card w-full overflow-x-auto rounded-2xl border shadow-sm">
-                        <table className="w-full min-w-[800px] border-collapse text-left text-xs">
-                            <thead>
+                    <div className="admin-data-table border-border w-full overflow-x-auto rounded-2xl border bg-white shadow-sm">
+                        <table className="w-full min-w-[800px] border-collapse bg-white text-left text-xs">
+                            <thead className="bg-[#F8F7FC]">
                                 <tr className="border-border text-muted-foreground border-b bg-[#F8F7FC] text-[11px] font-bold tracking-wider uppercase">
                                     <th className="px-4 py-3">Event</th>
                                     <th className="px-4 py-3">{t('common.date')}</th>
@@ -181,10 +181,10 @@ export default function EventIndex({ events, filters }: Props) {
                                     <th className="px-4 py-3 text-center">{t('common.actions')}</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-border divide-y">
+                            <tbody className="divide-border divide-y bg-white">
                                 {events.data.length > 0 ? (
                                     events.data.map((event) => (
-                                        <tr key={event.id} className="hover:bg-muted/30 border-border border-b transition-colors">
+                                        <tr key={event.id} className="border-border border-b bg-white transition-colors hover:bg-[#F4F2FF]">
                                             {/* Event Detail */}
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
@@ -268,24 +268,40 @@ export default function EventIndex({ events, filters }: Props) {
                                                 <TooltipProvider delayDuration={150}>
                                                     <div className="flex items-center justify-center gap-2">
                                                         <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <Button variant="ghost" size="icon" asChild className="h-8 w-8 hover:bg-[#F1EFFD] hover:text-[#5E4BF2]">
+                                                             <TooltipTrigger asChild>
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    asChild
+                                                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
+                                                                >
                                                                     <Link href={`/admin/events/${event.id}/edit`}>
-                                                                        <Edit size={15} />
+                                                                        <Edit size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                                                     </Link>
                                                                 </Button>
                                                             </TooltipTrigger>
-                                                            <TooltipContent arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]" className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]">
+                                                            <TooltipContent
+                                                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
+                                                            >
                                                                 Edit event
                                                             </TooltipContent>
                                                         </Tooltip>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Button variant="ghost" size="icon" onClick={() => handleDelete(event.id, event.title)} className="h-8 w-8 text-rose-500 hover:bg-[#FDEBEC] hover:text-rose-600">
-                                                                    <Trash2 size={15} />
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    onClick={() => handleDelete(event.id, event.title)}
+                                                                    className="h-8 w-8 text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] dark:text-[#A78BFA] dark:hover:bg-[#8B5CF6]/20 dark:hover:text-[#C4B5FD]"
+                                                                >
+                                                                    <Trash2 size={15} className="text-[#5E4BF2] dark:text-[#A78BFA]" />
                                                                 </Button>
                                                             </TooltipTrigger>
-                                                            <TooltipContent arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2]" className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.22)]">
+                                                            <TooltipContent
+                                                                arrowClassName="bg-[#5E4BF2] fill-[#5E4BF2] dark:bg-[#7C3AED] dark:fill-[#7C3AED]"
+                                                                className="border-[#DCD8FF] bg-[#5E4BF2] text-white shadow-[0_8px_18px_rgba(94,75,242,0.25)] font-semibold dark:border-purple-400/40 dark:bg-[#7C3AED]"
+                                                            >
                                                                 Hapus event
                                                             </TooltipContent>
                                                         </Tooltip>
@@ -295,7 +311,7 @@ export default function EventIndex({ events, filters }: Props) {
                                         </tr>
                                     ))
                                 ) : (
-                                    <tr>
+                                    <tr className="bg-white">
                                         <td colSpan={7} className="text-muted-foreground h-32 text-center text-sm">
                                             {t('common.noData')}
                                         </td>
