@@ -30,6 +30,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner') ?? false;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
     const [search, setSearch] = useState(filters.search || '');
     const [category, setCategory] = useState(filters.category || 'all');
 
@@ -55,7 +56,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
         });
     };
 
-    const tableColumns = getColumns(t, handleToggleActive, isOwner);
+    const tableColumns = getColumns(t, handleToggleActive, isOwner, isStaff);
 
     const usagePercent = Math.round((total_count / max_products) * 100);
 
@@ -85,7 +86,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                     <div className="flex gap-2">
                         <Button
                             asChild
-                            className={`!h-10 !rounded-xl !border !bg-white !px-4 !font-semibold shadow-sm ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50'}`}
+                            className={`!h-10 !rounded-xl !border !bg-white !px-4 !font-semibold shadow-sm ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1]' : isStaff ? '!border-[#d94f83] !text-[#d94f83] hover:!bg-[#fff0f5]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50'}`}
                         >
                             <Link href="/inventory/stock-in">
                                 <Package size={16} />

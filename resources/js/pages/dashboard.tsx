@@ -80,12 +80,14 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner');
     const isSupervisor = auth.user?.roles?.includes('supervisor');
+    const isStaff = auth.user?.roles?.includes('staff');
     const netPositive = stats.net_today >= 0;
+    const chartAccent = isStaff ? '#d94f83' : isSupervisor ? '#2596be' : '#10b981';
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('dashboard.title')} />
-            <div className={`supervisor-dashboard flex flex-col gap-6 p-4 md:p-6 lg:p-8 ${isSupervisor ? 'is-supervisor' : ''}`}>
+            <div className={`supervisor-dashboard ${isStaff ? 'staff-dashboard' : ''} flex flex-col gap-6 p-4 md:p-6 lg:p-8 ${isSupervisor ? 'is-supervisor' : ''}`}>
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
                     <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
@@ -110,7 +112,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         value={formatRupiah(stats.expense_today, true)}
                         subtitle={`${t('dashboard.thisMonth')}: ${formatRupiah(stats.expense_month, true)}`}
                         icon={TrendingDown}
-                        color="bg-rose-500"
+                        color={isStaff ? 'bg-emerald-500' : 'bg-rose-500'}
                         trend="down"
                     />
                     <StatCard
@@ -144,15 +146,15 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                             <AreaChart data={chart_data} margin={{ top: 12, right: 8, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor={isSupervisor ? '#2596be' : '#10b981'} stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor={isSupervisor ? '#2596be' : '#10b981'} stopOpacity={0} />
+                                        <stop offset="5%" stopColor={chartAccent} stopOpacity={0.2} />
+                                        <stop offset="95%" stopColor={chartAccent} stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
                                 <XAxis dataKey="date" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                                 <Tooltip
-                                    cursor={{ stroke: isSupervisor ? '#2596be' : '#10b981', strokeOpacity: 0.55, strokeWidth: 2.5 }}
+                                    cursor={{ stroke: chartAccent, strokeOpacity: 0.55, strokeWidth: 2.5 }}
                                     content={({ active, payload }) => {
                                         if (!active || !payload || payload.length === 0) return null;
 
@@ -162,11 +164,11 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
 
                                         return (
                                             <div
-                                                className={`rounded-xl bg-white/95 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm ${isSupervisor ? 'border border-[#B9E2F2]' : 'border border-emerald-200'}`}
+                                                className={`rounded-xl bg-white/95 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm ${isSupervisor ? 'border border-[#B9E2F2]' : isStaff ? 'border border-[#f3b7cc]' : 'border border-emerald-200'}`}
                                             >
                                                 <div className="text-[11px] font-bold tracking-[0.08em] text-slate-500 uppercase">{label}</div>
                                                 <div
-                                                    className={`mt-0.5 text-[14px] font-extrabold tracking-[-0.03em] ${isSupervisor ? 'text-[#2596BE]' : 'text-emerald-600'}`}
+                                                    className={`mt-0.5 text-[14px] font-extrabold tracking-[-0.03em] ${isSupervisor ? 'text-[#2596BE]' : isStaff ? 'text-[#d94f83]' : 'text-emerald-600'}`}
                                                 >
                                                     {formatRupiah(value, true)}
                                                 </div>
@@ -177,14 +179,14 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                 <Area
                                     type="monotone"
                                     dataKey="sales"
-                                    stroke={isSupervisor ? '#2596be' : '#10b981'}
+                                    stroke={chartAccent}
                                     strokeWidth={2.5}
                                     fill="url(#salesGradient)"
                                     isAnimationActive={false}
                                     dot={false}
                                     activeDot={{
                                         r: 5,
-                                        fill: isSupervisor ? '#2596be' : '#10b981',
+                                        fill: chartAccent,
                                         stroke: '#ffffff',
                                         strokeWidth: 3,
                                     }}

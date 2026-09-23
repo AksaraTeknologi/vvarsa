@@ -37,6 +37,7 @@ export default function Opname({ products }: Props) {
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner') ?? false;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('navigation.inventory'), href: '/inventory' },
@@ -107,7 +108,7 @@ export default function Opname({ products }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('inventory.opnameTitle')} />
-            <div className="p-4 md:p-6">
+            <div className="stock-opname-page p-4 md:p-6">
                 <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <div>
@@ -126,7 +127,9 @@ export default function Opname({ products }: Props) {
                             className={
                                 isOwner
                                     ? '!border-[#d9e5dd] !bg-white !text-[#315d45] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]'
-                                    : '!border-blue-200 !bg-white !text-blue-700 hover:!bg-blue-50 hover:!text-blue-700'
+                                                                        : isStaff
+                                                                            ? '!border-[#d94f83] !bg-white !text-[#d94f83] hover:!bg-[#fff0f5] hover:!text-[#b83268]'
+                                                                            : '!border-blue-200 !bg-white !text-blue-700 hover:!bg-blue-50 hover:!text-blue-700'
                             }
                         />
                     </div>
@@ -214,14 +217,18 @@ export default function Opname({ products }: Props) {
                     </div>
 
                     <div className="mt-4 flex justify-end gap-3">
-                        <Button variant="outline" asChild className="rounded-xl">
+                        <Button
+                            variant="outline"
+                            asChild
+                            className={`rounded-xl ${isStaff ? 'border-[#d94f83] text-[#d94f83] hover:bg-[#fff0f5] hover:text-[#b83268]' : ''}`}
+                        >
                             <Link href="/inventory">{t('common.cancel')}</Link>
                         </Button>
                         <Button
                             type="submit"
                             variant="owner"
                             disabled={processing || changedCount === 0}
-                            className="inline-flex items-center gap-2 rounded-xl"
+                            className={`inline-flex items-center gap-2 rounded-xl ${isStaff ? 'staff-save-button border border-[#d94f83] bg-[#d94f83] text-white hover:bg-[#b83268]' : ''}`}
                         >
                             <Save size={16} />
                             {processing ? t('common.saving') : t('inventory.saveOpnameCount', { count: changedCount })}

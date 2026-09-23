@@ -32,6 +32,7 @@ export default function StockIn({ products }: Props) {
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner') ?? false;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('navigation.inventory'), href: '/inventory' },
         { title: t('inventory.stockInTitle'), href: '/inventory/stock-in' },
@@ -243,7 +244,11 @@ export default function StockIn({ products }: Props) {
                     </div>
 
                     <div className="mt-2 flex justify-end gap-3">
-                        <Button variant="outline" asChild className="rounded-xl">
+                        <Button
+                            variant="outline"
+                            asChild
+                            className={`rounded-xl ${isStaff ? 'border-[#d94f83] text-[#d94f83] hover:bg-[#fff0f5] hover:text-[#b83268]' : ''}`}
+                        >
                             <Link href="/inventory">{t('inventory.Cancel')}</Link>
                         </Button>
                         <Button
@@ -252,6 +257,8 @@ export default function StockIn({ products }: Props) {
                             className={
                                 isOwner
                                     ? 'h-10 rounded-xl bg-[#3f9567] px-5 font-semibold text-white shadow-sm shadow-[#3f9567]/20 hover:bg-[#2f7d51] disabled:opacity-70'
+                                                                        : isStaff
+                                                                              ? 'staff-save-button h-10 rounded-xl border border-[#d94f83] bg-[#d94f83] px-5 font-semibold !text-white shadow-sm shadow-[#d94f83]/20 hover:bg-[#b83268] disabled:opacity-70'
                                     : 'h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700 disabled:opacity-70'
                             }
                         >

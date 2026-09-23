@@ -12,6 +12,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const { auth } = usePage<SharedData>().props;
     const isAdmin = auth.user?.roles?.includes('admin');
     const isSupervisor = auth.user?.roles?.includes('supervisor');
+    const isStaff = auth.user?.roles?.includes('staff');
 
     const sidebarNavItems: NavItem[] = [
         {
@@ -44,7 +45,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className={cn('business-page w-full p-4 md:p-6', isAdmin && 'admin-settings-page relative isolate min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]', isSupervisor && 'supervisor-settings-page relative isolate min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(37,150,190,0.12),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(125,211,252,0.22),_transparent_35%),linear-gradient(180deg,#e9f8ff_0%,#f8fcff_100%)]')}>
+        <div className={cn('business-page w-full p-4 md:p-6', isAdmin && 'admin-settings-page relative isolate min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(94,75,242,0.10),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(121,215,255,0.18),_transparent_32%),linear-gradient(180deg,#f6f2ff_0%,#f9f8fc_100%)]', isSupervisor && 'supervisor-settings-page relative isolate min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(37,150,190,0.12),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(125,211,252,0.22),_transparent_35%),linear-gradient(180deg,#e9f8ff_0%,#f8fcff_100%)]', isStaff && 'staff-settings-page')}>
             {isAdmin && (
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
                     <div className="admin-dashboard-bubble tenant-dashboard-bubble tenant-dashboard-bubble-one" />

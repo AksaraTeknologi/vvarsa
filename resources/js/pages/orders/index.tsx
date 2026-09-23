@@ -31,6 +31,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner') ?? false;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
 
     const breadcrumbs: BreadcrumbItem[] = [{ title: t('navigation.orders'), href: '/orders' }];
 
@@ -112,7 +113,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                         <Button
                             asChild
                             variant="outline"
-                            className={`gap-1.5 rounded-xl ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700'}`}
+                            className={`gap-1.5 rounded-xl ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]' : isStaff ? '!border-[#d94f83] !text-[#d94f83] hover:!bg-[#fff0f5] hover:!text-[#b83268]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700'}`}
                         >
                             <Link href="/pos">
                                 <ShoppingBag size={15} />

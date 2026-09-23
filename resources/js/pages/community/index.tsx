@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { BUSINESS_TYPE_LABELS, truncate } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type CommunityPost, type PaginatedData } from '@/types/mrp';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Eye, Heart, MessageCircle, PinIcon, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +57,8 @@ function timeAgo(dateStr: string, t: (k: string, opts?: any) => string, locale: 
 
 export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_business_type }: Props) {
     const { t, i18n } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
     const [search, setSearch] = useState(filters.search || '');
     const [category, setCategory] = useState(filters.category || '');
 
@@ -99,7 +101,11 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                             </p>
                         </div>
                     </div>
-                    <Button asChild variant="owner" className="inline-flex items-center gap-2 rounded-xl">
+                    <Button
+                        asChild
+                        variant="owner"
+                        className={`inline-flex items-center gap-2 rounded-xl ${isStaff ? '!border-[#d94f83] !bg-[#d94f83] !text-white hover:!bg-[#b83268]' : ''}`}
+                    >
                         <Link href="/community/create">
                             <Plus size={16} /> {t('community.createDiscussion')}
                         </Link>
@@ -119,7 +125,11 @@ export default function CommunityIndex({ posts, liked_post_ids, filters, tenant_
                                         applyFilter({ category: catKey });
                                     }}
                                     className={`shrink-0 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors ${
-                                        category === catKey ? 'bg-owner-accent text-white' : 'border-border hover:bg-muted border'
+                                        category === catKey
+                                            ? isStaff
+                                                ? 'bg-[#d94f83] text-white'
+                                                : 'bg-owner-accent text-white'
+                                            : 'border-border hover:bg-muted border'
                                     }`}
                                 >
                                     {label}

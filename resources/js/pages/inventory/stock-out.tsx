@@ -6,9 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { type Product } from '@/types/mrp';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,8 @@ const stockOutSchema = z.object({
 
 export default function StockOut({ products }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('navigation.inventory'), href: '/inventory' },
@@ -209,13 +211,17 @@ export default function StockOut({ products }: Props) {
                     </div>
 
                     <div className="mt-2 flex justify-end gap-3">
-                        <Button variant="outline" asChild className="rounded-xl">
+                        <Button
+                            variant="outline"
+                            asChild
+                            className={`rounded-xl ${isStaff ? 'border-[#d94f83] text-[#d94f83] hover:bg-[#fff0f5] hover:text-[#b83268]' : ''}`}
+                        >
                             <Link href="/inventory">{t('common.cancel')}</Link>
                         </Button>
                         <Button
                             type="submit"
                             disabled={processing || !data.product_id || !!isInsufficientStock}
-                            className="rounded-xl bg-rose-600 px-5 text-white hover:bg-rose-700 disabled:opacity-70"
+                            className={`${isStaff ? 'staff-save-button border border-[#d94f83] bg-[#d94f83] !text-white hover:bg-[#b83268]' : 'bg-rose-600 text-white hover:bg-rose-700'} rounded-xl px-5 disabled:opacity-70`}
                         >
                             {processing ? t('common.saving') : t('inventory.saveStockOut')}
                         </Button>

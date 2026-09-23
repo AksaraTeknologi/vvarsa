@@ -60,6 +60,7 @@ function timeAgo(dateStr: string, t: (k: string, opts?: any) => string, locale: 
 export default function CommunityShow({ post, replies, is_liked, tenant_business_type, is_member }: Props) {
     const { t, i18n } = useTranslation();
     const { auth } = usePage().props as any;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
 
     const currentLocale = i18n.language === 'id' ? 'id-ID' : 'en-US';
 
@@ -159,14 +160,14 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             variant="outline"
                             size="sm"
                             onClick={() => router.delete(`/community/${post.id}/leave`, { preserveScroll: true })}
-                            className="!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700"
+                            className={isStaff ? '!border-[#d94f83] !text-[#d94f83] hover:!bg-[#fff0f5] hover:!text-[#b83268]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700'}
                         >
                             <LogOut className="size-4" /> {t('community.leave')}
                         </Button>
                     ) : (
                         <Button
                             size="sm"
-                            className="bg-owner-accent text-white hover:opacity-90"
+                            className={isStaff ? 'border border-[#d94f83] bg-[#d94f83] text-white hover:bg-[#b83268]' : 'bg-owner-accent text-white hover:opacity-90'}
                             onClick={() => router.post(`/community/${post.id}/join`, {}, { preserveScroll: true })}
                         >
                             <LogIn className="size-4" /> {t('community.join')}

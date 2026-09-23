@@ -55,7 +55,7 @@ export default function SupplierCreate() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('supplier.createTitle')} />
 
-            <div className="business-page w-full p-4 md:p-6">
+            <div className="supplier-panel supplier-page business-page w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="h-10 w-10 shrink-0 rounded-xl">
                         <Link href="/suppliers" aria-label={t('common.back')}>

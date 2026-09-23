@@ -597,8 +597,8 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
     return (
         <AppLayout breadcrumbs={breadcrumbs} className="h-svh max-h-svh overflow-hidden flex flex-col">
             <Head title={t('supplier.recommendations')} />
-            <div className="relative w-full flex-1 min-h-0 overflow-hidden bg-slate-900 font-sans">
-                
+            <div className="supplier-page relative w-full flex-1 min-h-0 overflow-hidden bg-slate-900 font-sans">
+
                 {/* 1. Map Container */}
                 <div className="absolute inset-0 z-0">
                     <MapContainer
@@ -661,7 +661,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                                                 <span className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm ring-1 ring-slate-200 inline-block" style={{ backgroundColor: roleInfo.bg }} title={`Dibuat oleh role ${roleInfo.label}`} />
                                             </div>
                                             <p className="text-xs text-slate-500 mt-1">{supplier.address || supplier.city}</p>
-                                            
+
                                             {/* Role Creator Badge */}
                                             <div className="mt-2 flex items-center gap-1.5">
                                                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white uppercase shadow-sm" style={{ backgroundColor: roleInfo.bg }}>
@@ -823,8 +823,8 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                 </div>
 
                 {/* 3. Floating Side Panel */}
-                <div className="absolute right-4 top-4 bottom-4 w-80 sm:w-96 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col z-30">
-                    
+                <div className="supplier-panel absolute right-4 top-4 bottom-4 w-80 sm:w-96 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col z-30">
+
                     {/* Header Tabs (Switches between List, Create, and Edit without full page reload) */}
                     <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                         <div className="flex items-center gap-1.5 overflow-x-auto">

@@ -86,7 +86,7 @@ export default function TaxIndex({ reports }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('tax.reports')} />
-            <div className="business-page flex flex-col gap-4 p-4 md:p-6">
+            <div className="business-page tax-reports-page flex flex-col gap-4 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>

@@ -94,8 +94,8 @@ function NavSection({ title, items, theme, currentUrl }: { title?: string; items
                             preserveScroll
                             className={`group flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 ${
                                 isActive
-                                    ? `${theme.bgSubtle} ${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'} hover:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'} focus-visible:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'}`
-                                    : `text-[#4a4e69] ${theme.textHover} ${theme.bgHover} hover:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'} focus-visible:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : '!text-[#2d6b49]'}`
+                                    ? `${theme.bgSubtle} ${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : theme === ROLE_THEME.staff ? '!text-[#d94f83]' : '!text-[#2d6b49]'} hover:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : theme === ROLE_THEME.staff ? '!text-[#b83268]' : '!text-[#2d6b49]'} focus-visible:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : theme === ROLE_THEME.staff ? '!text-[#b83268]' : '!text-[#2d6b49]'}`
+                                    : `text-[#4a4e69] ${theme.textHover} ${theme.bgHover} hover:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : theme === ROLE_THEME.staff ? '!text-[#b83268]' : '!text-[#2d6b49]'} focus-visible:${theme === ROLE_THEME.supervisor ? '!text-[#2596be]' : theme === ROLE_THEME.staff ? '!text-[#b83268]' : '!text-[#2d6b49]'}`
                             }`}
                         >
                             {item.icon && (
@@ -105,7 +105,9 @@ function NavSection({ title, items, theme, currentUrl }: { title?: string; items
                                                                                         ? `${theme.text} !text-[#5e4bf2]`
                                                                                         : theme === ROLE_THEME.supervisor
                                                                                             ? `!text-[#2596be] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
-                                                                                            : `!text-[#3f9567] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
+                                                                                            : theme === ROLE_THEME.staff
+                                                                                                ? `!text-[#d94f83] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
+                                                                                                : `!text-[#3f9567] ${isActive ? theme.text : `text-[#9a9bac] ${theme.textHover}`}`
                                     }`}
                                 />
                             )}

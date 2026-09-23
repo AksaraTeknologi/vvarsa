@@ -14,6 +14,7 @@ export function NavUser() {
     const isMobile = useIsMobile();
     const isAdmin = auth.user?.roles?.includes('admin');
     const isSupervisor = auth.user?.roles?.includes('supervisor');
+    const isStaff = auth.user?.roles?.includes('staff');
 
     return (
         <SidebarMenu>
@@ -22,7 +23,7 @@ export function NavUser() {
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton
                             size="lg"
-                            className={`${isAdmin ? 'admin-user-menu' : isSupervisor ? 'supervisor-user-menu' : 'bg-owner-accent/10 text-owner-accent hover:bg-owner-accent/15 hover:text-owner-accent data-[state=open]:bg-owner-accent/15 data-[state=open]:text-owner-accent'} group`}
+                            className={`${isAdmin ? 'admin-user-menu' : isSupervisor ? 'supervisor-user-menu' : isStaff ? 'staff-user-menu' : 'bg-owner-accent/10 text-owner-accent hover:bg-owner-accent/15 hover:text-owner-accent data-[state=open]:bg-owner-accent/15 data-[state=open]:text-owner-accent'} group`}
                         >
                             <UserInfo user={auth.user} />
                             <ChevronsUpDown className="ml-auto size-4" />

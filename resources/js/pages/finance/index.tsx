@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { formatRupiah } from '@/lib/utils-mrp';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
@@ -36,6 +36,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function FinanceIndex({ twelve_months, today, this_month }: Props) {
     const { t } = useTranslation();
+    const { auth } = usePage<SharedData>().props;
+    const isStaff = auth.user?.roles?.includes('staff');
+    const incomeChartColor = isStaff ? '#d94f83' : '#10b981';
     const breadcrumbs: BreadcrumbItem[] = [{ title: t('finance.title', 'Keuangan & Laporan'), href: '/finance' }];
     const netToday = today.income - today.expense;
     const netMonth = this_month.income - this_month.expense;
@@ -101,7 +104,7 @@ export default function FinanceIndex({ twelve_months, today, this_month }: Props
                             <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                             <Tooltip content={<CustomTooltip />} />
                             <Legend />
-                            <Bar dataKey="income" name={t('finance.income')} fill="#10b981" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="income" name={t('finance.income')} fill={incomeChartColor} radius={[4, 4, 0, 0]} />
                             <Bar dataKey="expense" name={t('finance.expense')} fill="#f43f5e" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>

@@ -4043,3 +4043,50 @@ button {
 .supervisor-theme .business-event-card > div:first-child span {
     color: #ffffff !important;
 }
+
+.supplier-page,
+.supplier-page [data-slot='card'],
+.supplier-page .bg-card,
+.supplier-page .bg-background,
+.supplier-page .bg-muted,
+.supplier-page table,
+.supplier-page thead,
+.supplier-page tbody,
+.supplier-page tr,
+.supplier-page th,
+.supplier-page td,
+.supplier-page input,
+.supplier-page textarea,
+.supplier-page select,
+.supplier-page [data-slot='select-trigger'] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+}
+
+.supplier-page,
+.supplier-page input,
+.supplier-page textarea,
+.supplier-page select,
+.supplier-page [data-slot='select-trigger'],
+.supplier-page th,
+.supplier-page td {
+    color: #30343b !important;
+    border-color: #e5e7eb !important;
+}
+
+.supplier-page input::placeholder,
+.supplier-page textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+.supplier-page [data-slot='button'][data-variant='owner'],
+.supplier-page .bg-owner-accent {
+    background-color: #374151 !important;
+    border-color: #374151 !important;
+    color: #ffffff !important;
+}
+
+.supplier-page [data-slot='button'][data-variant='owner']:hover,
+.supplier-page .bg-owner-accent:hover {
+    background-color: #1f2937 !important;
+}

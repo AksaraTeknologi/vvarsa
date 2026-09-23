@@ -1,5 +1,6 @@
 import { SidebarInset } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { staffContentClassName } from '@/roles/staff/styles';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import * as React from 'react';
@@ -12,10 +13,11 @@ export function AppContent({ variant = 'header', children, className, ...props }
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner');
     const isSupervisor = auth.user?.roles?.includes('supervisor');
+    const isStaff = auth.user?.roles?.includes('staff');
 
     if (variant === 'sidebar') {
         return (
-            <SidebarInset className={cn(isOwner && 'owner-content', isSupervisor && 'supervisor-content', className)} {...props}>
+                <SidebarInset className={cn(isOwner && 'owner-content', isSupervisor && 'supervisor-content', isStaff && staffContentClassName, className)} {...props}>
                 {children}
             </SidebarInset>
         );

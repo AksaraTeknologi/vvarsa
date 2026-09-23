@@ -6,6 +6,8 @@ import { Calendar as CalendarIcon, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
+import { type SharedData } from "@/types"
+import { usePage } from "@inertiajs/react"
 import {
   Popover,
   PopoverContent,
@@ -18,11 +20,13 @@ interface DatePickerProps {
     placeholder?: string;
     disabled?: boolean;
     className?: string;
-  theme?: "owner" | "owner-green" | "admin";
+  theme?: "owner" | "owner-green" | "admin" | "staff-pink";
 }
 
 export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", disabled = false, className, theme = "owner" }: DatePickerProps) {
   const isOwnerGreen = theme === "owner-green"
+  const isStaff = usePage<SharedData>().props.auth.user?.roles?.includes("staff")
+  const resolvedTheme = isStaff ? "staff-pink" : theme
   const dateValue = React.useMemo(() => {
     if (!value) return undefined;
     if (value instanceof Date) return value;
@@ -52,9 +56,11 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           disabled={disabled}
           className={cn(
             "w-full justify-start rounded-xl border-input bg-white px-3 py-1 text-left text-sm font-normal shadow-sm focus-visible:ring-2",
-            theme === "admin"
+            resolvedTheme === "admin"
               ? "text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] focus-visible:ring-[#5E4BF2]/30"
-              : "text-[#315d45] hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-[#5aa67a]/30",
+              : resolvedTheme === "staff-pink"
+                ? "staff-date-picker !border-[#f3b7cc] text-[#d94f83] hover:bg-[#fff0f5] hover:text-[#b83268] focus-visible:!border-[#d94f83] focus-visible:ring-[#d94f83]/30"
+                : "text-[#315d45] hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-[#5aa67a]/30",
             !dateValue && "text-muted-foreground",
             className
           )}
@@ -63,18 +69,24 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           {dateValue ? format(dateValue, "dd MMMM yyyy", { locale: id }) : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="staff-date-picker-popover w-auto p-0" align="start">
         <Calendar
           mode="single"
           selected={dateValue}
           onSelect={handleSelect}
           captionLayout="label"
-          classNames={theme === "admin" ? {
+          classNames={resolvedTheme === "admin" ? {
             caption_label: "text-sm font-semibold text-[#5E4BF2]",
             button_previous: "h-8 w-8 rounded-full border-[#DCD8FF] bg-white p-0 text-[#5E4BF2] shadow-sm hover:bg-[#F1EFFD] hover:text-[#4938D9]",
             button_next: "h-8 w-8 rounded-full border-[#DCD8FF] bg-white p-0 text-[#5E4BF2] shadow-sm hover:bg-[#F1EFFD] hover:text-[#4938D9]",
             day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#F1EFFD] hover:text-[#4938D9] focus-visible:ring-2 focus-visible:ring-[#5E4BF2]/30 aria-selected:!bg-[#5E4BF2] aria-selected:!text-white aria-selected:hover:!bg-[#4938D9]",
             today: "!bg-[#F1EFFD] !text-[#5E4BF2]",
+          } : resolvedTheme === "staff-pink" ? {
+            caption_label: "text-sm font-semibold text-[#d94f83]",
+            button_previous: "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
+            button_next: "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
+            day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#fff0f5] hover:text-[#b83268] focus-visible:ring-2 focus-visible:ring-[#d94f83]/30 aria-selected:!bg-[#d94f83] aria-selected:!text-white aria-selected:hover:!bg-[#b83268] aria-selected:opacity-100",
+            today: "!bg-[#fff0f5] !text-[#d94f83]",
           } : isOwnerGreen ? {
             caption_label: "text-sm font-semibold text-[#3f9567]",
             button_previous: "h-8 w-8 rounded-full border-[#d9e5dd] bg-white p-0 text-[#3f9567] shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51]",

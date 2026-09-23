@@ -76,6 +76,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const isOwner = auth.user?.roles?.includes('owner') ?? false;
+    const isStaff = auth.user?.roles?.includes('staff') ?? false;
     const [cart, setCart] = useState<CartItem[]>([]);
     const [activeCartItemId, setActiveCartItemId] = useState<number | null>(null);
     const [customerName, setCustomerName] = useState('');
@@ -942,31 +943,31 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         </button>
 
                                         {isCustomerActive && (
-                                            <div className="border-border/40 space-y-2 border-t p-3 pt-0">
+                                            <div className="pos-customer-fields border-border/40 space-y-2 border-t p-3 pt-0">
                                                 <Input
                                                     value={customerName}
                                                     onChange={(e) => setCustomerName(e.target.value)}
                                                     placeholder={t('pos.customerNamePlaceholder')}
-                                                    className="h-9 rounded-xl text-xs"
+                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
                                                 />
                                                 <Input
                                                     value={customerPhone}
                                                     onChange={(e) => setCustomerPhone(e.target.value)}
                                                     placeholder={t('pos.customerPhonePlaceholder')}
-                                                    className="h-9 rounded-xl text-xs"
+                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
                                                 />
                                                 <Input
                                                     type="email"
                                                     value={customerEmail}
                                                     onChange={(e) => setCustomerEmail(e.target.value)}
                                                     placeholder={t('pos.customerEmailPlaceholder')}
-                                                    className="h-9 rounded-xl text-xs"
+                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
                                                 />
                                                 <Input
                                                     value={notes}
                                                     onChange={(e) => setNotes(e.target.value)}
                                                     placeholder={t('pos.orderNotesPlaceholder')}
-                                                    className="h-9 rounded-xl text-xs"
+                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
                                                 />
                                             </div>
                                         )}
@@ -1208,7 +1209,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                 <div className="flex items-baseline justify-between">
                                     <span className="text-muted-foreground text-xs">{t('pos.total')}</span>
                                     <div className="text-right">
-                                        <span className="text-lg font-bold text-[#3f9567]">{formatRupiah(finalTotal)}</span>
+                                        <span className="!bg-transparent text-lg font-bold text-[#3f9567]">{formatRupiah(finalTotal)}</span>
                                         {discountAmount > 0 && (
                                             <span className="block text-[11px] text-rose-500 line-through">{formatRupiah(subtotal)}</span>
                                         )}
@@ -1263,12 +1264,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                             type="button"
                             variant="outline"
                             onClick={() => setMobileCartOpen(true)}
-                            className="bg-card relative flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-xl border-[#c7e0ce] px-3 text-[#3f9567] hover:bg-[#f4faf6] lg:hidden"
+                            className={`bg-card relative flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-xl px-3 lg:hidden ${isStaff ? 'border-[#d94f83] text-[#d94f83] hover:bg-[#fff0f5]' : 'border-[#c7e0ce] text-[#3f9567] hover:bg-[#f4faf6]'}`}
                         >
                             <ShoppingCart size={15} />
                             <span className="text-xs font-semibold">{t('pos.cart')}</span>
                             {cart.length > 0 && (
-                                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#3f9567] px-1 text-[10px] font-bold text-white">
+                                <span className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white ${isStaff ? 'bg-[#d94f83]' : 'bg-[#3f9567]'}`}>
                                     {cartItemCount}
                                 </span>
                             )}
@@ -1304,16 +1305,18 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                         {t('pos.capacityPcs', { capacity: pkg.capacity })}
                                                     </span>
                                                     <div
-                                                        className={`flex size-7 items-center justify-center rounded-full !p-1 text-white transition-colors ${
-                                                            isOwner
-                                                                ? '!bg-[#3f9567] group-hover:!bg-[#327d55]'
-                                                                : '!bg-[#2596BE] group-hover:!bg-[#1f83a8]'
+                                                        className={`flex size-7 items-center justify-center rounded-full !p-1 transition-colors ${
+                                                                                                                        isOwner
+                                                                                                                                ? '!bg-[#3f9567] group-hover:!bg-[#327d55]'
+                                                                                                                                : isStaff
+                                                                                                                                    ? '!bg-white !text-[#d94f83] group-hover:!bg-[#fff0f5]'
+                                                                                                                                    : '!bg-[#2596BE] group-hover:!bg-[#1f83a8]'
                                                         }`}
                                                     >
                                                         <Plus size={13} />
                                                     </div>
                                                 </div>
-                                                <h3 className="text-foreground line-clamp-1 text-xs font-semibold transition-colors group-hover:text-[#3f9567] sm:text-sm">
+                                                <h3 className="text-foreground !bg-transparent line-clamp-1 text-xs font-semibold transition-colors group-hover:text-[#3f9567] sm:text-sm">
                                                     {pkg.name}
                                                 </h3>
                                                 <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px] sm:line-clamp-2">
@@ -1322,7 +1325,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             </div>
                                             <div className="border-border/60 mt-2.5 flex items-baseline justify-between border-t pt-2">
                                                 <span className="text-muted-foreground text-[10px]">Harga</span>
-                                                <span className="text-xs font-bold text-[#3f9567] sm:text-sm">{formatRupiah(Number(pkg.price))}</span>
+                                                <span className="!bg-transparent text-xs font-bold text-[#3f9567] sm:text-sm">{formatRupiah(Number(pkg.price))}</span>
                                             </div>
                                         </div>
                                     );
@@ -1513,7 +1516,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             <div className="text-foreground mb-0.5 truncate text-xs leading-tight font-semibold">
                                                 {v.name.replace('Mochi ', '')}
                                             </div>
-                                            <div className="text-[11px] font-bold text-[#3f9567]">
+                                            <div className="!bg-transparent text-[11px] font-bold text-[#3f9567]">
                                                 {packages.length === 0
                                                     ? formatRupiah(Number(v.sell_price))
                                                     : `${v.recipe_qty ?? 1} ${t('pos.variantCard.pcsPerRecipe', 'pcs/resep')}`}

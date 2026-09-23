@@ -1,4 +1,9 @@
 import '../css/app.css';
+import './roles/admin/styles.css';
+import './roles/owner/styles.css';
+import './roles/staff/styles.css';
+import './roles/supervisor/styles.css';
+import './roles/supplier-neutral.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
