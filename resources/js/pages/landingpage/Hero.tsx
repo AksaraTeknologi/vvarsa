@@ -1,8 +1,12 @@
+import { formatCurrency, formatRupiah } from '@/lib/utils-mrp';
 import { Link } from '@inertiajs/react';
 import { ArrowRight, Bell, Boxes, Check, ChefHat, CircleDollarSign, Package, Play, Star, TrendingUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { type LandingProps } from './types';
 
 export function Hero({ goToDashboard }: LandingProps) {
+    const { t } = useTranslation();
+
     return (
         <section className="hero-gradient relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(105,190,125,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(222,248,229,0.9),transparent_28%),linear-gradient(180deg,#f8fff9_0%,#ffffff_52%,#eaf8ed_100%)] px-5 pt-12 pb-20 sm:px-6 lg:px-10 lg:pt-24 lg:pb-28">
             <div className="hero-orb absolute top-[120px] left-[-120px] size-[340px] rounded-full bg-[#a8e3b5]/70 blur-[110px]" />
@@ -20,24 +24,23 @@ export function Hero({ goToDashboard }: LandingProps) {
 
                 <div data-reveal className="reveal-hidden relative z-10">
                     <h1 className="max-w-3xl text-[2.3rem] leading-[0.86] font-black tracking-[-0.06em] sm:text-4xl lg:text-[4.2rem]">
-                        Usaha lebih
+                        {t('landing.hero.title1', 'Usaha lebih')}
                         <br />
                         <span className="relative inline-block text-[#5E4BF2]">
-                            <span className="relative z-10">tertata</span>
+                            <span className="relative z-10">{t('landing.hero.titleHighlight', 'tertata')}</span>
 
                             <span className="absolute right-0 -bottom-2 left-0 -z-0 h-4 rounded-[0.6rem] bg-[#D8F380] opacity-90 sm:h-6" />
                         </span>{' '}
-                        <span className="text-[#17182A]">dan</span>
+                        <span className="text-[#17182A]">{t('landing.hero.titleAnd', 'dan')}</span>
                         <br />
-                        <span className="text-[#17182A]">lebih siap tumbuh.</span>
+                        <span className="text-[#17182A]">{t('landing.hero.title2', 'lebih siap tumbuh.')}</span>
                     </h1>
 
                     <p className="mt-5 max-w-xl text-sm leading-relaxed font-semibold text-[#66677A] sm:text-base">
-                        VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu sistem yang elegan, efisien, dan siap berkembang.
+                        {t('landing.hero.description', 'VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu sistem yang elegan, efisien, dan siap berkembang.')}
                         <span className="text-[#5E4BF2]">
                             {' '}
-                            Dengan operasional yang lebih tertata, Anda dapat fokus pada pelayanan, penjualan, dan pertumbuhan bisnis dengan lebih
-                            tenang.
+                            {t('landing.hero.descriptionSub', 'Dengan operasional yang lebih tertata, Anda dapat fokus pada pelayanan, penjualan, dan pertumbuhan bisnis dengan lebih tenang.')}
                         </span>
                     </p>
 
@@ -46,7 +49,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                             href={goToDashboard}
                             className="group inline-flex items-center justify-center rounded-2xl bg-[#5E4BF2] px-7 py-4 text-sm font-black text-white shadow-[0_18px_45px_rgba(94,75,242,0.45)] transition duration-300 hover:-translate-y-1 hover:bg-[#4938D9] sm:text-base"
                         >
-                            Coba Gratis 14 Hari
+                            {t('landing.hero.ctaTrial', 'Coba Gratis 14 Hari')}
                             <ArrowRight className="ml-2 size-5 transition group-hover:translate-x-1" />
                         </Link>
 
@@ -57,7 +60,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                             <span className="flex size-7 items-center justify-center rounded-full bg-[#D8F380]">
                                 <Play className="size-3.5 fill-current" />
                             </span>
-                            Lihat Demo
+                            {t('landing.hero.ctaDemo', 'Lihat Demo')}
                         </a>
                     </div>
 
@@ -69,13 +72,13 @@ export function Hero({ goToDashboard }: LandingProps) {
                                 ))}
                             </div>
 
-                            <p className="mt-1 text-xs font-black text-[#5E4BF2]">4.9/5 dari pengguna</p>
+                            <p className="mt-1 text-xs font-black text-[#5E4BF2]">{t('landing.hero.ratingText', '4.9/5 dari pengguna')}</p>
                         </div>
 
                         <div className="rounded-full border border-[#EAE5F8] bg-white px-4 py-2 shadow-sm">
                             <p className="text-xl font-black text-[#17182A]">1,200+</p>
 
-                            <p className="text-[10px] font-black tracking-[0.18em] text-[#8A8999] uppercase">Bisnis aktif</p>
+                            <p className="text-[10px] font-black tracking-[0.18em] text-[#8A8999] uppercase">{t('landing.hero.activeBusinesses', 'Bisnis aktif')}</p>
                         </div>
 
                         <div className="flex -space-x-2">
@@ -115,9 +118,9 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </span>
 
                                     <div>
-                                        <p className="text-[10px] font-bold text-[#9998AA]">Selamat datang,</p>
+                                        <p className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.welcome', 'Selamat datang,')}</p>
 
-                                        <p className="text-sm font-black">VVARSA Dashboard</p>
+                                        <p className="text-sm font-black">{t('landing.hero.dashboardTitle', 'VVARSA Dashboard')}</p>
                                     </div>
                                 </div>
 
@@ -132,40 +135,40 @@ export function Hero({ goToDashboard }: LandingProps) {
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="rounded-2xl bg-white p-4 shadow-sm">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-bold text-[#9998AA]">Omzet Hari Ini</span>
+                                            <span className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.todayRevenue', 'Omzet Hari Ini')}</span>
 
                                             <span className="rounded-lg bg-[#EAF8DC] p-1.5 text-[#3E6A19]">
                                                 <TrendingUp className="size-3.5" />
                                             </span>
                                         </div>
 
-                                        <p className="mt-2 text-xl font-black">Rp3,45jt</p>
+                                        <p className="mt-2 text-xl font-black">{formatCurrency(3450000, undefined, true)}</p>
 
-                                        <p className="mt-1 text-[10px] font-bold text-[#45A62E]">+24.8% dari kemarin</p>
+                                        <p className="mt-1 text-[10px] font-bold text-[#45A62E]">{t('landing.hero.fromYesterday', '+24.8% dari kemarin')}</p>
                                     </div>
 
                                     <div className="rounded-2xl bg-[#5E4BF2] p-4 text-white shadow-lg shadow-[#5E4BF2]/20">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-bold text-white/70">Profit</span>
+                                            <span className="text-[10px] font-bold text-white/70">{t('landing.hero.profit', 'Profit')}</span>
 
                                             <CircleDollarSign className="size-4 text-[#D8F380]" />
                                         </div>
 
-                                        <p className="mt-2 text-xl font-black">Rp1,28jt</p>
+                                        <p className="mt-2 text-xl font-black">{formatCurrency(1280000, undefined, true)}</p>
 
-                                        <p className="mt-1 text-[10px] font-bold text-[#D8F380]">+18.2% bulan ini</p>
+                                        <p className="mt-1 text-[10px] font-bold text-[#D8F380]">{t('landing.hero.thisMonth', '+18.2% bulan ini')}</p>
                                     </div>
                                 </div>
 
                                 <div className="mt-3 rounded-[1.75rem] border border-[#F0ECFF] bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF9FF_100%)] p-4 shadow-sm">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-[10px] font-bold text-[#9998AA]">Performa Penjualan</p>
+                                            <p className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.salesPerformance', 'Performa Penjualan')}</p>
 
-                                            <p className="mt-1 text-sm font-black">Minggu ini</p>
+                                            <p className="mt-1 text-sm font-black">{t('landing.hero.thisWeek', 'Minggu ini')}</p>
                                         </div>
 
-                                        <span className="rounded-lg bg-[#F1EFFD] px-2 py-1 text-[9px] font-black text-[#5E4BF2]">7 Hari</span>
+                                        <span className="rounded-lg bg-[#F1EFFD] px-2 py-1 text-[9px] font-black text-[#5E4BF2]">{t('landing.hero.sevenDays', '7 Hari')}</span>
                                     </div>
 
                                     <div className="relative mt-5 h-28 overflow-hidden rounded-[1.25rem] bg-[linear-gradient(180deg,#F7F5FF_0%,#FFFFFF_100%)] p-2">
@@ -203,13 +206,13 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </div>
 
                                     <div className="mt-2 flex justify-between text-[8px] font-bold text-[#AAA8B8]">
-                                        <span>Sen</span>
-                                        <span>Sel</span>
-                                        <span>Rab</span>
-                                        <span>Kam</span>
-                                        <span>Jum</span>
-                                        <span>Sab</span>
-                                        <span>Min</span>
+                                        <span>{t('landing.hero.days.mon', 'Sen')}</span>
+                                        <span>{t('landing.hero.days.tue', 'Sel')}</span>
+                                        <span>{t('landing.hero.days.wed', 'Rab')}</span>
+                                        <span>{t('landing.hero.days.thu', 'Kam')}</span>
+                                        <span>{t('landing.hero.days.fri', 'Jum')}</span>
+                                        <span>{t('landing.hero.days.sat', 'Sab')}</span>
+                                        <span>{t('landing.hero.days.sun', 'Min')}</span>
                                     </div>
                                 </div>
 
@@ -221,13 +224,13 @@ export function Hero({ goToDashboard }: LandingProps) {
                                             </span>
 
                                             <div>
-                                                <p className="text-[10px] font-bold text-[#9998AA]">Status Inventori</p>
+                                                <p className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.inventoryStatus', 'Status Inventori')}</p>
 
-                                                <p className="text-xs font-black">128 item tersedia</p>
+                                                <p className="text-xs font-black">{t('landing.hero.itemsAvailable', '128 item tersedia')}</p>
                                             </div>
                                         </div>
 
-                                        <span className="rounded-full bg-[#EAF8DC] px-2 py-1 text-[9px] font-black text-[#3E6A19]">Aman</span>
+                                        <span className="rounded-full bg-[#EAF8DC] px-2 py-1 text-[9px] font-black text-[#3E6A19]">{t('landing.hero.safe', 'Aman')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -241,11 +244,11 @@ export function Hero({ goToDashboard }: LandingProps) {
                             </span>
 
                             <div>
-                                <p className="text-[9px] font-bold text-[#9694A6]">Transaksi berhasil</p>
+                                <p className="text-[9px] font-bold text-[#9694A6]">{t('landing.hero.txSuccess', 'Transaksi berhasil')}</p>
 
-                                <p className="mt-0.5 text-xs font-black">Rp450.000</p>
+                                <p className="mt-0.5 text-xs font-black">{formatRupiah(450000)}</p>
 
-                                <p className="mt-1 text-[8px] font-bold text-[#49A22E]">âœ“ Stok otomatis terpotong</p>
+                                <p className="mt-1 text-[8px] font-bold text-[#49A22E]">{t('landing.hero.autoStockDeducted', '✓ Stok otomatis terpotong')}</p>
                             </div>
                         </div>
                     </div>
@@ -257,11 +260,11 @@ export function Hero({ goToDashboard }: LandingProps) {
                             </span>
 
                             <div>
-                                <p className="text-[9px] font-bold text-white/70">Peringatan stok</p>
+                                <p className="text-[9px] font-bold text-white/70">{t('landing.hero.stockAlert', 'Peringatan stok')}</p>
 
-                                <p className="text-xs font-black">Susu UHT menipis</p>
+                                <p className="text-xs font-black">{t('landing.hero.milkLow', 'Susu UHT menipis')}</p>
 
-                                <p className="mt-0.5 text-[8px] font-bold text-white/80">Tinggal 3 botol</p>
+                                <p className="mt-0.5 text-[8px] font-bold text-white/80">{t('landing.hero.bottlesLeft', 'Tinggal 3 botol')}</p>
                             </div>
                         </div>
                     </div>
@@ -270,7 +273,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                         <span className="flex size-8 items-center justify-center rounded-full bg-[#79D7FF] text-[10px] font-black">RA</span>
 
                         <div>
-                            <p className="text-[8px] font-bold text-[#9998AA]">Owner</p>
+                            <p className="text-[8px] font-bold text-[#9998AA]">{t('landing.hero.owner', 'Owner')}</p>
 
                             <p className="text-[10px] font-black">Rina A.</p>
                         </div>

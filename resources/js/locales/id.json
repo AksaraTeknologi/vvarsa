@@ -544,7 +544,7 @@
     "subtitleWithPackages": "Pilih paket di bawah, lalu isi varian rasanya",
     "subtitleDirect": "Pilih varian rasa langsung untuk memesan",
     "cart": "Keranjang",
-    "clear":"Bersihkan",
+    "clear": "Bersihkan",
     "cartAndCheckout": "Keranjang & Pembayaran Kasir",
     "cartTitle": "Keranjang Belanja",
     "emptyCart": "Keranjang masih kosong",
@@ -795,19 +795,16 @@
     "stockOutSubtitle": "Catat penggunaan atau pengeluaran stok",
     "opnameSubtitle": "Cocokkan stok sistem dengan stok fisik aktual",
     "currentStockLabel": "Stok saat ini: {{stock}} {{unit}} · Minimum: {{min}} {{unit}}",
-    "unitCost": "Biaya Satuan",
+    "unitCost": "Total Harga",
     "notes": "Catatan",
-    "notesPlaceholder": "Catatan pembelian / supplier (opsional)",
+    "notesPlaceholder": "Tambahkan Catatan",
     "selectProductPlaceholder": "Pilih produk...",
     "availableStock": "Stok tersedia",
     "insufficientStock": "Stok tidak mencukupi!",
     "qtyOut": "Jumlah Keluar",
     "qtyIn": "Jumlah Masuk",
-    "unitCost": "Total Harga",
     "selectProduct": "Pilih Produk",
     "referenceNo": "No Pesanan",
-    "notes": "Catatan",
-    "notesPlaceholder": "Tambahkan Catatan",
     "Cancel": "Batalkan",
     "modal": "Harga Beli",
     "stockAfter": "Stok setelah",
@@ -1436,5 +1433,319 @@
     "statusAttention": "Perlu Perhatian",
     "keyTakeaways": "Key Takeaways",
     "actionableTips": "Actionable Tips"
+  },
+  "landing": {
+    "nav": {
+      "benefits": "Manfaat",
+      "features": "Fitur",
+      "howItWorks": "Cara Kerja",
+      "pricing": "Paket",
+      "stories": "Cerita",
+      "login": "Masuk",
+      "startFree": "Mulai Gratis",
+      "dashboard": "Dashboard"
+    },
+    "hero": {
+      "title1": "Usaha lebih",
+      "titleHighlight": "tertata",
+      "titleAnd": "dan",
+      "title2": "lebih siap tumbuh.",
+      "description": "VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu sistem yang elegan, efisien, dan siap berkembang.",
+      "descriptionSub": "Dengan operasional yang lebih tertata, Anda dapat fokus pada pelayanan, penjualan, dan pertumbuhan bisnis dengan lebih tenang.",
+      "ctaTrial": "Coba Gratis 14 Hari",
+      "ctaDemo": "Lihat Demo",
+      "ratingText": "4.9/5 dari pengguna",
+      "activeBusinesses": "Bisnis aktif",
+      "welcome": "Selamat datang,",
+      "dashboardTitle": "VVARSA Dashboard",
+      "todayRevenue": "Omzet Hari Ini",
+      "fromYesterday": "+24.8% dari kemarin",
+      "profit": "Profit",
+      "thisMonth": "+18.2% bulan ini",
+      "salesPerformance": "Performa Penjualan",
+      "thisWeek": "Minggu ini",
+      "sevenDays": "7 Hari",
+      "days": {
+        "mon": "Sen",
+        "tue": "Sel",
+        "wed": "Rab",
+        "thu": "Kam",
+        "fri": "Jum",
+        "sat": "Sab",
+        "sun": "Min"
+      },
+      "inventoryStatus": "Status Inventori",
+      "itemsAvailable": "128 item tersedia",
+      "safe": "Aman",
+      "txSuccess": "Transaksi berhasil",
+      "autoStockDeducted": "✓ Stok otomatis terpotong",
+      "stockAlert": "Peringatan stok",
+      "milkLow": "Susu UHT menipis",
+      "bottlesLeft": "Tinggal 3 botol",
+      "owner": "Owner"
+    },
+    "benefits": {
+      "title1": "Usaha sibuk,",
+      "titleHighlight": "tapi omzet nggak naik?",
+      "title2": "Sistemmu mungkin belum siap.",
+      "description": "VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu ekosistem. Dengan operasional yang lebih rapi, kamu punya ruang lebih banyak untuk menjual, upsell, dan tumbuh tanpa hambatan.",
+      "beforeBadge": "Sebelum",
+      "beforeTitle": "Serba manual",
+      "beforeSubtitle": "Proses berulang & tidak efisien",
+      "beforeItems": [
+        "Spreadsheet berantakan",
+        "Cek stok satu-satu",
+        "Rekap transaksi malam hari",
+        "Laporan susah dicari"
+      ],
+      "afterBadge": "Sesudah",
+      "afterTitle": "Semua terhubung",
+      "afterSubtitle": "Otomatis, cepat & terintegrasi",
+      "afterItems": [
+        "Dashboard real-time",
+        "Stok otomatis",
+        "POS lebih cepat",
+        "Laporan siap kapan saja"
+      ]
+    },
+    "features": {
+      "badge": "Semua dalam satu tempat",
+      "title1": "Satu dashboard.",
+      "titleHighlight": "Banyak hal",
+      "title2": "jadi mudah.",
+      "description": "Tidak perlu pindah-pindah aplikasi. Semua data penting bisnismu saling terhubung secara otomatis.",
+      "mainFeature": "Fitur utama",
+      "live": "Live",
+      "items": {
+        "f1": {
+          "title": "Inventori otomatis",
+          "description": "Pantau stok bahan dan produk secara real-time. Setiap transaksi otomatis memperbarui jumlah stok.",
+          "metricLabel": "Total inventori",
+          "trendLabel": "Pertumbuhan",
+          "secondary": "Aman"
+        },
+        "f2": {
+          "title": "Laporan lebih jelas",
+          "description": "Lihat omzet, pengeluaran, laba, dan performa bisnis dalam dashboard yang mudah dipahami.",
+          "metricLabel": "Total penjualan",
+          "trendLabel": "Profit",
+          "secondary": "48 transaksi"
+        },
+        "f3": {
+          "title": "Tim lebih teratur",
+          "description": "Atur akses owner, kasir, koki, dan staff sesuai peran masing-masing.",
+          "metricLabel": "Total staff",
+          "trendLabel": "Aktivitas",
+          "secondary": "7 role aktif"
+        }
+      }
+    },
+    "howItWorks": {
+      "badge": "Cara kerja VVARSA",
+      "title1": "Dari data ribet,",
+      "titleHighlight": "jadi bisnis yang bergerak.",
+      "description": "Semua proses penting dari input data sampai laporan keputusan dibuat dalam satu flow yang simpel, cepat, dan lebih rapi.",
+      "step1": {
+        "badge": "mulai",
+        "title": "Masukkan data",
+        "text": "Input produk, stok, supplier, dan harga hanya sekali, lalu semuanya otomatis tersusun."
+      },
+      "step2": {
+        "badge": "jalan",
+        "title": "Kelola transaksi",
+        "text": "Kasir, pesanan, pembayaran, dan aktivitas harian berjalan lebih cepat tanpa bolak balik data."
+      },
+      "step3": {
+        "badge": "naik",
+        "title": "Lihat hasil",
+        "text": "Dashboard real-time menampilkan omzet, stok, dan profit tanpa perlu rekap manual."
+      }
+    },
+    "moreBenefits": {
+      "badge": "Kenapa lebih cepat",
+      "title1": "Rapi di dalam,",
+      "titleHighlight": "lebih kuat di luar.",
+      "description": "Suasana kerja yang lebih teratur membuat tim lebih fokus, lebih cepat, dan lebih siap bertumbuh tanpa hambatan manual.",
+      "items": [
+        {
+          "title": "Order makin cepat",
+          "text": "Transaksi lebih lancar tanpa kerja manual berulang."
+        },
+        {
+          "title": "Stok lebih aman",
+          "text": "Data real-time membantu mencegah kehabisan atau overstock."
+        },
+        {
+          "title": "Tim lebih fokus",
+          "text": "Semua orang jelas tugas dan aksesnya masing-masing."
+        },
+        {
+          "title": "Keputusan lebih tepat",
+          "text": "Laporan jelas jadi bahan pertimbangan bisnis."
+        }
+      ]
+    },
+    "stats": {
+      "businesses": "Bisnis aktif",
+      "dataSaved": "Data tersimpan",
+      "rating": "Rating pengguna",
+      "speed": "Lebih cepat"
+    },
+    "testimonials": {
+      "badge": "Cerita pengguna",
+      "title1": "Mereka sudah",
+      "titleHighlight": "merasakan.",
+      "usersCount": "+1,200 pengguna",
+      "items": [
+        {
+          "name": "Rina Pratiwi",
+          "role": "Owner Kedai Kopi",
+          "text": "Dulu setiap malam saya rekap penjualan manual. Sekarang tinggal buka VVARSA dan semuanya langsung kelihatan."
+        },
+        {
+          "name": "Budi Santoso",
+          "role": "Owner Cafe & Resto",
+          "text": "Yang paling membantu itu stok otomatisnya. Jadi saya nggak perlu bolak-balik cek spreadsheet lagi."
+        },
+        {
+          "name": "Alya Ramadhani",
+          "role": "UMKM Kuliner",
+          "text": "Tampilannya gampang dipahami dan laporan bisnis jadi jauh lebih rapi. Cocok banget buat usaha yang lagi berkembang."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "Harga transparan",
+      "title1": "Pilih yang paling pas,",
+      "titleHighlight": "tanpa ribet.",
+      "description": "Mulai dari yang paling sederhana sampai yang siap mendukung bisnis yang tumbuh cepat.",
+      "popular": "Popular",
+      "perMonth": "/ bulan",
+      "forever": "selamanya",
+      "freePrice": "Gratis",
+      "plans": {
+        "free": {
+          "name": "Free",
+          "description": "Untuk mulai merapikan bisnis",
+          "button": "Mulai Gratis",
+          "features": [
+            "Kelola inventori",
+            "Laporan keuangan harian",
+            "Akses komunitas"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "description": "Untuk bisnis yang sedang tumbuh",
+          "button": "Pilih Pro",
+          "features": [
+            "Semua fitur Free",
+            "Export laporan & PDF",
+            "Multi-user hingga 5 orang",
+            "Fitur POS kasir cepat"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "Untuk tim dan operasional besar",
+          "button": "Pilih Enterprise",
+          "features": [
+            "Semua fitur Pro",
+            "Akses API khusus",
+            "Dukungan prioritas 24/7",
+            "Kustomisasi laporan"
+          ]
+        }
+      }
+    },
+    "finalCta": {
+      "badge": "🚀 Saatnya naik level",
+      "title1": "Rapiin operasional.",
+      "title2": "Naikin omzet.",
+      "titleHighlight": "Mulai hari ini.",
+      "description": "Jangan biarkan proses manual menghambat penjualan. Mulai kelola bisnis dengan sistem yang lebih cepat, lebih rapi, dan siap tumbuh.",
+      "button": "Coba Gratis Sekarang",
+      "stats": {
+        "businesses": "Bisnis",
+        "rating": "Rating",
+        "access": "Akses",
+        "faster": "Lebih cepat"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Masuk ke akun Anda",
+      "description": "Masukkan email dan kata sandi Anda di bawah ini untuk masuk",
+      "emailLabel": "Alamat Email",
+      "emailPlaceholder": "email@contoh.com",
+      "passwordLabel": "Kata Sandi",
+      "passwordPlaceholder": "Kata Sandi",
+      "rememberMe": "Ingat saya",
+      "forgotPassword": "Lupa kata sandi?",
+      "submitButton": "Masuk",
+      "loggingIn": "Masuk...",
+      "noAccount": "Belum punya akun?",
+      "signUp": "Daftar sekarang",
+      "visualLabel": "AKSES MASUK",
+      "experienceBadge": "✦ Pengalaman Masuk & Daftar",
+      "quoteMessage": "Tingkatkan efisiensi bisnis dan operasional Anda bersama VVARSA."
+    },
+    "register": {
+      "title": "Buat akun baru",
+      "description": "Masukkan detail Anda di bawah ini untuk membuat akun baru",
+      "nameLabel": "Nama Lengkap",
+      "namePlaceholder": "Nama lengkap Anda",
+      "emailLabel": "Alamat Email",
+      "emailPlaceholder": "email@contoh.com",
+      "passwordLabel": "Kata Sandi",
+      "passwordPlaceholder": "Kata Sandi",
+      "confirmPasswordLabel": "Konfirmasi Kata Sandi",
+      "confirmPasswordPlaceholder": "Ulangi Kata Sandi",
+      "submitButton": "Daftar Akun",
+      "registering": "Mendaftar...",
+      "haveAccount": "Sudah punya akun?",
+      "logIn": "Masuk",
+      "visualLabel": "AKSES DAFTAR",
+      "experienceBadge": "✦ Pengalaman Masuk & Daftar",
+      "quoteMessage": "Tingkatkan efisiensi gudang dan bisnis Anda. Jelajahi fitur sistem kami dan daftar untuk akses penuh."
+    },
+    "forgotPassword": {
+      "title": "Lupa kata sandi",
+      "description": "Masukkan email Anda untuk menerima tautan atur ulang kata sandi",
+      "emailLabel": "Alamat Email",
+      "emailPlaceholder": "email@contoh.com",
+      "submitButton": "Kirim Tautan Atur Ulang",
+      "sending": "Mengirim...",
+      "returnTo": "Atau, kembali ke",
+      "logIn": "masuk"
+    },
+    "resetPassword": {
+      "title": "Atur ulang kata sandi",
+      "description": "Silakan masukkan kata sandi baru Anda di bawah ini",
+      "emailLabel": "Email",
+      "passwordLabel": "Kata Sandi Baru",
+      "passwordPlaceholder": "Kata Sandi Baru",
+      "confirmPasswordLabel": "Konfirmasi Kata Sandi Baru",
+      "confirmPasswordPlaceholder": "Ulangi Kata Sandi Baru",
+      "submitButton": "Simpan Kata Sandi Baru",
+      "saving": "Menyimpan..."
+    },
+    "confirmPassword": {
+      "title": "Konfirmasi kata sandi Anda",
+      "description": "Ini adalah area aman aplikasi. Harap konfirmasi kata sandi Anda sebelum melanjutkan.",
+      "passwordLabel": "Kata Sandi",
+      "passwordPlaceholder": "Kata Sandi",
+      "submitButton": "Konfirmasi Kata Sandi",
+      "confirming": "Mengonfirmasi..."
+    },
+    "verifyEmail": {
+      "title": "Verifikasi email",
+      "description": "Harap verifikasi alamat email Anda dengan mengeklik tautan yang baru saja kami kirimkan ke email Anda.",
+      "linkSent": "Tautan verifikasi baru telah dikirim ke alamat email yang Anda berikan saat pendaftaran.",
+      "resendButton": "Kirim Ulang Email Verifikasi",
+      "sending": "Mengirim...",
+      "logOut": "Keluar"
+    }
   }
 }

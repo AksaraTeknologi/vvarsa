@@ -1,8 +1,10 @@
 import AppLogoIcon from '@/components/app-logo-icon';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { type PropsWithChildren } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AuthSplitLayoutProps {
     title?: string;
@@ -16,6 +18,8 @@ interface LottieVisualProps {
 }
 
 function LottieVisual({ label, isActive }: LottieVisualProps) {
+    const { t } = useTranslation();
+
     return (
         <div
             className={`relative flex w-full max-w-[430px] flex-col items-center pt-12 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] select-none ${
@@ -46,7 +50,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
             {/* Tagline Badge */}
             <div className="mt-5 text-center">
                 <span className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white/80 shadow-lg backdrop-blur-md">
-                    ✦ Login & Register Experience
+                    {t('auth.login.experienceBadge', '✦ Login & Register Experience')}
                 </span>
             </div>
         </div>
@@ -55,6 +59,7 @@ function LottieVisual({ label, isActive }: LottieVisualProps) {
 
 export default function AuthSplitLayout({ children, title, description, reverse = false }: PropsWithChildren<AuthSplitLayoutProps>) {
     const { name, quote } = usePage<SharedData>().props;
+    const { t } = useTranslation();
 
     return (
         <div className="auth-page relative min-h-dvh w-full overflow-hidden bg-[radial-gradient(circle_at_8%_12%,rgba(216,243,128,0.22),transparent_24%),radial-gradient(circle_at_88%_82%,rgba(121,215,255,0.18),transparent_25%),linear-gradient(135deg,#4736d4_0%,#5e4bf2_42%,#7166f4_70%,#dff7e6_145%)] font-sans antialiased">
@@ -76,14 +81,21 @@ export default function AuthSplitLayout({ children, title, description, reverse 
 
                     {/* Lottie Card dengan Fade State & Login Access */}
                     <div className="relative z-10 mt-auto mb-6 flex w-full justify-center">
-                        <LottieVisual label="LOGIN ACCESS" isActive={!reverse} />
+                        <LottieVisual label={t('auth.login.visualLabel', 'LOGIN ACCESS')} isActive={!reverse} />
                     </div>
 
-                    {quote && (
+                    {quote ? (
                         <div className={`relative z-20 mt-auto transition-opacity duration-700 ${!reverse ? 'opacity-100' : 'opacity-0'}`}>
                             <blockquote className="space-y-2 border-l-2 border-white/20 pl-4">
                                 <p className="text-sm font-normal text-white/60">&ldquo;{quote.message}&rdquo;</p>
                                 <footer className="text-xs font-medium text-white/40">{quote.author}</footer>
+                            </blockquote>
+                        </div>
+                    ) : (
+                        <div className={`relative z-20 mt-auto transition-opacity duration-700 ${!reverse ? 'opacity-100' : 'opacity-0'}`}>
+                            <blockquote className="space-y-2 border-l-2 border-white/20 pl-4">
+                                <p className="text-sm font-normal text-white/60">&ldquo;{t('auth.login.quoteMessage', 'Tingkatkan efisiensi bisnis dan operasional Anda bersama VVARSA.')}&rdquo;</p>
+                                <footer className="text-xs font-medium text-white/40">{name} Team</footer>
                             </blockquote>
                         </div>
                     )}
@@ -105,13 +117,13 @@ export default function AuthSplitLayout({ children, title, description, reverse 
 
                     {/* Lottie Card dengan Fade State & Register Access */}
                     <div className="relative z-10 mt-auto mb-6 flex w-full justify-center">
-                        <LottieVisual label="REGISTER ACCESS" isActive={reverse} />
+                        <LottieVisual label={t('auth.register.visualLabel', 'REGISTER ACCESS')} isActive={reverse} />
                     </div>
 
                     <div className={`relative z-20 mt-auto text-right transition-opacity duration-700 ${reverse ? 'opacity-100' : 'opacity-0'}`}>
                         <blockquote className="space-y-2 border-r-2 border-white/20 pr-4">
                             <p className="text-sm font-normal text-white/60">
-                                &ldquo;Improve your warehouse efficiency. Explore our system's features and sign up for full access.&rdquo;
+                                &ldquo;{t('auth.register.quoteMessage', 'Improve your warehouse efficiency. Explore our system features and sign up for full access.')}&rdquo;
                             </p>
                             <footer className="text-xs font-medium text-white/40">{name} Team</footer>
                         </blockquote>
@@ -126,6 +138,11 @@ export default function AuthSplitLayout({ children, title, description, reverse 
                         : 'lg:translate-x-0 lg:rounded-l-[2.5rem] lg:rounded-r-none'
                 }`}
             >
+                {/* Language Switcher di Top Bar Form */}
+                <div className="absolute top-6 right-6 z-30 flex items-center gap-2">
+                    <LanguageSwitcher />
+                </div>
+
                 <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
                     <span className="auth-form-bubble auth-form-bubble-one" />
                     <span className="auth-form-bubble auth-form-bubble-two" />

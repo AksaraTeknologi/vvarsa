@@ -1,6 +1,23 @@
 import { ArrowRight, Check, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function Benefits() {
+    const { t } = useTranslation();
+
+    const beforeItems = [
+        t('landing.benefits.beforeItems.0', 'Spreadsheet berantakan'),
+        t('landing.benefits.beforeItems.1', 'Cek stok satu-satu'),
+        t('landing.benefits.beforeItems.2', 'Rekap transaksi malam hari'),
+        t('landing.benefits.beforeItems.3', 'Laporan susah dicari'),
+    ];
+
+    const afterItems = [
+        t('landing.benefits.afterItems.0', 'Dashboard real-time'),
+        t('landing.benefits.afterItems.1', 'Stok otomatis'),
+        t('landing.benefits.afterItems.2', 'POS lebih cepat'),
+        t('landing.benefits.afterItems.3', 'Laporan siap kapan saja'),
+    ];
+
     return (
         <section data-reveal id="manfaat" className="reveal-hidden relative mx-auto max-w-7xl overflow-visible px-6 py-20 lg:px-10 lg:py-24">
             <div className="pointer-events-none absolute top-[15%] left-[-100px] size-[300px] rounded-full bg-[#D8F380]/30 blur-[110px]" />
@@ -12,20 +29,19 @@ export function Benefits() {
 
                 <div>
                     <h2 className="mt-4 text-[2.1rem] leading-[1.02] font-black tracking-[-0.05em] sm:text-4xl lg:text-[3rem]">
-                        Usaha sibuk,
+                        {t('landing.benefits.title1', 'Usaha sibuk,')}
                         <br />
                         <span className="relative inline-block text-[#5E4BF2]">
-                            <span className="relative z-10">tapi omzet nggak naik?</span>
+                            <span className="relative z-10">{t('landing.benefits.titleHighlight', 'tapi omzet nggak naik?')}</span>
 
                             <span className="absolute right-0 -bottom-2 left-0 -z-0 h-5 rounded-[0.5rem] bg-[#D8F380] opacity-85 sm:h-7" />
                         </span>
                         <br />
-                        <span className="text-[#17182A]">Sistemmu mungkin belum siap.</span>
+                        <span className="text-[#17182A]">{t('landing.benefits.title2', 'Sistemmu mungkin belum siap.')}</span>
                     </h2>
 
                     <p className="mt-4 max-w-lg text-sm leading-relaxed font-semibold text-[#777689] sm:text-base">
-                        VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu ekosistem. Dengan operasional yang lebih rapi, kamu punya
-                        ruang lebih banyak untuk menjual, upsell, dan tumbuh tanpa hambatan.
+                        {t('landing.benefits.description', 'VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu ekosistem. Dengan operasional yang lebih rapi, kamu punya ruang lebih banyak untuk menjual, upsell, dan tumbuh tanpa hambatan.')}
                     </p>
                 </div>
 
@@ -47,34 +63,32 @@ export function Benefits() {
                                 <span className="flex size-5 items-center justify-center rounded-full bg-[#FFD8D8]">
                                     <X className="size-3" strokeWidth={3} />
                                 </span>
-                                Sebelum
+                                {t('landing.benefits.beforeBadge', 'Sebelum')}
                             </div>
 
-                            <h3 className="mt-6 text-3xl font-black tracking-[-0.04em] text-[#17182A]">Serba manual</h3>
+                            <h3 className="mt-6 text-3xl font-black tracking-[-0.04em] text-[#17182A]">{t('landing.benefits.beforeTitle', 'Serba manual')}</h3>
 
-                            <p className="mt-2 text-sm font-semibold text-[#9998A8]">Proses berulang &amp; tidak efisien</p>
+                            <p className="mt-2 text-sm font-semibold text-[#9998A8]">{t('landing.benefits.beforeSubtitle', 'Proses berulang & tidak efisien')}</p>
 
                             <div className="mt-8 space-y-4">
-                                {['Spreadsheet berantakan', 'Cek stok satu-satu', 'Rekap transaksi malam hari', 'Laporan susah dicari'].map(
-                                    (item) => (
-                                        <div
-                                            key={item}
-                                            className="group/item relative flex min-h-[68px] cursor-default items-center gap-4 rounded-2xl border-2 border-[#FFE0E0] bg-white px-5 py-4 pr-12 shadow-[0_8px_20px_rgba(214,83,83,0.06)] transition-all duration-500 ease-out hover:translate-x-3 hover:-translate-y-3 hover:scale-[1.035] hover:border-[#FFBABA] hover:bg-[#FFFDFD] hover:shadow-[0_22px_40px_rgba(214,83,83,0.18)]"
-                                        >
-                                            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#FFE0E0] text-[#D65353] transition-all duration-500 group-hover/item:scale-125 group-hover/item:rotate-6 group-hover/item:bg-[#D65353] group-hover/item:text-white group-hover/item:shadow-lg">
-                                                <X className="size-4" strokeWidth={3} />
-                                            </span>
+                                {beforeItems.map((item) => (
+                                    <div
+                                        key={item}
+                                        className="group/item relative flex min-h-[68px] cursor-default items-center gap-4 rounded-2xl border-2 border-[#FFE0E0] bg-white px-5 py-4 pr-12 shadow-[0_8px_20px_rgba(214,83,83,0.06)] transition-all duration-500 ease-out hover:translate-x-3 hover:-translate-y-3 hover:scale-[1.035] hover:border-[#FFBABA] hover:bg-[#FFFDFD] hover:shadow-[0_22px_40px_rgba(214,83,83,0.18)]"
+                                    >
+                                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#FFE0E0] text-[#D65353] transition-all duration-500 group-hover/item:scale-125 group-hover/item:rotate-6 group-hover/item:bg-[#D65353] group-hover/item:text-white group-hover/item:shadow-lg">
+                                            <X className="size-4" strokeWidth={3} />
+                                        </span>
 
-                                            <span className="flex-1 text-[15px] font-extrabold tracking-[-0.01em] text-[#4D4E5E] transition-all duration-500 group-hover/item:translate-x-1.5 group-hover/item:text-[#17182A] group-hover/item:drop-shadow-[0_5px_10px_rgba(23,24,42,0.15)]">
-                                                {item}
-                                            </span>
+                                        <span className="flex-1 text-[15px] font-extrabold tracking-[-0.01em] text-[#4D4E5E] transition-all duration-500 group-hover/item:translate-x-1.5 group-hover/item:text-[#17182A] group-hover/item:drop-shadow-[0_5px_10px_rgba(23,24,42,0.15)]">
+                                            {item}
+                                        </span>
 
-                                            <span className="pointer-events-none absolute right-3 flex size-7 items-center justify-center rounded-full bg-[#FFE9E9] text-[#D65353] opacity-0 transition-all duration-500 group-hover/item:translate-x-1 group-hover/item:opacity-100">
-                                                <ArrowRight className="size-3.5" />
-                                            </span>
-                                        </div>
-                                    ),
-                                )}
+                                        <span className="pointer-events-none absolute right-3 flex size-7 items-center justify-center rounded-full bg-[#FFE9E9] text-[#D65353] opacity-0 transition-all duration-500 group-hover/item:translate-x-1 group-hover/item:opacity-100">
+                                            <ArrowRight className="size-3.5" />
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -94,15 +108,15 @@ export function Benefits() {
                                 <span className="flex size-5 items-center justify-center rounded-full bg-[#D8F380] text-[#1E2A0A]">
                                     <Check className="size-3" strokeWidth={3} />
                                 </span>
-                                Sesudah
+                                {t('landing.benefits.afterBadge', 'Sesudah')}
                             </div>
 
-                            <h3 className="mt-6 text-3xl font-black tracking-[-0.04em]">Semua terhubung</h3>
+                            <h3 className="mt-6 text-3xl font-black tracking-[-0.04em]">{t('landing.benefits.afterTitle', 'Semua terhubung')}</h3>
 
-                            <p className="mt-2 text-sm font-semibold text-white/60">Otomatis, cepat &amp; terintegrasi</p>
+                            <p className="mt-2 text-sm font-semibold text-white/60">{t('landing.benefits.afterSubtitle', 'Otomatis, cepat & terintegrasi')}</p>
 
                             <div className="mt-8 space-y-4">
-                                {['Dashboard real-time', 'Stok otomatis', 'POS lebih cepat', 'Laporan siap kapan saja'].map((item) => (
+                                {afterItems.map((item) => (
                                     <div
                                         key={item}
                                         className="group/item relative flex min-h-[68px] cursor-default items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-5 py-4 pr-12 shadow-[0_10px_25px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out hover:translate-x-3 hover:-translate-y-3 hover:scale-[1.045] hover:border-[#D8F380]/70 hover:bg-white/15 hover:shadow-[0_24px_45px_rgba(216,243,128,0.22)]"

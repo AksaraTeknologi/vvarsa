@@ -545,7 +545,7 @@
     "subtitleDirect": "Select product variants directly to order",
     "cart": "Cart",
     "cartAndCheckout": "Cart & Checkout",
-    "clear":"Clear",
+    "clear": "Clear",
     "cartTitle": "Shopping Cart",
     "emptyCart": "Shopping cart is empty",
     "mobileCartDescription": "Order list and POS cashier payment form",
@@ -796,19 +796,16 @@
     "stockOutSubtitle": "Record stock usage or issue",
     "opnameSubtitle": "Match physical stock against system stock",
     "currentStockLabel": "Current stock: {{stock}} {{unit}} · Minimum: {{min}} {{unit}}",
-    "unitCost": "Unit Cost",
+    "unitCost": "Total Price",
     "notes": "Notes",
-    "notesPlaceholder": "Purchase / supplier notes (optional)",
+    "notesPlaceholder": "Add Notes",
     "selectProductPlaceholder": "Select product...",
     "availableStock": "Available stock",
     "insufficientStock": "Insufficient stock!",
     "qtyOut": "Quantity Out",
     "qtyIn": "Quantity In",
-    "unitCost": "Total Price",
     "selectProduct": "Select Product",
     "referenceNo": "Order Number",
-    "notes": "Notes",
-    "notesPlaceholder": "Add Notes",
     "Cancel": "Cancel",
     "stockAfter": "Stock after",
     "reference": "Reference No.",
@@ -1436,5 +1433,319 @@
     "statusAttention": "Needs Attention",
     "keyTakeaways": "Key Takeaways",
     "actionableTips": "Actionable Tips"
+  },
+  "landing": {
+    "nav": {
+      "benefits": "Benefits",
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "stories": "Stories",
+      "login": "Log In",
+      "startFree": "Start Free",
+      "dashboard": "Dashboard"
+    },
+    "hero": {
+      "title1": "Business more",
+      "titleHighlight": "organized",
+      "titleAnd": "and",
+      "title2": "ready to scale.",
+      "description": "VVARSA unifies inventory, POS, sales, and reporting into one elegant, efficient, and scalable system.",
+      "descriptionSub": "With more organized operations, you can focus on customer service, sales, and business growth with peace of mind.",
+      "ctaTrial": "Start 14-Day Free Trial",
+      "ctaDemo": "Watch Demo",
+      "ratingText": "4.9/5 from users",
+      "activeBusinesses": "Active businesses",
+      "welcome": "Welcome,",
+      "dashboardTitle": "VVARSA Dashboard",
+      "todayRevenue": "Today's Revenue",
+      "fromYesterday": "+24.8% from yesterday",
+      "profit": "Profit",
+      "thisMonth": "+18.2% this month",
+      "salesPerformance": "Sales Performance",
+      "thisWeek": "This week",
+      "sevenDays": "7 Days",
+      "days": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      },
+      "inventoryStatus": "Inventory Status",
+      "itemsAvailable": "128 items available",
+      "safe": "Safe",
+      "txSuccess": "Transaction successful",
+      "autoStockDeducted": "✓ Stock automatically deducted",
+      "stockAlert": "Stock alert",
+      "milkLow": "UHT Milk running low",
+      "bottlesLeft": "Only 3 bottles left",
+      "owner": "Owner"
+    },
+    "benefits": {
+      "title1": "Busy operations,",
+      "titleHighlight": "but revenue is stagnant?",
+      "title2": "Your system might not be ready.",
+      "description": "VVARSA brings inventory, cashiers, sales, and reporting together in one ecosystem. Organized operations give you more room to sell, upsell, and grow without hurdles.",
+      "beforeBadge": "Before",
+      "beforeTitle": "Totally Manual",
+      "beforeSubtitle": "Repetitive & inefficient processes",
+      "beforeItems": [
+        "Messy spreadsheets",
+        "Checking stock one by one",
+        "Late night manual transaction recap",
+        "Hard to find reports"
+      ],
+      "afterBadge": "After",
+      "afterTitle": "Everything Connected",
+      "afterSubtitle": "Automated, fast & integrated",
+      "afterItems": [
+        "Real-time dashboard",
+        "Automated inventory",
+        "Faster POS checkout",
+        "Instant reports anytime"
+      ]
+    },
+    "features": {
+      "badge": "All in one place",
+      "title1": "One dashboard.",
+      "titleHighlight": "Many things",
+      "title2": "made effortless.",
+      "description": "No need to switch between multiple apps. All your essential business data is seamlessly interconnected.",
+      "mainFeature": "Main feature",
+      "live": "Live",
+      "items": {
+        "f1": {
+          "title": "Automated Inventory",
+          "description": "Monitor ingredients and product stock in real time. Every transaction instantly updates stock levels.",
+          "metricLabel": "Total inventory",
+          "trendLabel": "Growth",
+          "secondary": "Safe"
+        },
+        "f2": {
+          "title": "Clearer Financial Reports",
+          "description": "View revenue, expenses, profits, and business performance in an easy-to-understand dashboard.",
+          "metricLabel": "Total sales",
+          "trendLabel": "Profit",
+          "secondary": "48 transactions"
+        },
+        "f3": {
+          "title": "Organized Team Access",
+          "description": "Set custom access permissions for owners, cashiers, chefs, and staff according to their roles.",
+          "metricLabel": "Total staff",
+          "trendLabel": "Activity",
+          "secondary": "7 active roles"
+        }
+      }
+    },
+    "howItWorks": {
+      "badge": "How VVARSA Works",
+      "title1": "From messy data,",
+      "titleHighlight": "to an agile business.",
+      "description": "Every crucial workflow from data entry to decision-making reports runs in a simple, fast, and structured flow.",
+      "step1": {
+        "badge": "start",
+        "title": "Input data",
+        "text": "Enter products, stock, suppliers, and prices once, and everything is neatly arranged."
+      },
+      "step2": {
+        "badge": "operate",
+        "title": "Manage transactions",
+        "text": "Cashier, orders, payments, and daily activities run smoothly without back-and-forth data entry."
+      },
+      "step3": {
+        "badge": "grow",
+        "title": "Track results",
+        "text": "Real-time dashboard displays revenue, stock, and profit without needing manual recaps."
+      }
+    },
+    "moreBenefits": {
+      "badge": "Why it is faster",
+      "title1": "Organized inside,",
+      "titleHighlight": "stronger outside.",
+      "description": "A more structured work environment empowers your team to stay focused, operate faster, and scale smoothly.",
+      "items": [
+        {
+          "title": "Faster Ordering",
+          "text": "Smoother transactions without repetitive manual tasks."
+        },
+        {
+          "title": "Safer Stock Levels",
+          "text": "Real-time data prevents stockouts or excess holding."
+        },
+        {
+          "title": "Focused Team",
+          "text": "Every member knows their exact duties and access rights."
+        },
+        {
+          "title": "Better Decisions",
+          "text": "Accurate reports provide solid backing for business decisions."
+        }
+      ]
+    },
+    "stats": {
+      "businesses": "Active businesses",
+      "dataSaved": "Data recorded",
+      "rating": "User rating",
+      "speed": "Faster workflow"
+    },
+    "testimonials": {
+      "badge": "User Stories",
+      "title1": "They have already",
+      "titleHighlight": "experienced it.",
+      "usersCount": "+1,200 users",
+      "items": [
+        {
+          "name": "Rina Pratiwi",
+          "role": "Coffee Shop Owner",
+          "text": "I used to manually recap sales every single night. Now with VVARSA, everything is visible in seconds."
+        },
+        {
+          "name": "Budi Santoso",
+          "role": "Cafe & Bistro Owner",
+          "text": "The automated inventory is a lifesaver. I no longer have to check complicated spreadsheets constantly."
+        },
+        {
+          "name": "Alya Ramadhani",
+          "role": "Culinary Entrepreneur",
+          "text": "The interface is so clean and easy to navigate. Business reports look professional. Highly recommended for growing businesses."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "Transparent Pricing",
+      "title1": "Choose the right fit,",
+      "titleHighlight": "hassle-free.",
+      "description": "From basic starters to high-growth businesses ready for complete operational excellence.",
+      "popular": "Popular",
+      "perMonth": "/ month",
+      "forever": "forever",
+      "freePrice": "Free",
+      "plans": {
+        "free": {
+          "name": "Free",
+          "description": "To get your business organized",
+          "button": "Start Free",
+          "features": [
+            "Inventory management",
+            "Daily financial reports",
+            "Community access"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "description": "For fast growing businesses",
+          "button": "Choose Pro",
+          "features": [
+            "All Free features",
+            "Export reports & PDF",
+            "Multi-user up to 5 members",
+            "Fast POS cashier"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "For large operations and teams",
+          "button": "Choose Enterprise",
+          "features": [
+            "All Pro features",
+            "Dedicated API access",
+            "24/7 Priority support",
+            "Report customization"
+          ]
+        }
+      }
+    },
+    "finalCta": {
+      "badge": "🚀 Time to level up",
+      "title1": "Streamline operations.",
+      "title2": "Boost revenue.",
+      "titleHighlight": "Start today.",
+      "description": "Do not let manual tasks hinder your growth. Manage your business with a faster, cleaner, and growth-ready platform.",
+      "button": "Start Free Trial Now",
+      "stats": {
+        "businesses": "Businesses",
+        "rating": "Rating",
+        "access": "Access",
+        "faster": "Faster"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Log in to your account",
+      "description": "Enter your email and password below to log in",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "email@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submitButton": "Log in",
+      "loggingIn": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "visualLabel": "LOGIN ACCESS",
+      "experienceBadge": "✦ Login & Register Experience",
+      "quoteMessage": "Improve your business efficiency and operations with VVARSA."
+    },
+    "register": {
+      "title": "Create an account",
+      "description": "Enter your details below to create your account",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "Full name",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "email@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "submitButton": "Create Account",
+      "registering": "Creating account...",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in",
+      "visualLabel": "REGISTER ACCESS",
+      "experienceBadge": "✦ Login & Register Experience",
+      "quoteMessage": "Improve your warehouse efficiency. Explore our system features and sign up for full access."
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "description": "Enter your email to receive a password reset link",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "email@example.com",
+      "submitButton": "Email Password Reset Link",
+      "sending": "Sending...",
+      "returnTo": "Or, return to",
+      "logIn": "log in"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "description": "Please enter your new password below",
+      "emailLabel": "Email",
+      "passwordLabel": "New Password",
+      "passwordPlaceholder": "New Password",
+      "confirmPasswordLabel": "Confirm New Password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "submitButton": "Reset Password",
+      "saving": "Resetting..."
+    },
+    "confirmPassword": {
+      "title": "Confirm your password",
+      "description": "This is a secure area of the application. Please confirm your password before continuing.",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "submitButton": "Confirm Password",
+      "confirming": "Confirming..."
+    },
+    "verifyEmail": {
+      "title": "Verify email",
+      "description": "Please verify your email address by clicking on the link we just emailed to you.",
+      "linkSent": "A new verification link has been sent to the email address you provided during registration.",
+      "resendButton": "Resend Verification Email",
+      "sending": "Resending...",
+      "logOut": "Log out"
+    }
   }
 }
