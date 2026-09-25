@@ -38,8 +38,18 @@ class TenantDemoSeeder extends Seeder
         ]);
         $adminUser->assignRole('admin');
 
-        // ── 3. Demo Tenant #1 — FnB (Free Plan) ─────────────────────────────
+        $owner1 = User::create([
+            'name' => 'Alif Zaidan',
+            'email' => 'alif@gmail.com',
+            'password' => Hash::make('password'),
+            'tenant_id' => null,
+            'is_active' => true,
+        ]);
+        $owner1->assignRole('owner');
+
+        // ── 3. Demo Tenant #1 — FnB (Enterprise Plan) ─────────────────────────────
         $tenant1 = Tenant::create([
+            'owner_id' => $owner1->id,
             'name' => 'Mochi Delight',
             'slug' => 'mochi-delight',
             'business_type' => 'fnb',
@@ -48,14 +58,7 @@ class TenantDemoSeeder extends Seeder
             'plan_id' => $enterprisePlan?->id ?? $freePlan->id,
         ]);
 
-        $owner1 = User::create([
-            'name' => 'Alif Zaidan',
-            'email' => 'alif@gmail.com',
-            'password' => Hash::make('password'),
-            'tenant_id' => $tenant1->id,
-            'is_active' => true,
-        ]);
-        $owner1->assignRole('owner');
+        $owner1->update(['tenant_id' => $tenant1->id]);
 
         $staff1 = User::create([
             'name' => 'Budi Santoso',
