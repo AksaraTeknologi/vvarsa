@@ -19,6 +19,7 @@ use App\Http\Controllers\Order\PackageController;
 use App\Http\Controllers\Order\PosController;
 use App\Http\Controllers\Owner\MemberController;
 use App\Http\Controllers\Owner\SubscriptionController;
+use App\Http\Controllers\Owner\TenantController as OwnerTenantController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Tax\TaxController;
 use App\Http\Controllers\TenantAnalyticsController;
@@ -232,6 +233,12 @@ Route::middleware(['auth', 'verified', EnsureTenantMiddleware::class])
             // Subscription Management
             Route::get('/subscription', [SubscriptionController::class, 'index'])->name('subscription.index');
             Route::post('/subscription/upgrade', [SubscriptionController::class, 'upgrade'])->name('subscription.upgrade');
+
+            // Owner Tenant Management (Create & Switch)
+            Route::prefix('owner/tenants')->name('owner.tenants.')->group(function () {
+                Route::post('/', [OwnerTenantController::class, 'store'])->name('store');
+                Route::post('/switch', [OwnerTenantController::class, 'switch'])->name('switch');
+            });
 
             // Member Management (Owner only: update role, delete, approve, reject)
             Route::prefix('members')->name('members.')->group(function () {

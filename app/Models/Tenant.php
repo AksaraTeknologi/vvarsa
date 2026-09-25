@@ -13,6 +13,7 @@ class Tenant extends Model
     use HasUuids;
 
     protected $fillable = [
+        'owner_id',
         'name',
         'slug',
         'business_type',
@@ -30,6 +31,11 @@ class Tenant extends Model
     ];
 
     // ─── Relationships ───────────────────────────────────────────────────────
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 
     public function plan(): BelongsTo
     {

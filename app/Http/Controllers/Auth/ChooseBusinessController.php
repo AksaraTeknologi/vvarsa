@@ -78,6 +78,7 @@ class ChooseBusinessController extends Controller
 
         // Buat Tenant
         $tenant = Tenant::create([
+            'owner_id' => $user->id,
             'name' => $validated['business_name'],
             'slug' => $slug,
             'business_type' => $validated['business_type'],

@@ -24,6 +24,7 @@ import {
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppLogoIcon from './app-logo-icon';
+import { TenantSwitcher } from './tenant-switcher';
 
 // ── Tema warna per role (dari app.css pastel palette) ──
 const ROLE_THEME = {
@@ -268,6 +269,11 @@ export function AppSidebar() {
         <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border} ${isOwner ? 'owner-sidebar' : ''} ${isSupervisor ? 'supervisor-sidebar' : ''}`}>
             <SidebarHeader className="pt-4 pb-0">
                 <SidebarLogo href="/dashboard" theme={theme} />
+                {isOwner && (
+                    <div className="mt-2.5 px-1">
+                        <TenantSwitcher />
+                    </div>
+                )}
                 <div className={`mx-3 mt-3 h-px ${theme.dividerBg}`} />
             </SidebarHeader>
 

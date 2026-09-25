@@ -22,6 +22,26 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface UserTenantItem {
+    id: string;
+    name: string;
+    slug: string;
+    business_type: string;
+    currency: 'IDR' | 'USD' | 'SGD' | string;
+    plan_name?: string;
+    is_current: boolean;
+}
+
+export interface AvailablePlan {
+    id: string;
+    name: string;
+    slug: string;
+    price: number;
+    max_users: number;
+    max_products: number;
+    features: string[];
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
@@ -29,14 +49,16 @@ export interface SharedData {
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     tenant?: {
-        id: number;
+        id: string | number;
         name: string;
         business_type: string;
-        currency: 'IDR' | 'USD' | 'SGD';
-        plan: { name: string; slug: string; features: string[] } | null;
-        max_products: number;
-        max_users: number;
+        currency: 'IDR' | 'USD' | 'SGD' | string;
+        plan: { name: string; slug: string; features: string[]; max_products?: number; max_users?: number } | null;
+        max_products?: number;
+        max_users?: number;
     };
+    userTenants?: UserTenantItem[];
+    availablePlans?: AvailablePlan[];
     [key: string]: unknown;
 }
 
