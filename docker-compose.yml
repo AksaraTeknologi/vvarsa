@@ -1,0 +1,73 @@
+services:
+  # 1. Server Utama Laravel (PHP 8.4 + Apache)
+  app:
+    image: php:8.4-apache
+    container_name: vvarsa_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    command: >
+      sh -c "sed -ri -e 's!/var/www/html!$${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf &&
+             sed -ri -e 's!/var/www/html!$${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/conf-available/*.conf &&
+             a2enmod rewrite &&
+             docker-php-ext-install pdo pdo_mysql &&
+             apache2-foreground"
+    networks:
+      - global-network
+
+  # 2. Python FastAPI Service
+  ai-analytics:
+    image: python:3.11-slim
+    container_name: vvarsa_ai_analytics
+    restart: unless-stopped
+    working_dir: /app/services/ai-analytics
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONPATH=/app/services/ai-analytics
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             python app/main.py"
+    networks:
+      - global-network
+
+  # 3. Laravel Reverb (WebSocket)
+  reverb:
+    image: php:8.4-apache
+    container_name: vvarsa_reverb
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8081:8080"
+    command: >
+      sh -c "docker-php-ext-install pdo pdo_mysql &&
+             php artisan reverb:start --host=0.0.0.0 --port=8080"
+    networks:
+      - global-network
+
+  # 4. Vite Frontend Development Server
+  vite:
+    image: node:20-alpine
+    container_name: vvarsa_vite
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    networks:
+      - global-network
+
+networks:
+  global-network:
+    external: true
+    name: shared-docker_global-network

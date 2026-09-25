@@ -1,19 +1,75 @@
-import { Bell, ChevronRight, TrendingUp } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils-mrp';
+import { BarChart3, Bell, ChevronRight, Package, TrendingUp, UsersRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { features } from './data';
+import { useTranslation } from 'react-i18next';
 
 export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
+    const { t } = useTranslation();
     const [activeFeature, setActiveFeature] = useState(0);
+
+    const localizedFeatures = [
+        {
+            number: '01',
+            icon: Package,
+            title: t('landing.features.items.f1.title', 'Inventori otomatis'),
+            description: t('landing.features.items.f1.description', 'Pantau stok bahan dan produk secara real-time. Setiap transaksi otomatis memperbarui jumlah stok.'),
+            color: '#5E4BF2',
+            bg: '#F1EFFD',
+            type: 'bars',
+            metric: '128',
+            metricLabel: t('landing.features.items.f1.metricLabel', 'Total inventori'),
+            trend: '+24.8%',
+            trendLabel: t('landing.features.items.f1.trendLabel', 'Growth'),
+            secondary: t('landing.features.items.f1.secondary', 'Aman'),
+            secondaryColor: '#D8F380',
+            tone: 'purple',
+            bars: [30, 40, 35, 60, 46, 70, 58, 78, 64, 88],
+        },
+        {
+            number: '02',
+            icon: BarChart3,
+            title: t('landing.features.items.f2.title', 'Laporan lebih jelas'),
+            description: t('landing.features.items.f2.description', 'Lihat omzet, pengeluaran, laba, dan performa bisnis dalam dashboard yang mudah dipahami.'),
+            color: '#FF8C67',
+            bg: '#FFF1EC',
+            type: 'line',
+            metric: formatCurrency(3450000, undefined, true),
+            metricLabel: t('landing.features.items.f2.metricLabel', 'Total penjualan'),
+            trend: '+18.2%',
+            trendLabel: t('landing.features.items.f2.trendLabel', 'Profit'),
+            secondary: t('landing.features.items.f2.secondary', '48 transaksi'),
+            secondaryColor: '#FF8C67',
+            tone: 'orange',
+            sparkline: [18, 28, 20, 42, 31, 58, 48, 72, 61, 88],
+        },
+        {
+            number: '03',
+            icon: UsersRound,
+            title: t('landing.features.items.f3.title', 'Tim lebih teratur'),
+            description: t('landing.features.items.f3.description', 'Atur akses owner, kasir, koki, dan staff sesuai peran masing-masing.'),
+            color: '#1777FB',
+            bg: '#EEF5FF',
+            type: 'ring',
+            metric: '12',
+            metricLabel: t('landing.features.items.f3.metricLabel', 'Total staff'),
+            trend: '+92%',
+            trendLabel: t('landing.features.items.f3.trendLabel', 'Aktivitas'),
+            secondary: t('landing.features.items.f3.secondary', '7 role aktif'),
+            secondaryColor: '#79D7FF',
+            tone: 'blue',
+            ring: 82,
+        },
+    ];
 
     useEffect(() => {
         if (!autoRotate) return;
 
         const interval = window.setInterval(() => {
-            setActiveFeature((current) => (current + 1) % features.length);
+            setActiveFeature((current) => (current + 1) % localizedFeatures.length);
         }, 5200);
 
         return () => window.clearInterval(interval);
-    }, [autoRotate]);
+    }, [autoRotate, localizedFeatures.length]);
 
     return (
         <>
@@ -31,23 +87,23 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                     <div data-reveal className="reveal-hidden grid gap-7 xl:grid-cols-[0.95fr_1.05fr] xl:items-center">
                         <div className="lg:pr-4">
                             <span className="inline-flex rounded-full bg-[#D8F380] px-4 py-2 text-[10px] font-black tracking-[0.18em] text-[#17182A] uppercase shadow-[0_12px_30px_rgba(216,243,128,0.45)]">
-                                Semua dalam satu tempat
+                                {t('landing.features.badge', 'Semua dalam satu tempat')}
                             </span>
 
                             <h2 className="mt-4 text-[2.5rem] leading-[0.9] font-black tracking-[-0.06em] text-[#17182A] sm:text-4xl lg:text-[4.5rem]">
-                                Satu dashboard.
+                                {t('landing.features.title1', 'Satu dashboard.')}
                                 <br />
-                                <span className="text-[#5E4BF2]">Banyak hal</span>
+                                <span className="text-[#5E4BF2]">{t('landing.features.titleHighlight', 'Banyak hal')}</span>
                                 <br />
-                                jadi mudah.
+                                {t('landing.features.title2', 'jadi mudah.')}
                             </h2>
 
                             <p className="mt-4 max-w-[31rem] text-sm leading-relaxed font-semibold text-[#5F6073] sm:text-base">
-                                Tidak perlu pindah-pindah aplikasi. Semua data penting bisnismu saling terhubung secara otomatis.
+                                {t('landing.features.description', 'Tidak perlu pindah-pindah aplikasi. Semua data penting bisnismu saling terhubung secara otomatis.')}
                             </p>
 
                             <div className="mt-6 space-y-3">
-                                {features.map((feature, index) => {
+                                {localizedFeatures.map((feature, index) => {
                                     const Icon = feature.icon;
                                     const active = activeFeature === index;
 
@@ -75,7 +131,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                             <div className="flex-1">
                                                 <p className="text-base font-black">{feature.title}</p>
                                                 <p className="mt-1 text-[10px] font-semibold tracking-[0.12em] text-[#7C7D8D] uppercase">
-                                                    {feature.number} · Fitur utama
+                                                    {feature.number} · {t('landing.features.mainFeature', 'Fitur utama')}
                                                 </p>
                                             </div>
 
@@ -86,15 +142,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                             </div>
                         </div>
 
-                        <div
-                            className="relative"
-                            onMouseEnter={() => {
-                                /* handled by parent */
-                            }}
-                            onMouseLeave={() => {
-                                /* handled by parent */
-                            }}
-                        >
+                        <div className="relative">
                             <div className="absolute inset-3 rounded-[2.5rem] bg-[#5E4BF2]/10 blur-2xl" />
 
                             <div className="relative overflow-hidden rounded-[2.2rem] border border-white/70 bg-white p-3 shadow-[0_38px_90px_rgba(94,75,242,0.18)] sm:p-4">
@@ -102,20 +150,20 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                     <div className="flex items-center gap-3">
                                         <span className="flex size-10 items-center justify-center rounded-2xl bg-[#D8F380] text-[#17182A] shadow-[0_10px_24px_rgba(216,243,128,0.35)]">
                                             {(() => {
-                                                const Icon = features[activeFeature].icon;
+                                                const Icon = localizedFeatures[activeFeature].icon;
                                                 return <Icon className="size-4" />;
                                             })()}
                                         </span>
 
                                         <div className="leading-none">
                                             <p className="text-[8px] font-bold tracking-[0.18em] text-[#9AA0B3] uppercase">VVARSA dashboard</p>
-                                            <p className="mt-1.5 text-lg font-black text-[#17182A]">{features[activeFeature].title}</p>
+                                            <p className="mt-1.5 text-lg font-black text-[#17182A]">{localizedFeatures[activeFeature].title}</p>
                                         </div>
                                     </div>
 
                                     <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E1E6F5] bg-white px-2.5 py-1 text-[8px] font-black tracking-[0.14em] text-[#17182A] uppercase shadow-sm">
                                         <span className="size-1.5 rounded-full bg-[#D8F380] shadow-[0_0_0_3px_rgba(216,243,128,0.2)]" />
-                                        Live
+                                        {t('landing.features.live', 'Live')}
                                     </span>
                                 </div>
 
@@ -124,10 +172,10 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                         <div className="flex items-start justify-between gap-3">
                                             <div>
                                                 <p className="text-[9px] font-bold tracking-[0.12em] text-[#9AA0B3] uppercase">
-                                                    {features[activeFeature].metricLabel}
+                                                    {localizedFeatures[activeFeature].metricLabel}
                                                 </p>
                                                 <p className="mt-2 text-[2.6rem] leading-none font-black tracking-[-0.06em]">
-                                                    {features[activeFeature].metric}
+                                                    {localizedFeatures[activeFeature].metric}
                                                 </p>
                                             </div>
 
@@ -136,13 +184,13 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                             </div>
                                         </div>
 
-                                        {features[activeFeature].type === 'bars' && (
+                                        {localizedFeatures[activeFeature].type === 'bars' && (
                                             <div className="mt-5 flex h-32 items-end gap-2 rounded-[1.25rem] border border-[#F0ECFF] bg-[linear-gradient(180deg,#F9F8FF_0%,#F1EDFF_100%)] px-2 pt-2 pb-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
-                                                {(features[activeFeature].bars ?? []).map((height, index) => (
+                                                {(localizedFeatures[activeFeature].bars ?? []).map((height, index) => (
                                                     <span
                                                         key={index}
                                                         className={`flex-1 rounded-[999px] border border-white/35 ${
-                                                            index === (features[activeFeature].bars ?? []).length - 1
+                                                            index === (localizedFeatures[activeFeature].bars ?? []).length - 1
                                                                 ? 'bg-[linear-gradient(180deg,#5E4BF2_0%,#4137D9_100%)] shadow-[0_12px_18px_rgba(94,75,242,0.24)]'
                                                                 : 'bg-[linear-gradient(180deg,#E7E0FF_0%,#D7CCFF_100%)]'
                                                         }`}
@@ -155,7 +203,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                             </div>
                                         )}
 
-                                        {features[activeFeature].type === 'line' && (
+                                        {localizedFeatures[activeFeature].type === 'line' && (
                                             <div className="mt-5 h-32 rounded-[1.25rem] border border-[#F0ECFF] bg-[linear-gradient(180deg,#F9F8FF_0%,#F1EDFF_100%)] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
                                                 <svg viewBox="0 0 240 100" className="h-full w-full" preserveAspectRatio="none">
                                                     <defs>
@@ -180,16 +228,16 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                             </div>
                                         )}
 
-                                        {features[activeFeature].type === 'ring' && (
+                                        {localizedFeatures[activeFeature].type === 'ring' && (
                                             <div className="mt-5 flex h-32 items-center justify-center rounded-[1.25rem] border border-[#F0ECFF] bg-[linear-gradient(180deg,#F9F8FF_0%,#F1EDFF_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
                                                 <div
                                                     className="relative flex size-28 items-center justify-center rounded-full border-[10px] border-[#E9E2FF]"
                                                     style={{
-                                                        background: `conic-gradient(#5E4BF2 0 ${features[activeFeature].ring}%, #E9E2FF ${features[activeFeature].ring}% 100%)`,
+                                                        background: `conic-gradient(#5E4BF2 0 ${localizedFeatures[activeFeature].ring}%, #E9E2FF ${localizedFeatures[activeFeature].ring}% 100%)`,
                                                     }}
                                                 >
                                                     <div className="flex size-18 items-center justify-center rounded-full bg-white text-[1.35rem] font-black text-[#17182A] shadow-[inset_0_0_0_1px_rgba(94,75,242,0.08)]">
-                                                        {features[activeFeature].ring}%
+                                                        {localizedFeatures[activeFeature].ring}%
                                                     </div>
                                                 </div>
                                             </div>
@@ -199,22 +247,22 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                     <div className="space-y-3">
                                         <div
                                             className={`rounded-[1.5rem] p-4 text-[#17182A] shadow-[0_18px_35px_rgba(94,75,242,0.08)] ${
-                                                features[activeFeature].tone === 'orange'
+                                                localizedFeatures[activeFeature].tone === 'orange'
                                                     ? 'bg-[linear-gradient(135deg,#FFF1EC_0%,#FDE4DB_100%)]'
-                                                    : features[activeFeature].tone === 'blue'
+                                                    : localizedFeatures[activeFeature].tone === 'blue'
                                                       ? 'bg-[linear-gradient(135deg,#EEF6FF_0%,#E0F0FF_100%)]'
                                                       : 'bg-[linear-gradient(135deg,#F4F0FF_0%,#ECE7FF_100%)]'
                                             }`}
                                         >
                                             <p className="text-[9px] font-bold tracking-[0.12em] text-[#37421A] uppercase opacity-70">
-                                                {features[activeFeature].trendLabel}
+                                                {localizedFeatures[activeFeature].trendLabel}
                                             </p>
 
                                             <p className="mt-2 text-[2.2rem] leading-none font-black tracking-[-0.06em]">
-                                                {features[activeFeature].trend}
+                                                {localizedFeatures[activeFeature].trend}
                                             </p>
 
-                                            {features[activeFeature].type === 'bars' && (
+                                            {localizedFeatures[activeFeature].type === 'bars' && (
                                                 <div className="mt-4 flex items-end gap-1.5">
                                                     {[3, 5, 4, 7, 6, 9].map((item, index) => (
                                                         <span
@@ -229,7 +277,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                                 </div>
                                             )}
 
-                                            {features[activeFeature].type === 'line' && (
+                                            {localizedFeatures[activeFeature].type === 'line' && (
                                                 <div className="mt-4 flex items-end gap-1.5">
                                                     {[4, 6, 5, 7, 8, 9, 6, 8].map((item, index) => (
                                                         <span
@@ -244,7 +292,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                                 </div>
                                             )}
 
-                                            {features[activeFeature].type === 'ring' && (
+                                            {localizedFeatures[activeFeature].type === 'ring' && (
                                                 <div className="mt-3 flex items-center justify-center">
                                                     <div className="flex h-14 w-full items-center justify-center rounded-[1rem] bg-white/15 ring-1 ring-black/5">
                                                         <div className="flex gap-2">
@@ -268,7 +316,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                                 <span
                                                     className="flex size-10 items-center justify-center rounded-2xl shadow-[0_10px_20px_rgba(255,140,103,0.3)]"
                                                     style={{
-                                                        backgroundColor: features[activeFeature].secondaryColor,
+                                                        backgroundColor: localizedFeatures[activeFeature].secondaryColor,
                                                     }}
                                                 >
                                                     <Bell className="size-4 text-[#17182A]" />
@@ -276,7 +324,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
 
                                                 <div className="leading-none">
                                                     <p className="text-[8px] font-bold tracking-[0.12em] text-[#9AA0B3] uppercase">Notifikasi</p>
-                                                    <p className="mt-1 text-sm font-black text-[#17182A]">{features[activeFeature].secondary}</p>
+                                                    <p className="mt-1 text-sm font-black text-[#17182A]">{localizedFeatures[activeFeature].secondary}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -285,9 +333,9 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
 
                                 <div className="mt-3 grid gap-2 sm:grid-cols-3">
                                     {[
-                                        ['Stok', 'Aman', '#D8F380'],
+                                        [t('landing.hero.inventoryStatus', 'Stok'), t('landing.hero.safe', 'Aman'), '#D8F380'],
                                         ['Kasir', '48 transaksi', '#FF8C67'],
-                                        ['Profit', '+18.2%', '#79D7FF'],
+                                        [t('landing.hero.profit', 'Profit'), '+18.2%', '#79D7FF'],
                                     ].map(([title, value, color]) => (
                                         <div
                                             key={title}

@@ -1,12 +1,15 @@
 import { Head, useForm } from '@inertiajs/react';
 import { Check, Info, LoaderCircle, Package, Sparkles, Zap } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import InputError from '@/components/input-error';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { formatCurrency } from '@/lib/utils-mrp';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -159,14 +162,14 @@ const businessTypes = [
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-function formatPrice(price: number) {
-    if (price === 0) return 'Gratis';
-    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(price);
+function formatPrice(price: number, freeLabel = 'Gratis') {
+    if (price === 0) return freeLabel;
+    return formatCurrency(price);
 }
 
 // ── Step indicator ─────────────────────────────────────────────────────────────
 
-function StepIndicator({ step }: { step: 1 | 2 }) {
+function StepIndicator({ step, step1Label = 'Pilih Paket', step2Label = 'Detail Bisnis' }: { step: 1 | 2; step1Label?: string; step2Label?: string }) {
     return (
         <div className="mb-10 flex items-center justify-center gap-3">
             {[1, 2].map((s) => (
@@ -180,7 +183,7 @@ function StepIndicator({ step }: { step: 1 | 2 }) {
                         {s < step ? <Check className="h-4 w-4" /> : s}
                     </div>
                     <span className={['hidden text-sm font-bold transition-colors sm:block', s === step ? 'text-white' : 'text-gray-500'].join(' ')}>
-                        {s === 1 ? 'Pilih Paket' : 'Detail Bisnis'}
+                        {s === 1 ? step1Label : step2Label}
                     </span>
                     {s < 2 && (
                         <div className={['h-1 w-8 rounded-full transition-colors duration-300', step > 1 ? 'bg-white' : 'bg-[#1c1c1e]'].join(' ')} />
@@ -194,6 +197,9 @@ function StepIndicator({ step }: { step: 1 | 2 }) {
 // ── Main Component ─────────────────────────────────────────────────────────────
 
 export default function ChooseBusiness({ plans = [] }: Props) {
+    const { t, i18n } = useTranslation();
+    const isEn = i18n.language === 'en';
+    const freeText = isEn ? 'Free' : 'Gratis';
     const { data, setData, post, processing, errors } = useForm<FormData>({
         plan_slug: '',
         business_name: '',
@@ -216,9 +222,14 @@ export default function ChooseBusiness({ plans = [] }: Props) {
 
     return (
         <>
-            <Head title="Setup Bisnis" />
+            <Head title={isEn ? "Business Setup" : "Setup Bisnis"} />
 
-            <div className="min-h-svh w-full bg-black pb-20 font-sans text-white selection:bg-white/30">
+            <div className="relative min-h-svh w-full bg-black pb-20 font-sans text-white selection:bg-white/30">
+                {/* ── Language Switcher in top right ── */}
+                <div className="absolute top-4 right-4 z-50">
+                    <LanguageSwitcher />
+                </div>
+
                 {/* ── Decorative background ── */}
                 <div className="pointer-events-none fixed inset-0 overflow-hidden opacity-50">
                     <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-[#1a56ff]/10 blur-3xl" />
@@ -230,17 +241,23 @@ export default function ChooseBusiness({ plans = [] }: Props) {
                     {/* ── Header ── */}
                     <div className="mb-6 text-center">
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                            {step === 1 ? 'Pilih Paket Langganan' : 'Detail Bisnis Anda'}
+                            {step === 1
+                                ? (isEn ? 'Choose Subscription Plan' : 'Pilih Paket Langganan')
+                                : (isEn ? 'Your Business Details' : 'Detail Bisnis Anda')}
                         </h1>
                         <p className="mt-3 text-sm font-medium text-gray-400 sm:text-base">
                             {step === 1
-                                ? 'Mulai gratis, upgrade kapan saja sesuai kebutuhan bisnis Anda.'
-                                : 'Isi informasi bisnis Anda untuk personalisasi pengalaman.'}
+                                ? (isEn ? 'Start free, upgrade anytime as your business grows.' : 'Mulai gratis, upgrade kapan saja sesuai kebutuhan bisnis Anda.')
+                                : (isEn ? 'Fill in your business details to personalize your experience.' : 'Isi informasi bisnis Anda untuk personalisasi pengalaman.')}
                         </p>
                     </div>
 
                     {/* ── Step indicator ── */}
-                    <StepIndicator step={step} />
+                    <StepIndicator
+                        step={step}
+                        step1Label={isEn ? 'Select Plan' : 'Pilih Paket'}
+                        step2Label={isEn ? 'Business Details' : 'Detail Bisnis'}
+                    />
 
                     {/* ═══════════════ STEP 1: Plan selection ═══════════════ */}
                     {step === 1 && (
@@ -325,9 +342,9 @@ export default function ChooseBusiness({ plans = [] }: Props) {
                                             <div className="z-10">
                                                 <p className="text-xl font-bold">{plan.name} Plan</p>
                                                 <p className="mt-2 text-4xl font-extrabold tracking-tight">
-                                                    {formatPrice(plan.price)}
+                                                    {formatPrice(plan.price, freeText)}
                                                     {plan.price > 0 && (
-                                                        <span className={['ml-1 text-sm font-bold', meta.descriptionText].join(' ')}>/ bln</span>
+                                                        <span className={['ml-1 text-sm font-bold', meta.descriptionText].join(' ')}>{isEn ? '/ mo' : '/ bln'}</span>
                                                     )}
                                                 </p>
                                             </div>
@@ -416,10 +433,10 @@ export default function ChooseBusiness({ plans = [] }: Props) {
                                     >
                                         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black/10">{meta.icon}</div>
                                         <div>
-                                            <p className="text-base font-bold">Paket {p.name}</p>
+                                            <p className="text-base font-bold">{isEn ? `Plan ${p.name}` : `Paket ${p.name}`}</p>
                                             <p className={['text-sm font-bold', meta.descriptionText].join(' ')}>
-                                                {formatPrice(p.price)}
-                                                {p.price > 0 ? '/bulan' : ''}
+                                                {formatPrice(p.price, freeText)}
+                                                {p.price > 0 ? (isEn ? '/month' : '/bulan') : ''}
                                             </p>
                                         </div>
                                         <div className="ml-auto">
@@ -428,7 +445,7 @@ export default function ChooseBusiness({ plans = [] }: Props) {
                                                 onClick={() => setStep(1)}
                                                 className="rounded-full bg-black/20 px-5 py-2.5 text-xs font-bold transition-colors hover:bg-black/30"
                                             >
-                                                Ganti
+                                                {isEn ? 'Change' : 'Ganti'}
                                             </button>
                                         </div>
                                     </div>
@@ -543,8 +560,8 @@ export default function ChooseBusiness({ plans = [] }: Props) {
                                 <div>
                                     <DialogTitle className="text-3xl font-extrabold text-white capitalize">{detailPlan.name}</DialogTitle>
                                     <DialogDescription className="mt-1 text-base font-bold text-gray-400">
-                                        {formatPrice(detailPlan.price)}
-                                        {detailPlan.price > 0 ? ' / bulan' : ' (Gratis)'}
+                                        {formatPrice(detailPlan.price, freeText)}
+                                        {detailPlan.price > 0 ? (isEn ? ' / month' : ' / bulan') : (isEn ? ' (Free)' : ' (Gratis)')}
                                     </DialogDescription>
                                 </div>
                             </div>
