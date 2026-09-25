@@ -86,7 +86,7 @@ export const columns = (t: any): ColumnDef<PackageModel>[] => [
             const pkg = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className="rounded-lg bg-[#edf8f1] p-1.5 text-[#3f9567]">
+                    <div className="owner-package-icon rounded-lg p-1.5">
                         <Package size={16} />
                     </div>
                     <div>
@@ -149,7 +149,7 @@ export const columns = (t: any): ColumnDef<PackageModel>[] => [
                 <div className="flex w-full items-center justify-start text-left">
                     <Badge
                         variant="outline"
-                        className={`text-xs font-medium ${active ? 'border-[#c7e0ce] bg-[#edf8f1] text-[#3f9567]' : 'border-slate-200 bg-slate-50 text-slate-500'}`}
+                        className={`owner-package-status text-xs font-medium ${active ? '' : 'owner-package-status-inactive'}`}
                     >
                         {active ? t('packages.active', 'Aktif') : t('packages.inactive', 'Nonaktif')}
                     </Badge>

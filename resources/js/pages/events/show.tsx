@@ -57,7 +57,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={event.title} />
-            <div className="w-full p-2 md:p-4">
+            <div className="event-show-page w-full p-2 md:p-4">
                 <div className="mb-3">
                     <Link href="/events" className="hover:bg-muted inline-flex items-center gap-2 rounded-xl p-2 text-sm font-medium text-slate-700 transition-colors">
                         <ArrowLeft size={16} />

@@ -99,7 +99,7 @@ export default function StockOut({ products }: Props) {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="owner-inventory-form space-y-6">
                     <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
                         <div className="p-5 md:p-6">
                             <div className="space-y-4">
@@ -158,7 +158,7 @@ export default function StockOut({ products }: Props) {
                                             max={selectedProduct?.current_stock}
                                             value={data.qty}
                                             onChange={(e) => setData('qty', parseInt(e.target.value) || 1)}
-                                            className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
+                                            className={`owner-inventory-field h-10 !text-sm placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
                                         />
                                         {selectedProduct && (
                                             <p className="text-muted-foreground mt-1 text-xs">
@@ -172,7 +172,11 @@ export default function StockOut({ products }: Props) {
                                         <Label htmlFor="movement_date" className="block text-sm font-medium">
                                             {t('common.date')} *
                                         </Label>
-                                        <DatePicker value={data.movement_date} onChange={(val) => setData('movement_date', val)} />
+                                        <DatePicker
+                                            value={data.movement_date}
+                                            onChange={(val) => setData('movement_date', val)}
+                                            className="owner-inventory-date !h-10 !border-[#285e49] !bg-[#07160e] !px-3 !text-[#d1fae5] hover:!bg-[#0d2516] hover:!text-[#d1fae5]"
+                                        />
                                         {displayError('movement_date') && (
                                             <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>
                                         )}
@@ -189,7 +193,7 @@ export default function StockOut({ products }: Props) {
                                         value={data.reference}
                                         onChange={(e) => setData('reference', e.target.value)}
                                         placeholder={t('inventory.referencePlaceholder')}
-                                        className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                        className="owner-inventory-field h-10 !text-sm placeholder:text-slate-400"
                                     />
                                 </div>
 
@@ -203,7 +207,7 @@ export default function StockOut({ products }: Props) {
                                         value={data.note}
                                         onChange={(e) => setData('note', e.target.value)}
                                         placeholder={t('inventory.stockOutNotePlaceholder')}
-                                        className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                        className="owner-inventory-field min-h-[88px] !text-sm placeholder:text-slate-400"
                                     />
                                 </div>
                             </div>

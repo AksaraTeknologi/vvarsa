@@ -86,14 +86,14 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                     <div className="flex gap-2">
                         <Button
                             asChild
-                            className={`!h-10 !rounded-xl !border !bg-white !px-4 !font-semibold shadow-sm ${isOwner ? '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1]' : isStaff ? '!border-[#d94f83] !text-[#d94f83] hover:!bg-[#fff0f5]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50'}`}
+                            className={`owner-stock-in-button !h-10 !rounded-xl !border !px-4 !font-semibold shadow-sm ${isOwner ? '!border-[#3f9567]' : isStaff ? '!border-[#d94f83]' : '!border-blue-600'}`}
                         >
                             <Link href="/inventory/stock-in">
                                 <Package size={16} />
                                 {t('navigation.stockIn')}
                             </Link>
                         </Button>
-                        <Button asChild variant="owner" className="rounded-xl">
+                        <Button asChild variant="owner" className="owner-add-product-button rounded-xl">
                             <Link href="/inventory/create">
                                 <PackagePlus size={16} />
                                 {t('inventory.addProduct')}
@@ -130,7 +130,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
 
                 {/* Filters */}
                 <div className="flex flex-col items-center gap-3 sm:flex-row">
-                    <div className="relative w-full flex-1">
+                    <div className="owner-inventory-search-wrap relative w-full flex-1">
                         <Search size={16} className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" />
                         <Input
                             type="text"
@@ -138,7 +138,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="h-12 w-full rounded-xl !border-[#dde9df] !bg-white pl-9 text-sm text-slate-700 shadow-sm placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-[#b8d9bf]"
+                            className="owner-inventory-search h-12 w-full rounded-xl pl-9 text-sm shadow-sm focus-visible:ring-1 focus-visible:ring-[#3f9567]"
                         />
                     </div>
 

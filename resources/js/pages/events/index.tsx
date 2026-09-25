@@ -185,7 +185,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                 <Link
                                     key={event.id}
                                     href={`/events/${event.id}`}
-                                    className="business-event-card bg-card border-border group overflow-hidden rounded-2xl border shadow-sm transition-[transform,box-shadow,border-color] duration-300 ease-out [transform-style:preserve-3d] hover:[transform:translateY(-6px)_rotateX(2deg)_rotateY(3deg)_translateZ(6px)] hover:border-[#a9d4b6] hover:shadow-[0_18px_30px_rgba(63,149,103,0.18)] motion-reduce:transition-none motion-reduce:hover:transform-none"
+                                    className="business-event-card owner-event-card bg-card border-border group overflow-hidden rounded-2xl border shadow-sm"
                                 >
                                     {/* Date banner */}
                                     <div className="flex [transform:translateZ(8px)] items-center justify-between border-b border-[#3f9567] bg-[#5aa67a] px-5 py-3 text-white">

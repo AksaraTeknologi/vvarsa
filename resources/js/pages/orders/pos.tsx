@@ -948,26 +948,26 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     value={customerName}
                                                     onChange={(e) => setCustomerName(e.target.value)}
                                                     placeholder={t('pos.customerNamePlaceholder')}
-                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
+                                                    className="owner-form-field h-9 rounded-xl text-xs"
                                                 />
                                                 <Input
                                                     value={customerPhone}
                                                     onChange={(e) => setCustomerPhone(e.target.value)}
                                                     placeholder={t('pos.customerPhonePlaceholder')}
-                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
+                                                    className="owner-form-field h-9 rounded-xl text-xs"
                                                 />
                                                 <Input
                                                     type="email"
                                                     value={customerEmail}
                                                     onChange={(e) => setCustomerEmail(e.target.value)}
                                                     placeholder={t('pos.customerEmailPlaceholder')}
-                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
+                                                    className="owner-form-field h-9 rounded-xl text-xs"
                                                 />
                                                 <Input
                                                     value={notes}
                                                     onChange={(e) => setNotes(e.target.value)}
                                                     placeholder={t('pos.orderNotesPlaceholder')}
-                                                    className="h-9 rounded-xl !border-[#f3b7cc] !bg-white text-xs !text-[#d94f83] placeholder:!text-[#d98aaa]"
+                                                    className="owner-form-field h-9 rounded-xl text-xs"
                                                 />
                                             </div>
                                         )}

@@ -52,8 +52,8 @@ function StatCard({
         <div className="bg-card border-border rounded-2xl border px-4 py-5 shadow-sm transition-shadow hover:shadow-md">
             <div className="mb-4 flex items-center justify-between gap-3">
                 <p className="text-muted-foreground text-sm leading-none font-medium">{title}</p>
-                <div className={`flex size-10 items-center justify-center rounded-xl ${color}`}>
-                    <Icon size={16} className="text-white" />
+                <div className={`owner-stat-icon flex size-10 items-center justify-center rounded-xl ${color}`}>
+                    <Icon size={16} />
                 </div>
             </div>
 
@@ -65,7 +65,7 @@ function StatCard({
 
                 {trend && (
                     <div
-                        className={`flex items-center justify-center rounded-full p-1.5 ${trend === 'up' ? 'bg-emerald-100 text-emerald-600' : trend === 'down' ? 'bg-rose-100 text-rose-600' : 'bg-slate-100 text-slate-500'}`}
+                        className={`owner-trend-icon flex items-center justify-center rounded-full p-1.5 ${trend === 'up' ? 'bg-emerald-100' : trend === 'down' ? 'bg-rose-100' : 'bg-slate-100'}`}
                     >
                         {trend === 'up' ? <ArrowUpRight size={12} /> : trend === 'down' ? <ArrowDownRight size={12} /> : null}
                     </div>
@@ -253,7 +253,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                         className="border-border/80 bg-muted/20 flex items-center gap-3 rounded-2xl border px-3 py-2.5"
                                     >
                                         <div
-                                            className={`flex size-10 items-center justify-center rounded-xl ${tItem.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
+                                            className={`owner-transaction-icon flex size-10 items-center justify-center rounded-xl ${tItem.type === 'income' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-rose-100 dark:bg-rose-900/30'}`}
                                         >
                                             {tItem.type === 'income' ? (
                                                 <ArrowUpRight size={15} className="text-emerald-600 dark:text-emerald-400" />
@@ -295,9 +295,9 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                     <Link
                                         key={e.id}
                                         href={`/events/${e.id}`}
-                                        className="border-border/80 bg-muted/20 flex items-start gap-3 rounded-2xl border p-3 transition-colors hover:bg-emerald-50/80"
+                                        className="owner-event-link border-border/80 bg-muted/20 flex items-start gap-3 rounded-2xl border p-3"
                                     >
-                                        <div className="flex h-12 w-12 flex-col items-center justify-center rounded-2xl bg-emerald-100 text-center text-emerald-700">
+                                        <div className="owner-event-date flex h-12 w-12 flex-col items-center justify-center rounded-xl text-center">
                                             <span className="text-[10px] font-bold tracking-[0.08em] uppercase">
                                                 {new Date(e.start_date).toLocaleString('id-ID', { month: 'short' })}
                                             </span>
@@ -355,13 +355,12 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                             <Link
                                 key={href}
                                 href={href}
-                                className="bg-card border-border flex min-h-[132px] flex-col justify-between rounded-2xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-[0_16px_30px_rgba(16,185,129,0.08)]"
+                                className="owner-quick-action bg-card border-border flex min-h-[132px] flex-col justify-between rounded-2xl border p-4 text-left shadow-sm"
                             >
                                 <div className="flex items-center justify-between">
-                                    <div className={`flex size-11 items-center justify-center rounded-2xl text-white ${color}`}>
+                                    <div className={`owner-stat-icon flex size-10 items-center justify-center rounded-xl text-white ${color}`}>
                                         <Icon size={18} />
                                     </div>
-                                    <ArrowUpRight size={16} className="text-emerald-600/70" />
                                 </div>
                                 <span className="text-sm font-bold tracking-[-0.02em]">{label}</span>
                             </Link>

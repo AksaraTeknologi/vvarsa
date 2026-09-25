@@ -96,7 +96,7 @@ export default function StockIn({ products }: Props) {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="owner-inventory-form space-y-6">
                     <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
                         <div className="p-5 md:p-6">
                             <div className="space-y-4">
@@ -160,7 +160,7 @@ export default function StockIn({ products }: Props) {
                                             min={1}
                                             value={data.qty}
                                             onChange={(e) => setData('qty', parseInt(e.target.value) || 1)}
-                                            className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
+                                            className={`owner-inventory-field h-10 !text-sm placeholder:text-slate-400 ${displayError('qty') ? 'border-rose-500' : ''}`}
                                         />
                                         {selectedProduct && (
                                             <p className="text-muted-foreground mt-1 text-xs">
@@ -184,7 +184,7 @@ export default function StockIn({ products }: Props) {
                                             placeholder="0"
                                             value={data.unit_cost === 0 ? '' : data.unit_cost}
                                             onChange={(e) => setData('unit_cost', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
-                                            className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('unit_cost') ? 'border-rose-500' : ''}`}
+                                            className={`owner-inventory-field h-10 !text-sm placeholder:text-slate-400 ${displayError('unit_cost') ? 'border-rose-500' : ''}`}
                                         />
                                         {data.unit_cost > 0 && (
                                             <p className="text-muted-foreground mt-1 text-xs">
@@ -204,7 +204,7 @@ export default function StockIn({ products }: Props) {
                                             value={data.movement_date}
                                             onChange={(val) => setData('movement_date', val)}
                                             theme={isOwner ? 'owner-green' : 'owner'}
-                                            className={isOwner ? '!border-[#d9e5dd] !text-[#315d45] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]' : ''}
+                                            className={`owner-inventory-date !h-10 !border-[#285e49] !bg-[#07160e] !px-3 !text-[#d1fae5] ${isOwner ? 'hover:!bg-[#0d2516] hover:!text-[#d1fae5]' : ''}`}
                                         />
                                         {displayError('movement_date') && (
                                             <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>
@@ -221,7 +221,7 @@ export default function StockIn({ products }: Props) {
                                             value={data.reference}
                                             onChange={(e) => setData('reference', e.target.value)}
                                             placeholder={t('inventory.referencePlaceholder')}
-                                            className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                            className="owner-inventory-field h-10 !text-sm placeholder:text-slate-400"
                                         />
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@ export default function StockIn({ products }: Props) {
                                         value={data.note}
                                         onChange={(e) => setData('note', e.target.value)}
                                         placeholder={t('inventory.notesPlaceholder')}
-                                        className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                        className="owner-inventory-field min-h-[88px] !text-sm placeholder:text-slate-400"
                                     />
                                 </div>
                             </div>

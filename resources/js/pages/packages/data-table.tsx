@@ -19,15 +19,15 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     });
 
     return (
-        <div className="border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
+        <div className="owner-packages-table border-border bg-card w-full overflow-x-auto rounded-xl border shadow-sm">
             <Table className="min-w-[760px]">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-border border-b bg-slate-50/70 hover:bg-slate-50/70">
+                        <TableRow key={headerGroup.id} className="border-border border-b">
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}
-                                    className="text-muted-foreground h-10 whitespace-nowrap px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase"
+                                    className="owner-package-header text-muted-foreground h-10 whitespace-nowrap px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase"
                                 >
                                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                 </TableHead>
@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
-                                className="hover:bg-[#edf8f1]/70 border-border border-b transition-colors"
+                                className="owner-package-row border-border border-b"
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id} className="px-4 py-3.5 align-middle">

@@ -69,7 +69,7 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           {dateValue ? format(dateValue, "dd MMMM yyyy", { locale: id }) : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("staff-date-picker-popover w-auto p-0", resolvedTheme === "admin" && "admin-date-picker-popover")} align="start">
+      <PopoverContent className={cn("owner-date-picker-popover staff-date-picker-popover w-auto p-0", resolvedTheme === "admin" && "admin-date-picker-popover")} align="start">
         <Calendar
           mode="single"
           selected={dateValue}
@@ -98,8 +98,8 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
             today: "!bg-[#fff0f5] !text-[#d94f83]",
           } : isOwnerGreen ? {
             caption_label: "text-sm font-semibold text-[#3f9567]",
-            button_previous: "h-8 w-8 rounded-full border-[#d9e5dd] bg-white p-0 text-[#3f9567] shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51]",
-            button_next: "h-8 w-8 rounded-full border-[#d9e5dd] bg-white p-0 text-[#3f9567] shadow-sm hover:bg-[#edf8f1] hover:text-[#2f7d51]",
+            button_previous: "owner-calendar-nav h-8 w-8 rounded-full border-[#285e49] bg-[#0d2516] p-0 text-[#6ee7b7] shadow-sm hover:bg-[#123320] hover:text-[#a7f3d0]",
+            button_next: "owner-calendar-nav h-8 w-8 rounded-full border-[#285e49] bg-[#0d2516] p-0 text-[#6ee7b7] shadow-sm hover:bg-[#123320] hover:text-[#a7f3d0]",
             day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#3f9567] aria-selected:!text-white aria-selected:hover:!bg-[#2f7d51] aria-selected:opacity-100",
             today: "!bg-[#edf8f1] !text-[#3f9567]",
           } : undefined}

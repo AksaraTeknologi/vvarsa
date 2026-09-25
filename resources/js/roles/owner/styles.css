@@ -72,6 +72,174 @@
     z-index: 1;
 }
 
+.owner-theme .owner-package-page,
+.owner-theme .owner-recipe-page,
+.owner-theme .owner-variant-page,
+.owner-theme .owner-order-page,
+.owner-theme .pos-page {
+    position: relative;
+    z-index: 1;
+}
+
+.owner-theme .owner-form-field {
+    background: rgba(8, 20, 15, 0.8) !important;
+    background-color: rgba(8, 20, 15, 0.8) !important;
+    border-color: rgba(146, 219, 177, 0.28) !important;
+    color: #ebfff4 !important;
+    box-shadow: none !important;
+}
+
+.owner-theme .owner-form-field::placeholder {
+    color: rgba(202, 233, 214, 0.72) !important;
+    opacity: 1 !important;
+}
+
+.owner-theme .owner-package-page .bg-card,
+.owner-theme .owner-recipe-page .bg-card,
+.owner-theme .owner-variant-page .bg-card,
+.owner-theme .owner-order-page .bg-card,
+.owner-theme .pos-page .bg-card,
+.owner-theme .owner-package-page [data-slot='card'],
+.owner-theme .owner-recipe-page [data-slot='card'],
+.owner-theme .owner-variant-page [data-slot='card'],
+.owner-theme .owner-order-page [data-slot='card'],
+.owner-theme .pos-page [data-slot='card'],
+.owner-theme .owner-package-page [class*='bg-white'],
+.owner-theme .owner-package-page [class*='bg-slate-50'],
+.owner-theme .owner-recipe-page [class*='bg-white'],
+.owner-theme .owner-recipe-page [class*='bg-slate-50'],
+.owner-theme .owner-variant-page [class*='bg-white'],
+.owner-theme .owner-variant-page [class*='bg-slate-50'],
+.owner-theme .owner-order-page [class*='bg-white'],
+.owner-theme .owner-order-page [class*='bg-slate-50'],
+.owner-theme .pos-page [class*='bg-white'],
+.owner-theme .pos-page [class*='bg-slate-50'] {
+    background: rgba(8, 20, 15, 0.76) !important;
+    border-color: rgba(116, 230, 173, 0.22) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 24px rgba(6, 15, 11, 0.26) !important;
+}
+
+.owner-theme .owner-package-page input,
+.owner-theme .owner-package-page textarea,
+.owner-theme .owner-package-page select,
+.owner-theme .owner-package-page [data-slot='select-trigger'],
+.owner-theme .owner-recipe-page input,
+.owner-theme .owner-recipe-page textarea,
+.owner-theme .owner-recipe-page select,
+.owner-theme .owner-recipe-page [data-slot='select-trigger'],
+.owner-theme .owner-variant-page input,
+.owner-theme .owner-variant-page textarea,
+.owner-theme .owner-variant-page select,
+.owner-theme .owner-variant-page [data-slot='select-trigger'],
+.owner-theme .owner-order-page input,
+.owner-theme .owner-order-page textarea,
+.owner-theme .owner-order-page select,
+.owner-theme .owner-order-page [data-slot='select-trigger'],
+.owner-theme .pos-page input,
+.owner-theme .pos-page textarea,
+.owner-theme .pos-page select,
+.owner-theme .pos-page [data-slot='select-trigger'] {
+    background: rgba(9, 20, 15, 0.78) !important;
+    background-color: rgba(9, 20, 15, 0.78) !important;
+    border-color: rgba(146, 219, 177, 0.28) !important;
+    color: #eafbf3 !important;
+    box-shadow: none !important;
+}
+
+.owner-theme .owner-package-page input::placeholder,
+.owner-theme .owner-package-page textarea::placeholder,
+.owner-theme .owner-package-page select::placeholder,
+.owner-theme .owner-recipe-page input::placeholder,
+.owner-theme .owner-recipe-page textarea::placeholder,
+.owner-theme .owner-recipe-page select::placeholder,
+.owner-theme .owner-variant-page input::placeholder,
+.owner-theme .owner-variant-page textarea::placeholder,
+.owner-theme .owner-variant-page select::placeholder,
+.owner-theme .owner-order-page input::placeholder,
+.owner-theme .owner-order-page textarea::placeholder,
+.owner-theme .owner-order-page select::placeholder,
+.owner-theme .pos-page input::placeholder,
+.owner-theme .pos-page textarea::placeholder,
+.owner-theme .pos-page select::placeholder {
+    color: rgba(216, 243, 226, 0.72) !important;
+    opacity: 1 !important;
+}
+
+.owner-theme [data-slot='button'][data-variant='owner'] svg,
+.owner-theme [data-slot='button'][data-variant='owner'] svg *,
+.owner-theme [data-slot='button'][data-variant='owner'] .lucide,
+.owner-theme [data-slot='button'][data-variant='owner'] .lucide * {
+    color: #ffffff !important;
+    stroke: currentColor !important;
+    fill: none !important;
+}
+
+.owner-theme .owner-package-page h1,
+.owner-theme .owner-package-page h2,
+.owner-theme .owner-package-page h3,
+.owner-theme .owner-package-page label,
+.owner-theme .owner-recipe-page h1,
+.owner-theme .owner-recipe-page h2,
+.owner-theme .owner-recipe-page h3,
+.owner-theme .owner-recipe-page label,
+.owner-theme .owner-variant-page h1,
+.owner-theme .owner-variant-page h2,
+.owner-theme .owner-variant-page h3,
+.owner-theme .owner-variant-page label,
+.owner-theme .owner-order-page h1,
+.owner-theme .owner-order-page h2,
+.owner-theme .owner-order-page h3,
+.owner-theme .owner-order-page label,
+.owner-theme .pos-page h1,
+.owner-theme .pos-page h2,
+.owner-theme .pos-page h3,
+.owner-theme .pos-page label {
+    color: #ebfff4 !important;
+}
+
+.owner-theme .owner-package-page .text-muted-foreground,
+.owner-theme .owner-recipe-page .text-muted-foreground,
+.owner-theme .owner-variant-page .text-muted-foreground,
+.owner-theme .owner-order-page .text-muted-foreground,
+.owner-theme .pos-page .text-muted-foreground,
+.owner-theme .owner-package-page p,
+.owner-theme .owner-recipe-page p,
+.owner-theme .owner-variant-page p,
+.owner-theme .owner-order-page p,
+.owner-theme .pos-page p {
+    color: rgba(214, 241, 225, 0.8) !important;
+}
+
+.owner-theme,
+.owner-theme [data-slot='sidebar-inset'],
+.owner-theme [data-slot='sidebar-inset'] > *,
+.owner-theme [data-slot='card'],
+.owner-theme [data-slot='table'],
+.owner-theme .owner-data-table,
+.owner-content,
+.owner-content::before,
+.owner-content::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+.owner-content {
+    background: #06150f !important;
+    background-image:
+        linear-gradient(to right, rgba(107, 245, 171, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(107, 245, 171, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at top left, rgba(31, 155, 92, 0.6), transparent 32%),
+        linear-gradient(180deg, #020b08 0%, #06150f 38%, #020a07 100%) !important;
+    background-size: 24px 24px, 24px 24px, cover, cover !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+.owner-content::before,
+.owner-content::after {
+    display: none !important;
+}
+
 .subscription-shell {
     position: relative;
     min-height: calc(100vh - 4rem);
@@ -820,3 +988,1394 @@
 .owner-theme .members-page [class*='focus\\:!ring-blue-600'] {
     --tw-ring-color: rgb(90 166 122 / 0.2) !important;
 }
+
+/* ==========================================================================
+   ── OWNER ROLE DARK THEME: ANIMATED 100% FULL-BLEED EMERALD DARK ──
+   ========================================================================== */
+
+/* ── Hardware GPU-Accelerated Smooth Ambient Wave (60+ FPS Smooth Drift) ── */
+@keyframes ownerEmeraldWaveGPU {
+    0% {
+        transform: translate3d(0px, 0px, 0px) scale(1);
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    50% {
+        transform: translate3d(-35px, 25px, 0px) scale(1.05);
+        filter: hue-rotate(10deg) brightness(1.15);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) scale(1);
+        filter: hue-rotate(0deg) brightness(1);
+    }
+}
+
+@keyframes ownerStarfieldDriftGPU {
+    0% {
+        transform: translate3d(0px, 0px, 0px);
+    }
+    50% {
+        transform: translate3d(-35px, 35px, 0px);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px);
+    }
+}
+
+/* ── Full Window Dark Base on HTML & Body ── */
+html.dark:has(.owner-theme),
+body.dark:has(.owner-theme),
+.dark body:has(.owner-theme) {
+    background-color: #020704 !important;
+    background-image:
+        /* Glowing Emerald Celestial Moon in Top-Right with Radiant Aurora Flare */
+        radial-gradient(circle at calc(100vw - 120px) 90px, #ffffff 0px, #d1fae5 14px, #6ee7b7 26px, rgba(16, 185, 129, 0.65) 50px, rgba(5, 150, 105, 0.3) 95px, transparent 160px),
+        radial-gradient(circle at calc(100vw - 120px) 90px, rgba(52, 211, 153, 0.45) 0px, rgba(16, 185, 129, 0.22) 180px, transparent 340px),
+
+        /* Moving Radiant Emerald Aurora Galaxy Nebulas */
+        radial-gradient(ellipse 65% 45% at 25% 18%, rgba(16, 185, 129, 0.45) 0%, rgba(5, 150, 105, 0.25) 40%, transparent 68%),
+        radial-gradient(ellipse 70% 50% at 82% 35%, rgba(52, 211, 153, 0.4) 0%, rgba(16, 185, 129, 0.2) 45%, transparent 72%),
+        radial-gradient(ellipse 60% 40% at 48% 82%, rgba(5, 150, 105, 0.38) 0%, rgba(4, 120, 87, 0.16) 48%, transparent 75%),
+        radial-gradient(circle 350px at 50% 45%, rgba(16, 185, 129, 0.28) 0%, transparent 65%),
+
+        /* Cyber-Luxury Subtle Emerald Grid Texture (Rich & Non-plain) */
+        linear-gradient(to right, rgba(52, 211, 153, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.08) 1px, transparent 1px),
+
+        /* Deep Obsidian Emerald Gradient Base */
+        linear-gradient(180deg, #020704 0%, #062615 50%, #010a05 100%) !important;
+    background-size: cover, cover, cover, cover, cover, cover, 48px 48px, 48px 48px, cover !important;
+    background-attachment: fixed !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+    animation: ownerEmeraldWaveGPU 22s ease-in-out infinite alternate !important;
+}
+
+/* ── Layer 1: Fixed GPU Ambient Emerald Cosmic Aurora Canvas directly on Main Content Area ── */
+.dark .owner-theme [data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar-inset'],
+.dark .owner-theme .owner-content {
+    background-color: #020704 !important;
+    background-image:
+        /* Glowing Emerald Celestial Moon in Top-Right with Radiant Aurora Flare */
+        radial-gradient(circle at calc(100vw - 120px) 90px, #ffffff 0px, #d1fae5 14px, #6ee7b7 26px, rgba(16, 185, 129, 0.65) 50px, rgba(5, 150, 105, 0.3) 95px, transparent 160px),
+        radial-gradient(circle at calc(100vw - 120px) 90px, rgba(52, 211, 153, 0.45) 0px, rgba(16, 185, 129, 0.22) 180px, transparent 340px),
+
+        /* Moving Radiant Emerald Aurora Galaxy Nebulas */
+        radial-gradient(ellipse 65% 45% at 25% 18%, rgba(16, 185, 129, 0.45) 0%, rgba(5, 150, 105, 0.25) 40%, transparent 68%),
+        radial-gradient(ellipse 70% 50% at 82% 35%, rgba(52, 211, 153, 0.4) 0%, rgba(16, 185, 129, 0.2) 45%, transparent 72%),
+        radial-gradient(ellipse 60% 40% at 48% 82%, rgba(5, 150, 105, 0.38) 0%, rgba(4, 120, 87, 0.16) 48%, transparent 75%),
+        radial-gradient(circle 350px at 50% 45%, rgba(16, 185, 129, 0.28) 0%, transparent 65%),
+
+        /* Cyber-Luxury Subtle Emerald Grid Texture (Rich & Non-plain) */
+        linear-gradient(to right, rgba(52, 211, 153, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.08) 1px, transparent 1px),
+
+        /* Deep Obsidian Emerald Gradient Base */
+        linear-gradient(180deg, #020704 0%, #062615 50%, #010a05 100%) !important;
+    background-size: cover, cover, cover, cover, cover, cover, 48px 48px, 48px 48px, cover !important;
+    background-attachment: fixed !important;
+    animation: ownerEmeraldWaveGPU 22s ease-in-out infinite alternate !important;
+}
+
+/* ── Layer 2: Vivid Twinkling Emerald & Diamond Stars (High Contrast) ── */
+.dark .owner-theme [data-slot='sidebar-inset']::after,
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset']::after,
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar-inset']::after {
+    content: '';
+    position: fixed;
+    top: -40px;
+    right: -40px;
+    bottom: -40px;
+    left: calc(var(--sidebar-width, 16rem) - 40px);
+    z-index: 1;
+    pointer-events: none;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    will-change: transform;
+    background-image:
+        radial-gradient(circle at 25px 40px, #ffffff 0, #ffffff 1.4px, transparent 2.2px),
+        radial-gradient(circle at 140px 90px, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 1) 1.8px, transparent 2.8px),
+        radial-gradient(circle at 280px 30px, #ffffff 0, #ffffff 1.3px, transparent 2.2px),
+        radial-gradient(circle at 410px 110px, rgba(167, 243, 208, 1) 0, rgba(167, 243, 208, 1) 1.6px, transparent 2.5px),
+        radial-gradient(circle at 85px 230px, #ffffff 0, #ffffff 1.4px, transparent 2.2px),
+        radial-gradient(circle at 220px 190px, rgba(110, 231, 183, 1) 0, rgba(110, 231, 183, 1) 1.9px, transparent 3px),
+        radial-gradient(circle at 350px 270px, #ffffff 0, #ffffff 1.3px, transparent 2.2px),
+        radial-gradient(circle at 480px 210px, rgba(52, 211, 153, 1) 0, rgba(52, 211, 153, 1) 1.7px, transparent 2.8px),
+        radial-gradient(circle at 60px 380px, #ffffff 0, #ffffff 1.5px, transparent 2.4px),
+        radial-gradient(circle at 190px 440px, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 1) 1.5px, transparent 2.4px),
+        radial-gradient(circle at 310px 360px, rgba(110, 231, 183, 1) 0, rgba(110, 231, 183, 1) 1.8px, transparent 2.8px),
+        radial-gradient(circle at 450px 420px, #ffffff 0, #ffffff 1.4px, transparent 2.2px),
+        radial-gradient(circle at 520px 140px, rgba(52, 211, 153, 1) 0, rgba(52, 211, 153, 1) 1.6px, transparent 2.5px),
+        radial-gradient(circle at 110px 320px, rgba(167, 243, 208, 1) 0, rgba(167, 243, 208, 1) 1.8px, transparent 2.8px),
+        radial-gradient(circle at 620px 290px, rgba(167, 243, 208, 1) 0, rgba(167, 243, 208, 1) 1.9px, transparent 3px);
+    background-size: 550px 550px;
+    animation: ownerStarfieldDriftGPU 30s ease-in-out infinite;
+    opacity: 0.95;
+}
+
+@media (max-width: 767px) {
+    .dark .owner-theme [data-slot='sidebar-inset']::after,
+    .dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset']::after {
+        left: -40px !important;
+    }
+}
+
+/* ── Completely Hide Scrollbar in Sidebar (Clean & Modern) ── */
+.dark .owner-theme [data-slot='sidebar'],
+.dark .owner-theme [data-slot='sidebar'] *,
+.dark .owner-theme .owner-sidebar,
+.dark .owner-theme .owner-sidebar *,
+.owner-theme [data-slot='sidebar'],
+.owner-theme [data-slot='sidebar'] *,
+.owner-theme .owner-sidebar,
+.owner-theme .owner-sidebar * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.dark .owner-theme [data-slot='sidebar']::-webkit-scrollbar,
+.dark .owner-theme [data-slot='sidebar'] *::-webkit-scrollbar,
+.dark .owner-theme .owner-sidebar::-webkit-scrollbar,
+.dark .owner-theme .owner-sidebar *::-webkit-scrollbar,
+.owner-theme [data-slot='sidebar']::-webkit-scrollbar,
+.owner-theme [data-slot='sidebar'] *::-webkit-scrollbar,
+.owner-theme .owner-sidebar::-webkit-scrollbar,
+.owner-theme .owner-sidebar *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* ── Base Owner Theme Variables in Dark Mode ── */
+.dark .owner-theme,
+.dark.owner-theme,
+.dark [data-slot='sidebar-wrapper'].owner-theme,
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) {
+    position: relative;
+    isolation: isolate;
+    color-scheme: dark;
+    --background: #020704;
+    --foreground: #ffffff;
+    --card: #07160e;
+    --card-foreground: #ffffff;
+    --popover: #0a1f14;
+    --popover-foreground: #ffffff;
+    --primary: #10b981;
+    --primary-foreground: #ffffff;
+    --secondary: rgba(16, 185, 129, 0.18);
+    --secondary-foreground: #ffffff;
+    --muted: rgba(255, 255, 255, 0.05);
+    --muted-foreground: #a7f3d0;
+    --accent: rgba(16, 185, 129, 0.22);
+    --accent-foreground: #ffffff;
+    --border: rgba(52, 211, 153, 0.28);
+    --input: #05140b;
+    --ring: #10b981;
+    --sidebar: #05120a;
+    --sidebar-foreground: #ffffff;
+    --sidebar-primary: #10b981;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(16, 185, 129, 0.18);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgba(52, 211, 153, 0.22);
+    --sidebar-ring: #10b981;
+
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+}
+
+/* ── Full Screen Viewport: Remove ALL Gaps, Margins & Radius ── */
+.dark .owner-theme [data-slot='sidebar-inset'],
+.dark .owner-theme main[data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper'].owner-theme main[data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar-inset'],
+.dark .owner-theme.group\/sidebar-wrapper [data-slot='sidebar-inset'],
+.dark .owner-theme.group\/sidebar-wrapper > [data-slot='sidebar-inset'],
+.dark .owner-theme [data-slot='sidebar'] ~ [data-slot='sidebar-inset'],
+.dark .owner-theme .peer ~ [data-slot='sidebar-inset'],
+.dark .peer[data-variant='inset'] ~ [data-slot='sidebar-inset'] {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+}
+
+/* Reset Sidebar Desktop Inner Padding in Owner */
+.dark .owner-theme [data-slot='sidebar'] > div:nth-child(2),
+.dark .owner-theme [data-slot='sidebar'] > div.fixed,
+.dark .owner-theme [data-slot='sidebar'] > div[class*='fixed'],
+.dark .owner-theme .owner-sidebar {
+    padding: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+}
+
+/* ── Content Surface Transparency (Keep Inner Containers Transparent so Cosmic Aurora shines) ── */
+.dark .owner-theme main:not([data-slot='sidebar-inset']),
+.dark .owner-theme .supervisor-dashboard,
+.dark .owner-theme .staff-dashboard,
+.dark .owner-theme .subscription-shell,
+.dark .owner-theme section,
+.dark .owner-theme [class*='bg-[radial-gradient']:not([data-slot='sidebar-inset']),
+.dark .owner-theme [class*='min-h-[calc(100vh']:not([data-slot='sidebar-inset']) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+/* Keep header and main controls above background canvas */
+.dark .owner-theme [data-slot='sidebar-inset'] > header,
+.dark .owner-theme [data-slot='sidebar-inset'] > header > *,
+.dark .owner-theme [data-slot='sidebar-inset'] > main,
+.dark .owner-theme [data-slot='sidebar-inset'] > main > *,
+.dark .owner-theme header,
+.dark .owner-theme header > * {
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+/* ── Transparent Header in Owner Dark Mode ── */
+.dark .owner-theme header,
+.dark.owner-theme header,
+.dark [data-slot='sidebar-wrapper'].owner-theme header,
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) header,
+.dark .owner-theme > [data-slot='sidebar-inset'] > header,
+.dark .owner-theme [data-slot='sidebar-inset'] header,
+.dark .owner-theme [data-slot='sidebar-inset'] > header,
+.dark .owner-theme header.bg-white\/85,
+.dark .owner-theme header.backdrop-blur-sm,
+.dark .owner-theme .owner-header {
+    background: transparent !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 1px solid rgba(52, 211, 153, 0.22) !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+.dark .owner-theme header [data-slot='button'],
+.dark .owner-theme header button {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.dark .owner-theme header [data-slot='button']:hover,
+.dark .owner-theme header button:hover {
+    background: rgba(16, 185, 129, 0.22) !important;
+    color: #ffffff !important;
+}
+
+.dark .owner-theme header * {
+    color: #d1fae5 !important;
+}
+
+.dark .owner-theme header [data-slot='breadcrumb-page'],
+.dark .owner-theme header h1,
+.dark .owner-theme header .font-semibold {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.dark .owner-theme header [data-slot='breadcrumb-link'] {
+    color: #6ee7b7 !important;
+}
+
+.dark .owner-theme header [data-slot='breadcrumb-link']:hover {
+    color: #ffffff !important;
+}
+
+.dark .owner-theme header [data-slot='breadcrumb-separator'],
+.dark .owner-theme header [data-slot='breadcrumb-separator'] svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+    opacity: 0.9;
+}
+
+/* ── Sidebar Trigger Icon ── */
+.dark .owner-theme [data-slot='sidebar-trigger'],
+.dark .owner-theme header button[data-sidebar='trigger'],
+.dark .owner-theme header [class*='-ml-1'],
+.dark .owner-theme header button svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+    filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.7));
+}
+
+.dark .owner-theme [data-slot='sidebar-trigger']:hover,
+.dark .owner-theme header button[data-sidebar='trigger']:hover {
+    background: rgba(16, 185, 129, 0.25) !important;
+    color: #ffffff !important;
+}
+
+.dark .owner-theme [data-slot='sidebar-trigger']:hover svg,
+.dark .owner-theme header button[data-sidebar='trigger']:hover svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    filter: drop-shadow(0 0 8px rgba(110, 231, 183, 0.9));
+}
+
+/* ==========================================================================
+   ── HIGH-CONTRAST OWNER SIDEBAR (FULLY VISIBLE, READABLE & LUMINOUS) ──
+   ========================================================================== */
+.dark .owner-theme [data-slot='sidebar'],
+.dark .owner-theme .owner-sidebar,
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar'],
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-sidebar='sidebar'],
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar'],
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-sidebar='sidebar'],
+.dark [data-slot='sidebar-wrapper'].owner-theme .group-data-\[side\=left\]\/sidebar-wrapper\:border-r,
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) .group-data-\[side\=left\]\/sidebar-wrapper\:border-r {
+    background: #05120a !important;
+    background-color: #05120a !important;
+    background-image: none !important;
+    border-right: 1px solid rgba(52, 211, 153, 0.25) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.75) !important;
+    z-index: 20 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] > div.fixed,
+.dark .owner-theme [data-slot='sidebar'] > div[class*='fixed'],
+.dark .owner-theme .owner-sidebar {
+    top: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    height: 100svh !important;
+}
+
+.dark .owner-theme [data-slot='sidebar-header'],
+.dark .owner-theme [data-slot='sidebar-content'],
+.dark .owner-theme [data-slot='sidebar-footer'],
+.dark .owner-theme [data-slot='sidebar-rail'],
+.dark .owner-theme [data-slot='sidebar-group'],
+.dark .owner-theme [data-slot='sidebar-menu'] {
+    background: #05120a !important;
+    background-color: #05120a !important;
+    background-image: none !important;
+}
+
+.dark .owner-theme [data-slot='sidebar-header'] {
+    padding-top: 1rem !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] * {
+    visibility: visible !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] svg,
+.dark .owner-theme [data-slot='sidebar'] path,
+.dark .owner-theme [data-slot='sidebar'] [class*='lucide'] {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Sidebar Logo & Branding */
+.dark .owner-theme [data-slot='sidebar'] .text-\[\#2c2c2e\],
+.dark .owner-theme [data-slot='sidebar'] span.font-bold,
+.dark .owner-theme [data-slot='sidebar'] div.font-bold {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em;
+}
+
+.dark .owner-theme [data-slot='sidebar'] .text-\[\#2f7d57\],
+.dark .owner-theme [data-slot='sidebar'] span[class*='text-owner-accent'] {
+    color: #34d399 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em;
+    opacity: 1 !important;
+}
+
+/* Sidebar Section Headers (INVENTORI, PENJUALAN, KEUANGAN, BISNIS) */
+.dark .owner-theme [data-slot='sidebar'] div[class*='uppercase'],
+.dark .owner-theme [data-slot='sidebar'] div[class*='tracking-widest'] {
+    color: #6ee7b7 !important;
+    font-weight: 700 !important;
+    opacity: 0.95 !important;
+    letter-spacing: 0.12em;
+}
+
+/* Sidebar Menu Links */
+.dark .owner-theme [data-slot='sidebar'] a,
+.dark .owner-theme .owner-sidebar a,
+.dark .owner-theme [data-slot='sidebar-menu-button'] {
+    color: #d1fae5 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: all 180ms ease !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a span,
+.dark .owner-theme .owner-sidebar a span {
+    color: #d1fae5 !important;
+    font-weight: 500 !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a:hover,
+.dark .owner-theme .owner-sidebar a:hover,
+.dark .owner-theme [data-slot='sidebar-menu-button']:hover {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a:hover span,
+.dark .owner-theme .owner-sidebar a:hover span {
+    color: #ffffff !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a svg,
+.dark .owner-theme .owner-sidebar a svg,
+.dark .owner-theme [data-slot='sidebar-menu-button'] svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+    transition: all 180ms ease !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a:hover svg,
+.dark .owner-theme .owner-sidebar a:hover svg,
+.dark .owner-theme [data-slot='sidebar-menu-button']:hover svg {
+    color: #a7f3d0 !important;
+    stroke: #a7f3d0 !important;
+    filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.7));
+}
+
+/* Active Sidebar Menu Item */
+.dark .owner-theme [data-slot='sidebar'] a[class*='bg-\[\#edf7f0\]'],
+.dark .owner-theme [data-slot='sidebar'] a[aria-current='page'],
+.dark .owner-theme .owner-sidebar [data-slot='sidebar-menu-button'][data-active='true'],
+.dark .owner-theme [data-slot='sidebar-menu-button'][data-active='true'],
+.dark .owner-theme [data-slot='sidebar'] a:has(span.rounded-full) {
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.28) 0%, rgba(5, 150, 105, 0.16) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: inset 3px 0 0 #34d399, 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+    border-radius: 0.75rem;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a[class*='bg-\[\#edf7f0\]'] span,
+.dark .owner-theme [data-slot='sidebar'] a[aria-current='page'] span,
+.dark .owner-theme [data-slot='sidebar'] a:has(span.rounded-full) span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.dark .owner-theme [data-slot='sidebar'] a[class*='bg-\[\#edf7f0\]'] svg,
+.dark .owner-theme [data-slot='sidebar'] a[aria-current='page'] svg,
+.dark .owner-theme [data-slot='sidebar-menu-button'][data-active='true'] svg,
+.dark .owner-theme [data-slot='sidebar'] a:has(span.rounded-full) svg {
+    color: #a7f3d0 !important;
+    stroke: #a7f3d0 !important;
+    filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.85));
+}
+
+.dark .owner-theme [data-slot='sidebar'] span[class*='rounded-full'] {
+    background-color: #34d399 !important;
+    box-shadow: 0 0 8px #34d399 !important;
+}
+
+/* Sidebar User Footer */
+.dark .owner-theme [data-slot='sidebar-footer'] [data-slot='sidebar-menu-button'],
+.dark .owner-theme [data-slot='sidebar-footer'] .admin-user-menu {
+    background: rgba(8, 25, 15, 0.85) !important;
+    border: 1px solid rgba(52, 211, 153, 0.25) !important;
+    border-radius: 0.75rem;
+}
+
+.dark .owner-theme [data-slot='sidebar-footer'] span {
+    color: #ffffff !important;
+}
+
+.dark .owner-theme [data-slot='sidebar-footer'] span.text-xs {
+    color: #a7ceb6 !important;
+}
+
+.dark .owner-theme [data-slot='sidebar-footer'] svg {
+    color: #6ee7b7 !important;
+    stroke: #6ee7b7 !important;
+}
+
+/* ==========================================================================
+   ── PAGE TITLES & HIGH CONTRAST TYPOGRAPHY ──
+   ========================================================================== */
+.dark .owner-theme h1,
+.dark .owner-theme h2,
+.dark .owner-theme h3,
+.dark .owner-theme h4,
+.dark .owner-theme .text-\[\#1f2a23\],
+.dark .owner-theme .text-\[\#1d2a22\],
+.dark .owner-theme .text-\[\#17182A\],
+.dark .owner-theme .text-\[\#254533\],
+.dark .owner-theme [data-slot='card-title'] {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.dark .owner-theme p.text-muted-foreground,
+.dark .owner-theme .text-muted-foreground,
+.dark .owner-theme .text-\[\#718178\],
+.dark .owner-theme .text-\[\#4a6655\],
+.dark .owner-theme .text-\[\#527362\],
+.dark .owner-theme .text-\[\#9aa9a0\],
+.dark .owner-theme [data-slot='card-description'] {
+    color: #a7f3d0 !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   ── SOLID SLEEK DARK EMERALD CARDS (NO WHITE BOXES) ──
+   ========================================================================== */
+.dark .owner-theme [data-slot='card'],
+.dark .owner-theme .bg-card,
+.dark .owner-theme [class*='rounded-2xl'][class*='border'],
+.dark .owner-theme [class*='rounded-2xl'][class*='bg-white'],
+.dark .owner-theme [class*='rounded-[18px]'][class*='bg-white'] {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.65), 0 0 16px rgba(16, 185, 129, 0.08) !important;
+    color: #ffffff !important;
+    transform: translateZ(0);
+}
+
+.dark .owner-theme [data-slot='card']:hover,
+.dark .owner-theme .bg-card:hover,
+.dark .owner-theme [class*='rounded-2xl'][class*='border']:hover {
+    border-color: rgba(110, 231, 183, 0.65) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 22px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Stat Card Metric Icons & Glow */
+.dark .owner-theme .flex.size-10.items-center.justify-center.rounded-xl {
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.dark .owner-theme .flex.size-10.items-center.justify-center.rounded-xl svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* Card Headers & Row Dividers */
+.dark .owner-theme [data-slot='card-header'],
+.dark .owner-theme [class*='border-b'] {
+    border-color: rgba(52, 211, 153, 0.28) !important;
+}
+
+.dark .owner-theme [class*='divide-border'],
+.dark .owner-theme [class*='divide-y'] > * + * {
+    border-color: rgba(52, 211, 153, 0.2) !important;
+}
+
+/* ==========================================================================
+   ── TABLES & DATA GRIDS ──
+   ========================================================================== */
+.dark .owner-theme table,
+.dark .owner-theme .owner-data-table,
+.dark .owner-theme [data-slot='table'],
+.dark .owner-theme [data-slot='table-container'],
+.dark .owner-theme div:has(> table),
+.dark .owner-theme div:has(> .owner-data-table) {
+    position: relative !important;
+    z-index: 10 !important;
+    background: #07160e !important;
+    background-color: #07160e !important;
+    opacity: 1 !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.75), 0 0 16px rgba(16, 185, 129, 0.12) !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+    transform: translateZ(0);
+}
+
+.dark .owner-theme table thead,
+.dark .owner-theme table thead tr,
+.dark .owner-theme table th,
+.dark .owner-theme .owner-data-table thead,
+.dark .owner-theme .owner-data-table thead tr,
+.dark .owner-theme .owner-data-table th,
+.dark .owner-theme [data-slot='table'] thead,
+.dark .owner-theme [data-slot='table'] thead tr,
+.dark .owner-theme [data-slot='table'] th,
+.dark .owner-theme [data-slot='table-header'],
+.dark .owner-theme [data-slot='table-head'] {
+    background: #0d2516 !important;
+    background-color: #0d2516 !important;
+    color: #6ee7b7 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid rgba(52, 211, 153, 0.4) !important;
+    padding: 0.85rem 1.25rem !important;
+}
+
+.dark .owner-theme table tbody,
+.dark .owner-theme table tbody tr,
+.dark .owner-theme table td,
+.dark .owner-theme .owner-data-table tbody,
+.dark .owner-theme .owner-data-table tbody tr,
+.dark .owner-theme .owner-data-table td,
+.dark .owner-theme [data-slot='table'] tbody,
+.dark .owner-theme [data-slot='table'] tbody tr,
+.dark .owner-theme [data-slot='table'] td,
+.dark .owner-theme [data-slot='table-row'],
+.dark .owner-theme [data-slot='table-cell'] {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    color: #d1fae5 !important;
+    border-bottom: 1px solid rgba(52, 211, 153, 0.16) !important;
+}
+
+.dark .owner-theme table tbody tr:nth-child(even),
+.dark .owner-theme table tbody tr:nth-child(even) td,
+.dark .owner-theme .owner-data-table tbody tr:nth-child(even),
+.dark .owner-theme .owner-data-table tbody tr:nth-child(even) td,
+.dark .owner-theme [data-slot='table'] tbody tr:nth-child(even),
+.dark .owner-theme [data-slot='table'] tbody tr:nth-child(even) td {
+    background: #0b1f13 !important;
+    background-color: #0b1f13 !important;
+}
+
+.dark .owner-theme table tbody tr:hover,
+.dark .owner-theme table tbody tr:hover td,
+.dark .owner-theme .owner-data-table tbody tr:hover,
+.dark .owner-theme .owner-data-table tbody tr:hover td,
+.dark .owner-theme [data-slot='table'] tbody tr:hover,
+.dark .owner-theme [data-slot='table'] tbody tr:hover td,
+.dark .owner-theme [data-slot='table-row']:hover,
+.dark .owner-theme [data-slot='table-row']:hover td {
+    background: #123320 !important;
+    background-color: #123320 !important;
+}
+
+.dark .owner-theme table td,
+.dark .owner-theme .owner-data-table td,
+.dark .owner-theme [data-slot='table'] td,
+.dark .owner-theme [data-slot='table-cell'] {
+    padding: 0.85rem 1.25rem !important;
+}
+
+.dark .owner-theme .owner-data-table tbody td:first-child,
+.dark .owner-theme [data-slot='table'] tbody td:first-child,
+.dark .owner-theme table tbody td:first-child {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   ── FORM INPUTS & BUTTONS ──
+   ========================================================================== */
+.dark .owner-theme input,
+.dark .owner-theme textarea,
+.dark .owner-theme select,
+.dark .owner-theme [data-slot='select-trigger'],
+.dark .owner-theme .pos-page input,
+.dark .owner-theme .pos-page textarea {
+    background: rgba(5, 18, 11, 0.94) !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark .owner-theme input::placeholder,
+.dark .owner-theme textarea::placeholder {
+    color: #6e947e !important;
+}
+
+.dark .owner-theme input:focus,
+.dark .owner-theme textarea:focus,
+.dark .owner-theme select:focus,
+.dark .owner-theme [data-slot='select-trigger']:focus,
+.dark .owner-theme input:focus-visible,
+.dark .owner-theme textarea:focus-visible,
+.dark .owner-theme select:focus-visible,
+.dark .owner-theme [data-slot='select-trigger']:focus-visible {
+    border-color: #34d399 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35) !important;
+}
+
+/* Buttons */
+.dark .owner-theme .owner-primary-button,
+.dark .owner-theme [data-slot='button'].owner-primary-button,
+.dark .owner-theme [data-slot='button'][data-variant='default'],
+.dark .owner-theme [data-slot='button'][data-variant='primary'],
+.dark .owner-theme [data-slot='button'].bg-primary,
+.dark .owner-theme [data-slot='button'].bg-owner-accent,
+.dark .owner-theme [data-slot='button'].bg-purple {
+    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%) !important;
+    border: 1px solid rgba(167, 243, 208, 0.55) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4) !important;
+    transition: all 180ms ease !important;
+}
+
+.dark .owner-theme .owner-primary-button:hover,
+.dark .owner-theme [data-slot='button'].owner-primary-button:hover,
+.dark .owner-theme [data-slot='button'][data-variant='default']:hover,
+.dark .owner-theme [data-slot='button'][data-variant='primary']:hover,
+.dark .owner-theme [data-slot='button'].bg-primary:hover,
+.dark .owner-theme [data-slot='button'].bg-owner-accent:hover,
+.dark .owner-theme [data-slot='button'].bg-purple:hover {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%) !important;
+    box-shadow: 0 6px 26px rgba(52, 211, 153, 0.6) !important;
+    transform: translateY(-1px);
+}
+
+.dark .owner-theme [data-slot='button'][data-variant='outline'],
+.dark .owner-theme [data-slot='button'].border,
+.dark .owner-theme [data-slot='button'][data-variant='secondary'],
+.dark .owner-theme [data-slot='button'].border-black {
+    background: rgba(10, 32, 19, 0.88) !important;
+    border: 1px solid rgba(52, 211, 153, 0.38) !important;
+    color: #a7f3d0 !important;
+    transition: all 150ms ease !important;
+}
+
+.dark .owner-theme [data-slot='button'][data-variant='outline']:hover,
+.dark .owner-theme [data-slot='button'].border:hover,
+.dark .owner-theme [data-slot='button'][data-variant='secondary']:hover,
+.dark .owner-theme [data-slot='button'].border-black:hover {
+    background: rgba(16, 185, 129, 0.3) !important;
+    border-color: rgba(167, 243, 208, 0.65) !important;
+    color: #ffffff !important;
+}
+
+.dark .owner-theme [data-slot='button'][data-variant='ghost']:hover,
+.dark .owner-theme [data-slot='button']:has(svg[data-lucide='arrow-left']):hover {
+    background: rgba(16, 185, 129, 0.22) !important;
+    color: #ffffff !important;
+}
+
+/* Modals & Dialogs */
+.dark .owner-theme [data-slot='dialog-content'],
+.dark .owner-theme [data-slot='dropdown-menu-content'],
+.dark .owner-theme [data-slot='select-content'],
+.dark .owner-theme [data-slot='popover-content'],
+.dark .owner-theme [data-slot='sheet-content'] {
+    background: linear-gradient(180deg, rgba(10, 32, 20, 0.98) 0%, rgba(5, 18, 11, 0.99) 100%) !important;
+    border: 1px solid rgba(52, 211, 153, 0.38) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75) !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.owner-theme) [data-slot='dialog-overlay'] {
+    background: rgba(1, 6, 3, 0.84) !important;
+}
+
+html.dark:has(.owner-theme) [data-slot='dialog-content'],
+html.dark:has(.owner-theme) [data-slot='dropdown-menu-content'],
+html.dark:has(.owner-theme) [data-slot='select-content'],
+html.dark:has(.owner-theme) [data-slot='popover-content'],
+html.dark:has(.owner-theme) [data-slot='sheet-content'] {
+    background: linear-gradient(180deg, #0d2818 0%, #05140b 100%) !important;
+    border: 1px solid rgba(110, 231, 183, 0.55) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 28px rgba(16, 185, 129, 0.2) !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.owner-theme) [data-slot='dialog-title'],
+html.dark:has(.owner-theme) [data-slot='sheet-title'] {
+    color: #ffffff !important;
+}
+
+html.dark:has(.owner-theme) [data-slot='dialog-description'],
+html.dark:has(.owner-theme) [data-slot='sheet-description'] {
+    color: #6ee7b7 !important;
+}
+
+/* Badges & Status */
+.dark .owner-theme [data-slot='badge'][class*='bg-emerald-100'],
+.dark .owner-theme [class*='bg-emerald-100'][class*='text-emerald-700'] {
+    background: rgba(16, 185, 129, 0.24) !important;
+    border: 1px solid rgba(52, 211, 153, 0.5) !important;
+    color: #6ee7b7 !important;
+}
+
+.dark .owner-theme [data-slot='badge'][class*='bg-rose-100'],
+.dark .owner-theme [class*='bg-rose-100'][class*='text-rose-700'] {
+    background: rgba(244, 63, 94, 0.22) !important;
+    border: 1px solid rgba(244, 63, 94, 0.5) !important;
+    color: #fda4af !important;
+}
+
+/* Global Icons */
+.dark .owner-theme svg,
+.dark .owner-theme [data-slot='icon'],
+.dark .owner-theme [class*='lucide'],
+.dark [data-slot='sidebar-wrapper'].owner-theme svg {
+    color: #6ee7b7 !important;
+    stroke: #6ee7b7 !important;
+}
+
+.dark .owner-theme [data-slot='button'].owner-primary-button svg,
+.dark .owner-theme [data-slot='button'][data-variant='default'] svg,
+.dark .owner-theme [data-slot='button'][data-variant='primary'] svg,
+.dark .owner-theme [data-slot='button'].bg-primary svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* Keep dashboard circle icons readable against their colored surfaces. */
+.dark .owner-theme .flex.size-10.items-center.justify-center.rounded-xl svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.dark .owner-theme .rounded-full.bg-emerald-100 svg,
+.dark .owner-theme .rounded-full.bg-emerald-900\/30 svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+}
+
+.dark .owner-theme .rounded-full.bg-rose-100 svg,
+.dark .owner-theme .rounded-full.bg-rose-900\/30 svg {
+    color: #fb7185 !important;
+    stroke: #fb7185 !important;
+}
+
+.owner-theme .owner-stat-icon svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.owner-theme .owner-trend-icon svg {
+    color: #16845b !important;
+    stroke: #16845b !important;
+    opacity: 1 !important;
+}
+
+.owner-theme .owner-transaction-icon svg {
+    color: #16845b !important;
+    stroke: #16845b !important;
+    opacity: 1 !important;
+}
+
+.dark .owner-theme .owner-trend-icon svg,
+.dark .owner-theme .owner-transaction-icon svg {
+    color: #6ee7b7 !important;
+    stroke: #6ee7b7 !important;
+}
+
+.dark .owner-theme .owner-quick-action,
+.dark .owner-theme .owner-event-link,
+.dark .owner-theme .owner-event-card {
+    background: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    box-shadow: none !important;
+}
+
+.dark .owner-theme .owner-event-link:hover,
+.dark .owner-theme .owner-event-link:focus,
+.dark .owner-theme .owner-event-link:active,
+.dark .owner-theme .owner-quick-action:hover,
+.dark .owner-theme .owner-quick-action:focus,
+.dark .owner-theme .owner-quick-action:active,
+.dark .owner-theme .owner-event-card:hover {
+    background: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    box-shadow: none !important;
+}
+
+.dark .owner-theme .owner-event-date {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #a7f3d0 !important;
+}
+
+.dark .owner-theme .event-show-page .bg-white,
+.dark .owner-theme .event-show-page [class*='bg-gradient-to-'] {
+    background: #07160e !important;
+    background-image: none !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    box-shadow: none !important;
+}
+
+.dark .owner-theme .event-show-page [class*='bg-[#f8fbf9]'],
+.dark .owner-theme .event-show-page [class*='bg-[#f7fbf8]'],
+.dark .owner-theme .event-show-page [class*='bg-[#eef8f2]'],
+.dark .owner-theme .event-show-page [class*='bg-slate-50'] {
+    background: #0d2516 !important;
+}
+
+.dark .owner-theme .event-show-page [class*='text-slate-800'],
+.dark .owner-theme .event-show-page [class*='text-slate-700'],
+.dark .owner-theme .event-show-page [class*='text-slate-600'] {
+    color: #d1fae5 !important;
+}
+
+.dark .owner-theme .event-show-page [class*='text-slate-500'] {
+    color: #8fb9a0 !important;
+}
+
+.dark .owner-theme .owner-stock-in-button {
+    background: #079669 !important;
+    color: #ffffff !important;
+    border-color: #34d399 !important;
+}
+
+.dark .owner-theme .owner-stock-in-button svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+.dark .owner-theme .owner-inventory-search {
+    background: #07160e !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+}
+
+.dark .owner-theme .owner-inventory-search::placeholder {
+    color: #8fb9a0 !important;
+}
+
+.dark .owner-theme .owner-inventory-search-wrap > svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+}
+
+.dark .owner-theme .owner-product-icon {
+    background: rgba(16, 185, 129, 0.18) !important;
+    color: #047857 !important;
+}
+
+.dark .owner-theme .owner-product-icon svg {
+    color: #047857 !important;
+    stroke: #047857 !important;
+}
+
+.dark .owner-theme .owner-add-product-button,
+.dark .owner-theme .owner-add-product-button svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+.dark .owner-theme .owner-inventory-form input,
+.dark .owner-theme .owner-inventory-form textarea,
+.dark .owner-theme .owner-inventory-form [data-slot='select-trigger'],
+.dark .owner-theme .owner-opname-table input {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+    box-shadow: none !important;
+}
+
+.dark .owner-theme .owner-inventory-form input::placeholder,
+.dark .owner-theme .owner-inventory-form textarea::placeholder,
+.dark .owner-theme .owner-opname-table input::placeholder {
+    color: #8fb9a0 !important;
+}
+
+.dark .owner-theme .owner-inventory-form [data-slot='select-trigger'] svg,
+.dark .owner-theme .owner-inventory-date svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+}
+
+.dark .owner-theme .owner-inventory-date {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+    box-shadow: none !important;
+}
+
+.dark .owner-theme .owner-opname-table,
+.dark .owner-theme .owner-opname-table table,
+.dark .owner-theme .owner-opname-table thead,
+.dark .owner-theme .owner-opname-table tbody,
+.dark .owner-theme .owner-opname-table tr,
+.dark .owner-theme .owner-opname-table td,
+.dark .owner-theme .owner-opname-table th {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+.dark .owner-theme .owner-opname-table th {
+    color: #6ee7b7 !important;
+}
+
+.dark .owner-theme .owner-opname-table td {
+    color: #d1fae5 !important;
+}
+
+/* Inventory forms use the owner shell as their source of truth. */
+.owner-theme .owner-add-product-button,
+.owner-theme .owner-add-product-button svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+.owner-theme .owner-inventory-form input,
+.owner-theme .owner-inventory-form textarea,
+.owner-theme .owner-inventory-form [data-slot='select-trigger'],
+.owner-theme .owner-opname-table input {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+    box-shadow: none !important;
+}
+
+.owner-theme .owner-inventory-form input::placeholder,
+.owner-theme .owner-inventory-form textarea::placeholder,
+.owner-theme .owner-opname-table input::placeholder {
+    color: #8fb9a0 !important;
+}
+
+.owner-theme .owner-inventory-date {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+    box-shadow: none !important;
+}
+
+.owner-theme .owner-inventory-form [data-slot='select-trigger'] svg,
+.owner-theme .owner-inventory-date svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+}
+
+.owner-theme .owner-opname-table,
+.owner-theme .owner-opname-table table,
+.owner-theme .owner-opname-table thead,
+.owner-theme .owner-opname-table tbody,
+.owner-theme .owner-opname-table tr,
+.owner-theme .owner-opname-table td,
+.owner-theme .owner-opname-table th {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+.owner-theme .owner-opname-table th {
+    color: #6ee7b7 !important;
+}
+
+.owner-theme .owner-opname-table td {
+    color: #d1fae5 !important;
+}
+
+/* Final field override: the form classes are intentionally self-contained. */
+.owner-inventory-form input,
+.owner-inventory-form textarea,
+.owner-inventory-form [data-slot='select-trigger'],
+.owner-inventory-field,
+.owner-opname-table input,
+.owner-inventory-date {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+    box-shadow: none !important;
+}
+
+.owner-inventory-form input::placeholder,
+.owner-inventory-form textarea::placeholder,
+.owner-opname-table input::placeholder {
+    color: #8fb9a0 !important;
+}
+
+.owner-inventory-form [data-slot='select-trigger'] svg,
+.owner-inventory-date svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+}
+
+.owner-inventory-date span {
+    color: #d1fae5 !important;
+}
+
+.owner-date-picker-popover {
+    background: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+}
+
+.owner-date-picker-popover .owner-calendar-nav {
+    display: inline-flex !important;
+    width: 2rem !important;
+    min-width: 2rem !important;
+    height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+    background: #0d2516 !important;
+    color: #6ee7b7 !important;
+}
+
+.owner-date-picker-popover .owner-calendar-nav svg {
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+    margin: 0 !important;
+    color: #6ee7b7 !important;
+    stroke: #6ee7b7 !important;
+}
+
+.owner-opname-table,
+.owner-opname-table table,
+.owner-opname-table thead,
+.owner-opname-table tbody,
+.owner-opname-table tr,
+.owner-opname-table td,
+.owner-opname-table th {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+.owner-opname-table th {
+    color: #6ee7b7 !important;
+}
+
+.owner-opname-table td {
+    color: #d1fae5 !important;
+}
+
+.owner-packages-page .owner-package-search {
+    background: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    color: #d1fae5 !important;
+}
+
+.owner-packages-page .owner-package-search::placeholder {
+    color: #8fb9a0 !important;
+}
+
+.owner-packages-page .owner-package-search-wrap > svg,
+.owner-packages-page .owner-package-search ~ svg {
+    color: #34d399 !important;
+    stroke: #34d399 !important;
+}
+
+.owner-packages-table,
+.owner-packages-table table,
+.owner-packages-table thead,
+.owner-packages-table tbody,
+.owner-packages-table tr,
+.owner-packages-table td,
+.owner-packages-table th {
+    background: #07160e !important;
+    background-color: #07160e !important;
+    border-color: rgba(52, 211, 153, 0.22) !important;
+    color: #d1fae5 !important;
+}
+
+.owner-packages-table .owner-package-header {
+    background: #0d2516 !important;
+    color: #6ee7b7 !important;
+}
+
+.owner-packages-table .owner-package-row:hover {
+    background: #0d2516 !important;
+}
+
+.owner-packages-table .owner-package-icon {
+    background: rgba(16, 185, 129, 0.18) !important;
+    color: #047857 !important;
+}
+
+.owner-packages-table .owner-package-icon svg {
+    color: #047857 !important;
+    stroke: #047857 !important;
+}
+
+.owner-packages-table .owner-package-status {
+    border-color: rgba(52, 211, 153, 0.45) !important;
+    background: rgba(16, 185, 129, 0.18) !important;
+    color: #6ee7b7 !important;
+}
+
+.owner-packages-table .owner-package-status-inactive {
+    border-color: rgba(148, 163, 184, 0.4) !important;
+    background: rgba(71, 85, 105, 0.25) !important;
+    color: #cbd5e1 !important;
+}
+
+.owner-packages-page .owner-package-pagination {
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    background: #07160e !important;
+    color: #a7f3d0 !important;
+}
+
+/* Recharts & Chart Overrides */
+.dark .owner-theme .recharts-cartesian-grid line {
+    stroke: rgba(52, 211, 153, 0.15) !important;
+}
+
+.dark .owner-theme .recharts-text,
+.dark .owner-theme .recharts-cartesian-axis-tick-value {
+    fill: #a7ceb6 !important;
+}
+
+.dark .owner-theme .recharts-default-tooltip {
+    background: #092113 !important;
+    border: 1px solid rgba(110, 231, 183, 0.55) !important;
+    border-radius: 0.75rem !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Global Scrollbars */
+html.dark:has(.owner-theme),
+html.dark:has(.owner-theme) *,
+body.dark:has(.owner-theme),
+body.dark:has(.owner-theme) *,
+.dark .owner-theme,
+.dark .owner-theme * {
+    scrollbar-width: thin !important;
+    scrollbar-color: #10b981 #030b06 !important;
+}
+
+html.dark:has(.owner-theme) ::-webkit-scrollbar,
+body.dark:has(.owner-theme) ::-webkit-scrollbar,
+.dark .owner-theme ::-webkit-scrollbar,
+.dark .owner-theme *::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+    display: block !important;
+}
+
+html.dark:has(.owner-theme) ::-webkit-scrollbar-track,
+body.dark:has(.owner-theme) ::-webkit-scrollbar-track,
+.dark .owner-theme ::-webkit-scrollbar-track,
+.dark .owner-theme *::-webkit-scrollbar-track {
+    background: #030b06 !important;
+}
+
+html.dark:has(.owner-theme) ::-webkit-scrollbar-thumb,
+body.dark:has(.owner-theme) ::-webkit-scrollbar-thumb,
+.dark .owner-theme ::-webkit-scrollbar-thumb,
+.dark .owner-theme *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #34d399 0%, #059669 100%) !important;
+    border-radius: 9999px !important;
+    border: 2px solid #030b06 !important;
+}
+
+html.dark:has(.owner-theme) ::-webkit-scrollbar-thumb:hover,
+body.dark:has(.owner-theme) ::-webkit-scrollbar-thumb:hover,
+.dark .owner-theme ::-webkit-scrollbar-thumb:hover,
+.dark .owner-theme *::-webkit-scrollbar-thumb:hover {
+    background: #6ee7b7 !important;
+}
+
+/* Keep the owner dark workspace flat and still. */
+html.dark:has(.owner-theme),
+body.dark:has(.owner-theme),
+.dark .owner-theme,
+.dark .owner-theme [data-slot='sidebar-inset'],
+.dark .owner-theme .owner-content,
+.dark .owner-theme main,
+.dark .owner-theme [data-slot='card'],
+.dark .owner-theme [data-slot='table'],
+.dark .owner-theme .subscription-shell {
+    background: #080b09 !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.owner-theme),
+body.dark:has(.owner-theme),
+.dark .owner-theme,
+.dark .owner-theme * {
+    animation: none !important;
+    transition: none !important;
+}
+
+.dark .owner-theme::before,
+.dark .owner-theme::after,
+.dark .owner-theme .owner-content::before,
+.dark .owner-theme .owner-content::after,
+.dark .owner-theme .subscription-orb,
+.dark .owner-theme .subscription-orb-alt {
+    display: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+.dark .owner-theme *,
+.dark .owner-theme *::before,
+.dark .owner-theme *::after {
+    transform: none !important;
+}
+
+.owner-theme,
+.owner-theme * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+}
+
+.owner-theme *,
+.owner-theme *::before,
+.owner-theme *::after,
+.owner-theme *:hover,
+.owner-theme *:focus,
+.owner-theme *:active {
+    transform: none !important;
+}
+
+html.dark:has(.owner-theme),
+body.dark:has(.owner-theme),
+.dark body:has(.owner-theme),
+.dark .owner-theme,
+.dark .owner-theme [data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset'],
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar-inset'],
+.dark .owner-theme .owner-content {
+    animation: none !important;
+    background: #080b09 !important;
+    background-image:
+        linear-gradient(to right, rgba(52, 211, 153, 0.13) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.13) 1px, transparent 1px),
+        linear-gradient(180deg, #020704 0%, #062615 50%, #010a05 100%) !important;
+    background-size: 48px 48px, 48px 48px, auto !important;
+    background-attachment: initial !important;
+}
+
+.dark .owner-theme [data-slot='sidebar-inset']::before,
+.dark .owner-theme [data-slot='sidebar-inset']::after,
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset']::before,
+.dark [data-slot='sidebar-wrapper'].owner-theme [data-slot='sidebar-inset']::after,
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar-inset']::before,
+.dark [data-slot='sidebar-wrapper']:has(.owner-theme) [data-slot='sidebar-inset']::after,
+.dark .owner-theme .owner-content::before,
+.dark .owner-theme .owner-content::after {
+    display: none !important;
+    animation: none !important;
+    background: none !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+

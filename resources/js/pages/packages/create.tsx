@@ -57,7 +57,7 @@ export default function PackageCreate({ variants }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Paket Produk" />
 
-            <div className="flex w-full flex-1 flex-col gap-6 p-4 md:p-6">
+            <div className="owner-package-page flex w-full flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex items-center gap-3">
                     <Button asChild variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-xl">
@@ -84,7 +84,7 @@ export default function PackageCreate({ variants }: Props) {
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="cth: Paket 3 Mix Mochi"
                                 required
-                                className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                className="owner-form-field h-10 rounded-xl text-sm"
                             />
                             {errors.name && <p className="text-xs text-rose-500">{errors.name}</p>}
                         </div>
@@ -100,7 +100,7 @@ export default function PackageCreate({ variants }: Props) {
                                     value={data.capacity}
                                     onChange={(e) => setData('capacity', parseInt(e.target.value) || 0)}
                                     required
-                                    className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-form-field h-10 rounded-xl text-sm"
                                 />
                                 {errors.capacity && <p className="text-xs text-rose-500">{errors.capacity}</p>}
                             </div>
@@ -115,7 +115,7 @@ export default function PackageCreate({ variants }: Props) {
                                     onChange={(e) => setData('price', e.target.value)}
                                     placeholder="cth: 18000"
                                     required
-                                    className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-form-field h-10 rounded-xl text-sm"
                                 />
                                 {errors.price && <p className="text-xs text-rose-500">{errors.price}</p>}
                             </div>
@@ -129,7 +129,7 @@ export default function PackageCreate({ variants }: Props) {
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder="Catatan opsional mengenai paket..."
-                                className="min-h-[88px] rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                className="owner-form-field min-h-[88px] rounded-xl text-sm"
                             />
                             {errors.description && <p className="text-xs text-rose-500">{errors.description}</p>}
                         </div>
@@ -201,8 +201,8 @@ export default function PackageCreate({ variants }: Props) {
                         <Button asChild variant="outline" className="rounded-xl">
                             <Link href="/packages">Batal</Link>
                         </Button>
-                        <Button type="submit" disabled={processing} variant="owner" className="gap-1.5 rounded-xl">
-                            <Save size={16} />
+                        <Button type="submit" disabled={processing} variant="owner" className="gap-1.5 rounded-xl [&_svg]:!text-white [&_svg]:!stroke-white">
+                            <Save size={16} className="text-white" />
                             Simpan Paket
                         </Button>
                     </div>

@@ -100,7 +100,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('navigation.orders')} />
 
-            <div className="flex flex-1 flex-col gap-5 p-4 md:p-6">
+            <div className="owner-order-page flex flex-1 flex-col gap-5 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -120,9 +120,9 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                                 {t('orders.posButton')}
                             </Link>
                         </Button>
-                        <Button asChild variant="owner" className="gap-1.5 rounded-xl">
-                            <Link href="/orders/create">
-                                <PlusCircle size={16} />
+                        <Button asChild variant="owner" className="gap-1.5 rounded-xl [&_svg]:!text-white [&_svg]:!stroke-white">
+                            <Link href="/orders/create" className="inline-flex items-center gap-2 text-white">
+                                <PlusCircle size={16} className="text-white" />
                                 {t('orders.createOrder')}
                             </Link>
                         </Button>

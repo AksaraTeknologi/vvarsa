@@ -92,7 +92,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('variants.editTitle', { name: variant.name, defaultValue: `Edit Varian: ${variant.name}` })} />
 
-            <div className="w-full p-4 md:p-6">
+            <div className="owner-variant-page w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
                         <Link href="/variants">
@@ -122,7 +122,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder={t('variants.namePlaceholder', 'Contoh: Mochi Strawberry Choco (3 pcs)')}
                                     required
-                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.name ? 'border-rose-500' : ''}`}
+                                    className={`owner-form-field !text-sm ${formErrors.name ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.name && <p className="text-xs text-rose-500">{formErrors.name}</p>}
                             </div>
@@ -133,7 +133,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
                                     placeholder={t('variants.skuPlaceholder', 'Contoh: VAR-STRW-CHOCO-3')}
-                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.sku ? 'border-rose-500' : ''}`}
+                                    className={`owner-form-field !text-sm ${formErrors.sku ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.sku && <p className="text-xs text-rose-500">{formErrors.sku}</p>}
                             </div>
@@ -146,7 +146,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                                     onChange={(e) => setSellPrice(parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                     placeholder={formatRupiah(18000)}
                                     required
-                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.sell_price ? 'border-rose-500' : ''}`}
+                                    className={`owner-form-field !text-sm ${formErrors.sell_price ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.sell_price && <p className="text-xs text-rose-500">{formErrors.sell_price}</p>}
                             </div>
@@ -158,7 +158,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder={t('variants.descriptionPlaceholder', 'Masukkan penjelasan produk untuk slip penjualan atau menu kasir...')}
                                     rows={2}
-                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-form-field min-h-[88px] !text-sm"
                                 />
                             </div>
                             <div className="col-span-2 flex items-center gap-2">
@@ -182,7 +182,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                             <div className="col-span-2 space-y-1.5">
                                 <Label htmlFor="recipe_id">{t('variants.selectRecipe', 'Pilih Resep Acuan *')}</Label>
                                 <Select value={recipeId ? String(recipeId) : ''} onValueChange={(val) => setRecipeId(val)}>
-                                    <SelectTrigger className="h-10 rounded-xl bg-white text-sm">
+                                    <SelectTrigger className="owner-form-field h-10 rounded-xl text-sm">
                                         <SelectValue placeholder={t('variants.recipePlaceholder', 'Pilih resep dasar...')} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -205,7 +205,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                                     value={recipeQty}
                                     onChange={(e) => setRecipeQty(parseFloat(e.target.value) || 0)}
                                     required
-                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.recipe_qty ? 'border-rose-500' : ''}`}
+                                    className={`owner-form-field !text-sm ${formErrors.recipe_qty ? 'border-rose-500' : ''}`}
                                 />
                                 {formErrors.recipe_qty && <p className="text-xs text-rose-500">{formErrors.recipe_qty}</p>}
                             </div>
@@ -231,7 +231,7 @@ export default function VariantEdit({ variant, recipes }: Props) {
                     </div>
 
                     {/* HPP & Margin Preview */}
-                    <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+                    <div className="flex items-center gap-4 rounded-2xl border border-[#2c5f49] bg-[#091d15] p-5">
                         <Calculator size={20} className="text-muted-foreground shrink-0" />
                         <div className="grid flex-1 grid-cols-3 gap-4 text-base">
                             <div>

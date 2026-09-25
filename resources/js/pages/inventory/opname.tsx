@@ -124,13 +124,13 @@ export default function Opname({ products }: Props) {
                             value={opname_date}
                             onChange={(val) => setOpnameDate(val)}
                             theme={isOwner ? 'owner-green' : 'owner'}
-                            className={
+                            className={`owner-inventory-date !h-10 !border-[#285e49] !bg-[#07160e] !px-3 !text-[#d1fae5] ${
                                 isOwner
-                                    ? '!border-[#d9e5dd] !bg-white !text-[#315d45] hover:!bg-[#edf8f1] hover:!text-[#2f7d51]'
-                                                                        : isStaff
-                                                                            ? '!border-[#d94f83] !bg-white !text-[#d94f83] hover:!bg-[#fff0f5] hover:!text-[#b83268]'
-                                                                            : '!border-blue-200 !bg-white !text-blue-700 hover:!bg-blue-50 hover:!text-blue-700'
-                            }
+                                    ? 'hover:!bg-[#0d2516] hover:!text-[#d1fae5]'
+                                    : isStaff
+                                        ? 'hover:!bg-[#0d2516] hover:!text-[#d1fae5]'
+                                        : 'hover:!bg-[#0d2516] hover:!text-[#d1fae5]'
+                            }`}
                         />
                     </div>
                 </div>
@@ -142,10 +142,10 @@ export default function Opname({ products }: Props) {
                 )}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
+                    <div className="owner-opname-table border-border overflow-hidden rounded-2xl border shadow-sm">
                         <Table>
                             <TableHeader>
-                                <TableRow className="border-border !bg-white hover:!bg-white">
+                                <TableRow className="border-border">
                                     <TableHead className="text-muted-foreground px-4 py-2.5 text-xs font-bold tracking-[0.06em] uppercase">
                                         {t('inventory.product')}
                                     </TableHead>
@@ -187,7 +187,7 @@ export default function Opname({ products }: Props) {
                                                     min={0}
                                                     value={item.actual_stock}
                                                     onChange={(e) => updateItem(product.id, 'actual_stock', parseInt(e.target.value) || 0)}
-                                                    className="mx-auto h-9 w-24 rounded-xl !bg-white !text-center !text-sm !text-slate-700 placeholder:text-slate-400"
+                                                    className="owner-inventory-field mx-auto h-9 w-24 rounded-xl !text-center !text-sm placeholder:text-slate-400"
                                                 />
                                                 {clientErrors[`items.${idx}.actual_stock`] && (
                                                     <p className="mt-1 text-xs text-rose-500">{clientErrors[`items.${idx}.actual_stock`]}</p>
@@ -206,7 +206,7 @@ export default function Opname({ products }: Props) {
                                                     value={item.note}
                                                     onChange={(e) => updateItem(product.id, 'note', e.target.value)}
                                                     placeholder={t('inventory.notePlaceholder')}
-                                                    className="h-9 w-full rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                                    className="owner-inventory-field h-9 w-full rounded-xl !text-sm placeholder:text-slate-400"
                                                 />
                                             </TableCell>
                                         </TableRow>

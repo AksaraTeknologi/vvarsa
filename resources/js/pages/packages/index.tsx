@@ -40,7 +40,7 @@ export default function PackagesIndex({ packages, filters }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('packages.title', 'Manajemen Paket Produk')} />
 
-            <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+            <div className="owner-package-page owner-packages-page flex flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -51,9 +51,9 @@ export default function PackagesIndex({ packages, filters }: Props) {
                             {t('packages.subtitle', 'Konfigurasi paket isi mochi (kapasitas, harga bundle, dan batas varian)')}
                         </p>
                     </div>
-                    <Button asChild variant="owner" size="sm" className="h-9 rounded-xl px-3 text-sm">
-                        <Link href="/packages/create">
-                            <PlusCircle size={16} />
+                    <Button asChild variant="owner" size="sm" className="h-9 rounded-xl px-3 text-sm [&_svg]:!h-4 [&_svg]:!w-4 [&_svg]:!text-white [&_svg]:!stroke-white">
+                        <Link href="/packages/create" className="inline-flex items-center gap-2 text-white">
+                            <PlusCircle size={16} className="text-white" />
                             {t('packages.addPackage', 'Tambah Paket')}
                         </Link>
                     </Button>
@@ -61,13 +61,13 @@ export default function PackagesIndex({ packages, filters }: Props) {
 
                 {/* Search */}
                 <form onSubmit={handleSearch} className="flex gap-2">
-                    <div className="relative max-w-sm flex-1">
+                    <div className="owner-package-search-wrap relative max-w-sm flex-1">
                         <Search className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2" size={14} />
                         <Input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder={t('packages.searchPlaceholder', 'Cari paket...')}
-                            className="h-10 rounded-xl !border-[#dde9df] !bg-white pl-9 text-sm text-slate-700 placeholder:text-slate-400"
+                            className="owner-package-search h-10 rounded-xl pl-9 text-sm"
                         />
                     </div>
                 </form>
@@ -83,7 +83,7 @@ export default function PackagesIndex({ packages, filters }: Props) {
                                 key={i}
                                 variant={link.active ? 'default' : 'outline'}
                                 size="sm"
-                                className="h-8 rounded-lg px-3 text-xs"
+                                className="owner-package-pagination h-8 rounded-lg px-3 text-xs"
                                 disabled={!link.url}
                                 onClick={() => link.url && router.get(link.url)}
                                 dangerouslySetInnerHTML={{ __html: link.label }}

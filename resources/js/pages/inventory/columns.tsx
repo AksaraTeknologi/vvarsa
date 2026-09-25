@@ -146,7 +146,7 @@ export const getColumns = (
             const product = row.original;
             return (
                 <div className="flex items-center gap-2">
-                    <div className={`rounded-lg p-1.5 ${product.is_active ? 'bg-slate-100 text-slate-500' : 'bg-slate-50 text-slate-300'}`}>
+                        <div className={`owner-product-icon rounded-lg p-1.5 ${product.is_active ? '' : 'opacity-50'}`}>
                         <Package size={16} />
                     </div>
                     <div>

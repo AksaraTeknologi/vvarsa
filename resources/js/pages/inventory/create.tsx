@@ -94,7 +94,7 @@ export default function InventoryCreate({ categories }: Props) {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="owner-inventory-form space-y-6">
                     <div className="bg-card border-border space-y-4 rounded-2xl border p-5 shadow-sm md:p-6">
                         <h2 className="text-foreground text-sm font-semibold">{t('inventory.basicInfo')}</h2>
 
@@ -106,7 +106,7 @@ export default function InventoryCreate({ categories }: Props) {
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder={t('inventory.productNamePlaceholder')}
-                                className={`h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('name') ? 'border-rose-500' : ''}`}
+                                className={`owner-inventory-field h-10 !text-sm placeholder:text-slate-400 ${displayError('name') ? 'border-rose-500' : ''}`}
                                 required
                             />
                             {displayError('name') && (
@@ -126,13 +126,13 @@ export default function InventoryCreate({ categories }: Props) {
                                     value={data.sku}
                                     onChange={(e) => setData('sku', e.target.value)}
                                     placeholder={t('inventory.skuPlaceholder')}
-                                    className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-inventory-field h-10 !text-sm placeholder:text-slate-400"
                                 />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="category_id">{t('inventory.category')}</Label>
                                 <Select value={data.category_id || undefined} onValueChange={(val) => setData('category_id', val)}>
-                                    <SelectTrigger id="category_id" className="h-10 rounded-xl bg-white text-sm">
+                                    <SelectTrigger id="category_id" className="owner-inventory-field h-10 rounded-xl text-sm">
                                         <SelectValue placeholder={t('inventory.selectCategoryPlaceholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -150,7 +150,7 @@ export default function InventoryCreate({ categories }: Props) {
                             <div className="space-y-2">
                                 <Label htmlFor="unit">{t('inventory.unit')} *</Label>
                                 <Select value={data.unit} onValueChange={(val) => setData('unit', val)}>
-                                    <SelectTrigger id="unit" className="h-10 rounded-xl bg-white text-sm">
+                                    <SelectTrigger id="unit" className="owner-inventory-field h-10 rounded-xl text-sm">
                                         <SelectValue placeholder={t('inventory.selectUnitPlaceholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -170,7 +170,7 @@ export default function InventoryCreate({ categories }: Props) {
                                     min={0}
                                     value={data.min_stock}
                                     onChange={(e) => setData('min_stock', parseInt(e.target.value) || 0)}
-                                    className="h-10 !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-inventory-field h-10 !text-sm placeholder:text-slate-400"
                                 />
                                 <p className="text-muted-foreground text-[11px]">{t('inventory.minStockHint')}</p>
                             </div>
@@ -185,7 +185,7 @@ export default function InventoryCreate({ categories }: Props) {
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
                             placeholder={t('inventory.descriptionPlaceholder')}
-                            className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                            className="owner-inventory-field min-h-[88px] !text-sm placeholder:text-slate-400"
                         />
                     </div>
 

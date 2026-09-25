@@ -30,7 +30,7 @@ export default function VariantsIndex({ variants, filters }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('variants.title', 'Varian Produk')} />
 
-            <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+            <div className="owner-variant-page flex flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -39,9 +39,9 @@ export default function VariantsIndex({ variants, filters }: Props) {
                         </h1>
                         <p className="text-muted-foreground mt-1 text-sm leading-relaxed md:text-[0.95rem]">{t('variants.subtitle', 'Produk yang dijual beserta resep & kalkulasi HPP otomatis')}</p>
                     </div>
-                    <Button asChild variant="owner" className="gap-1.5 rounded-xl">
-                        <Link href="/variants/create">
-                            <PlusCircle size={16} />
+                    <Button asChild variant="owner" className="gap-1.5 rounded-xl [&_svg]:!text-white [&_svg]:!stroke-white">
+                        <Link href="/variants/create" className="inline-flex items-center gap-2 text-white">
+                            <PlusCircle size={16} className="text-white" />
                             {t('variants.addVariant', 'Tambah Varian')}
                         </Link>
                     </Button>
@@ -55,7 +55,7 @@ export default function VariantsIndex({ variants, filters }: Props) {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder={t('variants.searchPlaceholder', 'Cari varian...')}
-                            className="h-10 rounded-xl !border-[#dde9df] !bg-white pl-9 text-sm text-slate-700 placeholder:text-slate-400"
+                            className="owner-form-field h-10 rounded-xl pl-9 text-sm"
                         />
                     </div>
                 </form>

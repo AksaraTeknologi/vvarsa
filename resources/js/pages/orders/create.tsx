@@ -227,7 +227,7 @@ export default function OrderCreate({ variants, packages }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('orders.createNewOrder')} />
 
-            <div className="w-full p-4 md:p-6">
+            <div className="owner-order-page w-full p-4 md:p-6">
                 {/* Header */}
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
@@ -255,7 +255,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                     value={data.customer_name}
                                     onChange={(e) => setData('customer_name', e.target.value)}
                                     placeholder={t('orders.customerNamePlaceholder')}
-                                    className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${errors.customer_name ? 'border-rose-500' : ''}`}
+                                    className={`owner-form-field !text-sm ${errors.customer_name ? 'border-rose-500' : ''}`}
                                     required
                                 />
                                 {errors.customer_name && <p className="text-xs text-rose-500">{errors.customer_name}</p>}
@@ -268,7 +268,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                     value={data.customer_phone}
                                     onChange={(e) => setData('customer_phone', e.target.value)}
                                     placeholder={t('orders.customerPhonePlaceholder')}
-                                    className="!bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-form-field !text-sm"
                                 />
                             </div>
                             <div className="col-span-2 space-y-1.5">
@@ -279,7 +279,7 @@ export default function OrderCreate({ variants, packages }: Props) {
                                     onChange={(e) => setData('notes', e.target.value)}
                                     rows={2}
                                     placeholder={t('orders.notesPlaceholder')}
-                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-form-field min-h-[88px] !text-sm"
                                 />
                             </div>
                         </div>

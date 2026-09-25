@@ -115,7 +115,7 @@ export default function RecipeCreate({ ingredients }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Resep Baru" />
 
-            <div className="w-full p-4 md:p-6">
+            <div className="owner-recipe-page w-full p-4 md:p-6">
                 <div className="mb-6 flex items-center gap-3">
                     <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0 rounded-xl">
                         <Link href="/recipes">
@@ -144,7 +144,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                         onChange={(e) => setName(e.target.value)}
                                         placeholder="Contoh: Resep Mochi Strawberry Choco"
                                         required
-                                        className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.name ? 'border-rose-500' : ''}`}
+                                        className={`owner-form-field !text-sm ${formErrors.name ? 'border-rose-500' : ''}`}
                                     />
                                     {formErrors.name && <p className="text-xs text-rose-500">{formErrors.name}</p>}
                                 </div>
@@ -157,7 +157,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                         value={portionQty}
                                         onChange={(e) => setPortionQty(parseInt(e.target.value) || 0)}
                                         required
-                                        className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${formErrors.portion_qty ? 'border-rose-500' : ''}`}
+                                        className={`owner-form-field !text-sm ${formErrors.portion_qty ? 'border-rose-500' : ''}`}
                                     />
                                     {formErrors.portion_qty && <p className="text-xs text-rose-500">{formErrors.portion_qty}</p>}
                                 </div>
@@ -170,7 +170,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="Masukkan detail pembuatan resep atau porsi dasar resep ini..."
                                     rows={3}
-                                    className="min-h-[88px] !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                    className="owner-form-field min-h-[88px] !text-sm"
                                 />
                             </div>
                         </div>
@@ -198,7 +198,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             value={recipe.ingredient_id ? String(recipe.ingredient_id) : 'custom'}
                                             onValueChange={(v) => selectIngredient(i, v)}
                                         >
-                                            <SelectTrigger className="h-10 rounded-xl bg-white text-sm">
+                                            <SelectTrigger className="owner-form-field h-10 rounded-xl text-sm">
                                                 <SelectValue placeholder="Dari inventori / custom" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -219,7 +219,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             onChange={(e) => updateRecipe(i, 'ingredient_name', e.target.value)}
                                             placeholder="Nama bahan"
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-10 rounded-xl !text-sm ${recipe.isFromInventory ? '!bg-slate-50' : '!bg-white'} !text-slate-700 placeholder:text-slate-400`}
+                                            className={`owner-form-field h-10 rounded-xl !text-sm ${recipe.isFromInventory ? 'opacity-80' : ''}`}
                                         />
                                     </div>
                                     {/* Qty */}
@@ -231,7 +231,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             step={0.1}
                                             value={recipe.qty}
                                             onChange={(e) => updateRecipe(i, 'qty', parseFloat(e.target.value) || 0)}
-                                            className="h-10 rounded-xl !bg-white !text-sm !text-slate-700 placeholder:text-slate-400"
+                                            className="owner-form-field h-10 rounded-xl !text-sm"
                                         />
                                     </div>
                                     {/* Satuan */}
@@ -242,7 +242,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             onChange={(e) => updateRecipe(i, 'unit', e.target.value)}
                                             placeholder="gr"
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-10 rounded-xl !text-sm ${recipe.isFromInventory ? '!bg-slate-50' : '!bg-white'} !text-slate-700 placeholder:text-slate-400`}
+                                            className={`owner-form-field h-10 rounded-xl !text-sm ${recipe.isFromInventory ? 'opacity-80' : ''}`}
                                         />
                                     </div>
                                     {/* HPP/Unit */}
@@ -255,7 +255,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                                 updateRecipe(i, 'ingredient_cost', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)
                                             }
                                             readOnly={recipe.isFromInventory}
-                                            className={`h-10 rounded-xl !text-sm ${recipe.isFromInventory ? '!bg-slate-50' : '!bg-white'} !text-slate-700 placeholder:text-slate-400`}
+                                            className={`owner-form-field h-10 rounded-xl !text-sm ${recipe.isFromInventory ? 'opacity-80' : ''}`}
                                             placeholder={formatRupiah(0)}
                                         />
                                     </div>
@@ -266,7 +266,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                                             type="text"
                                             value={recipe.qty * recipe.ingredient_cost > 0 ? formatRupiah(recipe.qty * recipe.ingredient_cost) : ''}
                                             readOnly
-                                            className="h-10 rounded-xl !bg-slate-50 !text-sm !font-medium !text-slate-700"
+                                            className="owner-form-field h-10 rounded-xl !text-sm !font-medium opacity-80"
                                             placeholder={formatRupiah(0)}
                                         />
                                     </div>
@@ -290,7 +290,7 @@ export default function RecipeCreate({ ingredients }: Props) {
                     </div>
 
                     {/* HPP Preview */}
-                    <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+                    <div className="flex items-center gap-4 rounded-2xl border border-[#2c5f49] bg-[#091d15] p-5">
                         <Calculator size={20} className="text-muted-foreground shrink-0" />
                         <div className="grid flex-1 grid-cols-2 gap-4 text-base">
                             <div>
