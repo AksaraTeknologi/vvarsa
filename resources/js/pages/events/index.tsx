@@ -136,7 +136,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
-                            className="h-10 w-full rounded-xl border-[#c7e0ce] !bg-white pl-9 text-[#254533] placeholder:text-[#9aa9a0] focus-visible:border-[#6bb789] focus-visible:ring-[#5aa67a]/20"
+                            className="h-10 w-full rounded-xl border-[#7adcb0]/40 bg-[#07160e] pl-9 text-[#ebfff4] placeholder:text-[#a8d7bf] focus-visible:border-[#6bb789] focus-visible:ring-[#5aa67a]/20"
                         />
                     </div>
                     <Select value={businessType || 'all'} onValueChange={(val) => setBusinessType(val === 'all' ? '' : val)}>
@@ -217,9 +217,10 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                             </div>
                                             <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                                 <Users size={12} />
-                                                <span
-                                                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[calculatedStatus]}`}
-                                                ></span>
+                                                <span className="text-[#dffaf0]">
+                                                    {event.registered_count}
+                                                    {event.max_participants ? ` / ${event.max_participants}` : ''}
+                                                </span>
                                             </div>
                                         </div>
 

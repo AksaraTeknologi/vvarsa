@@ -129,10 +129,10 @@ export default function TaxConsultation() {
                             {faqItems.map((item, i) => (
                                 <div
                                     key={i}
-                                    className="overflow-hidden rounded-xl border border-owner-accent/25 bg-white shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-0.5 hover:border-owner-accent/50 hover:shadow-[0_10px_18px_rgba(90,166,122,0.12)] hover:[transform:rotateX(1deg)_translateZ(3px)] motion-reduce:transition-none motion-reduce:hover:transform-none"
+                                    className="overflow-hidden rounded-xl border border-[#4ec77e]/25 bg-[rgba(8,20,15,0.82)] shadow-sm [transform-style:preserve-3d] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-0.5 hover:border-[#4ec77e]/50 hover:shadow-[0_10px_18px_rgba(90,166,122,0.18)] hover:[transform:rotateX(1deg)_translateZ(3px)] motion-reduce:transition-none motion-reduce:hover:transform-none"
                                 >
-                                    <p className="bg-owner-accent px-4 py-3 text-sm font-semibold text-white">{item.q}</p>
-                                    <p className="border-t border-owner-accent/15 px-4 py-3 text-sm leading-relaxed text-muted-foreground">{item.a}</p>
+                                    <p className="bg-[#2d7d5c] px-4 py-3 text-sm font-semibold text-white">{item.q}</p>
+                                    <p className="border-t border-[#4ec77e]/15 px-4 py-3 text-sm leading-relaxed text-[rgba(228,246,234,0.88)]">{item.a}</p>
                                 </div>
                             ))}
                         </div>

@@ -79,11 +79,11 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[450px]">
+            <DialogContent className="border-[#4ec77e]/35 bg-[#0c1d17] text-[#ecfff5] shadow-[0_20px_60px_rgba(7,20,15,0.7)] sm:max-w-[450px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>{t('admin.users.createTitle')}</DialogTitle>
-                        <DialogDescription>{t('admin.users.createDescription')}</DialogDescription>
+                        <DialogTitle className="text-[#f4fff8]">{t('admin.users.createTitle')}</DialogTitle>
+                        <DialogDescription className="text-[#d8f3e2]">{t('admin.users.createDescription')}</DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
@@ -95,6 +95,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 onChange={(e) => form.setData('name', e.target.value)}
                                 placeholder={t('admin.users.fullNamePlaceholder')}
                                 required
+                                className="h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                             />
                             {(validationErrors.name || form.errors.name) && (
                                 <p className="text-destructive text-xs">{validationErrors.name || form.errors.name}</p>
@@ -110,6 +111,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 onChange={(e) => form.setData('email', e.target.value)}
                                 placeholder={t('admin.users.emailPlaceholder')}
                                 required
+                                className="h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                             />
                             {(validationErrors.email || form.errors.email) && (
                                 <p className="text-destructive text-xs">{validationErrors.email || form.errors.email}</p>
@@ -125,6 +127,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 onChange={(e) => form.setData('password', e.target.value)}
                                 placeholder={t('admin.users.passwordPlaceholder')}
                                 required
+                                className="h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                             />
                             {(validationErrors.password || form.errors.password) && (
                                 <p className="text-destructive text-xs">{validationErrors.password || form.errors.password}</p>
@@ -142,13 +145,13 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                     }
                                 }}
                             >
-                                <SelectTrigger className="w-full rounded-xl">
+                                <SelectTrigger className="h-12 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus:ring-[#4ec77e]/30 data-[placeholder]:text-[#cfead9]">
                                     <SelectValue placeholder={t('admin.users.selectRole')} />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="owner">{t('admin.users.roleOwner')}</SelectItem>
-                                    <SelectItem value="staff">{t('admin.users.roleStaff')}</SelectItem>
-                                    <SelectItem value="admin">{t('admin.users.roleAdmin')}</SelectItem>
+                                <SelectContent className="border-[#4ec77e]/30 bg-[#0f241d] text-[#ecfff5]">
+                                    <SelectItem value="owner" className="focus:bg-[#17392d] focus:text-[#ecfff5]">{t('admin.users.roleOwner')}</SelectItem>
+                                    <SelectItem value="staff" className="focus:bg-[#17392d] focus:text-[#ecfff5]">{t('admin.users.roleStaff')}</SelectItem>
+                                    <SelectItem value="admin" className="focus:bg-[#17392d] focus:text-[#ecfff5]">{t('admin.users.roleAdmin')}</SelectItem>
                                 </SelectContent>
                             </Select>
                             {(validationErrors.role || form.errors.role) && (
@@ -160,12 +163,12 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                             <div className="grid gap-2">
                                 <Label htmlFor="tenant_id">{t('admin.users.colTenant')}</Label>
                                 <Select value={form.data.tenant_id || ''} onValueChange={(val) => form.setData('tenant_id', val)}>
-                                    <SelectTrigger className="w-full rounded-xl">
+                                    <SelectTrigger className="h-12 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus:ring-[#4ec77e]/30 data-[placeholder]:text-[#cfead9]">
                                         <SelectValue placeholder={t('admin.users.selectBusiness')} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="border-[#4ec77e]/30 bg-[#0f241d] text-[#ecfff5]">
                                         {tenants.map((t) => (
-                                            <SelectItem key={t.id} value={t.id.toString()}>
+                                            <SelectItem key={t.id} value={t.id.toString()} className="focus:bg-[#17392d] focus:text-[#ecfff5]">
                                                 {t.name}
                                             </SelectItem>
                                         ))}
@@ -178,11 +181,11 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                         )}
                     </div>
 
-                    <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                    <DialogFooter className="pt-2">
+                        <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="border-[#4ec77e]/40 bg-transparent text-[#ecfff5] hover:bg-[#17392d] hover:text-[#ecfff5]">
                             {t('common.cancel')}
                         </Button>
-                        <Button type="submit" disabled={form.processing}>
+                        <Button type="submit" disabled={form.processing} className="bg-[#4ec77e] text-[#0b1a14] hover:bg-[#67d595]">
                             {form.processing ? t('common.saving') : t('admin.users.saveUser')}
                         </Button>
                     </DialogFooter>

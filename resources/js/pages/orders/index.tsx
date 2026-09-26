@@ -131,30 +131,30 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
 
                 {/* Order Summary */}
                 {summary.length > 0 && (
-                    <div className="rounded-2xl border border-[#c7e0ce] bg-[#edf8f1] p-5">
+                    <div className="rounded-2xl border border-[#93d8ae]/25 bg-[#0d1f17]/90 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                         <div className="mb-3 flex items-center gap-2">
-                            <AlertCircle size={15} className="text-[#3f9567]" />
-                            <span className="text-sm font-semibold text-[#315d45]">{t('orders.productionSummary')}</span>
+                            <AlertCircle size={15} className="text-[#b8f5d1]" />
+                            <span className="text-sm font-semibold text-[#ebfff4]">{t('orders.productionSummary')}</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {summary.map((item) => (
                                 <div
                                     key={item.variant_id ?? item.variant_name}
-                                    className="flex items-center gap-2 rounded-xl border border-[#d4e8da] bg-white px-3 py-2 shadow-sm"
+                                    className="flex items-center gap-2 rounded-xl border border-[#1d4234] bg-[#0f2a22] px-3 py-2 shadow-sm"
                                 >
-                                    <span className="text-lg leading-none font-semibold text-[#3f9567]">{item.total_qty}×</span>
-                                    <span className="text-foreground text-sm">{item.variant_name}</span>
+                                    <span className="text-lg leading-none font-semibold text-[#b8f5d1]">{item.total_qty}×</span>
+                                    <span className="text-sm text-[#eafbf3]">{item.variant_name}</span>
                                 </div>
                             ))}
                         </div>
-                        <p className="text-muted-foreground mt-2 text-xs">{t('orders.productionSummaryHint')}</p>
+                        <p className="mt-2 text-xs text-[#d8f6e1]">{t('orders.productionSummaryHint')}</p>
                     </div>
                 )}
 
                 {/* Filters */}
                 <div className="flex flex-wrap gap-2">
                     <Select value={filters.status ?? 'all'} onValueChange={(v) => applyFilter('status', v)}>
-                        <SelectTrigger className="!border-border !text-foreground !h-9 !w-40 !rounded-xl !bg-white !text-sm hover:!bg-slate-50">
+                        <SelectTrigger className="!h-9 !w-40 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !text-[#ebfff4] hover:!bg-[#112a20]">
                             <SelectValue placeholder={t('orders.allStatuses')} />
                         </SelectTrigger>
                         <SelectContent>
@@ -166,7 +166,7 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                         </SelectContent>
                     </Select>
                     <Select value={filters.payment_status ?? 'all'} onValueChange={(v) => applyFilter('payment_status', v)}>
-                        <SelectTrigger className="!border-border !text-foreground !h-9 !w-44 !rounded-xl !bg-white !text-sm hover:!bg-slate-50">
+                        <SelectTrigger className="!h-9 !w-44 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !text-[#ebfff4] hover:!bg-[#112a20]">
                             <SelectValue placeholder={t('orders.allPayments')} />
                         </SelectTrigger>
                         <SelectContent>

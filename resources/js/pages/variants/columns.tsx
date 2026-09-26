@@ -25,8 +25,8 @@ function VariantActions({ variant, t }: { variant: ProductVariant; t: any }) {
         <div className="flex items-center justify-center gap-1">
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon" asChild>
-                        <Link href={`/variants/${variant.id}/edit`}>
+                    <Button variant="ghost" size="icon" asChild className="!text-[#b8f5d1] hover:!bg-[#133627] hover:!text-[#ebfff4]">
+                        <Link href={`/variants/${variant.id}/edit`} className="flex items-center justify-center">
                             <Edit className="size-4" />
                         </Link>
                     </Button>

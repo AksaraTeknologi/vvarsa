@@ -160,7 +160,11 @@ export default function CommunityShow({ post, replies, is_liked, tenant_business
                             variant="outline"
                             size="sm"
                             onClick={() => router.delete(`/community/${post.id}/leave`, { preserveScroll: true })}
-                            className={isStaff ? '!border-[#d94f83] !text-[#d94f83] hover:!bg-[#fff0f5] hover:!text-[#b83268]' : '!border-blue-600 !text-blue-600 hover:!bg-blue-50 hover:!text-blue-700'}
+                            className={
+                                isStaff
+                                    ? '!border-[#d94f83] !text-[#d94f83] hover:!bg-[#fff0f5] hover:!text-[#b83268] [&_svg]:!text-[#d94f83] hover:[&_svg]:!text-[#b83268]'
+                                    : '!border-[#3f9567] !text-[#3f9567] hover:!bg-[#edf8f1] hover:!text-[#2f7d51] [&_svg]:!text-[#2f7d51] hover:[&_svg]:!text-[#1d5c3b]'
+                            }
                         >
                             <LogOut className="size-4" /> {t('community.leave')}
                         </Button>
