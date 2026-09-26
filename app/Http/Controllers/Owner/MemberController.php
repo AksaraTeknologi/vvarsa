@@ -7,6 +7,7 @@ use App\Events\MemberRequestSubmittedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\MemberRequest;
 use App\Models\Role;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +22,11 @@ class MemberController extends Controller
         $tenant = app('tenant');
         $user = auth()->user();
 
-        $members = User::where('tenant_id', $tenant->id)
+        $members = User::where(function ($query) use ($tenant) {
+            $query->where('tenant_id', $tenant->id)
+                ->orWhereHas('tenants', fn ($q) => $q->where('tenants.id', $tenant->id));
+        })
+            ->distinct()
             ->with('roles')
             ->latest()
             ->get();
@@ -30,13 +35,56 @@ class MemberController extends Controller
 
         // Permintaan pending — hanya owner yang bisa lihat & aksi
         $pendingRequests = [];
+        $availableSupervisors = [];
+
         if ($user->hasRole('owner')) {
             $pendingRequests = MemberRequest::where('tenant_id', $tenant->id)
                 ->where('status', 'pending')
                 ->with('requestedBy:id,name,email')
                 ->latest()
                 ->get();
+
+            // Ambil semua tenant milik owner ini
+            $ownerTenantIds = Tenant::where('owner_id', $user->id)->pluck('id');
+
+            // Cari supervisor dari tenant lain milik owner yang belum ada di tenant aktif
+            $availableSupervisors = User::role('supervisor')
+                ->where('id', '!=', $user->id)
+                ->where(function ($query) use ($ownerTenantIds) {
+                    $query->whereIn('tenant_id', $ownerTenantIds)
+                        ->orWhereHas('tenants', fn ($q) => $q->whereIn('tenants.id', $ownerTenantIds));
+                })
+                ->where('tenant_id', '!=', $tenant->id)
+                ->whereDoesntHave('tenants', fn ($q) => $q->where('tenants.id', $tenant->id))
+                ->distinct()
+                ->with(['tenant:id,name', 'tenants' => fn ($q) => $q->whereIn('tenants.id', $ownerTenantIds)])
+                ->get(['id', 'name', 'email', 'tenant_id'])
+                ->map(function ($sup) {
+                    $tenantNames = collect([$sup->tenant?->name])
+                        ->merge($sup->tenants->pluck('name'))
+                        ->filter()
+                        ->unique()
+                        ->values()
+                        ->all();
+
+                    return [
+                        'id' => $sup->id,
+                        'name' => $sup->name,
+                        'email' => $sup->email,
+                        'tenant_names' => $tenantNames,
+                    ];
+                })
+                ->values()
+                ->all();
         }
+
+        // Cek apakah sudah ada supervisor di tenant ini
+        $hasSupervisor = User::role('supervisor')
+            ->where(function ($query) use ($tenant) {
+                $query->where('tenant_id', $tenant->id)
+                    ->orWhereHas('tenants', fn ($q) => $q->where('tenants.id', $tenant->id));
+            })
+            ->exists();
 
         return Inertia::render('owner/members/index', [
             'members' => $members,
@@ -44,8 +92,10 @@ class MemberController extends Controller
             'limit' => $tenant->max_users,
             'member_count' => $members->count(),
             'pending_requests' => $pendingRequests,
+            'available_supervisors' => $availableSupervisors,
             'is_supervisor' => $user->hasRole('supervisor'),
             'is_owner' => $user->hasRole('owner'),
+            'has_supervisor' => $hasSupervisor,
         ]);
     }
 
@@ -90,6 +140,19 @@ class MemberController extends Controller
             'role' => 'required|in:supervisor,staff',
         ]);
 
+        if ($validated['role'] === 'supervisor') {
+            $hasSupervisor = User::role('supervisor')
+                ->where(function ($query) use ($tenant) {
+                    $query->where('tenant_id', $tenant->id)
+                        ->orWhereHas('tenants', fn ($q) => $q->where('tenants.id', $tenant->id));
+                })
+                ->exists();
+
+            if ($hasSupervisor) {
+                return back()->with('error', 'Hanya boleh ada 1 Supervisor dalam satu tenant.');
+            }
+        }
+
         $newUser = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -99,8 +162,67 @@ class MemberController extends Controller
         ]);
 
         $newUser->assignRole($validated['role']);
+        $tenant->users()->syncWithoutDetaching([$newUser->id]);
 
         return back()->with('success', 'Pengguna berhasil ditambahkan ke tim Anda.');
+    }
+
+    /**
+     * Daftarkan/import supervisor dari tenant lain milik owner yang sama.
+     */
+    public function importSupervisor(Request $request)
+    {
+        $tenant = app('tenant');
+        $user = auth()->user();
+
+        abort_if(! $user->hasRole('owner'), 403, 'Hanya owner yang dapat mendaftarkan supervisor.');
+
+        $validated = $request->validate([
+            'supervisor_id' => 'required|uuid|exists:users,id',
+        ]);
+
+        if (! $tenant->canAddUser()) {
+            return back()->with('error', "Batas jumlah pengguna ({$tenant->max_users}) sudah tercapai. Silakan upgrade paket langganan Anda.");
+        }
+
+        $hasSupervisor = User::role('supervisor')
+            ->where(function ($query) use ($tenant) {
+                $query->where('tenant_id', $tenant->id)
+                    ->orWhereHas('tenants', fn ($q) => $q->where('tenants.id', $tenant->id));
+            })
+            ->exists();
+
+        if ($hasSupervisor) {
+            return back()->with('error', 'Hanya boleh ada 1 Supervisor dalam satu tenant.');
+        }
+
+        $supervisor = User::findOrFail($validated['supervisor_id']);
+
+        if (! $supervisor->hasRole('supervisor')) {
+            return back()->with('error', 'Pengguna yang dipilih bukan seorang supervisor.');
+        }
+
+        // Pastikan supervisor memang terdaftar di setidaknya satu tenant milik owner ini
+        $ownerTenantIds = Tenant::where('owner_id', $user->id)->pluck('id');
+        $isFromSameOwner = $ownerTenantIds->contains($supervisor->tenant_id)
+            || $supervisor->tenants()->whereIn('tenants.id', $ownerTenantIds)->exists();
+
+        if (! $isFromSameOwner) {
+            return back()->with('error', 'Supervisor tidak berasal dari bisnis milik Anda.');
+        }
+
+        // Cek apakah sudah terdaftar di tenant ini
+        $isAlreadyMember = $supervisor->tenant_id === $tenant->id
+            || $tenant->users()->where('users.id', $supervisor->id)->exists();
+
+        if ($isAlreadyMember) {
+            return back()->with('error', 'Supervisor ini sudah terdaftar di bisnis ini.');
+        }
+
+        // Attach supervisor ke tenant aktif
+        $tenant->users()->syncWithoutDetaching([$supervisor->id]);
+
+        return back()->with('success', "Supervisor {$supervisor->name} berhasil didaftarkan ke {$tenant->name}.");
     }
 
     /**
@@ -126,6 +248,20 @@ class MemberController extends Controller
             return back()->with('error', "Batas jumlah pengguna ({$tenant->max_users}) sudah tercapai.");
         }
 
+        // Cek jika request adalah supervisor dan sudah ada supervisor di tenant
+        if ($memberRequest->role === 'supervisor') {
+            $hasSupervisor = User::role('supervisor')
+                ->where(function ($query) use ($tenant) {
+                    $query->where('tenant_id', $tenant->id)
+                        ->orWhereHas('tenants', fn ($q) => $q->where('tenants.id', $tenant->id));
+                })
+                ->exists();
+
+            if ($hasSupervisor) {
+                return back()->with('error', 'Gagal menyetujui: Hanya boleh ada 1 Supervisor dalam satu tenant.');
+            }
+        }
+
         // Cek email belum dipakai
         if (User::where('email', $memberRequest->email)->exists()) {
             $memberRequest->update([
@@ -147,6 +283,7 @@ class MemberController extends Controller
         ]);
 
         $newUser->assignRole($memberRequest->role);
+        $tenant->users()->syncWithoutDetaching([$newUser->id]);
 
         // Tandai request sebagai approved
         $memberRequest->update([
@@ -190,7 +327,10 @@ class MemberController extends Controller
         $tenant = app('tenant');
 
         // Ensure user belongs to same tenant
-        if ($member->tenant_id !== $tenant->id) {
+        $isMember = $member->tenant_id === $tenant->id
+            || $tenant->users()->where('users.id', $member->id)->exists();
+
+        if (! $isMember) {
             abort(403);
         }
 
@@ -206,6 +346,20 @@ class MemberController extends Controller
             'role' => 'required|in:owner,supervisor,staff',
         ]);
 
+        if ($validated['role'] === 'supervisor') {
+            $hasSupervisor = User::role('supervisor')
+                ->where(function ($query) use ($tenant) {
+                    $query->where('tenant_id', $tenant->id)
+                        ->orWhereHas('tenants', fn ($q) => $q->where('tenants.id', $tenant->id));
+                })
+                ->where('id', '!=', $member->id)
+                ->exists();
+
+            if ($hasSupervisor) {
+                return back()->with('error', 'Hanya boleh ada 1 Supervisor dalam satu tenant.');
+            }
+        }
+
         $member->syncRoles([$validated['role']]);
 
         return back()->with('success', "Peran {$member->name} berhasil diperbarui.");
@@ -216,7 +370,10 @@ class MemberController extends Controller
         $tenant = app('tenant');
 
         // Ensure user belongs to same tenant
-        if ($member->tenant_id !== $tenant->id) {
+        $isMember = $member->tenant_id === $tenant->id
+            || $tenant->users()->where('users.id', $member->id)->exists();
+
+        if (! $isMember) {
             abort(403);
         }
 
@@ -228,7 +385,19 @@ class MemberController extends Controller
             return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
-        $member->delete();
+        // Detach dari tenant aktif
+        $tenant->users()->detach($member->id);
+
+        // Jika user masih punya asosiasi dengan tenant lain, pindahkan tenant_id aktif jika sama dengan tenant ini
+        $otherTenant = $member->tenants()->where('tenants.id', '!=', $tenant->id)->first();
+        if ($otherTenant) {
+            if ($member->tenant_id === $tenant->id) {
+                $member->update(['tenant_id' => $otherTenant->id]);
+            }
+        } else {
+            // Jika tidak ada tenant lain dan bukan owner, hapus user
+            $member->delete();
+        }
 
         return back()->with('success', "Pengguna {$member->name} berhasil dihapus dari tim.");
     }

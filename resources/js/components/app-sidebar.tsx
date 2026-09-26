@@ -188,6 +188,7 @@ export function AppSidebar() {
     const isAdmin = user?.roles?.includes('admin');
     const isOwner = user?.roles?.includes('owner');
     const isSupervisor = user?.roles?.includes('supervisor');
+    const userTenants = page.props.userTenants ?? [];
 
     const theme = isAdmin ? ROLE_THEME.admin : isOwner ? ROLE_THEME.owner : isSupervisor ? ROLE_THEME.supervisor : ROLE_THEME.staff;
 
@@ -269,7 +270,7 @@ export function AppSidebar() {
         <Sidebar collapsible="icon" variant="inset" className={`border-r bg-white ${theme.border} ${isOwner ? 'owner-sidebar' : ''} ${isSupervisor ? 'supervisor-sidebar' : ''}`}>
             <SidebarHeader className="pt-4 pb-0">
                 <SidebarLogo href="/dashboard" theme={theme} />
-                {isOwner && (
+                {(isOwner || (isSupervisor && userTenants.length > 1)) && (
                     <div className="mt-2.5 px-1">
                         <TenantSwitcher />
                     </div>

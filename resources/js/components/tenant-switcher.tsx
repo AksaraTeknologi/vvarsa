@@ -86,7 +86,9 @@ const BUSINESS_TYPES = [
 
 export function TenantSwitcher() {
     const { t } = useTranslation();
-    const { tenant, userTenants = [], availablePlans = [] } = usePage<SharedData>().props;
+    const { auth, tenant, userTenants = [], availablePlans = [] } = usePage<SharedData>().props;
+    const isOwner = auth.user?.roles?.includes('owner');
+    const isSupervisor = auth.user?.roles?.includes('supervisor');
 
     const [openDropdown, setOpenDropdown] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -159,29 +161,57 @@ export function TenantSwitcher() {
                 <DropdownMenuTrigger asChild>
                     <button
                         type="button"
-                        className="group relative flex w-full items-center gap-2.5 rounded-xl border border-[#cfe8da] bg-[#f2f8f4] px-2.5 py-2 text-left shadow-2xs transition-all duration-200 hover:border-[#a8d9be] hover:bg-[#e7f3ec] hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2f7d57]/30 dark:border-[#2f7d57]/30 dark:bg-[#152e22]/50 dark:hover:bg-[#1a382b]"
+                        className={`group relative flex w-full items-center gap-2.5 rounded-xl border px-2.5 py-2 text-left shadow-2xs transition-all duration-200 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 ${
+                            isSupervisor
+                                ? 'border-[#bce3f2] bg-[#f0f8fb] hover:border-[#8ecde6] hover:bg-[#e4f3f8] focus-visible:ring-[#2596be]/30 dark:border-[#2596be]/30 dark:bg-[#0e2733]/50 dark:hover:bg-[#133342]'
+                                : 'border-[#cfe8da] bg-[#f2f8f4] hover:border-[#a8d9be] hover:bg-[#e7f3ec] focus-visible:ring-[#2f7d57]/30 dark:border-[#2f7d57]/30 dark:bg-[#152e22]/50 dark:hover:bg-[#1a382b]'
+                        }`}
                     >
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#2f7d57] text-xs font-bold text-white shadow-2xs">
+                        <div
+                            className={`flex size-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white shadow-2xs ${
+                                isSupervisor ? 'bg-[#2596be]' : 'bg-[#2f7d57]'
+                            }`}
+                        >
                             {currentInitials}
                         </div>
                         <div className="min-w-0 flex-1">
-                            <div className="truncate text-xs font-bold tracking-tight text-[#1e3c2c] dark:text-[#cbf5dc]">
+                            <div
+                                className={`truncate text-xs font-bold tracking-tight ${
+                                    isSupervisor ? 'text-[#123e4f] dark:text-[#bde3f2]' : 'text-[#1e3c2c] dark:text-[#cbf5dc]'
+                                }`}
+                            >
                                 {tenant?.name || 'Pilih Bisnis'}
                             </div>
-                            <div className="flex items-center gap-1.5 text-[10.5px] text-[#4d7a62] dark:text-[#8acfa9]">
+                            <div
+                                className={`flex items-center gap-1.5 text-[10.5px] ${
+                                    isSupervisor ? 'text-[#2e6d87] dark:text-[#78b9d1]' : 'text-[#4d7a62] dark:text-[#8acfa9]'
+                                }`}
+                            >
                                 <span className="capitalize">{tenant?.business_type || 'Bisnis'}</span>
                                 {tenant?.plan?.name && (
                                     <>
                                         <span className="opacity-40">•</span>
-                                        <span className="font-semibold text-[#2f7d57] dark:text-[#7ee2ad]">{tenant.plan.name}</span>
+                                        <span
+                                            className={`font-semibold ${
+                                                isSupervisor ? 'text-[#2596be] dark:text-[#6ec5e6]' : 'text-[#2f7d57] dark:text-[#7ee2ad]'
+                                            }`}
+                                        >
+                                            {tenant.plan.name}
+                                        </span>
                                     </>
                                 )}
                             </div>
                         </div>
                         {switchingId ? (
-                            <Loader2 className="size-4 animate-spin text-[#2f7d57] shrink-0" />
+                            <Loader2 className={`size-4 animate-spin shrink-0 ${isSupervisor ? 'text-[#2596be]' : 'text-[#2f7d57]'}`} />
                         ) : (
-                            <ChevronsUpDown className="size-4 shrink-0 text-[#608b73] transition-colors group-hover:text-[#2f7d57] dark:text-[#8acfa9]" />
+                            <ChevronsUpDown
+                                className={`size-4 shrink-0 transition-colors ${
+                                    isSupervisor
+                                        ? 'text-[#4b8fa9] group-hover:text-[#2596be] dark:text-[#78b9d1]'
+                                        : 'text-[#608b73] group-hover:text-[#2f7d57] dark:text-[#8acfa9]'
+                                }`}
+                            />
                         )}
                     </button>
                 </DropdownMenuTrigger>
@@ -189,11 +219,22 @@ export function TenantSwitcher() {
                 <DropdownMenuContent
                     align="start"
                     sideOffset={6}
-                    className="w-[240px] rounded-xl border border-[#d6ebe0] bg-white p-1.5 shadow-lg backdrop-blur-md dark:border-[#2f7d57]/30 dark:bg-[#12231a]"
+                    className={`w-[240px] rounded-xl border bg-white p-1.5 shadow-lg backdrop-blur-md ${
+                        isSupervisor ? 'border-[#c7e8f5] dark:border-[#2596be]/30 dark:bg-[#0c1f29]' : 'border-[#d6ebe0] dark:border-[#2f7d57]/30 dark:bg-[#12231a]'
+                    }`}
                 >
-                    <div className="flex items-center justify-between px-2 py-1.5 text-[10px] font-bold tracking-wider text-[#4d7a62] uppercase dark:text-[#8acfa9]">
+                    <div
+                        className={`flex items-center justify-between px-2 py-1.5 text-[10px] font-bold tracking-wider uppercase ${
+                            isSupervisor ? 'text-[#2e6d87] dark:text-[#78b9d1]' : 'text-[#4d7a62] dark:text-[#8acfa9]'
+                        }`}
+                    >
                         <span>{t('navigation.tenants') || 'Bisnis Saya'}</span>
-                        <Badge variant="secondary" className="h-4 px-1 text-[10px] font-semibold bg-[#e7f3ec] text-[#2f7d57] border-0">
+                        <Badge
+                            variant="secondary"
+                            className={`h-4 px-1 text-[10px] font-semibold border-0 ${
+                                isSupervisor ? 'bg-[#e4f3f8] text-[#2596be]' : 'bg-[#e7f3ec] text-[#2f7d57]'
+                            }`}
+                        >
                             {userTenants.length}
                         </Badge>
                     </div>
@@ -214,40 +255,60 @@ export function TenantSwitcher() {
                                     onClick={() => handleSwitchTenant(item)}
                                     className={`flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs transition-colors ${
                                         isSelected
-                                            ? 'bg-[#edf7f1] font-semibold text-[#22573d] dark:bg-[#1e3c2c] dark:text-[#a8eec8]'
+                                            ? isSupervisor
+                                                ? 'bg-[#e6f4f9] font-semibold text-[#123e4f] dark:bg-[#12313f] dark:text-[#a5e1f7]'
+                                                : 'bg-[#edf7f1] font-semibold text-[#22573d] dark:bg-[#1e3c2c] dark:text-[#a8eec8]'
                                             : 'text-[#334139] hover:bg-[#f4faf6] dark:text-[#d1e8db] dark:hover:bg-[#172d21]'
                                     }`}
                                 >
                                     <div
                                         className={`flex size-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold ${
                                             isSelected
-                                                ? 'bg-[#2f7d57] text-white'
-                                                : 'bg-[#e2efe7] text-[#3e6853] dark:bg-[#254736] dark:text-[#a8eec8]'
+                                                ? isSupervisor
+                                                    ? 'bg-[#2596be] text-white'
+                                                    : 'bg-[#2f7d57] text-white'
+                                                : isSupervisor
+                                                  ? 'bg-[#d8eef6] text-[#24586d] dark:bg-[#193a4a] dark:text-[#9fe0f7]'
+                                                  : 'bg-[#e2efe7] text-[#3e6853] dark:bg-[#254736] dark:text-[#a8eec8]'
                                         }`}
                                     >
                                         {itemInitials}
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <div className="truncate font-medium">{item.name}</div>
-                                        <div className="text-[10px] text-[#6b8e7c] dark:text-[#7ba38f] capitalize">
+                                        <div
+                                            className={`text-[10px] capitalize ${
+                                                isSupervisor ? 'text-[#4c879e] dark:text-[#7bbad1]' : 'text-[#6b8e7c] dark:text-[#7ba38f]'
+                                            }`}
+                                        >
                                             {item.business_type} {item.plan_name ? `• ${item.plan_name}` : ''}
                                         </div>
                                     </div>
-                                    {isSelected && <Check className="size-4 shrink-0 text-[#2f7d57] dark:text-[#7ee2ad]" />}
+                                    {isSelected && (
+                                        <Check
+                                            className={`size-4 shrink-0 ${
+                                                isSupervisor ? 'text-[#2596be] dark:text-[#6ec5e6]' : 'text-[#2f7d57] dark:text-[#7ee2ad]'
+                                            }`}
+                                        />
+                                    )}
                                 </DropdownMenuItem>
                             );
                         })}
                     </DropdownMenuGroup>
 
-                    <DropdownMenuSeparator className="my-1.5 bg-[#e5f1ea] dark:bg-[#254736]" />
+                    {isOwner && (
+                        <>
+                            <DropdownMenuSeparator className="my-1.5 bg-[#e5f1ea] dark:bg-[#254736]" />
 
-                    <DropdownMenuItem
-                        onClick={handleOpenCreateModal}
-                        className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold text-[#2f7d57] hover:bg-[#edf7f1] focus:bg-[#edf7f1] focus:text-[#2f7d57] dark:text-[#7ee2ad] dark:hover:bg-[#1e3c2c]"
-                    >
-                        <PlusCircle className="size-4 shrink-0 text-[#2f7d57] dark:text-[#7ee2ad]" />
-                        <span>Buat Tenant Baru</span>
-                    </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={handleOpenCreateModal}
+                                className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold text-[#2f7d57] hover:bg-[#edf7f1] focus:bg-[#edf7f1] focus:text-[#2f7d57] dark:text-[#7ee2ad] dark:hover:bg-[#1e3c2c]"
+                            >
+                                <PlusCircle className="size-4 shrink-0 text-[#2f7d57] dark:text-[#7ee2ad]" />
+                                <span>Buat Tenant Baru</span>
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
 

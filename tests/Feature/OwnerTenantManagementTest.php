@@ -140,3 +140,38 @@ test('owner dapat beralih antar tenant miliknya melalui switch tenant endpoint',
     $this->owner->refresh();
     expect($this->owner->tenant_id)->toBe($this->tenant1->id);
 });
+
+test('hanya boleh ada satu supervisor di dalam satu tenant', function () {
+    // Beri kuota user yang cukup untuk tenant 1
+    $this->tenant1->plan->update(['max_users' => 10]);
+
+    // 1. Tambah supervisor pertama ke tenant 1
+    $response1 = $this->actingAs($this->owner)->post('/members', [
+        'name' => 'Supervisor Satu',
+        'email' => 'spv1@example.com',
+        'password' => 'password123',
+        'role' => 'supervisor',
+    ]);
+
+    $response1->assertSessionHas('success');
+    expect(User::where('tenant_id', $this->tenant1->id)->role('supervisor')->count())->toBe(1);
+
+    // 2. Coba tambah supervisor kedua ke tenant 1 — harus ditolak
+    $response2 = $this->actingAs($this->owner)->post('/members', [
+        'name' => 'Supervisor Dua',
+        'email' => 'spv2@example.com',
+        'password' => 'password123',
+        'role' => 'supervisor',
+    ]);
+
+    $response2->assertSessionHas('error', 'Hanya boleh ada 1 Supervisor dalam satu tenant.');
+    expect(User::where('tenant_id', $this->tenant1->id)->role('supervisor')->count())->toBe(1);
+
+    // 3. Coba ubah role staff1 menjadi supervisor saat sudah ada supervisor — harus ditolak
+    $response3 = $this->actingAs($this->owner)->put("/members/{$this->staff1->id}", [
+        'role' => 'supervisor',
+    ]);
+
+    $response3->assertSessionHas('error', 'Hanya boleh ada 1 Supervisor dalam satu tenant.');
+    expect($this->staff1->fresh()->hasRole('staff'))->toBeTrue();
+});

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -42,7 +43,12 @@ class Tenant extends Model
         return $this->belongsTo(SubscriptionPlan::class, 'plan_id');
     }
 
-    public function users(): HasMany
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'tenant_user')->withTimestamps();
+    }
+
+    public function directUsers(): HasMany
     {
         return $this->hasMany(User::class);
     }

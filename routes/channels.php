@@ -10,8 +10,10 @@ Broadcast::channel('tenant.{tenantId}', function ($user, $tenantId) {
     if ($user->hasRole('admin')) {
         return true;
     }
-    return (string) $user->tenant_id === (string) $tenantId
-        && $user->hasAnyRole(['owner', 'supervisor', 'staff']);
+    $hasAccess = (string) $user->tenant_id === (string) $tenantId
+        || $user->tenants()->where('tenants.id', $tenantId)->exists();
+
+    return $hasAccess && $user->hasAnyRole(['owner', 'supervisor', 'staff']);
 });
 
 Broadcast::channel('user.{userId}', function ($user, $userId) {

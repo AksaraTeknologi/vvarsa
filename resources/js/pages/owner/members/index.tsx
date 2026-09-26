@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { AlertCircle, Check, Clock, ShieldCheck, UserPlus, Users, X } from 'lucide-react';
+import { AlertCircle, Check, Clock, ShieldCheck, UserCheck, UserPlus, Users, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -30,22 +30,35 @@ interface PendingRequest {
     created_at: string;
 }
 
+export interface AvailableSupervisor {
+    id: string;
+    name: string;
+    email: string;
+    tenant_names: string[];
+}
+
 interface Props {
     members: Member[];
     roles: Role[];
     limit: number;
     member_count: number;
     pending_requests: PendingRequest[];
+    available_supervisors?: AvailableSupervisor[];
     is_supervisor: boolean;
     is_owner: boolean;
+    has_supervisor?: boolean;
 }
 
-const getMemberSchema = (isOwner: boolean) =>
+const getMemberSchema = (isOwner: boolean, canAddSupervisor: boolean) =>
     z.object({
         name: z.string().min(1, 'Nama wajib diisi'),
         email: z.string().email('Email tidak valid'),
         password: z.string().min(8, 'Password minimal 8 karakter'),
-        role: isOwner ? z.enum(['supervisor', 'staff']) : z.enum(['staff']),
+        role: isOwner
+            ? canAddSupervisor
+                ? z.enum(['supervisor', 'staff'])
+                : z.enum(['staff'])
+            : z.enum(['staff']),
     });
 
 const ROLE_LABELS: Record<string, string> = {
@@ -54,14 +67,25 @@ const ROLE_LABELS: Record<string, string> = {
     staff: 'Staff',
 };
 
-export default function MembersIndex({ members, limit, member_count, pending_requests, is_supervisor, is_owner }: Props) {
+export default function MembersIndex({
+    members,
+    limit,
+    member_count,
+    pending_requests,
+    available_supervisors = [],
+    is_supervisor,
+    is_owner,
+    has_supervisor,
+}: Props) {
     const { t } = useTranslation();
     const { auth } = usePage<SharedData>().props;
     const authUserId = auth.user.id;
     const authRole = is_owner ? 'owner' : is_supervisor ? 'supervisor' : 'staff';
+    const hasSupervisor = has_supervisor ?? members.some((m) => m.roles.some((r) => r.name === 'supervisor'));
     const breadcrumbs: BreadcrumbItem[] = [{ title: t('members.title'), href: '/members' }];
 
     const [isAddOpen, setIsAddOpen] = useState(false);
+    const [isImportOpen, setIsImportOpen] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
     const addForm = useForm({
@@ -69,6 +93,10 @@ export default function MembersIndex({ members, limit, member_count, pending_req
         email: '',
         password: '',
         role: 'staff',
+    });
+
+    const importForm = useForm({
+        supervisor_id: '',
     });
 
     const updateForm = useForm({ role: 'staff' });
@@ -80,7 +108,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
         e.preventDefault();
         setClientErrors({});
 
-        const schema = getMemberSchema(is_owner);
+        const schema = getMemberSchema(is_owner, !hasSupervisor);
         const result = schema.safeParse(addForm.data);
         if (!result.success) {
             const newErrors: Record<string, string> = {};
@@ -100,6 +128,19 @@ export default function MembersIndex({ members, limit, member_count, pending_req
         });
     };
 
+    const handleImportSupervisor = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!importForm.data.supervisor_id) return;
+
+        importForm.post('/members/import-supervisor', {
+            preserveScroll: true,
+            onSuccess: () => {
+                setIsImportOpen(false);
+                importForm.reset();
+            },
+        });
+    };
+
     // Owner: role cycle owner → supervisor → staff → owner
     const ROLE_CYCLE: Record<string, string> = {
         owner: 'supervisor',
@@ -108,7 +149,10 @@ export default function MembersIndex({ members, limit, member_count, pending_req
     };
 
     const handleUpdateRole = (memberId: number, currentRole: string) => {
-        const newRole = ROLE_CYCLE[currentRole] ?? 'staff';
+        let newRole = ROLE_CYCLE[currentRole] ?? 'staff';
+        if (newRole === 'supervisor' && hasSupervisor && currentRole !== 'supervisor') {
+            newRole = ROLE_CYCLE['supervisor'] ?? 'staff';
+        }
         updateForm.transform((data) => ({ ...data, role: newRole }));
         updateForm.put(`/members/${memberId}`, { preserveScroll: true });
     };
@@ -131,7 +175,7 @@ export default function MembersIndex({ members, limit, member_count, pending_req
 
     const capacityPercent = Math.round((member_count / limit) * 100);
 
-    const columns = getColumns(authUserId, authRole, handleUpdateRole, handleDeleteMember, updateForm.processing, deleteForm.processing, t);
+    const columns = getColumns(authUserId, authRole, hasSupervisor, handleUpdateRole, handleDeleteMember, updateForm.processing, deleteForm.processing, t);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -148,127 +192,255 @@ export default function MembersIndex({ members, limit, member_count, pending_req
                         </p>
                     </div>
 
-                    {/* Tombol Tambah Anggota */}
-                    <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                        <DialogTrigger asChild>
-                            <Button variant="owner" className="inline-flex items-center gap-2 rounded-xl" disabled={member_count >= limit}>
-                                <UserPlus size={16} />
-                                {t('members.addMember')}
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="text-sm sm:max-w-[520px]">
-                            <form onSubmit={handleAddMember}>
-                                <DialogHeader className="space-y-2">
-                                    <DialogTitle className="text-lg font-semibold">{t('members.addTitle')}</DialogTitle>
-                                    <DialogDescription className="text-sm leading-relaxed">
-                                        {is_supervisor ? t('members.supervisorNoticeDesc') : t('members.ownerNoticeDesc')}
-                                    </DialogDescription>
-                                </DialogHeader>
+                    <div className="flex flex-wrap items-center gap-2">
+                        {/* Tombol Import Supervisor dari Tenant Lain (Hanya Owner) */}
+                        {is_owner && (
+                            <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
+                                <DialogTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className="inline-flex items-center gap-2 rounded-xl border-[#2f7d57]/30 text-[#2f7d57] hover:bg-[#e7f3ec] hover:text-[#22573d] dark:border-[#2f7d57]/50 dark:text-[#a8eec8] dark:hover:bg-[#1a382b]"
+                                        disabled={member_count >= limit || hasSupervisor}
+                                        title={
+                                            hasSupervisor
+                                                ? t('members.supervisorLimitReached')
+                                                : member_count >= limit
+                                                  ? t('members.capacityFullWarning')
+                                                  : t('members.importSupervisor')
+                                        }
+                                    >
+                                        <UserCheck size={16} />
+                                        {t('members.importSupervisor')}
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="text-sm sm:max-w-[520px]">
+                                    <form onSubmit={handleImportSupervisor}>
+                                        <DialogHeader className="space-y-2">
+                                            <DialogTitle className="text-lg font-semibold">{t('members.importTitle')}</DialogTitle>
+                                            <DialogDescription className="text-sm leading-relaxed">
+                                                {t('members.importDesc')}
+                                            </DialogDescription>
+                                        </DialogHeader>
 
-                                {/* Banner info untuk supervisor */}
-                                {is_supervisor && (
-                                    <div className="mt-3 flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700">
-                                        <ShieldCheck size={16} className="mt-0.5 shrink-0" />
-                                        <span>{t('members.supervisorBanner')}</span>
-                                    </div>
-                                )}
+                                        <div className="space-y-4 py-4">
+                                            {hasSupervisor && (
+                                                <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                                                    <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                                                    <span>{t('members.oneSupervisorOnly')}</span>
+                                                </div>
+                                            )}
 
-                                <div className="grid gap-4 py-5">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="name" className="text-sm font-medium">
-                                            {t('members.fullName')}
-                                        </Label>
-                                        <Input
-                                            id="name"
-                                            value={addForm.data.name}
-                                            onChange={(e) => addForm.setData('name', e.target.value)}
-                                            placeholder={t('members.fullName')}
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
-                                            required
-                                        />
-                                        {(clientErrors.name || addForm.errors.name) && (
-                                            <p className="text-destructive text-sm">{clientErrors.name || addForm.errors.name}</p>
-                                        )}
-                                    </div>
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="email" className="text-sm font-medium">
-                                            {t('members.email')}
-                                        </Label>
-                                        <Input
-                                            id="email"
-                                            type="email"
-                                            value={addForm.data.email}
-                                            onChange={(e) => addForm.setData('email', e.target.value)}
-                                            placeholder="name@example.com"
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
-                                            required
-                                        />
-                                        {(clientErrors.email || addForm.errors.email) && (
-                                            <p className="text-destructive text-sm">{clientErrors.email || addForm.errors.email}</p>
-                                        )}
-                                    </div>
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="password" className="text-sm font-medium">
-                                            {t('members.tempPassword')}
-                                        </Label>
-                                        <Input
-                                            id="password"
-                                            type="password"
-                                            value={addForm.data.password}
-                                            onChange={(e) => addForm.setData('password', e.target.value)}
-                                            placeholder={t('members.passwordHint')}
-                                            className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
-                                            required
-                                        />
-                                        {(clientErrors.password || addForm.errors.password) && (
-                                            <p className="text-destructive text-sm">{clientErrors.password || addForm.errors.password}</p>
-                                        )}
-                                    </div>
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="role" className="text-sm font-medium">
-                                            {t('members.roleLabel')}
-                                        </Label>
-                                        <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
-                                            <SelectTrigger
-                                                id="role"
-                                                className="h-10 rounded-xl !border-[#d9e5dd] bg-white text-sm text-slate-700 focus:!border-[#5aa67a] focus:!ring-[#5aa67a]/20"
+                                            {!available_supervisors || available_supervisors.length === 0 ? (
+                                                <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center text-slate-500">
+                                                    <Users size={32} className="mx-auto mb-2 opacity-40" />
+                                                    <p className="text-sm font-medium">{t('members.noAvailableSupervisors')}</p>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="supervisor_id" className="text-sm font-medium">
+                                                        {t('members.selectSupervisor')}
+                                                    </Label>
+                                                    <div className="max-h-[260px] space-y-2 overflow-y-auto pr-1">
+                                                        {available_supervisors.map((sup) => {
+                                                            const isSelected = importForm.data.supervisor_id === sup.id;
+                                                            return (
+                                                                <div
+                                                                    key={sup.id}
+                                                                    onClick={() => importForm.setData('supervisor_id', sup.id)}
+                                                                    className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition-all ${
+                                                                        isSelected
+                                                                            ? 'border-[#2f7d57] bg-[#edf7f1] ring-1 ring-[#2f7d57]'
+                                                                            : 'border-slate-200 hover:border-[#a8d9be] hover:bg-[#f8fcfa]'
+                                                                    }`}
+                                                                >
+                                                                    <div className="flex min-w-0 items-center gap-3">
+                                                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2f7d57]/10 font-bold text-[#2f7d57]">
+                                                                            {sup.name.charAt(0).toUpperCase()}
+                                                                        </div>
+                                                                        <div className="min-w-0">
+                                                                            <p className="truncate text-sm font-semibold text-slate-900">{sup.name}</p>
+                                                                            <p className="truncate text-xs text-slate-500">{sup.email}</p>
+                                                                            {sup.tenant_names && sup.tenant_names.length > 0 && (
+                                                                                <p className="mt-1 truncate text-[11px] font-medium text-[#2f7d57]">
+                                                                                    {t('members.assignedBranches', { branches: sup.tenant_names.join(', ') })}
+                                                                                </p>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="ml-2 shrink-0">
+                                                                        <div
+                                                                            className={`flex h-5 w-5 items-center justify-center rounded-full border ${
+                                                                                isSelected
+                                                                                    ? 'border-[#2f7d57] bg-[#2f7d57] text-white'
+                                                                                    : 'border-slate-300 bg-white'
+                                                                            }`}
+                                                                        >
+                                                                            {isSelected && <Check size={12} strokeWidth={3} />}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    {importForm.errors.supervisor_id && (
+                                                        <p className="text-destructive text-sm">{importForm.errors.supervisor_id}</p>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <DialogFooter className="gap-2">
+                                            <Button type="button" variant="outline" onClick={() => setIsImportOpen(false)} className="rounded-xl">
+                                                {t('members.cancel')}
+                                            </Button>
+                                            <Button
+                                                type="submit"
+                                                disabled={
+                                                    importForm.processing ||
+                                                    !importForm.data.supervisor_id ||
+                                                    hasSupervisor ||
+                                                    !available_supervisors ||
+                                                    available_supervisors.length === 0
+                                                }
+                                                variant="owner"
+                                                className="rounded-xl"
                                             >
-                                                <SelectValue placeholder={t('members.selectRole')} />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="staff" className="text-sm">
-                                                    {t('members.staffRoleDesc')}
-                                                </SelectItem>
-                                                {is_owner && (
-                                                    <SelectItem value="supervisor" className="text-sm">
-                                                        {t('members.supervisorRoleDesc')}
-                                                    </SelectItem>
-                                                )}
-                                            </SelectContent>
-                                        </Select>
-                                        {(clientErrors.role || addForm.errors.role) && (
-                                            <p className="text-destructive text-sm">{clientErrors.role || addForm.errors.role}</p>
-                                        )}
-                                    </div>
-                                </div>
+                                                {importForm.processing ? t('members.importing') : t('members.importBtn')}
+                                            </Button>
+                                        </DialogFooter>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+                        )}
 
-                                <DialogFooter className="gap-2">
-                                    <Button type="button" variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-xl">
-                                        {t('members.cancel')}
-                                    </Button>
-                                    <Button type="submit" disabled={addForm.processing} variant="owner" className="rounded-xl">
-                                        {addForm.processing
-                                            ? is_supervisor
-                                                ? t('members.sending')
-                                                : t('members.saving')
-                                            : is_supervisor
-                                              ? t('members.sendRequest')
-                                              : t('members.addMember')}
-                                    </Button>
-                                </DialogFooter>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+                        {/* Tombol Tambah Anggota */}
+                        <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                            <DialogTrigger asChild>
+                                <Button variant="owner" className="inline-flex items-center gap-2 rounded-xl" disabled={member_count >= limit}>
+                                    <UserPlus size={16} />
+                                    {t('members.addMember')}
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="text-sm sm:max-w-[520px]">
+                                <form onSubmit={handleAddMember}>
+                                    <DialogHeader className="space-y-2">
+                                        <DialogTitle className="text-lg font-semibold">{t('members.addTitle')}</DialogTitle>
+                                        <DialogDescription className="text-sm leading-relaxed">
+                                            {is_supervisor ? t('members.supervisorNoticeDesc') : t('members.ownerNoticeDesc')}
+                                        </DialogDescription>
+                                    </DialogHeader>
+
+                                    {/* Banner info untuk supervisor */}
+                                    {is_supervisor && (
+                                        <div className="mt-3 flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+                                            <ShieldCheck size={16} className="mt-0.5 shrink-0" />
+                                            <span>{t('members.supervisorBanner')}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="grid gap-4 py-5">
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="name" className="text-sm font-medium">
+                                                {t('members.fullName')}
+                                            </Label>
+                                            <Input
+                                                id="name"
+                                                value={addForm.data.name}
+                                                onChange={(e) => addForm.setData('name', e.target.value)}
+                                                placeholder={t('members.fullName')}
+                                                className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.name || addForm.errors.name ? '!border-rose-500' : ''}`}
+                                                required
+                                            />
+                                            {(clientErrors.name || addForm.errors.name) && (
+                                                <p className="text-destructive text-sm">{clientErrors.name || addForm.errors.name}</p>
+                                            )}
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="email" className="text-sm font-medium">
+                                                {t('members.email')}
+                                            </Label>
+                                            <Input
+                                                id="email"
+                                                type="email"
+                                                value={addForm.data.email}
+                                                onChange={(e) => addForm.setData('email', e.target.value)}
+                                                placeholder="name@example.com"
+                                                className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.email || addForm.errors.email ? '!border-rose-500' : ''}`}
+                                                required
+                                            />
+                                            {(clientErrors.email || addForm.errors.email) && (
+                                                <p className="text-destructive text-sm">{clientErrors.email || addForm.errors.email}</p>
+                                            )}
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="password" className="text-sm font-medium">
+                                                {t('members.tempPassword')}
+                                            </Label>
+                                            <Input
+                                                id="password"
+                                                type="password"
+                                                value={addForm.data.password}
+                                                onChange={(e) => addForm.setData('password', e.target.value)}
+                                                placeholder={t('members.passwordHint')}
+                                                className={`h-10 !border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:!border-[#5aa67a] focus-visible:!ring-[#5aa67a]/20 ${clientErrors.password || addForm.errors.password ? '!border-rose-500' : ''}`}
+                                                required
+                                            />
+                                            {(clientErrors.password || addForm.errors.password) && (
+                                                <p className="text-destructive text-sm">{clientErrors.password || addForm.errors.password}</p>
+                                            )}
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="role" className="text-sm font-medium">
+                                                {t('members.roleLabel')}
+                                            </Label>
+                                            <Select value={addForm.data.role} onValueChange={(val) => addForm.setData('role', val)}>
+                                                <SelectTrigger
+                                                    id="role"
+                                                    className="h-10 rounded-xl !border-[#d9e5dd] bg-white text-sm text-slate-700 focus:!border-[#5aa67a] focus:!ring-[#5aa67a]/20"
+                                                >
+                                                    <SelectValue placeholder={t('members.selectRole')} />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="staff" className="text-sm">
+                                                        {t('members.staffRoleDesc')}
+                                                    </SelectItem>
+                                                    {is_owner && (
+                                                        <SelectItem
+                                                            value="supervisor"
+                                                            className="text-sm"
+                                                            disabled={hasSupervisor}
+                                                        >
+                                                            {hasSupervisor
+                                                                ? t('members.supervisorLimitReached')
+                                                                : t('members.supervisorRoleDesc')}
+                                                        </SelectItem>
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                            {(clientErrors.role || addForm.errors.role) && (
+                                                <p className="text-destructive text-sm">{clientErrors.role || addForm.errors.role}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <DialogFooter className="gap-2">
+                                        <Button type="button" variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-xl">
+                                            {t('members.cancel')}
+                                        </Button>
+                                        <Button type="submit" disabled={addForm.processing} variant="owner" className="rounded-xl">
+                                            {addForm.processing
+                                                ? is_supervisor
+                                                    ? t('members.sending')
+                                                    : t('members.saving')
+                                                : is_supervisor
+                                                  ? t('members.sendRequest')
+                                                  : t('members.addMember')}
+                                        </Button>
+                                    </DialogFooter>
+                                </form>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
                 </div>
 
                 {/* ── Pending Requests Section (hanya owner) ── */}
