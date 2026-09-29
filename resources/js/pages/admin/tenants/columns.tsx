@@ -92,9 +92,9 @@ export const getColumns = (onEdit: (tenant: Tenant) => void, t: (key: string, op
             return (
                 <div className="flex w-full justify-center">
                     <Badge
-                        variant={tenant.is_active ? 'default' : 'destructive'}
-                        className={`rounded-full border-0 px-2.5 py-1 text-xs font-semibold ${
-                            tenant.is_active ? 'bg-[#DCD8FF] text-[#4938D9] hover:bg-[#DCD8FF]' : 'bg-[#F7EFF0] text-[#A96A73] hover:bg-[#F7EFF0]'
+                        variant={tenant.is_active ? 'default' : 'secondary'}
+                        className={`rounded-full border border-[#2d4f3d] px-2.5 py-1 text-xs font-semibold ${
+                            tenant.is_active ? 'bg-[#dfffea] text-[#123b2f] hover:bg-[#dfffea]' : 'bg-[#0f261e] text-[#ebfff4] hover:bg-[#123b2f]'
                         }`}
                     >
                         {tenant.is_active ? t('admin.active') : t('admin.inactive')}

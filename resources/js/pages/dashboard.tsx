@@ -87,7 +87,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('dashboard.title')} />
-            <div className={`supervisor-dashboard ${isStaff ? 'staff-dashboard' : ''} flex flex-col gap-6 p-4 md:p-6 lg:p-8 ${isSupervisor ? 'is-supervisor' : ''}`}>
+            <div className={`supervisor-dashboard ${isOwner ? 'owner-dashboard' : ''} ${isStaff ? 'staff-dashboard' : ''} flex flex-col gap-6 p-4 md:p-6 lg:p-8 ${isSupervisor ? 'is-supervisor' : ''}`}>
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
                     <h1 className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[#1f2a23] md:text-[2.1rem]">
@@ -150,9 +150,9 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                         <stop offset="95%" stopColor={chartAccent} stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
-                                <XAxis dataKey="date" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
+                                <CartesianGrid stroke="#d1d5db" strokeDasharray="3 3" vertical={false} />
+                                <XAxis dataKey="date" tick={{ fill: '#6b7280', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: 12, fontWeight: 400 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#6b7280', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: 11, fontWeight: 400 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatRupiah(v, true)} />
                                 <Tooltip
                                     cursor={{ stroke: chartAccent, strokeOpacity: 0.55, strokeWidth: 2.5 }}
                                     content={({ active, payload }) => {

@@ -120,11 +120,11 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                                     {tenant.name}
                                 </h1>
                                 <Badge
-                                    variant={tenant.is_active ? 'default' : 'destructive'}
+                                    variant={tenant.is_active ? 'secondary' : 'outline'}
                                     className={
                                         tenant.is_active
-                                            ? 'rounded-full border-0 bg-[#DCD8FF] px-2.5 py-1 text-xs font-semibold text-[#4938D9] hover:bg-[#DCD8FF]'
-                                            : 'rounded-full border-0 bg-[#F7EFF0] px-2.5 py-1 text-xs font-semibold text-[#A96A73] hover:bg-[#F7EFF0]'
+                                            ? 'rounded-full border border-[#2d4f3d] bg-[#dfffea] px-2.5 py-1 text-xs font-semibold text-[#123b2f] hover:bg-[#dfffea]'
+                                            : 'rounded-full border border-[#2d4f3d] bg-[#0f261e] px-2.5 py-1 text-xs font-semibold text-[#ebfff4] hover:bg-[#123b2f]'
                                     }
                                 >
                                     {tenant.is_active ? t('admin.active') : t('admin.inactive')}
@@ -139,7 +139,7 @@ export default function TenantShow({ tenant, stats, plans = [] }: Props) {
                         <Button
                             variant="outline"
                             onClick={handleToggleActive}
-                            className={`h-10 rounded-xl border-[#DDD9E9] bg-white text-sm font-semibold shadow-sm ${tenant.is_active ? 'text-[#A96A73] hover:border-[#E7C9CE] hover:bg-[#FFF8F8] hover:text-[#963F4C]' : 'text-[#2B8A62] hover:border-[#BFE6D2] hover:bg-[#F4FFF8] hover:text-[#18704A]'}`}
+                            className={`h-10 rounded-xl border-[#2d4f3d] text-sm font-semibold shadow-sm ${tenant.is_active ? 'bg-[#0f261e] text-[#ebfff4] hover:border-[#3f9567] hover:bg-[#123b2f] hover:text-[#dfffea]' : 'bg-[#dfffea] text-[#123b2f] hover:border-[#5aa67a] hover:bg-[#dfffea] hover:text-[#123b2f]'}`}
                         >
                             {tenant.is_active ? (
                                 <span className="flex items-center gap-1.5">

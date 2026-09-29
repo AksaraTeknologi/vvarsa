@@ -103,7 +103,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                 </div>
 
                 {/* Navigation Tabs */}
-                <div className="border-border flex gap-2 border-b">
+                <div className="border-border -mx-4 flex gap-2 border-y bg-white px-4 md:-mx-6 md:px-6">
                     <button
                         onClick={() => handleTabChange(false)}
                         className={`-mb-[1px] border-b-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
@@ -217,7 +217,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                             </div>
                                             <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                                                 <Users size={12} />
-                                                <span className="text-[#dffaf0]">
+                                                <span className="font-medium text-[#2f7d57]">
                                                     {event.registered_count}
                                                     {event.max_participants ? ` / ${event.max_participants}` : ''}
                                                 </span>
@@ -231,7 +231,7 @@ export default function EventsIndex({ events, registered_event_ids, cities, filt
                                                 {event.registration_fee === 0 ? t('events.free') : formatRupiah(event.registration_fee)}
                                             </span>
                                             {isRegistered ? (
-                                                <span className="rounded-full border border-[#9bc9aa] bg-white px-3 py-1 text-xs font-semibold text-[#3f9567]">
+                                                <span className="rounded-full border border-[#2d4f3d] bg-[#0f261e] px-3 py-1 text-xs font-semibold text-[#dfffea] shadow-[0_6px_16px_rgba(0,0,0,0.18)]">
                                                     {t('events.registeredBadge')}
                                                 </span>
                                             ) : isFull ? (

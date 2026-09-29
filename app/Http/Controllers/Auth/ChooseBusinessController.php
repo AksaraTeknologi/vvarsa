@@ -90,6 +90,7 @@ class ChooseBusinessController extends Controller
         Role::firstOrCreate(['name' => 'owner']);
         $user->update(['tenant_id' => $tenant->id, 'is_active' => true]);
         $user->assignRole('owner');
+        $tenant->users()->syncWithoutDetaching([$user->id]);
 
         // Buat subscription aktif
         TenantSubscription::create([

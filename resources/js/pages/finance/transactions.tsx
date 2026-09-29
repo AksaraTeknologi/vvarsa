@@ -113,7 +113,7 @@ export default function Transactions({ transactions, summary, expense_categories
                     <Dialog open={showForm} onOpenChange={setShowForm}>
                         <DialogTrigger asChild>
                             <Button variant="owner" className="finance-add-transaction inline-flex items-center gap-2 rounded-xl">
-                                <Plus size={16} /> {t('finance.addTransaction', 'Catat Transaksi')}
+                                <Plus size={16} className="text-white" /> {t('finance.addTransaction', 'Catat Transaksi')}
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="finance-transaction-dialog sm:max-w-[460px]">
@@ -239,21 +239,19 @@ export default function Transactions({ transactions, summary, expense_categories
 
                 {/* Summary */}
                 <div className="grid grid-cols-3 gap-4">
-                    <div className="finance-card rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-900/20">
-                        <p className="text-muted-foreground text-xs">{t('finance.totalIncome', 'Total Pemasukan')}</p>
-                        <p className="mt-1 text-lg font-bold text-emerald-600 dark:text-emerald-400">{formatRupiah(summary.total_income)}</p>
+                    <div className="finance-card rounded-2xl border border-[#2d4f3d] bg-[#0f261e] p-4 shadow-[0_8px_18px_rgba(0,0,0,0.18)]">
+                        <p className="text-xs text-[#2f7d57]">{t('finance.totalIncome', 'Total Pemasukan')}</p>
+                        <p className="mt-1 text-lg font-bold text-[#1d6e4b]">{formatRupiah(summary.total_income)}</p>
                     </div>
-                    <div className="finance-card rounded-2xl bg-rose-50 p-4 dark:bg-rose-900/20">
-                        <p className="text-muted-foreground text-xs">{t('finance.totalExpense', 'Total Pengeluaran')}</p>
-                        <p className="mt-1 text-lg font-bold text-rose-600 dark:text-rose-400">{formatRupiah(summary.total_expense)}</p>
+                    <div className="finance-card rounded-2xl border border-[#2d4f3d] bg-[#0f261e] p-4 shadow-[0_8px_18px_rgba(0,0,0,0.18)]">
+                        <p className="text-xs text-[#2f7d57]">{t('finance.totalExpense', 'Total Pengeluaran')}</p>
+                        <p className="mt-1 text-lg font-bold text-[#1d6e4b]">{formatRupiah(summary.total_expense)}</p>
                     </div>
                     <div
-                        className={`finance-card rounded-2xl p-4 ${summary.total_income - summary.total_expense >= 0 ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-orange-50 dark:bg-orange-900/20'}`}
+                        className="finance-card rounded-2xl border border-[#2d4f3d] bg-[#0f261e] p-4 shadow-[0_8px_18px_rgba(0,0,0,0.18)]"
                     >
-                        <p className="text-muted-foreground text-xs">{t('finance.netProfit', 'Net Profit')}</p>
-                        <p
-                            className={`mt-1 text-lg font-bold ${summary.total_income - summary.total_expense >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`}
-                        >
+                        <p className="text-xs text-[#2f7d57]">{t('finance.netProfit', 'Net Profit')}</p>
+                        <p className="mt-1 text-lg font-bold text-[#1d6e4b]">
                             {formatRupiah(summary.total_income - summary.total_expense)}
                         </p>
                     </div>

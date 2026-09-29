@@ -87,7 +87,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                 <div className="space-y-3 p-3">
                                     <div className="grid gap-2 sm:grid-cols-3">
                                         <div className="flex h-full items-start gap-2.5 rounded-2xl border border-[#edf4ef] bg-[#f8fbf9] p-2.5">
-                                            <div className="mt-0.5 flex size-6 items-center justify-center rounded-xl bg-[#edf8f1] text-[#3f9567]">
+                                            <div className="mt-0.5 flex size-6 items-center justify-center rounded-xl bg-[#e4f3ea] text-[#1d6e4b]">
                                                 <CalendarDays size={12} />
                                             </div>
                                             <div className="min-w-0 flex-1">
@@ -104,7 +104,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         </div>
 
                                         <div className="flex h-full items-start gap-2.5 rounded-2xl border border-[#edf4ef] bg-[#f8fbf9] p-2.5">
-                                            <div className="mt-0.5 flex size-6 items-center justify-center rounded-xl bg-[#edf8f1] text-[#3f9567]">
+                                            <div className="mt-0.5 flex size-6 items-center justify-center rounded-xl bg-[#e4f3ea] text-[#1d6e4b]">
                                                 <Clock size={12} />
                                             </div>
                                             <div className="min-w-0 flex-1">
@@ -116,7 +116,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                                         </div>
 
                                         <div className="flex h-full items-start gap-2.5 rounded-2xl border border-[#edf4ef] bg-[#f8fbf9] p-2.5">
-                                            <div className="mt-0.5 flex size-6 items-center justify-center rounded-xl bg-[#edf8f1] text-[#3f9567]">
+                                            <div className="mt-0.5 flex size-6 items-center justify-center rounded-xl bg-[#e4f3ea] text-[#1d6e4b]">
                                                 <MapPin size={12} />
                                             </div>
                                             <div className="min-w-0 flex-1">

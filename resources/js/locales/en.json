@@ -886,6 +886,8 @@
     "selectRole": "Select Role",
     "staffRoleDesc": "Staff (Limited Access: Inventory & Operations)",
     "supervisorRoleDesc": "Supervisor (Broad Access, Requires Member Approval)",
+    "supervisorLimitReached": "Supervisor (Max 1 Supervisor - Already Filled)",
+    "oneSupervisorOnly": "Only 1 Supervisor is allowed per tenant.",
     "cancel": "Cancel",
     "sending": "Sending...",
     "saving": "Saving...",
@@ -907,7 +909,16 @@
     "role": "Role",
     "you": "You",
     "onlyOwner": "Owner only",
-    "changeTo": "Change to {{role}}"
+    "changeTo": "Change to {{role}}",
+    "importSupervisor": "Import Supervisor",
+    "importTitle": "Register Supervisor from Another Business",
+    "importDesc": "Select a supervisor from another branch or business owned by you to assign to this business.",
+    "selectSupervisor": "Select Supervisor",
+    "selectSupervisorPlaceholder": "Select a supervisor to register...",
+    "assignedBranches": "Assigned in: {{branches}}",
+    "noAvailableSupervisors": "No supervisors from other businesses are available to register.",
+    "importBtn": "Register to This Business",
+    "importing": "Registering..."
   },
   "subscription": {
     "title": "Choose the Right Plan",

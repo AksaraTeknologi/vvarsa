@@ -1451,8 +1451,8 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
 
             {/* GPS Mandatory Overlay Modal */}
             {!userLocation && (
-                <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-lg flex items-center justify-center p-4">
-                    <div className="bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl p-6 max-w-md w-full text-center text-white space-y-4 animate-in fade-in zoom-in duration-300">
+                <div className="owner-supplier-gps-overlay fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-lg flex items-center justify-center p-4">
+                    <div className="owner-supplier-gps-dialog bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl p-6 max-w-md w-full text-center text-white space-y-4 animate-in fade-in zoom-in duration-300">
                         <div className="w-16 h-16 rounded-full bg-blue-600/20 border border-blue-500/40 text-blue-400 mx-auto flex items-center justify-center shadow-inner">
                             <Compass size={32} className={isLocating ? 'animate-spin' : ''} />
                         </div>
@@ -1464,7 +1464,7 @@ export default function SuppliersIndex({ suppliers, all_suppliers, cities, filte
                         </div>
 
                         {gpsError && (
-                            <div className="bg-amber-950/80 border border-amber-700/50 text-amber-200 text-xs p-3 rounded-xl font-medium flex items-center gap-2 text-left">
+                            <div className="owner-supplier-gps-error bg-amber-950/80 border border-amber-700/50 text-amber-200 text-xs p-3 rounded-xl font-medium flex items-center gap-2 text-left">
                                 <span className="text-base">⚠️</span>
                                 <span>{gpsError}</span>
                             </div>

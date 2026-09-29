@@ -127,41 +127,41 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
 
                     {/* Form Tambah */}
                     {editingId === null && (
-                        <form onSubmit={handleCreate} className="border-owner-accent/25 bg-white space-y-4 rounded-2xl border p-5 shadow-sm md:p-6">
-                            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-owner-accent">
-                                <Plus size={16} />
+                        <form onSubmit={handleCreate} className="space-y-4 rounded-2xl border border-[#4ec77e]/30 bg-[#0c1d17] p-5 shadow-[0_20px_60px_rgba(7,20,15,0.7)] md:p-6">
+                            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#f4fff8]">
+                                <Plus size={16} className="text-[#76dba0]" />
                                 Tambah Metode / Rekening Baru
                             </h3>
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="name" className="text-sm font-medium">Nama Metode *</Label>
+                                    <Label htmlFor="name" className="text-sm font-medium text-[#f4fff8]">Nama Metode *</Label>
                                     <Input
                                         id="name"
                                         placeholder="cth: Transfer Bank BRI, ShopeePay"
                                         value={createForm.data.name}
                                         onChange={(e) => createForm.setData('name', e.target.value)}
-                                        required className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                        required className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                     />
                                     <InputError message={createForm.errors.name} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="account_name" className="text-sm font-medium">Nama Pemilik (a.n.)</Label>
+                                    <Label htmlFor="account_name" className="text-sm font-medium text-[#f4fff8]">Nama Pemilik (a.n.)</Label>
                                     <Input
                                         id="account_name"
                                         placeholder="cth: Mochi Delight"
                                         value={createForm.data.account_name}
-                                        className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                        className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                         onChange={(e) => createForm.setData('account_name', e.target.value)}
                                     />
                                     <InputError message={createForm.errors.account_name} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="account_number" className="text-sm font-medium">No. Rekening / HP</Label>
+                                    <Label htmlFor="account_number" className="text-sm font-medium text-[#f4fff8]">No. Rekening / HP</Label>
                                     <Input
                                         id="account_number"
                                         placeholder="cth: 1223-01-xxxx, 0812-xxxx"
                                         value={createForm.data.account_number}
-                                        className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                        className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                         onChange={(e) => createForm.setData('account_number', e.target.value)}
                                     />
                                     <InputError message={createForm.errors.account_number} />
@@ -200,29 +200,29 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                             <form key={pm.id} onSubmit={(e) => handleUpdate(e, pm.id)} className="space-y-4 bg-owner-accent/[0.04] p-4 md:p-5">
                                                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                                     <div className="space-y-1.5">
-                                                        <Label className="text-sm font-medium">Nama Metode *</Label>
+                                                        <Label className="text-sm font-medium text-[#f4fff8]">Nama Metode *</Label>
                                                         <Input
                                                             value={editForm.data.name}
                                                             onChange={(e) => editForm.setData('name', e.target.value)}
-                                                            required className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                                            required className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                                         />
                                                         <InputError message={editForm.errors.name} />
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <Label className="text-sm font-medium">Nama Pemilik (a.n.)</Label>
+                                                        <Label className="text-sm font-medium text-[#f4fff8]">Nama Pemilik (a.n.)</Label>
                                                         <Input
                                                             value={editForm.data.account_name}
                                                             onChange={(e) => editForm.setData('account_name', e.target.value)}
-                                                            className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                                            className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                                         />
                                                         <InputError message={editForm.errors.account_name} />
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <Label className="text-sm font-medium">No. Rekening / HP</Label>
+                                                        <Label className="text-sm font-medium text-[#f4fff8]">No. Rekening / HP</Label>
                                                         <Input
                                                             value={editForm.data.account_number}
                                                             onChange={(e) => editForm.setData('account_number', e.target.value)}
-                                                            className="h-10 !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                                            className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                                         />
                                                         <InputError message={editForm.errors.account_number} />
                                                     </div>

@@ -165,11 +165,15 @@ Route::middleware(['auth', 'verified', EnsureTenantMiddleware::class])
             Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
         });
 
-        // ── Owner & Supervisor Routes — Akses Manajemen Member ──
+        // ── Owner & Supervisor Routes — Akses Manajemen Member & Switch Tenant ──
         Route::middleware(['role:owner|supervisor'])->group(function () {
             Route::prefix('members')->name('members.')->group(function () {
                 Route::get('/', [MemberController::class, 'index'])->name('index');
                 Route::post('/', [MemberController::class, 'store'])->name('store');
+            });
+
+            Route::prefix('owner/tenants')->name('owner.tenants.')->group(function () {
+                Route::post('/switch', [OwnerTenantController::class, 'switch'])->name('switch');
             });
         });
 
@@ -234,14 +238,14 @@ Route::middleware(['auth', 'verified', EnsureTenantMiddleware::class])
             Route::get('/subscription', [SubscriptionController::class, 'index'])->name('subscription.index');
             Route::post('/subscription/upgrade', [SubscriptionController::class, 'upgrade'])->name('subscription.upgrade');
 
-            // Owner Tenant Management (Create & Switch)
+            // Owner Tenant Management (Create)
             Route::prefix('owner/tenants')->name('owner.tenants.')->group(function () {
                 Route::post('/', [OwnerTenantController::class, 'store'])->name('store');
-                Route::post('/switch', [OwnerTenantController::class, 'switch'])->name('switch');
             });
 
-            // Member Management (Owner only: update role, delete, approve, reject)
+            // Member Management (Owner only: update role, delete, approve, reject, import supervisor)
             Route::prefix('members')->name('members.')->group(function () {
+                Route::post('/import-supervisor', [MemberController::class, 'importSupervisor'])->name('import-supervisor');
                 Route::put('/{member}', [MemberController::class, 'update'])->name('update');
                 Route::delete('/{member}', [MemberController::class, 'destroy'])->name('destroy');
                 Route::post('/requests/{memberRequest}/approve', [MemberController::class, 'approve'])->name('requests.approve');

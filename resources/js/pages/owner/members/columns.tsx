@@ -40,6 +40,7 @@ const ROLE_CYCLE: Record<string, string> = {
 export const getColumns = (
     authUserId: number,
     authRole: string,
+    hasSupervisor: boolean,
     onUpdateRole: (memberId: number, currentRole: string) => void,
     onDeleteMember: (memberId: number, name: string) => void,
     isUpdateProcessing: boolean,
@@ -114,7 +115,10 @@ export const getColumns = (
             const member = row.original;
             const role = member.roles[0]?.name || 'staff';
             const isOwnerViewer = authRole === 'owner';
-            const nextRole = ROLE_CYCLE[role] ?? 'staff';
+            let nextRole = ROLE_CYCLE[role] ?? 'staff';
+            if (nextRole === 'supervisor' && hasSupervisor && role !== 'supervisor') {
+                nextRole = ROLE_CYCLE['supervisor'] ?? 'staff';
+            }
             const nextRoleMeta = ROLE_BADGE[nextRole];
 
             return (

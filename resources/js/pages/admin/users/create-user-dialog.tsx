@@ -96,6 +96,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 placeholder={t('admin.users.fullNamePlaceholder')}
                                 required
                                 className="h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
                             />
                             {(validationErrors.name || form.errors.name) && (
                                 <p className="text-destructive text-xs">{validationErrors.name || form.errors.name}</p>
@@ -112,6 +113,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 placeholder={t('admin.users.emailPlaceholder')}
                                 required
                                 className="h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
                             />
                             {(validationErrors.email || form.errors.email) && (
                                 <p className="text-destructive text-xs">{validationErrors.email || form.errors.email}</p>
@@ -128,6 +130,7 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                 placeholder={t('admin.users.passwordPlaceholder')}
                                 required
                                 className="h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
                             />
                             {(validationErrors.password || form.errors.password) && (
                                 <p className="text-destructive text-xs">{validationErrors.password || form.errors.password}</p>
@@ -145,7 +148,10 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                                     }
                                 }}
                             >
-                                <SelectTrigger className="h-12 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus:ring-[#4ec77e]/30 data-[placeholder]:text-[#cfead9]">
+                                <SelectTrigger
+                                    className="h-12 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus:ring-[#4ec77e]/30 data-[placeholder]:text-[#cfead9]"
+                                    style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
+                                >
                                     <SelectValue placeholder={t('admin.users.selectRole')} />
                                 </SelectTrigger>
                                 <SelectContent className="border-[#4ec77e]/30 bg-[#0f241d] text-[#ecfff5]">
@@ -163,7 +169,10 @@ export function CreateUserDialog({ open, onOpenChange, tenants }: CreateUserDial
                             <div className="grid gap-2">
                                 <Label htmlFor="tenant_id">{t('admin.users.colTenant')}</Label>
                                 <Select value={form.data.tenant_id || ''} onValueChange={(val) => form.setData('tenant_id', val)}>
-                                    <SelectTrigger className="h-12 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus:ring-[#4ec77e]/30 data-[placeholder]:text-[#cfead9]">
+                                    <SelectTrigger
+                                        className="h-12 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus:ring-[#4ec77e]/30 data-[placeholder]:text-[#cfead9]"
+                                        style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
+                                    >
                                         <SelectValue placeholder={t('admin.users.selectBusiness')} />
                                     </SelectTrigger>
                                     <SelectContent className="border-[#4ec77e]/30 bg-[#0f241d] text-[#ecfff5]">

@@ -204,7 +204,7 @@ export default function StockIn({ products }: Props) {
                                             value={data.movement_date}
                                             onChange={(val) => setData('movement_date', val)}
                                             theme={isOwner ? 'owner-green' : 'owner'}
-                                            className={`owner-inventory-date !h-10 !border-[#285e49] !bg-[#07160e] !px-3 !text-[#d1fae5] ${isOwner ? 'hover:!bg-[#0d2516] hover:!text-[#d1fae5]' : ''}`}
+                                            className={`owner-inventory-date !h-10 !border-[#3f9567] !bg-[#edf9f1] !px-3 !text-[#1d6e4b] ${isOwner ? 'hover:!bg-[#def2e4] hover:!text-[#124d39]' : ''}`}
                                         />
                                         {displayError('movement_date') && (
                                             <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>

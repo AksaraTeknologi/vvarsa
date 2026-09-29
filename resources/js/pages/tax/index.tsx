@@ -100,15 +100,15 @@ export default function TaxIndex({ reports }: Props) {
 
                         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                             <DialogTrigger asChild>
-                                <Button variant="owner" className="inline-flex items-center gap-2 rounded-xl">
+                                <Button variant="owner" className="owner-light-white-icon inline-flex items-center gap-2 rounded-xl">
                                     <Plus size={16} /> {t('tax.newReport')}
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="text-sm sm:max-w-[620px]">
+                            <DialogContent className="owner-business-dialog border-[#2d4f3d] bg-[#07160e] text-[#ebfff4] shadow-[0_20px_50px_rgba(0,0,0,0.45)] sm:max-w-[620px]">
                                 <form onSubmit={handleSubmit}>
                                     <DialogHeader>
-                                        <DialogTitle className="text-lg font-semibold">{t('tax.dialogCreateTitle')}</DialogTitle>
-                                        <DialogDescription className="text-sm leading-relaxed">{t('tax.dialogCreateDesc')}</DialogDescription>
+                                        <DialogTitle className="text-lg font-semibold text-[#ebfff4]">{t('tax.dialogCreateTitle')}</DialogTitle>
+                                        <DialogDescription className="text-sm leading-relaxed text-[#b8f5d1]">{t('tax.dialogCreateDesc')}</DialogDescription>
                                     </DialogHeader>
 
                                     <div className="grid gap-4 py-4">
@@ -121,7 +121,7 @@ export default function TaxIndex({ reports }: Props) {
                                                     value={data.period}
                                                     onChange={(e) => setData('period', e.target.value)}
                                                     placeholder="2026-06"
-                                                    className={`!border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${displayError('period') ? '!border-rose-500' : ''}`}
+                                                    className={`border-[#cbd9d0] bg-white text-sm text-[#1d2a22] placeholder:text-[#718178] focus-visible:border-[#3f9567] focus-visible:ring-[#3f9567]/20 dark:!border-[#2d4f3d] dark:!bg-[#0f261e] dark:text-[#ebfff4] dark:placeholder:text-[#8fb9a0] dark:focus-visible:border-[#5aa67a] dark:focus-visible:ring-[#5aa67a]/20 ${displayError('period') ? '!border-rose-500' : ''}`}
                                                     required
                                                 />
                                                 {displayError('period') && <p className="text-sm text-rose-500">{displayError('period')}</p>}
@@ -129,12 +129,12 @@ export default function TaxIndex({ reports }: Props) {
                                             <div className="space-y-1">
                                                 <Label htmlFor="tax_type" className="text-sm font-medium">{t('tax.taxType')}</Label>
                                                 <Select value={data.tax_type} onValueChange={(val) => setData('tax_type', val)}>
-                                                    <SelectTrigger id="tax_type" className="h-10 rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20">
+                                                    <SelectTrigger id="tax_type" className="h-10 rounded-xl border-[#cbd9d0] bg-white text-sm text-[#1d2a22] focus:border-[#3f9567] focus:ring-[#3f9567]/20 dark:border-[#2d4f3d] dark:bg-[#0f261e] dark:text-[#ebfff4] dark:focus:border-[#5aa67a] dark:focus:ring-[#5aa67a]/20">
                                                         <SelectValue placeholder={t('tax.taxType')} />
                                                     </SelectTrigger>
-                                                    <SelectContent>
+                                                    <SelectContent className="owner-business-select-content border-[#2d4f3d] bg-[#07160e] text-[#ebfff4]">
                                                         {TAX_TYPES.map((taxItem) => (
-                                                            <SelectItem key={taxItem} value={taxItem}>
+                                                            <SelectItem key={taxItem} value={taxItem} className="text-[#ebfff4] focus:bg-[#123b2f] focus:text-[#dfffea]">
                                                                 {taxItem}
                                                             </SelectItem>
                                                         ))}
@@ -151,7 +151,7 @@ export default function TaxIndex({ reports }: Props) {
                                                 value={formatRupiah(data.gross_amount)}
                                                 onChange={(e) => setData('gross_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                                 onBlur={calculateTax}
-                                                className={`!border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${displayError('gross_amount') ? '!border-rose-500' : ''}`}
+                                                className={`border-[#cbd9d0] bg-white text-sm text-[#1d2a22] placeholder:text-[#718178] focus-visible:border-[#3f9567] focus-visible:ring-[#3f9567]/20 dark:!border-[#2d4f3d] dark:!bg-[#0f261e] dark:text-[#ebfff4] dark:placeholder:text-[#8fb9a0] dark:focus-visible:border-[#5aa67a] dark:focus-visible:ring-[#5aa67a]/20 ${displayError('gross_amount') ? '!border-rose-500' : ''}`}
                                                 required
                                             />
                                             {displayError('gross_amount') && <p className="text-sm text-rose-500">{displayError('gross_amount')}</p>}
@@ -164,7 +164,7 @@ export default function TaxIndex({ reports }: Props) {
                                                 type="text"
                                                 value={formatRupiah(data.tax_amount)}
                                                 onChange={(e) => setData('tax_amount', parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
-                                                className={`!border-[#d9e5dd] !bg-white !text-sm text-slate-700 focus-visible:border-owner-accent focus-visible:ring-owner-accent/20 ${displayError('tax_amount') ? '!border-rose-500' : ''}`}
+                                                className={`border-[#cbd9d0] bg-white text-sm text-[#1d2a22] placeholder:text-[#718178] focus-visible:border-[#3f9567] focus-visible:ring-[#3f9567]/20 dark:!border-[#2d4f3d] dark:!bg-[#0f261e] dark:text-[#ebfff4] dark:placeholder:text-[#8fb9a0] dark:focus-visible:border-[#5aa67a] dark:focus-visible:ring-[#5aa67a]/20 ${displayError('tax_amount') ? '!border-rose-500' : ''}`}
                                                 required
                                             />
                                             {displayError('tax_amount') && <p className="text-sm text-rose-500">{displayError('tax_amount')}</p>}
@@ -174,13 +174,13 @@ export default function TaxIndex({ reports }: Props) {
                                             <div className="space-y-1">
                                                 <Label htmlFor="status" className="text-sm font-medium">{t('common.status')}</Label>
                                                 <Select value={data.status} onValueChange={(val) => setData('status', val as any)}>
-                                                    <SelectTrigger id="status" className="h-10 rounded-xl border-[#d9e5dd] bg-white text-sm text-slate-700 focus:border-owner-accent focus:ring-owner-accent/20">
+                                                    <SelectTrigger id="status" className="h-10 rounded-xl border-[#cbd9d0] bg-white text-sm text-[#1d2a22] focus:border-[#3f9567] focus:ring-[#3f9567]/20 dark:border-[#2d4f3d] dark:bg-[#0f261e] dark:text-[#ebfff4] dark:focus:border-[#5aa67a] dark:focus:ring-[#5aa67a]/20">
                                                         <SelectValue placeholder={t('common.status')} />
                                                     </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="draft">{t('tax.status.draft')}</SelectItem>
-                                                        <SelectItem value="submitted">{t('tax.status.submitted')}</SelectItem>
-                                                        <SelectItem value="paid">{t('tax.status.paid')}</SelectItem>
+                                                    <SelectContent className="owner-business-select-content border-[#2d4f3d] bg-[#07160e] text-[#ebfff4]">
+                                                        <SelectItem value="draft" className="text-[#ebfff4] focus:bg-[#123b2f] focus:text-[#dfffea]">{t('tax.status.draft')}</SelectItem>
+                                                        <SelectItem value="submitted" className="text-[#ebfff4] focus:bg-[#123b2f] focus:text-[#dfffea]">{t('tax.status.submitted')}</SelectItem>
+                                                        <SelectItem value="paid" className="text-[#ebfff4] focus:bg-[#123b2f] focus:text-[#dfffea]">{t('tax.status.paid')}</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -191,7 +191,7 @@ export default function TaxIndex({ reports }: Props) {
                                                     <DatePicker
                                                         value={data.due_date}
                                                         onChange={(val) => setData('due_date', val)}
-                                                        className="!border-[#d9e5dd] !bg-white !text-slate-700 hover:!bg-white hover:!text-slate-700 focus-visible:!border-owner-accent"
+                                                        className="border-[#cbd9d0] bg-white text-[#1d2a22] hover:bg-[#f2f8f4] hover:text-[#1d6e4b] focus-visible:border-[#3f9567] dark:!border-[#2d4f3d] dark:!bg-[#0f261e] dark:!text-[#ebfff4] dark:hover:!bg-[#123b2f] dark:hover:!text-[#dfffea] dark:focus-visible:!border-[#5aa67a]"
                                                     />
                                             </div>
                                         </div>
@@ -205,11 +205,11 @@ export default function TaxIndex({ reports }: Props) {
                                                 setIsAddOpen(false);
                                                 reset();
                                             }}
-                                            className="rounded-xl"
+                                            className="rounded-xl border-[#2d4f3d] bg-[#000000] text-white hover:bg-[#111111] hover:text-white"
                                         >
                                             {t('common.cancel')}
                                         </Button>
-                                        <Button type="submit" disabled={processing} variant="owner" className="rounded-xl px-6">
+                                        <Button type="submit" disabled={processing} variant="owner" className="rounded-xl bg-[#3f9567] px-6 text-white hover:bg-[#2f7d51]">
                                             {processing ? t('common.saving') : t('common.save')}
                                         </Button>
                                     </DialogFooter>

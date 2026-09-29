@@ -321,7 +321,7 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover { background: #4938d9 !imp
 .admin-settings-page .appearance-tabs { border-color: #dcd8ff !important; }
 .admin-settings-page .appearance-tabs button:hover, .admin-settings-page .appearance-tabs button:focus-visible { background: #f1effd !important; color: #5e4bf2 !important; }
 .admin-settings-page .appearance-tabs button:not(.bg-owner-accent) { color: #5e4bf2 !important; }
-.admin-settings-page .appearance-tabs button.bg-owner-accent, .admin-settings-page .appearance-tabs button.bg-owner-accent:hover { background: #5e4bf2 !important; color: #ffffff !important; }
+.admin-settings-page .appearance-tabs button.bg-owner-accent, .admin-settings-page .appearance-tabs button.bg-owner-accent:hover { background: #3f9567 !important; color: #ffffff !important; }
 .admin-settings-page .appearance-tabs button {
     background: #eeeaf5 !important;
     color: #5f6073 !important;
@@ -339,9 +339,9 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover { background: #4938d9 !imp
 }
 .admin-settings-page .appearance-tabs[data-appearance='dark'] button[data-appearance-value='dark'],
 .admin-settings-page .appearance-tabs[data-appearance='dark'] button[data-appearance-value='dark']:hover {
-    background: #7c3aed !important;
+    background: #3f9567 !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 12px rgb(124 58 237 / 0.28) !important;
+    box-shadow: 0 4px 12px rgba(63, 149, 103, 0.28) !important;
 }
 .admin-settings-page .appearance-tabs[data-appearance='light'],
 .admin-settings-page .appearance-tabs[data-appearance='system'] {
@@ -378,9 +378,9 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover { background: #4938d9 !imp
 .admin-settings-page .appearance-tabs button[data-appearance-value='dark'],
 .admin-settings-page .appearance-tabs button[data-appearance-value='dark']:hover,
 .admin-settings-page .appearance-tabs button[data-appearance-value='dark']:focus-visible {
-    background: #7c3aed !important;
+    background: #3f9567 !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 12px rgb(124 58 237 / 0.28) !important;
+    box-shadow: 0 8px 20px rgba(63, 149, 103, 0.25) !important;
 }
 .admin-settings-page, .admin-settings-page * { scrollbar-color: #5e4bf2 #f1effd !important; }
 .admin-settings-page::-webkit-scrollbar, .admin-settings-page *::-webkit-scrollbar { width: 8px !important; }

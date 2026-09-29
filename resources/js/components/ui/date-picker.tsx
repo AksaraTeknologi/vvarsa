@@ -24,9 +24,10 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", disabled = false, className, theme = "owner" }: DatePickerProps) {
-  const isOwnerGreen = theme === "owner-green"
+  const isOwnerTheme = theme === "owner" || theme === "owner-green"
   const isStaff = usePage<SharedData>().props.auth.user?.roles?.includes("staff")
   const resolvedTheme = isStaff ? "staff-pink" : theme
+  const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
   const dateValue = React.useMemo(() => {
     if (!value) return undefined;
     if (value instanceof Date) return value;
@@ -60,8 +61,12 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
               ? "text-[#5E4BF2] hover:bg-[#F1EFFD] hover:text-[#4938D9] focus-visible:ring-[#5E4BF2]/30"
               : resolvedTheme === "staff-pink"
                 ? "staff-date-picker !border-[#f3b7cc] text-[#d94f83] hover:bg-[#fff0f5] hover:text-[#b83268] focus-visible:!border-[#d94f83] focus-visible:ring-[#d94f83]/30"
-                : "text-[#315d45] hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-[#5aa67a]/30",
-            !dateValue && "text-muted-foreground",
+                : isOwnerTheme
+                  ? isDarkMode
+                    ? "border-[#2d4f3d] bg-[#0f261e] text-[#ebfff4] hover:bg-[#123b2f] hover:text-[#dfffea] focus-visible:ring-[#5aa67a]/30"
+                    : "border-[#3f9567] bg-[#edf9f1] text-[#1d6e4b] hover:bg-[#def2e4] hover:text-[#124d39] focus-visible:ring-[#5aa67a]/30"
+                  : "border-[#2d4f3d] bg-[#0f261e] text-[#ebfff4] hover:bg-[#123b2f] hover:text-[#dfffea] focus-visible:ring-[#5aa67a]/30",
+            !dateValue && (isDarkMode ? "text-[#b8f5d1]" : "text-[#1d6e4b]"),
             className
           )}
         >
@@ -69,7 +74,15 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           {dateValue ? format(dateValue, "dd MMMM yyyy", { locale: id }) : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("owner-date-picker-popover staff-date-picker-popover w-auto p-0", resolvedTheme === "admin" && "admin-date-picker-popover")} align="start">
+      <PopoverContent
+        className={cn(
+          "owner-date-picker-popover staff-date-picker-popover w-auto border-[#2d4f3d] p-0 shadow-[0_20px_45px_rgba(0,0,0,0.4)]",
+          isDarkMode && "bg-[#07160e] text-[#ebfff4]",
+          !isDarkMode && isOwnerTheme && "border-[#dfeee7] bg-white text-[#1d2a22] shadow-[0_16px_40px_rgba(34,52,42,0.12)]",
+          resolvedTheme === "admin" && "admin-date-picker-popover",
+        )}
+        align="start"
+      >
         <Calendar
           mode="single"
           selected={dateValue}
@@ -96,12 +109,29 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
             button_next: "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
             day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#fff0f5] hover:text-[#b83268] focus-visible:ring-2 focus-visible:ring-[#d94f83]/30 aria-selected:!bg-[#d94f83] aria-selected:!text-white aria-selected:hover:!bg-[#b83268] aria-selected:opacity-100",
             today: "!bg-[#fff0f5] !text-[#d94f83]",
-          } : isOwnerGreen ? {
-            caption_label: "text-sm font-semibold text-[#3f9567]",
-            button_previous: "owner-calendar-nav h-8 w-8 rounded-full border-[#285e49] bg-[#0d2516] p-0 text-[#6ee7b7] shadow-sm hover:bg-[#123320] hover:text-[#a7f3d0]",
-            button_next: "owner-calendar-nav h-8 w-8 rounded-full border-[#285e49] bg-[#0d2516] p-0 text-[#6ee7b7] shadow-sm hover:bg-[#123320] hover:text-[#a7f3d0]",
-            day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#edf8f1] hover:text-[#2f7d51] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#3f9567] aria-selected:!text-white aria-selected:hover:!bg-[#2f7d51] aria-selected:opacity-100",
-            today: "!bg-[#edf8f1] !text-[#3f9567]",
+          } : isOwnerTheme ? {
+            months: "flex flex-col",
+            month: "relative space-y-3",
+            month_caption: "relative mt-3 flex h-9 items-center justify-center px-10",
+            nav: "absolute inset-x-2 top-5 z-10 flex h-8 items-center justify-between pointer-events-none",
+            caption_label: !isDarkMode ? "text-sm font-semibold text-[#1d6e4b]" : "text-sm font-semibold text-[#dfffea]",
+            button_previous: !isDarkMode
+              ? "owner-calendar-nav pointer-events-auto h-8 w-8 rounded-full border-[#a9d7b9] bg-[#edf9f1] p-0 text-[#1d6e4b] shadow-sm hover:bg-[#def2e4] hover:text-[#124d39]"
+              : "owner-calendar-nav pointer-events-auto h-8 w-8 rounded-full border-[#2d4f3d] bg-[#0d2516] p-0 text-[#7fe0aa] shadow-sm hover:bg-[#123320] hover:text-[#dfffea]",
+            button_next: !isDarkMode
+              ? "owner-calendar-nav pointer-events-auto h-8 w-8 rounded-full border-[#a9d7b9] bg-[#edf9f1] p-0 text-[#1d6e4b] shadow-sm hover:bg-[#def2e4] hover:text-[#124d39]"
+              : "owner-calendar-nav pointer-events-auto h-8 w-8 rounded-full border-[#2d4f3d] bg-[#0d2516] p-0 text-[#7fe0aa] shadow-sm hover:bg-[#123320] hover:text-[#dfffea]",
+            month_grid: "w-[252px] table-fixed border-collapse",
+            weekdays: "flex w-full",
+            weekday: !isDarkMode ? "flex h-7 flex-1 items-center justify-center text-xs font-medium text-[#4e7d62]" : "flex h-7 flex-1 items-center justify-center text-xs font-medium text-[#9bb8a5]",
+            week: "mt-1 flex w-full",
+            day: "flex h-8 flex-1 items-center justify-center p-0 text-center",
+            day_button: !isDarkMode
+              ? "mt-1 h-8 w-8 rounded-full bg-transparent p-0 font-normal text-[#1d2a22] hover:bg-[#def2e4] hover:text-[#124d39] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#3f9567] aria-selected:!text-white aria-selected:hover:!bg-[#2f7d51] aria-selected:opacity-100"
+              : "mt-1 h-8 w-8 rounded-full bg-transparent p-0 font-normal text-[#ebfff4] hover:bg-[#123b2f] hover:text-[#dfffea] focus-visible:ring-2 focus-visible:ring-[#5aa67a]/30 aria-selected:!bg-[#1d7b50] aria-selected:!text-white aria-selected:hover:!bg-[#2f9d67] aria-selected:opacity-100",
+            today: !isDarkMode ? "!bg-[#edf9f1] !text-[#1d6e4b]" : "!bg-[#123b2f] !text-[#dfffea]",
+            outside: !isDarkMode ? "!text-[#8aa393] [&>button]:!text-[#8aa393] aria-selected:!bg-transparent aria-selected:!text-[#8aa393]" : "!text-[#6d7d73] [&>button]:!text-[#6d7d73] aria-selected:!bg-transparent aria-selected:!text-[#6d7d73]",
+            disabled: !isDarkMode ? "!text-[#a5b3ac] opacity-50" : "!text-[#4b5d53] opacity-50",
           } : undefined}
         />
       </PopoverContent>

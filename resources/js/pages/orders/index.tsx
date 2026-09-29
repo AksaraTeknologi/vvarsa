@@ -154,25 +154,25 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                 {/* Filters */}
                 <div className="flex flex-wrap gap-2">
                     <Select value={filters.status ?? 'all'} onValueChange={(v) => applyFilter('status', v)}>
-                        <SelectTrigger className="!h-9 !w-40 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !text-[#ebfff4] hover:!bg-[#112a20]">
+                        <SelectTrigger className="!h-10 !w-40 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !font-medium !text-[#ebfff4] !shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] hover:!bg-[#112a20] focus-visible:!ring-2 focus-visible:!ring-[#5fe198]/25">
                             <SelectValue placeholder={t('orders.allStatuses')} />
                         </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">{t('orders.allStatuses')}</SelectItem>
-                            <SelectItem value="pending">{t('orders.pending')}</SelectItem>
-                            <SelectItem value="processing">{t('orders.inProcess')}</SelectItem>
-                            <SelectItem value="done">{t('orders.completed')}</SelectItem>
-                            <SelectItem value="cancelled">{t('orders.cancelled')}</SelectItem>
+                        <SelectContent className="!rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-[#ebfff4] !shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                            <SelectItem value="all" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.allStatuses')}</SelectItem>
+                            <SelectItem value="pending" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.pending')}</SelectItem>
+                            <SelectItem value="processing" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.inProcess')}</SelectItem>
+                            <SelectItem value="done" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.completed')}</SelectItem>
+                            <SelectItem value="cancelled" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.cancelled')}</SelectItem>
                         </SelectContent>
                     </Select>
                     <Select value={filters.payment_status ?? 'all'} onValueChange={(v) => applyFilter('payment_status', v)}>
-                        <SelectTrigger className="!h-9 !w-44 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !text-[#ebfff4] hover:!bg-[#112a20]">
+                        <SelectTrigger className="!h-10 !w-44 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !font-medium !text-[#ebfff4] !shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] hover:!bg-[#112a20] focus-visible:!ring-2 focus-visible:!ring-[#5fe198]/25">
                             <SelectValue placeholder={t('orders.allPayments')} />
                         </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">{t('orders.allPayments')}</SelectItem>
-                            <SelectItem value="unpaid">{t('orders.unpaid')}</SelectItem>
-                            <SelectItem value="paid">{t('orders.paid')}</SelectItem>
+                        <SelectContent className="!rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-[#ebfff4] !shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                            <SelectItem value="all" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.allPayments')}</SelectItem>
+                            <SelectItem value="unpaid" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.unpaid')}</SelectItem>
+                            <SelectItem value="paid" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.paid')}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>

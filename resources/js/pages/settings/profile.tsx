@@ -47,16 +47,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             <Head title={t('profile.settings')} />
 
             <SettingsLayout>
-                <div className="space-y-5 rounded-2xl border border-[#d9e5dd] bg-white p-5 shadow-sm md:p-6">
+                <div className="space-y-5 rounded-2xl border border-[#4ec77e]/30 bg-[#0c1d17] p-5 shadow-[0_20px_60px_rgba(7,20,15,0.7)] md:p-6">
                     <HeadingSmall title={t('profile.information')} description={t('profile.description')} />
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name" className="text-sm font-medium">{t('common.name')}</Label>
+                            <Label htmlFor="name" className="text-sm font-medium text-[#f4fff8]">{t('common.name')}</Label>
 
                             <Input
                                 id="name"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm !text-[#17182A] dark:!text-white focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 required
@@ -68,12 +68,12 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email" className="text-sm font-medium">{t('common.email')}</Label>
+                            <Label htmlFor="email" className="text-sm font-medium text-[#f4fff8]">{t('common.email')}</Label>
 
                             <Input
                                 id="email"
                                 type="email"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm !text-[#17182A] dark:!text-white focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 required

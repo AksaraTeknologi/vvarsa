@@ -37,7 +37,11 @@ export default function DeleteConfirmDialog({
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="gap-2 sm:gap-0">
-                    <Button variant="outline" onClick={() => setOpen(false)} className="hover:cursor-pointer">
+                    <Button
+                        variant="outline"
+                        onClick={() => setOpen(false)}
+                        className="border-black bg-black text-white hover:cursor-pointer hover:border-black hover:bg-zinc-800 hover:text-white"
+                    >
                         Batal
                     </Button>
                     <Button variant="destructive" onClick={handleConfirm} className="hover:cursor-pointer">

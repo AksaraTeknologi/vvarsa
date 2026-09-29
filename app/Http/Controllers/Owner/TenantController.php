@@ -74,19 +74,20 @@ class TenantController extends Controller
         ]);
 
         // Otomatis aktifkan tenant baru ini untuk owner
+        $tenant->users()->syncWithoutDetaching([$user->id]);
         $user->update(['tenant_id' => $tenant->id]);
 
         return to_route('dashboard')->with('success', "Tenant '{$tenant->name}' berhasil dibuat dan siap digunakan!");
     }
 
     /**
-     * Berpindah tenant aktif bagi owner yang memiliki beberapa tenant.
+     * Berpindah tenant aktif bagi owner / supervisor yang memiliki beberapa tenant.
      */
     public function switch(Request $request): RedirectResponse
     {
         $user = $request->user();
 
-        if (! $user->hasRole('owner')) {
+        if (! $user->hasAnyRole(['owner', 'supervisor'])) {
             abort(403, 'Akses tidak diizinkan.');
         }
 
@@ -94,12 +95,22 @@ class TenantController extends Controller
             'tenant_id' => 'required|uuid|exists:tenants,id',
         ]);
 
-        $tenant = Tenant::where('id', $validated['tenant_id'])
-            ->where(function ($query) use ($user) {
-                $query->where('owner_id', $user->id)
-                    ->orWhere('id', $user->tenant_id);
-            })
-            ->firstOrFail();
+        if ($user->hasRole('owner')) {
+            $tenant = Tenant::where('id', $validated['tenant_id'])
+                ->where(function ($query) use ($user) {
+                    $query->where('owner_id', $user->id)
+                        ->orWhere('id', $user->tenant_id)
+                        ->orWhereHas('users', fn ($q) => $q->where('users.id', $user->id));
+                })
+                ->firstOrFail();
+        } else {
+            $tenant = Tenant::where('id', $validated['tenant_id'])
+                ->where(function ($query) use ($user) {
+                    $query->where('id', $user->tenant_id)
+                        ->orWhereHas('users', fn ($q) => $q->where('users.id', $user->id));
+                })
+                ->firstOrFail();
+        }
 
         if (! $tenant->is_active) {
             return back()->with('error', "Tenant {$tenant->name} sedang dinonaktifkan.");

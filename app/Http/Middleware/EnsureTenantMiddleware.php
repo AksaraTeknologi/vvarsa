@@ -54,7 +54,8 @@ class EnsureTenantMiddleware
         if ($user->hasRole('owner')) {
             $userTenants = \App\Models\Tenant::where(function ($query) use ($user) {
                 $query->where('owner_id', $user->id)
-                    ->orWhere('id', $user->tenant_id);
+                    ->orWhere('id', $user->tenant_id)
+                    ->orWhereHas('users', fn ($q) => $q->where('users.id', $user->id));
             })
                 ->where('is_active', true)
                 ->with('plan:id,name,slug')
@@ -80,6 +81,23 @@ class EnsureTenantMiddleware
                     'max_users' => $p->max_users,
                     'max_products' => $p->max_products,
                     'features' => $p->features ?? [],
+                ]);
+        } elseif ($user->hasRole('supervisor')) {
+            $userTenants = \App\Models\Tenant::where(function ($query) use ($user) {
+                $query->where('id', $user->tenant_id)
+                    ->orWhereHas('users', fn ($q) => $q->where('users.id', $user->id));
+            })
+                ->where('is_active', true)
+                ->with('plan:id,name,slug')
+                ->get(['id', 'name', 'slug', 'business_type', 'currency', 'plan_id'])
+                ->map(fn ($t) => [
+                    'id' => $t->id,
+                    'name' => $t->name,
+                    'slug' => $t->slug,
+                    'business_type' => $t->business_type,
+                    'currency' => $t->currency ?? 'IDR',
+                    'plan_name' => $t->plan?->name,
+                    'is_current' => $t->id === $tenant->id,
                 ]);
         }
 

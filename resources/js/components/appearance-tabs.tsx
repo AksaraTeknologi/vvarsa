@@ -14,7 +14,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
 
     return (
         <div
-            className={cn('appearance-tabs inline-flex gap-1 rounded-xl border border-[#d9e5dd] bg-white p-1 shadow-sm', className)}
+            className={cn('appearance-tabs inline-flex gap-1 rounded-2xl border border-[#4ec77e]/30 bg-[#0e221b] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]', className)}
             data-appearance={appearance}
             {...props}
         >
@@ -24,14 +24,23 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
                     onClick={() => updateAppearance(value)}
                     data-appearance-value={value}
                     className={cn(
-                        'flex items-center rounded-md px-3.5 py-1.5 transition-colors',
+                        'flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200',
                         appearance === value
-                            ? 'bg-owner-accent text-white shadow-sm'
-                            : 'text-muted-foreground hover:bg-owner-accent/10 hover:text-owner-accent',
+                            ? 'shadow-[0_8px_20px_rgba(63,149,103,0.25)]'
+                            : 'text-[#d8f3e2] hover:bg-[#17392d] hover:text-[#f4fff8]',
                     )}
+                    style={
+                        appearance === value
+                            ? {
+                                  backgroundColor: '#3f9567',
+                                  color: '#ffffff',
+                                  boxShadow: '0 8px 20px rgba(63,149,103,0.25)',
+                              }
+                            : undefined
+                    }
                 >
                     <Icon className="-ml-1 h-4 w-4" />
-                    <span className="ml-1.5 text-sm">{label}</span>
+                    <span className="ml-1.5">{label}</span>
                 </button>
             ))}
         </div>

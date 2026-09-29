@@ -53,12 +53,12 @@ export default function Password() {
             <Head title="Profile settings" />
 
             <SettingsLayout>
-                <div className="space-y-5 rounded-2xl border border-[#d9e5dd] bg-white p-5 shadow-sm md:p-6">
+                <div className="space-y-5 rounded-2xl border border-[#4ec77e]/30 bg-[#0c1d17] p-5 shadow-[0_20px_60px_rgba(7,20,15,0.7)] md:p-6">
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
                     <form onSubmit={updatePassword} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="current_password" className="text-sm font-medium">Current password</Label>
+                            <Label htmlFor="current_password" className="text-sm font-medium text-[#f4fff8]">Current password</Label>
 
                             <Input
                                 id="current_password"
@@ -66,7 +66,7 @@ export default function Password() {
                                 value={data.current_password}
                                 onChange={(e) => setData('current_password', e.target.value)}
                                 type="password"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                 autoComplete="current-password"
                                 placeholder="Current password"
                             />
@@ -75,7 +75,7 @@ export default function Password() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password" className="text-sm font-medium">New password</Label>
+                            <Label htmlFor="password" className="text-sm font-medium text-[#f4fff8]">New password</Label>
 
                             <Input
                                 id="password"
@@ -83,7 +83,7 @@ export default function Password() {
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 type="password"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                 autoComplete="new-password"
                                 placeholder="New password"
                             />
@@ -92,14 +92,14 @@ export default function Password() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation" className="text-sm font-medium">Confirm password</Label>
+                            <Label htmlFor="password_confirmation" className="text-sm font-medium text-[#f4fff8]">Confirm password</Label>
 
                             <Input
                                 id="password_confirmation"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
                                 type="password"
-                                className="mt-1 block h-10 w-full !border-[#d9e5dd] !bg-white !text-sm focus-visible:border-owner-accent focus-visible:ring-owner-accent/20"
+                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
                                 autoComplete="new-password"
                                 placeholder="Confirm password"
                             />

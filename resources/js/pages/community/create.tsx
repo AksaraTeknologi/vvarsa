@@ -110,7 +110,8 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                 value={data.title}
                                 onChange={(e) => setData('title', e.target.value)}
                                 placeholder={t('community.form.titlePlaceholder')}
-                                className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('title') ? 'border-rose-500' : ''}`}
+                                className={`h-12 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30 ${displayError('title') ? 'border-rose-500' : ''}`}
+                                style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
                             />
                             {displayError('title') && <p className="mt-1 text-xs text-rose-500">{displayError('title')}</p>}
                         </div>
@@ -125,7 +126,8 @@ export default function CommunityCreate({ tenant_business_type }: Props) {
                                 value={data.content}
                                 onChange={(e) => setData('content', e.target.value)}
                                 placeholder={t('community.form.contentPlaceholder')}
-                                className={`!bg-white !text-sm !text-slate-700 placeholder:text-slate-400 ${displayError('content') ? 'border-rose-500' : ''}`}
+                                className={`min-h-[180px] rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 py-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30 ${displayError('content') ? 'border-rose-500' : ''}`}
+                                style={{ backgroundColor: '#0e221b', color: '#ecfff5', borderColor: 'rgba(118,219,160,0.42)' }}
                             />
                             {displayError('content') && <p className="mt-1 text-xs text-rose-500">{displayError('content')}</p>}
                         </div>

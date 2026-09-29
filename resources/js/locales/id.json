@@ -886,6 +886,8 @@
     "selectRole": "Pilih Peran",
     "staffRoleDesc": "Staff (Akses Terbatas: Stok & Operasional)",
     "supervisorRoleDesc": "Supervisor (Akses Luas, Butuh Approval Member)",
+    "supervisorLimitReached": "Supervisor (Maks. 1 Supervisor - Sudah Terisi)",
+    "oneSupervisorOnly": "Hanya boleh ada 1 Supervisor dalam satu tenant.",
     "cancel": "Batal",
     "sending": "Mengirim...",
     "saving": "Menyimpan...",
@@ -907,7 +909,16 @@
     "role": "Peran",
     "you": "Anda",
     "onlyOwner": "Hanya owner",
-    "changeTo": "Ubah ke {{role}}"
+    "changeTo": "Ubah ke {{role}}",
+    "importSupervisor": "Import Supervisor",
+    "importTitle": "Daftarkan Supervisor dari Bisnis Lain",
+    "importDesc": "Pilih supervisor dari cabang atau bisnis lain milik Anda untuk ditugaskan di bisnis ini.",
+    "selectSupervisor": "Pilih Supervisor",
+    "selectSupervisorPlaceholder": "Pilih supervisor yang akan didaftarkan...",
+    "assignedBranches": "Ditugaskan di: {{branches}}",
+    "noAvailableSupervisors": "Tidak ada supervisor dari bisnis lain yang tersedia untuk didaftarkan.",
+    "importBtn": "Daftarkan ke Bisnis Ini",
+    "importing": "Mendaftarkan..."
   },
   "subscription": {
     "title": "Pilih Paket yang Tepat",
