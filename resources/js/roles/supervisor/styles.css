@@ -40,6 +40,24 @@
 .supervisor-theme input:focus-visible,
 .supervisor-theme textarea:focus-visible,
 .supervisor-theme [data-slot='select-trigger']:focus-visible { border-color: #2596be !important; box-shadow: 0 0 0 3px rgb(37 150 190 / 0.16) !important; }
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme .owner-inventory-search {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme .owner-inventory-search::placeholder {
+    color: #7b98a8 !important;
+    opacity: 1 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme .owner-inventory-search-wrap > svg {
+    color: #2596be !important;
+    stroke: #2596be !important;
+}
+
 .supervisor-theme,
 .supervisor-theme * { scrollbar-color: #2596be #e0f2fe !important; }
 .supervisor-theme::-webkit-scrollbar,
@@ -587,5 +605,336 @@ body:has(.supervisor-theme) *::-webkit-scrollbar-thumb:hover {
 
 .supervisor-theme .business-event-card > div:first-child p,
 .supervisor-theme .business-event-card > div:first-child span {
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] input:not([type='checkbox']):not([type='radio']),
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] textarea,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] select,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [data-slot='select-trigger'] {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #17384a !important;
+    box-shadow: none !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] input:not([type='checkbox']):not([type='radio'])::placeholder,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] textarea::placeholder {
+    color: #7895a4 !important;
+    opacity: 1 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] input:not([type='checkbox']):not([type='radio']):focus-visible,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] textarea:focus-visible,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] select:focus-visible,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [data-slot='select-trigger']:focus-visible {
+    border-color: #2596be !important;
+    box-shadow: 0 0 0 2px rgb(37 150 190 / 0.16) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#07160e]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0c1d17]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0d1f17]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0e221b]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0f241d]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0f261e]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0f2a22]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0b1813]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#0a1814]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#100b0f]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#160e13]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#171219]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[rgba(8,20,15'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#164e3d]'] {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #17384a !important;
+    box-shadow: 0 4px 14px rgb(23 56 74 / 0.08) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#123b2f]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#12372d]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#143128]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#17392d]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#112b22]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] [class*='bg-[#1a4538]'] {
+    border-color: #b9e2f2 !important;
+    background: #eaf7fc !important;
+    background-color: #eaf7fc !important;
+    color: #145b78 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#ebfff4]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#ecfff5]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#f4fff8]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#d8f3e2]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#cfead9]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#b8f5d1]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#a9d9ba]'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small)[class*='text-[#dfffea]'] {
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table table,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table thead,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table tbody,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table tr,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table td,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table th {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-color: #d6edf7 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table th {
+    background: #eaf7fc !important;
+    color: #16749b !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table td,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table td :is(p, span) {
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table tr:hover,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .owner-opname-table tr:hover td {
+    background: #f3faff !important;
+    background-color: #f3faff !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-cart-content,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-status-group,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-payment-option {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+    box-shadow: 0 4px 14px rgb(23 56 74 / 0.08) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card:hover,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card:hover,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card[data-selected='true'] {
+    border-color: #2596be !important;
+    background: #eaf7fc !important;
+    background-color: #eaf7fc !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-status-option:not([data-selected='true']),
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-payment-option:not([data-selected='true']) {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #145b78 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-status-option[data-selected='true'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-payment-option[data-selected='true'] {
+    border-color: #2596be !important;
+    background: #2596be !important;
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .pos-page .pos-cart-content span[class*='bg-[#1a4538]'] {
+    border-color: #b9e2f2 !important;
+    background: #d7f0fb !important;
+    background-color: #d7f0fb !important;
+    color: #145b78 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .tax-consultation-page [class*='bg-[rgba(8,20,15'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .tax-consultation-page [class*='bg-[rgba(8,20,15'] {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .tax-consultation-page p[class*='bg-[#2d7d5c]'] {
+    background: #2596be !important;
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body [data-slot='dialog-content'],
+html:not(.dark):has(.supervisor-theme) body [data-slot='select-content'],
+html:not(.dark):has(.supervisor-theme) body [data-slot='dropdown-menu-content'],
+html:not(.dark):has(.supervisor-theme) body [data-slot='popover-content'],
+html:not(.dark):has(.supervisor-theme) body [cmdk-root] {
+    --background: #ffffff !important;
+    --foreground: #17384a !important;
+    --popover: #ffffff !important;
+    --popover-foreground: #17384a !important;
+    --accent: #eaf7fc !important;
+    --accent-foreground: #145b78 !important;
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #17384a !important;
+    box-shadow: 0 12px 28px rgb(23 56 74 / 0.12) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body [data-slot='select-item'],
+html:not(.dark):has(.supervisor-theme) body [data-slot='dropdown-menu-item'] {
+    background: transparent !important;
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body [data-slot='select-item'][data-highlighted],
+html:not(.dark):has(.supervisor-theme) body [data-slot='select-item'][data-state='checked'],
+html:not(.dark):has(.supervisor-theme) body [data-slot='dropdown-menu-item'][data-highlighted] {
+    background: #eaf7fc !important;
+    color: #145b78 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog,
+html:not(.dark):has(.supervisor-theme) body .owner-business-select-content {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+    box-shadow: 0 12px 28px rgb(23 56 74 / 0.12) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#07160e]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#0c1d17]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#0e221b]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#112b22]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#0f241d]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#17392d]'] {
+    border-color: #b9e2f2 !important;
+    background: #eaf7fc !important;
+    background-color: #eaf7fc !important;
+    color: #145b78 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog input,
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog textarea,
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [data-slot='select-trigger'] {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='text-[#ecfff5]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='text-[#f4fff8]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='text-[#d8f3e2]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='text-[#cfead9]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='text-[#9ce4b5]'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog [class*='text-[#eafff3]'] {
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog input::placeholder,
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog textarea::placeholder {
+    color: #7895a4 !important;
+    opacity: 1 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog button[data-variant='owner'],
+html:not(.dark):has(.supervisor-theme) body .owner-business-dialog button[class*='bg-[#4ec77e]'] {
+    border-color: #2596be !important;
+    background: #2596be !important;
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] button.owner-inventory-date,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] button.staff-date-picker {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] button.owner-inventory-date svg,
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] button.staff-date-picker svg {
+    color: #2596be !important;
+    stroke: #2596be !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover,
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover {
+    border-color: #b9e2f2 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #17384a !important;
+    box-shadow: 0 12px 28px rgb(23 56 74 / 0.12) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .owner-calendar-nav,
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .owner-calendar-nav {
+    border-color: #b9e2f2 !important;
+    background: #eaf7fc !important;
+    background-color: #eaf7fc !important;
+    color: #16749b !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .rdp-caption_label,
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .rdp-weekday,
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .rdp-caption_label,
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .rdp-weekday {
+    color: #16749b !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .rdp-day_button:not([aria-selected='true']),
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .rdp-day_button:not([aria-selected='true']) {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #17384a !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .rdp-day_button[aria-selected='true'],
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .rdp-day_button[aria-selected='true'] {
+    background: #2596be !important;
+    background-color: #2596be !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .rdp-today:not(.rdp-outside) .rdp-day_button:not([aria-selected='true']),
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .rdp-today:not(.rdp-outside) .rdp-day_button:not([aria-selected='true']) {
+    background: #d7f0fb !important;
+    background-color: #d7f0fb !important;
+    color: #16749b !important;
+}
+
+html:not(.dark):has(.supervisor-theme) body .owner-date-picker-popover .rdp-outside .rdp-day_button,
+html:not(.dark):has(.supervisor-theme) body .staff-date-picker-popover .rdp-outside .rdp-day_button {
+    color: #8aa3b0 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] .tax-consultation-page [class*='text-[rgba(228,246,234'] {
+    color: #527285 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme .appearance-tabs[data-appearance='light'] [data-appearance-value='light'],
+html:not(.dark):has(.supervisor-theme) .supervisor-theme .appearance-tabs[data-appearance='system'] [data-appearance-value='system'] {
+    background: #2596be !important;
+    background-color: #2596be !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgb(37 150 190 / 0.24) !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme button[role='switch'][aria-checked='false'] {
+    border-color: #9fd5e8 !important;
+    background: #d7f0fb !important;
+    background-color: #d7f0fb !important;
+    color: #145b78 !important;
+}
+
+html:not(.dark):has(.supervisor-theme) .supervisor-theme button[role='switch'][aria-checked='true'] {
+    border-color: #2596be !important;
+    background: #2596be !important;
+    background-color: #2596be !important;
     color: #ffffff !important;
 }
