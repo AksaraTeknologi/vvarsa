@@ -938,3 +938,776 @@ html:not(.dark):has(.supervisor-theme) .supervisor-theme button[role='switch'][a
     background-color: #2596be !important;
     color: #ffffff !important;
 }
+
+html.dark:has(.supervisor-theme) .supervisor-theme,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'],
+html.dark:has(.supervisor-theme) .supervisor-content {
+    --background: #070d13 !important;
+    --foreground: #e4eff5 !important;
+    --card: #101b26 !important;
+    --card-foreground: #e4eff5 !important;
+    --popover: #111f2c !important;
+    --popover-foreground: #e4eff5 !important;
+    --primary: #2596be !important;
+    --primary-foreground: #ffffff !important;
+    --secondary: #132633 !important;
+    --secondary-foreground: #c7e2ee !important;
+    --muted: #14212c !important;
+    --muted-foreground: #96adba !important;
+    --accent: #153247 !important;
+    --accent-foreground: #c4e8f5 !important;
+    --border: #243746 !important;
+    --input: #10202c !important;
+    --ring: #2596be !important;
+    --color-supervisor-accent: #36a9d1 !important;
+    --color-supervisor-bg: #070d13 !important;
+    --color-supervisor-hover: #173247 !important;
+    background: linear-gradient(145deg, #070d13 0%, #0b1722 52%, #08111a 100%) !important;
+    background-color: #070d13 !important;
+    background-image: linear-gradient(145deg, #070d13 0%, #0b1722 52%, #08111a 100%) !important;
+    color: #e4eff5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar'],
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-sidebar {
+    border-color: #1d3443 !important;
+    background: linear-gradient(180deg, #0b141d 0%, #09121b 100%) !important;
+    background-color: #0b141d !important;
+    background-image: linear-gradient(180deg, #0b141d 0%, #09121b 100%) !important;
+    color: #d8e8ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] > header,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-inset'] > header > * {
+    border-color: #203746 !important;
+    background: #0a141e !important;
+    background-color: #0a141e !important;
+    background-image: none !important;
+    color: #deebf1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button'],
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar'] a {
+    color: #b8cbd5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button']:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'],
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar'] a:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar'] a[aria-current='page'] {
+    background: #102738 !important;
+    background-color: #102738 !important;
+    color: #64c6e7 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button'] svg,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button']:hover svg,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'] svg {
+    color: #55b7d9 !important;
+    stroke: #55b7d9 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main :is(h1, h2, h3, h4, h5, p, label, th, td, li, dt, dd),
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='card-title'],
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='card-description'] {
+    color: #deebf1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .text-muted-foreground,
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-slate-400'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-slate-500'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-gray-400'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-gray-500'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#718178]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#7895a4]'] {
+    color: #96adba !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#1f2a23]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#1d2a22]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#17384a]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#17182a]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#2c2c2e]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#333333]'] {
+    color: #deebf1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#3f9567]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#2f7d51]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-[#5aa67a]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-emerald-600'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-emerald-700'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-green-600'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='text-green-700'] {
+    color: #55b7d9 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [data-slot='card'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .bg-card,
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-white'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-slate-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-slate-100'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-gray-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-gray-100'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-neutral-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-blue-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-sky-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-indigo-50'] {
+    border-color: #243746 !important;
+    background: #101b26 !important;
+    background-color: #101b26 !important;
+    background-image: none !important;
+    color: #deebf1 !important;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.28) !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#07160e]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0c1d17]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0d1f17]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0e221b]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0f241d]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0f261e]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0f2a22]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0b1813]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#0a1814]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#100b0f]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#160e13]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#171219]'] {
+    border-color: #203746 !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    background-image: none !important;
+    color: #dce9f0 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#123b2f]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#12372d]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#143128]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#17392d]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#112b22]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#1a4538]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#e0f2fe]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#eaf7fc]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#d7f0fb]'] {
+    border-color: #28516a !important;
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-emerald-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-green-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-blue-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-sky-50'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-indigo-50'] {
+    border-color: #28516a !important;
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-emerald-'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-green-'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-[#3f9567]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-[#5aa67a]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-[#4ec77e]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-[#76dba0]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-[#c7e0ce]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='border-[#d9e5dd]'] {
+    border-color: #28516a !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main input,
+html.dark:has(.supervisor-theme) .supervisor-theme main textarea,
+html.dark:has(.supervisor-theme) .supervisor-theme main select,
+html.dark:has(.supervisor-theme) .supervisor-theme main [data-slot='select-trigger'] {
+    border-color: #28516a !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    background-image: none !important;
+    color: #e2edf3 !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main input::placeholder,
+html.dark:has(.supervisor-theme) .supervisor-theme main textarea::placeholder {
+    color: #91aab8 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main input:focus-visible,
+html.dark:has(.supervisor-theme) .supervisor-theme main textarea:focus-visible,
+html.dark:has(.supervisor-theme) .supervisor-theme main select:focus-visible,
+html.dark:has(.supervisor-theme) .supervisor-theme main [data-slot='select-trigger']:focus-visible {
+    border-color: #36a9d1 !important;
+    box-shadow: 0 0 0 2px rgb(54 169 209 / 0.24) !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main button.owner-inventory-date,
+html.dark:has(.supervisor-theme) .supervisor-theme main button.staff-date-picker {
+    border-color: #28516a !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main button.owner-inventory-date svg,
+html.dark:has(.supervisor-theme) .supervisor-theme main button.staff-date-picker svg {
+    color: #55b7d9 !important;
+    stroke: #55b7d9 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [data-variant='owner'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-owner-accent'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#2596be]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#3f9567]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#5aa67a]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-[#4ec77e]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-emerald-500'],
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='bg-blue-600'] {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='hover:bg-owner-accent']:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='hover:bg-[#edf8f1]']:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='hover:bg-[#f2f5f3]']:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main [class*='hover:bg-[#327d55]']:hover {
+    border-color: #36a9d1 !important;
+    background: #1b6685 !important;
+    background-color: #1b6685 !important;
+    color: #f2fbff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-search,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-field,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-form input,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-form textarea,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-form [data-slot='select-trigger'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-order-page input,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-order-page textarea,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-order-page [data-slot='select-trigger'] {
+    border-color: #28516a !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    color: #e2edf3 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-search::placeholder,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-form input::placeholder,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-inventory-form textarea::placeholder,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-order-page input::placeholder,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-order-page textarea::placeholder {
+    color: #91aab8 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table table,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table thead,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table tbody,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table tr,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table td,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table th {
+    border-color: #203746 !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    color: #dce9f0 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table th {
+    background: #122535 !important;
+    color: #55b7d9 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table tr:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main .owner-opname-table tr:hover td {
+    background: #132635 !important;
+    background-color: #132635 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-cart-content,
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-package-card,
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-variant-card,
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-status-group,
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-payment-option {
+    border-color: #203c4d !important;
+    background: #0c1721 !important;
+    background-color: #0c1721 !important;
+    color: #dce9f0 !important;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.22) !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-package-card:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-variant-card:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-variant-card[data-selected='true'] {
+    border-color: #36a9d1 !important;
+    background: #102838 !important;
+    background-color: #102838 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-status-option:not([data-selected='true']),
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-payment-option:not([data-selected='true']) {
+    border-color: #28516a !important;
+    background: #101e29 !important;
+    background-color: #101e29 !important;
+    color: #bdd1dc !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-status-option[data-selected='true'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-payment-option[data-selected='true'] {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .pos-page .pos-cart-content span[class*='bg-[#1a4538]'] {
+    border-color: #28516a !important;
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .community-create-page .community-category-card {
+    border-color: #28516a !important;
+    background: #101b26 !important;
+    background-color: #101b26 !important;
+    color: #dce9f0 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .community-create-page .community-category-card-selected,
+html.dark:has(.supervisor-theme) .supervisor-theme main .community-create-page .community-category-card:hover {
+    border-color: #36a9d1 !important;
+    background: #123247 !important;
+    background-color: #123247 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .tax-consultation-page [class*='bg-[rgba(8,20,15'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .tax-consultation-page [class*='bg-[rgba(8,20,15'] {
+    border-color: #203c4d !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    color: #dce9f0 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .tax-consultation-page p[class*='bg-[#2d7d5c]'] {
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .tax-consultation-page [class*='text-[rgba(228,246,234'] {
+    color: #b6cbd5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .appearance-tabs {
+    border-color: #203c4d !important;
+    background: #0b1721 !important;
+    background-color: #0b1721 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .appearance-tabs button {
+    color: #b8cbd5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .appearance-tabs[data-appearance='dark'] [data-appearance-value='dark'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .appearance-tabs[data-appearance='system'] [data-appearance-value='system'] {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.24) !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main button[role='switch'][aria-checked='false'] {
+    border-color: #365365 !important;
+    background: #162632 !important;
+    background-color: #162632 !important;
+    color: #bdced8 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main button[role='switch'][aria-checked='true'] {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) body [data-slot='dialog-content'],
+html.dark:has(.supervisor-theme) body [data-slot='select-content'],
+html.dark:has(.supervisor-theme) body [data-slot='dropdown-menu-content'],
+html.dark:has(.supervisor-theme) body [data-slot='popover-content'],
+html.dark:has(.supervisor-theme) body [cmdk-root],
+html.dark:has(.supervisor-theme) body .owner-business-dialog,
+html.dark:has(.supervisor-theme) body .owner-business-select-content,
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover,
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover {
+    --background: #0d1823 !important;
+    --foreground: #e4eff5 !important;
+    --popover: #0d1823 !important;
+    --popover-foreground: #e4eff5 !important;
+    --accent: #153247 !important;
+    --accent-foreground: #c4e8f5 !important;
+    border-color: #28516a !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    background-image: none !important;
+    color: #e4eff5 !important;
+    box-shadow: 0 18px 42px rgb(0 0 0 / 0.45) !important;
+}
+
+html.dark:has(.supervisor-theme) body [data-slot='select-item'],
+html.dark:has(.supervisor-theme) body [data-slot='dropdown-menu-item'] {
+    background: transparent !important;
+    color: #d6e4eb !important;
+}
+
+html.dark:has(.supervisor-theme) body [data-slot='select-item'][data-highlighted],
+html.dark:has(.supervisor-theme) body [data-slot='select-item'][data-state='checked'],
+html.dark:has(.supervisor-theme) body [data-slot='dropdown-menu-item'][data-highlighted] {
+    background: #153247 !important;
+    color: #eaf6fb !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#07160e]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#0c1d17]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#0e221b]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#112b22]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#0f241d]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='bg-[#17392d]'] {
+    border-color: #28516a !important;
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-business-dialog input,
+html.dark:has(.supervisor-theme) body .owner-business-dialog textarea,
+html.dark:has(.supervisor-theme) body .owner-business-dialog [data-slot='select-trigger'] {
+    border-color: #28516a !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    color: #e2edf3 !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-business-dialog input::placeholder,
+html.dark:has(.supervisor-theme) body .owner-business-dialog textarea::placeholder {
+    color: #91aab8 !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-business-dialog button[data-variant='owner'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog button[class*='bg-[#4ec77e]'] {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='text-[#ecfff5]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='text-[#f4fff8]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='text-[#d8f3e2]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='text-[#cfead9]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='text-[#9ce4b5]'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog [class*='text-[#eafff3]'] {
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-business-dialog button[data-variant='owner'],
+html.dark:has(.supervisor-theme) body .owner-business-dialog button[class*='bg-[#4ec77e]'] {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .owner-calendar-nav,
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .owner-calendar-nav {
+    border-color: #28516a !important;
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .rdp-caption_label,
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .rdp-weekday,
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .rdp-caption_label,
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .rdp-weekday {
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .rdp-day_button:not([aria-selected='true']),
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .rdp-day_button:not([aria-selected='true']) {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #dce9f0 !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .rdp-day_button[aria-selected='true'],
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .rdp-day_button[aria-selected='true'] {
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .rdp-today:not(.rdp-outside) .rdp-day_button:not([aria-selected='true']),
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .rdp-today:not(.rdp-outside) .rdp-day_button:not([aria-selected='true']) {
+    background: #153247 !important;
+    background-color: #153247 !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) body .owner-date-picker-popover .rdp-outside .rdp-day_button,
+html.dark:has(.supervisor-theme) body .staff-date-picker-popover .rdp-outside .rdp-day_button {
+    color: #708a98 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme,
+html.dark:has(.supervisor-theme) .supervisor-theme * {
+    scrollbar-color: #28789a #0b141d !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme::-webkit-scrollbar-track,
+html.dark:has(.supervisor-theme) .supervisor-theme *::-webkit-scrollbar-track {
+    background: #0b141d !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme::-webkit-scrollbar-thumb,
+html.dark:has(.supervisor-theme) .supervisor-theme *::-webkit-scrollbar-thumb {
+    border-color: #0b141d !important;
+    background: #28789a !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-header'] [data-slot='sidebar-menu-button'] span:first-child {
+    color: #f4f9fc !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button'] svg,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button']:hover svg,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='sidebar-menu-button'][data-active='true'] svg {
+    color: #36a9d1 !important;
+    stroke: #36a9d1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='breadcrumb-link'] {
+    color: #e4eff5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='breadcrumb-link']:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme [data-slot='breadcrumb-separator'] {
+    color: #36a9d1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main :is(.stock-movement-page, .stock-opname-page) a[data-slot='button'][data-variant='outline'] {
+    border-color: #36a9d1 !important;
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main :is(.stock-movement-page, .stock-opname-page) a[data-slot='button'][data-variant='outline']:hover {
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-dashboard.is-supervisor .owner-stat-icon {
+    border-color: #36a9d1 !important;
+    background: #1684ad !important;
+    background-color: #1684ad !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-dashboard.is-supervisor .owner-stat-icon svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-dashboard.is-supervisor .owner-trend-icon {
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #36a9d1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-dashboard.is-supervisor .owner-trend-icon svg {
+    color: #36a9d1 !important;
+    stroke: #36a9d1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-dashboard.is-supervisor .supervisor-view-all {
+    display: inline-flex !important;
+    align-items: center;
+    border: 1px solid #36a9d1 !important;
+    border-radius: 9999px !important;
+    background: #1684ad !important;
+    color: #ffffff !important;
+    padding: 0.45rem 0.75rem !important;
+    text-decoration: none !important;
+    transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-dashboard.is-supervisor .supervisor-view-all:hover {
+    border-color: #58c4e8 !important;
+    background: #1b99c4 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main::before {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background-image:
+        radial-gradient(1.5px 1.5px at 19px 27px, rgb(145 229 255 / 0.68) 98%, transparent),
+        radial-gradient(1px 1px at 78px 54px, rgb(99 196 229 / 0.56) 98%, transparent),
+        radial-gradient(1px 1px at 131px 103px, rgb(145 229 255 / 0.52) 98%, transparent);
+    background-size: 168px 132px, 214px 172px, 240px 210px;
+    content: '';
+    opacity: 0.78;
+    pointer-events: none;
+    animation: supervisor-dark-glide 55s linear infinite;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main::after {
+    position: absolute;
+    z-index: 0;
+    top: 2rem;
+    right: clamp(1.5rem, 7vw, 6rem);
+    width: clamp(6rem, 10vw, 8.5rem);
+    aspect-ratio: 1;
+    border: 1px solid rgb(109 218 248 / 0.3);
+    border-radius: 50%;
+    background-image:
+        radial-gradient(ellipse 160% 36% at 50% 52%, transparent 43%, rgb(145 229 255 / 0.72) 45%, rgb(54 169 209 / 0.2) 48%, transparent 52%),
+        radial-gradient(circle at 31% 25%, #75d8f2 0%, #2185ad 34%, #0e354b 72%, #091a27 100%);
+    box-shadow: 0 0 42px rgb(22 132 173 / 0.18), inset -12px -13px 30px rgb(0 0 0 / 0.28);
+    content: '';
+    opacity: 0.34;
+    pointer-events: none;
+    transform: rotate(-20deg);
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main > * {
+    position: relative;
+    z-index: 1;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page table thead tr,
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page table thead th {
+    border-color: #203746 !important;
+    background: #122535 !important;
+    background-color: #122535 !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page table tbody tr,
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page table tbody td {
+    border-color: #203746 !important;
+    background: #0d1823 !important;
+    background-color: #0d1823 !important;
+    color: #dce9f0 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page table tbody tr:hover,
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page table tbody tr:hover td {
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page [class*='bg-owner-accent/10'] {
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page [class*='text-owner-accent'] {
+    background-color: transparent !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page [class*='text-slate-500'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .members-page [class*='text-slate-600'] {
+    color: #96adba !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='bg-[#f8fbf9]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='bg-[#e4f3ea]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='bg-[#e7f7ee]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='bg-[#e9f3ed]'] {
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='border-[#edf4ef]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='border-[#dfeae1]'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='border-[#edf1ef]'] {
+    border-color: #28516a !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='text-slate-500'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='text-slate-600'] {
+    color: #96adba !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='text-slate-700'],
+html.dark:has(.supervisor-theme) .supervisor-theme main .event-show-page [class*='text-slate-800'] {
+    color: #deebf1 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .staff-dark-event-registration {
+    border-color: #28516a !important;
+    background: linear-gradient(145deg, #101b26 0%, #0d1823 100%) !important;
+    color: #deebf1 !important;
+    box-shadow: 0 18px 35px rgb(0 0 0 / 0.28) !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme main .staff-dark-event-registration button:disabled {
+    border-color: #28516a !important;
+    background: #132b3b !important;
+    color: #96adba !important;
+    opacity: 1 !important;
+}
+
+@keyframes supervisor-dark-glide {
+    from { background-position: 0 0, 0 0, 0 0; }
+    to { background-position: 168px 132px, 214px 172px, 240px 210px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.dark:has(.supervisor-theme) .supervisor-theme main::before {
+        animation: none;
+    }
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-settings-page {
+    background-color: #070d13 !important;
+    background-image:
+        radial-gradient(1px 1px at 26px 36px, rgb(145 229 255 / 0.34) 98%, transparent),
+        radial-gradient(1px 1px at 112px 88px, rgb(99 196 229 / 0.28) 98%, transparent),
+        radial-gradient(ellipse at 100% 0%, rgb(22 132 173 / 0.14), transparent 38%),
+        linear-gradient(145deg, #070d13 0%, #0b1722 52%, #08111a 100%) !important;
+    background-size: 180px 148px, 230px 190px, 100% 100%, 100% 100% !important;
+    color: #e4eff5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-settings-page aside nav a:not([class*='bg-[#2596BE]']) {
+    background: transparent !important;
+    color: #b8cbd5 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-settings-page aside nav a:not([class*='bg-[#2596BE]']):hover {
+    background: #132b3b !important;
+    color: #69c5e4 !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-settings-page [class*='bg-[#f7fbf8]'],
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-settings-page [class*='bg-owner-accent/'] {
+    background: #132b3b !important;
+    background-color: #132b3b !important;
+    color: #c6e3ef !important;
+}
+
+html.dark:has(.supervisor-theme) .supervisor-theme .supervisor-settings-page [class*='border-[#b9e2f2]'] {
+    border-color: #28516a !important;
+}

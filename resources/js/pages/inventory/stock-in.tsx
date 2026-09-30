@@ -209,7 +209,7 @@ export default function StockIn({ products }: Props) {
                                                 isStaff
                                                     ? '!border-[#e9a6bf] !bg-[#fffafd] !text-[#5a1830] hover:!bg-[#fff0f5] hover:!text-[#b83268] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
                                                     : isSupervisor
-                                                      ? '!border-[#b9e2f2] !bg-white !text-[#17384a] hover:!bg-[#eaf7fc] hover:!text-[#145b78] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
+                                                                                                            ? '!border-[#b9e2f2] !bg-white !text-[#17384a] hover:!bg-[#eaf7fc] hover:!text-[#145b78] dark:!border-[#28516a] dark:!bg-[#0d1823] dark:!text-[#69c5e4] dark:hover:!bg-[#132b3b] dark:hover:!text-[#c6e3ef]'
                                                       : '!border-[#3f9567] !bg-[#edf9f1] !text-[#1d6e4b] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
                                             } ${isOwner ? 'hover:!bg-[#def2e4] hover:!text-[#124d39]' : ''}`}
                                         />

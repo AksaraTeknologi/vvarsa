@@ -99,21 +99,21 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
         const filterTriggerStyle = isOwner
         ? '!rounded-lg !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !font-medium !text-[#ebfff4] !shadow-none hover:!bg-[#112a20] focus-visible:!ring-2 focus-visible:!ring-[#5fe198]/25'
                 : isSupervisor
-                    ? '!rounded-lg !border-[#b9e2f2] !bg-white !text-sm !font-medium !text-[#17384a] !shadow-none hover:!bg-[#eaf7fc] focus-visible:!ring-2 focus-visible:!ring-[#2596be]/25 dark:!border-[#71314b] dark:!bg-[#171219] dark:!text-[#f8f3f6] dark:hover:!bg-[#21151d]'
+                    ? '!rounded-lg !border-[#b9e2f2] !bg-white !text-sm !font-medium !text-[#17384a] !shadow-none hover:!bg-[#eaf7fc] focus-visible:!ring-2 focus-visible:!ring-[#2596be]/25 dark:!border-[#28516a] dark:!bg-[#0d1823] dark:!text-[#e4eff5] dark:hover:!bg-[#132b3b]'
                 : isStaff
                     ? '!rounded-lg !border-[#f3b7cc] !bg-[#fffafd] !text-sm !font-medium !text-[#5a1830] !shadow-none hover:!bg-[#fff0f5] focus-visible:!ring-2 focus-visible:!ring-[#d94f83]/25 dark:!border-[#71314b] dark:!bg-[#171219] dark:!text-[#f8f3f6] dark:hover:!bg-[#21151d]'
                     : '!rounded-lg !border-[#71314b] !bg-[#171219] !text-sm !font-medium !text-[#f8f3f6] !shadow-none hover:!bg-[#21151d] focus-visible:!ring-2 focus-visible:!ring-[#d94f83]/25';
     const filterContentStyle = isOwner
         ? '!rounded-lg !border-[#2d4f3d] !bg-[#0d1f17] !text-[#ebfff4] !shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
                 : isSupervisor
-                    ? '!rounded-lg !border-[#b9e2f2] !bg-white !text-[#17384a] !shadow-[0_12px_28px_rgba(23,56,74,0.12)] dark:!border-[#71314b] dark:!bg-[#171219] dark:!text-[#f8f3f6] dark:!shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
+                    ? '!rounded-lg !border-[#b9e2f2] !bg-white !text-[#17384a] !shadow-[0_12px_28px_rgba(23,56,74,0.12)] dark:!border-[#28516a] dark:!bg-[#0d1823] dark:!text-[#e4eff5] dark:!shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
                 : isStaff
                     ? '!rounded-lg !border-[#f3b7cc] !bg-[#fffafd] !text-[#5a1830] !shadow-[0_12px_28px_rgba(90,24,48,0.12)] dark:!border-[#71314b] dark:!bg-[#171219] dark:!text-[#f8f3f6] dark:!shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
                     : '!rounded-lg !border-[#71314b] !bg-[#171219] !text-[#f8f3f6] !shadow-[0_16px_32px_rgba(0,0,0,0.35)]';
     const filterItemStyle = isOwner
         ? '!my-0.5 !rounded-md !px-3 !text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]'
                 : isSupervisor
-                    ? '!my-0.5 !rounded-md !px-3 !text-[#17384a] focus:!bg-[#eaf7fc] focus:!text-[#145b78] dark:!text-[#f4eef2] dark:focus:!bg-[#351525] dark:focus:!text-white'
+                    ? '!my-0.5 !rounded-md !px-3 !text-[#17384a] focus:!bg-[#eaf7fc] focus:!text-[#145b78] dark:!text-[#dce9f0] dark:focus:!bg-[#153247] dark:focus:!text-white'
                 : isStaff
                     ? '!my-0.5 !rounded-md !px-3 !text-[#5a1830] focus:!bg-[#ffe3ed] focus:!text-[#7f204a] dark:!text-[#f4eef2] dark:focus:!bg-[#351525] dark:focus:!text-white'
                     : '!my-0.5 !rounded-md !px-3 !text-[#f4eef2] focus:!bg-[#351525] focus:!text-white';

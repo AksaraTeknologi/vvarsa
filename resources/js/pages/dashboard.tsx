@@ -205,7 +205,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
                         <div className="mb-4 flex items-center justify-between gap-3">
                             <h2 className="text-base font-semibold tracking-[-0.02em]">{t('dashboard.criticalStock')}</h2>
-                            <Link href="/inventory?low_stock=1" className="text-primary text-[11px] font-medium hover:underline md:text-xs">
+                            <Link href="/inventory?low_stock=1" className={`text-primary text-[11px] font-medium hover:underline md:text-xs ${isSupervisor ? 'supervisor-view-all' : ''}`}>
                                 {t('common.viewAll')}
                             </Link>
                         </div>
@@ -245,7 +245,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
                         <div className="mb-4 flex items-center justify-between gap-3">
                             <h2 className="text-base font-semibold tracking-[-0.02em]">{t('dashboard.recentTransactions')}</h2>
-                            <Link href="/finance/transactions" className="text-primary text-[11px] font-medium hover:underline md:text-xs">
+                            <Link href="/finance/transactions" className={`text-primary text-[11px] font-medium hover:underline md:text-xs ${isSupervisor ? 'supervisor-view-all' : ''}`}>
                                 {t('common.viewAll')}
                             </Link>
                         </div>
@@ -289,7 +289,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                     <div className="bg-card border-border rounded-2xl border p-4 shadow-sm">
                         <div className="mb-4 flex items-center justify-between gap-3">
                             <h2 className="text-base font-semibold tracking-[-0.02em]">{t('dashboard.upcomingEvents')}</h2>
-                            <Link href="/events" className="text-primary text-[11px] font-medium hover:underline md:text-xs">
+                            <Link href="/events" className={`text-primary text-[11px] font-medium hover:underline md:text-xs ${isSupervisor ? 'supervisor-view-all' : ''}`}>
                                 {t('common.viewAll')}
                             </Link>
                         </div>

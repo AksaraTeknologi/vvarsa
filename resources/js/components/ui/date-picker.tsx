@@ -20,14 +20,16 @@ interface DatePickerProps {
     placeholder?: string;
     disabled?: boolean;
     className?: string;
-  theme?: "owner" | "owner-green" | "admin" | "staff-pink";
+  theme?: "owner" | "owner-green" | "admin" | "staff-pink" | "supervisor-blue";
 }
 
 export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", disabled = false, className, theme = "owner" }: DatePickerProps) {
   const isOwnerTheme = theme === "owner" || theme === "owner-green"
-  const isStaff = usePage<SharedData>().props.auth.user?.roles?.includes("staff")
-  const resolvedTheme = isStaff ? "staff-pink" : theme
   const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+  const roles = usePage<SharedData>().props.auth.user?.roles ?? []
+  const isStaff = roles.includes("staff")
+  const isSupervisor = roles.includes("supervisor")
+  const resolvedTheme = isStaff ? "staff-pink" : isSupervisor && isDarkMode ? "supervisor-blue" : theme
   const dateValue = React.useMemo(() => {
     if (!value) return undefined;
     if (value instanceof Date) return value;
@@ -88,7 +90,15 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
           selected={dateValue}
           onSelect={handleSelect}
           captionLayout="label"
-          classNames={resolvedTheme === "admin" ? {
+          classNames={resolvedTheme === "supervisor-blue" ? {
+            caption_label: "text-sm font-semibold text-[#69c5e4]",
+            button_previous: "pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full border-[#28516a] bg-[#132b3b] p-0 text-[#69c5e4] shadow-sm hover:bg-[#1684ad] hover:text-white",
+            button_next: "pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full border-[#28516a] bg-[#132b3b] p-0 text-[#69c5e4] shadow-sm hover:bg-[#1684ad] hover:text-white",
+            weekday: "flex h-7 flex-1 items-center justify-center text-xs font-medium text-[#96adba]",
+            day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal text-[#dce9f0] hover:bg-[#153247] hover:text-[#69c5e4] focus-visible:ring-2 focus-visible:ring-[#36a9d1]/40 aria-selected:!bg-[#1684ad] aria-selected:!text-white aria-selected:hover:!bg-[#1b99c4]",
+            selected: "!bg-[#1684ad] !text-white",
+            today: "!bg-[#153247] !text-[#69c5e4]",
+          } : resolvedTheme === "admin" ? {
             months: "flex flex-col",
             month: "relative space-y-3",
             month_caption: "relative flex h-9 items-center justify-center px-10",
