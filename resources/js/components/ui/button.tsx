@@ -62,9 +62,31 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button"
   const { auth } = usePage<SharedData>().props
+  const isOwner = auth.user?.roles?.includes("owner")
+  const isStaff = auth.user?.roles?.includes("staff")
   const isSupervisor = auth.user?.roles?.includes("supervisor")
+  const isAdmin = auth.user?.roles?.includes("admin")
   const supervisorVariants = ["default", "admin", "owner", "save", "edit"]
-  const effectiveVariant = isSupervisor && supervisorVariants.includes(variant ?? "") ? "supervisor" : variant
+
+  let effectiveVariant = variant
+
+  if (!effectiveVariant || effectiveVariant === "default") {
+    if (isOwner) {
+      effectiveVariant = "owner"
+    } else if (isStaff) {
+      effectiveVariant = "staff"
+    } else if (isSupervisor) {
+      effectiveVariant = "supervisor"
+    } else if (isAdmin) {
+      effectiveVariant = "admin"
+    } else {
+      effectiveVariant = "default"
+    }
+  }
+
+  if (isSupervisor && supervisorVariants.includes(effectiveVariant ?? "")) {
+    effectiveVariant = "supervisor"
+  }
 
   return (
     <Comp

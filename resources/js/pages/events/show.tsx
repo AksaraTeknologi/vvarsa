@@ -160,7 +160,7 @@ export default function EventShow({ event, is_registered, recent_registrations }
                         </div>
 
                         <div className="space-y-3">
-                            <div className="rounded-[24px] border border-[#dfeae1] bg-gradient-to-br from-[#f7fbf8] via-white to-[#eef8f2] p-3 shadow-[0_18px_35px_rgba(63,149,103,0.08)]">
+                            <div className="staff-dark-event-registration rounded-[24px] border border-[#dfeae1] bg-gradient-to-br from-[#f7fbf8] via-white to-[#eef8f2] p-3 shadow-[0_18px_35px_rgba(63,149,103,0.08)]">
                                 <div className="mb-2.5">
                                     <span className="text-[10px] font-medium text-slate-500">{t('events.registrationFee')}</span>
                                     <p className={`mt-1.5 text-[1.5rem] font-black tracking-[-0.05em] ${event.registration_fee === 0 ? 'text-[#3f9567]' : 'text-slate-800'}`}>

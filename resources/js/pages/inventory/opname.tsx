@@ -124,12 +124,10 @@ export default function Opname({ products }: Props) {
                             value={opname_date}
                             onChange={(val) => setOpnameDate(val)}
                             theme={isOwner ? 'owner-green' : 'owner'}
-                            className={`owner-inventory-date !h-10 !border-[#3f9567] !bg-[#edf9f1] !px-3 !text-[#1d6e4b] ${
-                                isOwner
-                                    ? 'hover:!bg-[#def2e4] hover:!text-[#124d39]'
-                                    : isStaff
-                                        ? 'hover:!bg-[#def2e4] hover:!text-[#124d39]'
-                                        : 'hover:!bg-[#def2e4] hover:!text-[#124d39]'
+                            className={`owner-inventory-date !h-10 !px-3 ${
+                                isStaff
+                                    ? '!border-[#e9a6bf] !bg-[#fffafd] !text-[#5a1830] hover:!bg-[#fff0f5] hover:!text-[#b83268] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
+                                    : '!border-[#3f9567] !bg-[#edf9f1] !text-[#1d6e4b] hover:!bg-[#def2e4] hover:!text-[#124d39] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
                             }`}
                         />
                     </div>

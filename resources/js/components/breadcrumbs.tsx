@@ -22,12 +22,12 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
                                                 {translatedTitle}
                                             </BreadcrumbPage>
                                         ) : (
-                                            <BreadcrumbLink asChild className="font-medium text-[#646678] hover:text-[#5E4BF2] dark:text-[#c4b5fd] dark:hover:text-[#ffffff]">
+                                            <BreadcrumbLink asChild className="font-medium text-[#646678] hover:text-[#d94f83] dark:text-[#f4bfd1] dark:hover:text-[#ffb8d0]">
                                                 <Link href={item.href}>{translatedTitle}</Link>
                                             </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>
-                                    {!isLast && <BreadcrumbSeparator className="text-[#92909D] dark:text-[#a78bfa]" />}
+                                    {!isLast && <BreadcrumbSeparator className="text-[#92909D] dark:text-[#f4bfd1]" />}
                                 </Fragment>
                             );
                         })}

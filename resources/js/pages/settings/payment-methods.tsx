@@ -289,13 +289,16 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                     <span className="text-muted-foreground text-sm">{pm.is_active ? 'Aktif' : 'Non-aktif'}</span>
                                                     <button
                                                         type="button"
+                                                        role="switch"
+                                                        aria-checked={pm.is_active}
+                                                        aria-label={`${pm.is_active ? 'Nonaktifkan' : 'Aktifkan'} ${pm.name}`}
                                                         onClick={() => handleToggleActive(pm)}
-                                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-owner-accent focus:ring-offset-2 focus:outline-none ${
+                                                        className={`payment-method-switch relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:ring-2 focus-visible:ring-[#db2777] focus-visible:ring-offset-0 focus:outline-none ${
                                                             pm.is_active ? 'bg-owner-accent' : 'bg-slate-200 dark:bg-slate-800'
                                                         }`}
                                                     >
                                                         <span
-                                                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                                            className={`payment-method-switch-thumb pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
                                                                 pm.is_active ? 'translate-x-4' : 'translate-x-0'
                                                             }`}
                                                         />

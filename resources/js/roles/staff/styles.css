@@ -29,6 +29,207 @@
     color: #5a1830 !important;
 }
 
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] input:not([type='checkbox']):not([type='radio']),
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] textarea,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] select,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [data-slot='input'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [data-slot='select-trigger'] {
+    border-color: #e9a6bf !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: none !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] input:not([type='checkbox']):not([type='radio'])::placeholder,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] textarea::placeholder {
+    color: #a75b79 !important;
+    opacity: 1 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] input:not([type='checkbox']):not([type='radio']):focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] textarea:focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] select:focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [data-slot='select-trigger']:focus-visible {
+    border-color: #d94f83 !important;
+    box-shadow: 0 0 0 2px rgb(217 79 131 / 0.16) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] button.owner-inventory-date,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] button.staff-date-picker {
+    border-color: #e9a6bf !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    color: #5a1830 !important;
+    box-shadow: none !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] button.owner-inventory-date svg,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] button.staff-date-picker svg {
+    color: #d94f83 !important;
+    stroke: #d94f83 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] button.owner-inventory-date:focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] button.staff-date-picker:focus-visible {
+    border-color: #d94f83 !important;
+    box-shadow: 0 0 0 2px rgb(217 79 131 / 0.16) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0c1d17]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0d1f17]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0e221b]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0f241d]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0f261e]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0f2a22]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#07160e]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0b1813]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#0a1814]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#123b2f]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#12372d]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#143128]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#100b0f]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#160e13]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#28131d]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] [class*='bg-[#311622]'] {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: 0 2px 10px rgb(181 37 99 / 0.06) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small, [data-slot='select-item']):not(button *):is([class*='text-white'], [class*='text-[#ebfff4]'], [class*='text-[#ecfff5]'], [class*='text-[#ebfff2]'], [class*='text-[#dfffea]'], [class*='text-[#d9ffeb]'], [class*='text-[#f4fff8]'], [class*='text-[#cfead9]'], [class*='text-[#b8f5d1]'], [class*='text-[#a9d9ba]'], [class*='text-[#a5d3b4]'], [class*='text-[#a8d7bf]']) {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-order-page [class*='bg-emerald-'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-order-page [class*='bg-green-'] {
+    background-color: #fff1f6 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-order-page [class*='text-emerald-'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-order-page [class*='text-green-'] {
+    color: #b83268 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-order-page [class*='border-emerald-'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-order-page [class*='border-green-'] {
+    border-color: #f3b7cc !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-opname-table th {
+    border-color: #f3b7cc !important;
+    background: #fff1f6 !important;
+    background-color: #fff1f6 !important;
+    color: #b83268 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .owner-opname-table tbody td:first-child > p:first-child {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-cart-content,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-status-group,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-payment-option {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: 0 2px 10px rgb(181 37 99 / 0.06) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card:hover,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card:hover,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card[data-selected='true'] {
+    border-color: #d94f83 !important;
+    background: #fff1f6 !important;
+    background-color: #fff1f6 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-cart-content span[class*='bg-[#1a4538]'] {
+    border-color: #f3b7cc !important;
+    background: #ffe3ed !important;
+    background-color: #ffe3ed !important;
+    color: #7f204a !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-status-option,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-payment-option {
+    color: #7f204a !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-status-option:not([data-selected='true']) {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    color: #7f204a !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-status-option:not([data-selected='true']):hover {
+    border-color: #d94f83 !important;
+    background: #fff0f5 !important;
+    background-color: #fff0f5 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-status-option[data-selected='true'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-payment-option[data-selected='true'] {
+    border-color: #d94f83 !important;
+    background: #d94f83 !important;
+    background-color: #d94f83 !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .community-create-page .community-category-card {
+    border-color: #f3b7cc !important;
+    background: #fff1f6 !important;
+    background-color: #fff1f6 !important;
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .community-create-page .community-category-card:hover,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .community-create-page .community-category-card-selected {
+    border-color: #d94f83 !important;
+    background: #ffe3ed !important;
+    background-color: #ffe3ed !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .community-create-page .community-category-card p {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .tax-consultation-page [class*='bg-[rgba(8,20,15'] {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    color: #5a1830 !important;
+    box-shadow: 0 2px 10px rgb(181 37 99 / 0.06) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .tax-consultation-page p[class*='bg-[#2d7d5c]'] {
+    background: #d94f83 !important;
+    background-color: #d94f83 !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .tax-consultation-page [class*='text-[rgba(228,246,234'] {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card [class*='text-white'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card [class*='text-[#ebfff4]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-package-card [class*='text-[#dfffea]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card [class*='text-white'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card [class*='text-[#ebfff4]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] .pos-page .pos-variant-card [class*='text-[#dfffea]'] {
+    color: #5a1830 !important;
+}
+
 .staff-theme [data-slot='sidebar-inset'] main {
     background: transparent !important;
     color: #5a1830 !important;
@@ -160,10 +361,35 @@
     color: #5a1830 !important;
 }
 
+.staff-theme [data-slot='button'][data-variant='default'],
+.staff-theme [data-slot='button'].bg-staff-accent,
+.staff-theme [data-slot='button'].bg-primary,
+.staff-theme [data-slot='button'].bg-purple,
+.staff-theme [data-slot='button'].bg-pink,
+.staff-theme [data-slot='button'].bg-rose-500,
+.staff-theme [data-slot='button'].bg-rose-600,
 .staff-theme [data-slot='sidebar-inset'] [class*='bg-primary'],
 .staff-theme [data-slot='sidebar-inset'] [class*='bg-staff-accent'],
 .staff-theme [data-slot='sidebar-inset'] [class*='bg-pink-'] {
+    background: #d94f83 !important;
     background-color: #d94f83 !important;
+    border-color: #f1a8c1 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 18px rgb(217 79 131 / 0.22) !important;
+}
+
+.staff-theme [data-slot='button'][data-variant='default']:hover,
+.staff-theme [data-slot='button'].bg-staff-accent:hover,
+.staff-theme [data-slot='button'].bg-primary:hover,
+.staff-theme [data-slot='button'].bg-purple:hover,
+.staff-theme [data-slot='button'].bg-pink:hover,
+.staff-theme [data-slot='button'].bg-rose-500:hover,
+.staff-theme [data-slot='button'].bg-rose-600:hover,
+.staff-theme [data-slot='sidebar-inset'] [class*='bg-primary']:hover,
+.staff-theme [data-slot='sidebar-inset'] [class*='bg-staff-accent']:hover,
+.staff-theme [data-slot='sidebar-inset'] [class*='bg-pink-']:hover {
+    background: #b83268 !important;
+    background-color: #b83268 !important;
     color: #ffffff !important;
 }
 
@@ -313,20 +539,6 @@ body:has(.staff-theme)::-webkit-scrollbar-thumb,
     background-color: #d94f83 !important;
 }
 
-.staff-theme [class*='bg-[#3f9567]'],
-.staff-theme [class*='bg-[#5aa67a]'],
-.staff-theme [class*='bg-[#4aaa7a]'],
-.staff-theme [class*='bg-[#4fa96f]'],
-.staff-theme [class*='bg-[#a9d4b6]'],
-.staff-theme [class*='border-[#3f9567]'],
-.staff-theme [class*='border-[#5aa67a]'],
-.staff-theme [class*='text-[#3f9567]'],
-.staff-theme [class*='text-[#5aa67a]'] {
-    background-color: #ffe3ed !important;
-    border-color: #f3b7cc !important;
-    color: #b83268 !important;
-}
-
 .staff-theme [data-slot='sidebar-inset'] main [class*='rgba(63,149,103'] {
     --tw-shadow-color: rgb(217 79 131 / 0.22) !important;
 }
@@ -335,22 +547,31 @@ body:has(.staff-theme)::-webkit-scrollbar-thumb,
     background-image: linear-gradient(90deg, #d94f83 0%, #e7799f 58%, #ffd4e3 100%) !important;
 }
 
-.staff-theme [data-slot='sidebar-inset'] main [class*='3f9567'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='4aaa7a'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='4fa96f'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='dfeee3'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='edf8f1'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='f8fbf9'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='e9f3ed'],
-.staff-theme [data-slot='sidebar-inset'] main [class*='e7f7ee'] {
-    background-color: #ffe3ed !important;
-    border-color: #f3b7cc !important;
-    color: #b83268 !important;
-}
-
-.staff-theme [data-slot='sidebar-inset'] main [class*='3f9567'] {
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#3f9567]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#5aa67a]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#4aaa7a]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#4fa96f]'] {
     background-color: #d94f83 !important;
     color: #ffffff !important;
+}
+
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#a9d4b6]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#dfeee3]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#edf8f1]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#f8fbf9]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#e9f3ed]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#e7f7ee]'] {
+    background-color: #ffe3ed !important;
+}
+
+.staff-theme [data-slot='sidebar-inset'] main [class*='border-[#3f9567]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='border-[#5aa67a]'] {
+    border-color: #f3b7cc !important;
+}
+
+.staff-theme [data-slot='sidebar-inset'] main [class*='text-[#3f9567]'],
+.staff-theme [data-slot='sidebar-inset'] main [class*='text-[#5aa67a]'] {
+    color: #d94f83 !important;
 }
 
 .staff-theme .orders-page input,
@@ -384,6 +605,56 @@ body:has(.staff-theme)::-webkit-scrollbar-thumb,
     color: #b83268 !important;
 }
 
+.staff-theme .owner-order-page [class*='bg-emerald-'],
+.staff-theme .owner-order-page [class*='bg-green-'] {
+    background-color: #311622 !important;
+}
+
+.staff-theme .owner-order-page [class*='text-emerald-'],
+.staff-theme .owner-order-page [class*='text-green-'] {
+    color: #f4bfd1 !important;
+}
+
+.staff-theme .owner-order-page [class*='border-emerald-'],
+.staff-theme .owner-order-page [class*='border-green-'] {
+    border-color: #71314b !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-trigger,
+html.dark:has(.staff-theme) body .staff-sales-filter-content {
+    border-color: #d94f83 !important;
+    background-color: #100b0f !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-item {
+    color: #f4bfd1 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-item[data-highlighted],
+html.dark:has(.staff-theme) body .staff-sales-filter-item[data-state='checked'] {
+    background-color: #d94f83 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-item:hover {
+    background-color: #311622 !important;
+    color: #ffffff !important;
+}
+
+body:has(.staff-theme) .orders-page [class*='bg-[#3f9567]'],
+body:has(.staff-theme) .orders-page [class*='bg-[#5aa67a]'],
+body:has(.staff-theme) .orders-page [class*='text-[#3f9567]'],
+body:has(.staff-theme) .orders-page [class*='text-[#5aa67a]'],
+body:has(.staff-theme) .order-create-page [class*='bg-[#3f9567]'],
+body:has(.staff-theme) .order-create-page [class*='bg-[#5aa67a]'],
+body:has(.staff-theme) .order-create-page [class*='text-[#3f9567]'],
+body:has(.staff-theme) .order-create-page [class*='text-[#5aa67a]'] {
+    background-color: #d94f83 !important;
+    border-color: #f3b7cc !important;
+    color: #ffffff !important;
+}
+
 .staff-theme .order-create-page [class*='a9d4b6'],
 .staff-theme .order-create-page [class*='76b58e'],
 .staff-theme .order-create-page [class*='c7e0ce'],
@@ -402,11 +673,31 @@ body:has(.staff-theme)::-webkit-scrollbar-thumb,
     background-color: #ffe3ed !important;
 }
 
-.staff-theme .pos-page [class*='3f9567'],
-.staff-theme .pos-page [class*='315d45'],
-.staff-theme .pos-page [class*='2596BE'],
-.staff-theme .pos-page [class*='1f83a8'] {
+.staff-theme .pos-page [class*='text-[#3f9567]'],
+.staff-theme .pos-page [class*='text-[#315d45]'],
+.staff-theme .pos-page [class*='text-[#2596BE]'],
+.staff-theme .pos-page [class*='text-[#1f83a8]'] {
     color: #d94f83 !important;
+}
+
+.staff-theme .pos-page [class*='text-[#7fe0aa]'],
+.staff-theme .pos-page [class*='text-[#b8f5d1]'],
+.staff-theme .pos-page [class*='text-[#a9d9ba]'] {
+    color: #f4bfd1 !important;
+}
+
+body:has(.staff-theme) .pos-page [class*='bg-[#3f9567]'],
+body:has(.staff-theme) .pos-page [class*='bg-[#5aa67a]'],
+body:has(.staff-theme) .pos-page [class*='bg-[#2596BE]'] {
+    background-color: #d94f83 !important;
+    border-color: #f3b7cc !important;
+    color: #ffffff !important;
+}
+
+body:has(.staff-theme) .pos-page [class*='text-[#ebfff4]'],
+body:has(.staff-theme) .pos-page [class*='text-[#a5d3b4]'],
+body:has(.staff-theme) .pos-page [class*='text-[#b8f5d1]'] {
+    color: #f8f3f6 !important;
 }
 
 .staff-theme .pos-page [class*='c7e0ce'],
@@ -427,6 +718,57 @@ body:has(.staff-theme)::-webkit-scrollbar-thumb,
 
 .staff-theme .pos-page [class*='bg-[#3f9567]'],
 .staff-theme .pos-page [class*='bg-[#2596BE]'] {
+    background-color: #d94f83 !important;
+    color: #ffffff !important;
+}
+
+.staff-theme .pos-page [class*='bg-[#0d1f17]'],
+.staff-theme .pos-page [class*='bg-[#0f261e]'],
+.staff-theme .pos-page [class*='bg-[#0b1813]'],
+.staff-theme .pos-page [class*='bg-[#0a1814]'] {
+    background-color: #100b0f !important;
+}
+
+.staff-theme .pos-page [class*='bg-[#123b2f]'],
+.staff-theme .pos-page [class*='bg-[#12372d]'],
+.staff-theme .pos-page [class*='bg-[#1a4538]'] {
+    background-color: #28131d !important;
+}
+
+.staff-theme .pos-page [class*='border-[#214437]'],
+.staff-theme .pos-page [class*='border-[#2d4f3d]'],
+.staff-theme .pos-page [class*='border-[#1a3a2d]'] {
+    border-color: #71314b !important;
+}
+
+.staff-theme .pos-page .pos-package-card,
+.staff-theme .pos-page .pos-variant-card {
+    border-color: #71314b !important;
+    background-color: #160e13 !important;
+    color: #f8f3f6 !important;
+}
+
+.staff-theme .pos-page .pos-package-card:hover,
+.staff-theme .pos-page .pos-variant-card:hover,
+.staff-theme .pos-page .pos-variant-card[data-selected='true'] {
+    border-color: #d94f83 !important;
+    background-color: #28131d !important;
+}
+
+.staff-theme .pos-page .pos-status-group,
+.staff-theme .pos-page .pos-payment-option {
+    border-color: #71314b !important;
+    background-color: #160e13 !important;
+}
+
+.staff-theme .pos-page .pos-status-option,
+.staff-theme .pos-page .pos-payment-option {
+    color: #f4bfd1 !important;
+}
+
+.staff-theme .pos-page .pos-status-option[data-selected='true'],
+.staff-theme .pos-page .pos-payment-option[data-selected='true'] {
+    border-color: #f3b7cc !important;
     background-color: #d94f83 !important;
     color: #ffffff !important;
 }
@@ -462,9 +804,9 @@ body:has(.staff-theme)::-webkit-scrollbar-thumb,
 body:has(.staff-theme) .pos-page input,
 body:has(.staff-theme) .pos-page textarea,
 body:has(.staff-theme) .pos-page [data-slot='select-trigger'] {
-    background-color: #ffffff !important;
+    background-color: #28131d !important;
     border-color: #f3b7cc !important;
-    color: #5a1830 !important;
+    color: #fff4f8 !important;
 }
 
 .staff-theme .pos-page input:focus,
@@ -492,15 +834,42 @@ body:has(.staff-theme) .pos-page .pos-customer-field:focus {
 }
 
 body:has(.staff-theme) .pos-page .pos-customer-fields input,
-body:has(.staff-theme) .pos-page .pos-customer-fields textarea {
+body:has(.staff-theme) .pos-page .pos-customer-fields textarea,
+body:has(.staff-theme) .pos-page .pos-customer-field,
+body:has(.staff-theme) .pos-page .pos-customer-field input,
+body:has(.staff-theme) .pos-page .pos-customer-field textarea {
     border-color: #f3b7cc !important;
-    background-color: #ffffff !important;
-    color: #d94f83 !important;
+    background-color: #28131d !important;
+    color: #fff4f8 !important;
+}
+
+body:has(.staff-theme) .pos-page .pos-customer-input {
+    border-color: #d94f83 !important;
+    background-color: #29131e !important;
+    color: #fff4f8 !important;
+}
+
+body:has(.staff-theme) .pos-page .pos-customer-input::placeholder {
+    color: #e8a4bc !important;
+}
+
+body:has(.staff-theme) .staff-theme main .pos-page .pos-checkout-field {
+    border-color: #71314b !important;
+    background-color: #211820 !important;
+    color: #fff4f8 !important;
+    box-shadow: none !important;
+}
+
+body:has(.staff-theme) .staff-theme main .pos-page .pos-checkout-field::placeholder {
+    color: #c7a4b5 !important;
+    opacity: 1 !important;
 }
 
 body:has(.staff-theme) .pos-page .pos-customer-fields input::placeholder,
-body:has(.staff-theme) .pos-page .pos-customer-fields textarea::placeholder {
-    color: #d98aaa !important;
+body:has(.staff-theme) .pos-page .pos-customer-fields textarea::placeholder,
+body:has(.staff-theme) .pos-page .pos-customer-field input::placeholder,
+body:has(.staff-theme) .pos-page .pos-customer-field textarea::placeholder {
+    color: #f4bfd1 !important;
     opacity: 1 !important;
 }
 
@@ -529,6 +898,20 @@ body:has(.staff-theme) .pos-page [class*='overflow-x-auto']::-webkit-scrollbar-t
     border: 2px solid #ffe3ed !important;
     border-radius: 9999px;
     background: #d94f83 !important;
+}
+
+.staff-theme .pos-page .pos-cart-content,
+.staff-theme .pos-page .pos-cart-content [class*='overflow-y-auto'],
+.staff-theme .pos-page .pos-payment-methods {
+    scrollbar-width: none !important;
+}
+
+.staff-theme .pos-page .pos-cart-content::-webkit-scrollbar,
+.staff-theme .pos-page .pos-cart-content [class*='overflow-y-auto']::-webkit-scrollbar,
+.staff-theme .pos-page .pos-payment-methods::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 .staff-theme .business-page input,
@@ -1052,4 +1435,1135 @@ body:has(.staff-theme) .staff-date-picker:focus-visible {
 body:has(.staff-theme) .staff-date-picker-popover {
     border-color: #f3b7cc !important;
     background-color: #fffafd !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-panel {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    box-shadow: 0 12px 30px rgb(181 37 99 / 0.1) !important;
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-panel h1,
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-panel h2,
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-panel h3,
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-panel p {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-tabs {
+    border-color: #f3b7cc !important;
+    background: #fff1f6 !important;
+    background-color: #fff1f6 !important;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-tabs button {
+    color: #8f2855 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-tabs button:hover {
+    background: #ffe3ed !important;
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-tabs[data-appearance='light'] [data-appearance-value='light'],
+html:not(.dark):has(.staff-theme) .staff-theme .staff-appearance-tabs[data-appearance='system'] [data-appearance-value='system'] {
+    background: #d94f83 !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgb(217 79 131 / 0.24) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main input:not([type='checkbox']):not([type='radio']),
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main textarea,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main select,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [data-slot='input'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [data-slot='select-trigger'] {
+    border-color: #e9a6bf !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: none !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main input:not([type='checkbox']):not([type='radio'])::placeholder,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main textarea::placeholder {
+    color: #a75b79 !important;
+    opacity: 1 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main input:not([type='checkbox']):not([type='radio']):focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main textarea:focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main select:focus-visible,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [data-slot='select-trigger']:focus-visible {
+    border-color: #d94f83 !important;
+    box-shadow: 0 0 0 2px rgb(217 79 131 / 0.16) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0c1d17]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0d1f17]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0e221b]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0f241d]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0f261e]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0f2a22]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#07160e]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0b1813]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#0a1814]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#123b2f]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#12372d]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#143128]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#100b0f]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#160e13]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#28131d]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main [class*='bg-[#311622]'] {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: 0 2px 10px rgb(181 37 99 / 0.06) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main :is(h1, h2, h3, h4, p, span, label, td, th, li, strong, small, [data-slot='select-item']):not(button *):is([class*='text-white'], [class*='text-[#ebfff4]'], [class*='text-[#ecfff5]'], [class*='text-[#ebfff2]'], [class*='text-[#dfffea]'], [class*='text-[#d9ffeb]'], [class*='text-[#f4fff8]'], [class*='text-[#cfead9]'], [class*='text-[#b8f5d1]'], [class*='text-[#a9d9ba]'], [class*='text-[#a5d3b4]'], [class*='text-[#a8d7bf]']) {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .owner-order-page [class*='bg-emerald-'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .owner-order-page [class*='bg-green-'] {
+    background-color: #fff1f6 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .owner-order-page [class*='text-emerald-'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .owner-order-page [class*='text-green-'] {
+    color: #b83268 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .owner-order-page [class*='border-emerald-'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .owner-order-page [class*='border-green-'] {
+    border-color: #f3b7cc !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-cart-content,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-package-card,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-variant-card,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-status-group,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-payment-option {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: 0 2px 10px rgb(181 37 99 / 0.06) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-package-card:hover,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-variant-card:hover,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-variant-card[data-selected='true'] {
+    border-color: #d94f83 !important;
+    background: #fff1f6 !important;
+    background-color: #fff1f6 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-status-option,
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-payment-option {
+    color: #7f204a !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-status-option[data-selected='true'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-payment-option[data-selected='true'] {
+    border-color: #d94f83 !important;
+    background: #d94f83 !important;
+    background-color: #d94f83 !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.staff-theme) body [data-slot='dialog-content'],
+html:not(.dark):has(.staff-theme) body [data-slot='select-content'],
+html:not(.dark):has(.staff-theme) body [data-slot='dropdown-menu-content'],
+html:not(.dark):has(.staff-theme) body [data-slot='popover-content'],
+html:not(.dark):has(.staff-theme) body [cmdk-root] {
+    --background: #fffafd !important;
+    --foreground: #5a1830 !important;
+    --popover: #fffafd !important;
+    --popover-foreground: #5a1830 !important;
+    --accent: #ffe3ed !important;
+    --accent-foreground: #7f204a !important;
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    background-image: none !important;
+    color: #5a1830 !important;
+    box-shadow: 0 12px 28px rgb(90 24 48 / 0.12) !important;
+}
+
+html:not(.dark):has(.staff-theme) body [data-slot='select-item'],
+html:not(.dark):has(.staff-theme) body [data-slot='dropdown-menu-item'] {
+    background: transparent !important;
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) body [data-slot='select-item'][data-highlighted],
+html:not(.dark):has(.staff-theme) body [data-slot='select-item'][data-state='checked'],
+html:not(.dark):has(.staff-theme) body [data-slot='dropdown-menu-item'][data-highlighted] {
+    background: #ffe3ed !important;
+    color: #7f204a !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .community-create-page .community-category-card {
+    border-color: #f3b7cc !important;
+    background: #fff1f6 !important;
+    background-color: #fff1f6 !important;
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .community-create-page .community-category-card:hover {
+    border-color: #d94f83 !important;
+    background: #ffe3ed !important;
+    background-color: #ffe3ed !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .community-create-page .community-category-card-selected {
+    border-color: #d94f83 !important;
+    background: #ffe3ed !important;
+    background-color: #ffe3ed !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .community-create-page .community-category-card p {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .tax-consultation-page [class*='bg-[rgba(8,20,15'] {
+    border-color: #f3b7cc !important;
+    background: #fffafd !important;
+    background-color: #fffafd !important;
+    color: #5a1830 !important;
+    box-shadow: 0 2px 10px rgb(181 37 99 / 0.06) !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .tax-consultation-page p[class*='bg-[#2d7d5c]'] {
+    background: #d94f83 !important;
+    background-color: #d94f83 !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .tax-consultation-page [class*='text-[rgba(228,246,234'] {
+    color: #5a1830 !important;
+}
+
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-package-card [class*='text-white'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-package-card [class*='text-[#ebfff4]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-package-card [class*='text-[#dfffea]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-variant-card [class*='text-white'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-variant-card [class*='text-[#ebfff4]'],
+html:not(.dark):has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main .pos-page .pos-variant-card [class*='text-[#dfffea]'] {
+    color: #5a1830 !important;
+}
+
+/* Staff dark theme: near-black surfaces with saturated pink accents. */
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main,
+html.dark:has(.staff-theme) .staff-content {
+    --background: #09080b !important;
+    --foreground: #f8f3f6 !important;
+    --card: #151117 !important;
+    --card-foreground: #f8f3f6 !important;
+    --popover: #19121a !important;
+    --popover-foreground: #f8f3f6 !important;
+    --primary: #ec4899 !important;
+    --primary-foreground: #ffffff !important;
+    --secondary: #24131d !important;
+    --secondary-foreground: #f9a8d4 !important;
+    --muted: #211820 !important;
+    --muted-foreground: #c7b5c0 !important;
+    --accent: #351525 !important;
+    --accent-foreground: #f9a8d4 !important;
+    --border: #392733 !important;
+    --input: #21171f !important;
+    --ring: #ec4899 !important;
+    --color-staff-accent: #ec4899 !important;
+    --color-staff-bg: #1b1018 !important;
+    --color-staff-hover: #351525 !important;
+    background: #09080b !important;
+    background-color: #09080b !important;
+    background-image: linear-gradient(135deg, #09080b 0%, #100b11 55%, #09080b 100%) !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] > *,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-header'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-content'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-footer'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-group'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-menu'] {
+    background: #0d0a0f !important;
+    background-color: #0d0a0f !important;
+    border-color: #30202b !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] > header,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] > header > * {
+    background: #0d0a0f !important;
+    background-color: #0d0a0f !important;
+    border-color: #30202b !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-menu-button'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] a {
+    color: #e8dce3 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-menu-button']:hover,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-menu-button'][data-active='true'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] a:hover,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] a[aria-current='page'] {
+    background: #2b1422 !important;
+    background-color: #2b1422 !important;
+    color: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] a[class~='bg-staff-bg'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] a[aria-current='page'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='breadcrumb'] [aria-current='page'] {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #f472b6 !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] span[class*='text-[#2c2c2e]'] {
+    color: #fff4f8 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] * {
+    scrollbar-width: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar']::-webkit-scrollbar,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main,
+html.dark:has(.staff-theme) .staff-theme main h1,
+html.dark:has(.staff-theme) .staff-theme main h2,
+html.dark:has(.staff-theme) .staff-theme main h3,
+html.dark:has(.staff-theme) .staff-theme main h4,
+html.dark:has(.staff-theme) .staff-theme main p,
+html.dark:has(.staff-theme) .staff-theme main span,
+html.dark:has(.staff-theme) .staff-theme main label,
+html.dark:has(.staff-theme) .staff-theme main th,
+html.dark:has(.staff-theme) .staff-theme main td,
+html.dark:has(.staff-theme) .staff-theme main li,
+html.dark:has(.staff-theme) .staff-theme main [data-slot='card-title'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='card-description'] {
+    color: #f4eef2 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .text-muted-foreground,
+html.dark:has(.staff-theme) .staff-theme main [class*='text-slate-400'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-slate-500'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-gray-400'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-gray-500'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-neutral-400'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-neutral-500'] {
+    color: #c7b5c0 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [data-slot='card'],
+html.dark:has(.staff-theme) .staff-theme main .bg-card,
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-white'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-slate-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-slate-100'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-gray-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-gray-100'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-neutral-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-neutral-100'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-emerald-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-green-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-blue-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-indigo-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-rose-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-pink-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#'] {
+    background: #151117 !important;
+    background-color: #151117 !important;
+    background-image: none !important;
+    border-color: #392733 !important;
+    color: #f4eef2 !important;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.3) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .staff-dark-event-registration {
+    background: #151117 !important;
+    background-color: #151117 !important;
+    background-image: none !important;
+    border-color: #392733 !important;
+    color: #f4eef2 !important;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.35) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .staff-dark-stat-icon {
+    background: #4a102a !important;
+    background-color: #4a102a !important;
+    border: 1px solid #db2777 !important;
+    color: #f9a8d4 !important;
+    box-shadow: 0 0 0 3px rgb(236 72 153 / 0.12) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .staff-dark-stat-icon svg,
+html.dark:has(.staff-theme) .staff-theme .staff-dark-trend-icon svg {
+    color: #f9a8d4 !important;
+    stroke: currentColor !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .staff-dark-trend-icon {
+    background: #351525 !important;
+    color: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main input,
+html.dark:has(.staff-theme) .staff-theme main textarea,
+html.dark:has(.staff-theme) .staff-theme main select,
+html.dark:has(.staff-theme) .staff-theme main [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='input'] {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    border-color: #493342 !important;
+    color: #fff7fb !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main input::placeholder,
+html.dark:has(.staff-theme) .staff-theme main textarea::placeholder,
+html.dark:has(.staff-theme) .staff-theme main select::placeholder {
+    color: #bda9b5 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [class*='border-'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='card'],
+html.dark:has(.staff-theme) .staff-theme main table,
+html.dark:has(.staff-theme) .staff-theme main th,
+html.dark:has(.staff-theme) .staff-theme main td,
+html.dark:has(.staff-theme) .staff-theme main tr {
+    border-color: #392733 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main table,
+html.dark:has(.staff-theme) .staff-theme main thead,
+html.dark:has(.staff-theme) .staff-theme main tbody,
+html.dark:has(.staff-theme) .staff-theme main tr,
+html.dark:has(.staff-theme) .staff-theme main th,
+html.dark:has(.staff-theme) .staff-theme main td {
+    background-color: #151117 !important;
+    color: #f4eef2 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main tr:hover,
+html.dark:has(.staff-theme) .staff-theme main tr:hover td,
+html.dark:has(.staff-theme) .staff-theme main [class*='hover:bg-white']:hover,
+html.dark:has(.staff-theme) .staff-theme main [class*='hover:bg-slate-50']:hover {
+    background: #21151e !important;
+    background-color: #21151e !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button'][data-variant='default'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-staff-accent'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-primary'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#d94f83]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#2596be]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#3f9567]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#5aa67a]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-pink-500'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-pink-600'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-rose-500'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-rose-600'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button'][data-variant='owner'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    border-color: #f472b6 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [class*='text-staff-accent'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-owner-accent'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-[#d94f83]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-[#3f9567]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-[#2596be]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-emerald-'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-green-'],
+html.dark:has(.staff-theme) .staff-theme main [class*='text-blue-'] {
+    color: #f472b6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button,
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button'] {
+    border-color: #493342 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']),
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button']:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']) {
+    background-color: #1a141b !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button:hover,
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button']:hover {
+    border-color: #ec4899 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button[data-state='active'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='tabs-trigger'][data-state='active'],
+html.dark:has(.staff-theme) .staff-theme main [aria-current='page'] {
+    background-color: #351525 !important;
+    color: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='breadcrumb'] [aria-current='page'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='breadcrumb'] [aria-current='page'] * {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #f472b6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .owner-stat-icon {
+    background: #4a102a !important;
+    background-color: #4a102a !important;
+    border: 1px solid #db2777 !important;
+    color: #f472b6 !important;
+    box-shadow: 0 0 0 3px rgb(236 72 153 / 0.1) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .owner-stat-icon svg,
+html.dark:has(.staff-theme) .staff-theme .owner-trend-icon svg {
+    color: #f472b6 !important;
+    stroke: currentColor !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme .owner-trend-icon {
+    background: #351525 !important;
+    color: #f472b6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main svg,
+html.dark:has(.staff-theme) .staff-theme main .lucide {
+    color: #f472b6 !important;
+    stroke: currentColor !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [data-variant='owner'] svg,
+html.dark:has(.staff-theme) .staff-theme main [data-variant='owner'] svg *,
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-primary'] svg,
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-staff-accent'] svg {
+    color: #ffffff !important;
+    stroke: currentColor !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .recharts-cartesian-grid line {
+    stroke: rgb(244 114 182 / 0.2) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .recharts-text,
+html.dark:has(.staff-theme) .staff-theme main .recharts-cartesian-axis-tick-value {
+    fill: #e9dce4 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='switch'],
+html.dark:has(.staff-theme) .staff-theme [role='switch'][data-state='checked'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    border-color: #f472b6 !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='dialog-content'],
+html.dark:has(.staff-theme) body [data-slot='popover-content'],
+html.dark:has(.staff-theme) body [data-slot='dropdown-menu-content'],
+html.dark:has(.staff-theme) body [data-slot='select-content'],
+html.dark:has(.staff-theme) body [data-slot='command'],
+html.dark:has(.staff-theme) body [cmdk-root] {
+    --background: #171219 !important;
+    --foreground: #f8f3f6 !important;
+    --popover: #171219 !important;
+    --popover-foreground: #f8f3f6 !important;
+    --accent: #351525 !important;
+    --accent-foreground: #f9a8d4 !important;
+    --border: #493342 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+    border-color: #493342 !important;
+    color: #f8f3f6 !important;
+    box-shadow: 0 18px 44px rgb(0 0 0 / 0.6) !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='dialog-content'] *,
+html.dark:has(.staff-theme) body [data-slot='popover-content'] *,
+html.dark:has(.staff-theme) body [data-slot='dropdown-menu-content'] *,
+html.dark:has(.staff-theme) body [data-slot='select-content'] *,
+html.dark:has(.staff-theme) body [cmdk-root] * {
+    border-color: #493342 !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='dialog-content'] input,
+html.dark:has(.staff-theme) body [data-slot='dialog-content'] textarea,
+html.dark:has(.staff-theme) body [data-slot='dialog-content'] select,
+html.dark:has(.staff-theme) body [data-slot='dialog-content'] [data-slot='select-trigger'],
+html.dark:has(.staff-theme) body [data-slot='select-content'] [data-slot='select-item'],
+html.dark:has(.staff-theme) body [data-slot='dropdown-menu-content'] [data-highlighted],
+html.dark:has(.staff-theme) body [data-slot='select-content'] [data-highlighted] {
+    background: #211820 !important;
+    background-color: #211820 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='tooltip-content'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    border-color: #f472b6 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    border-color: #493342 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme,
+html.dark:has(.staff-theme) .staff-content,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'] {
+    scrollbar-color: #db2777 #171219 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme ::-webkit-scrollbar-track,
+html.dark:has(.staff-theme) .staff-content ::-webkit-scrollbar-track {
+    background: #171219 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme ::-webkit-scrollbar-thumb,
+html.dark:has(.staff-theme) .staff-content ::-webkit-scrollbar-thumb {
+    border-color: #171219 !important;
+    background: #db2777 !important;
+}
+
+/* Give every major staff dark surface a visible black-to-pink gradient. */
+html.dark:has(.staff-theme) body:has(.staff-theme),
+html.dark:has(.staff-theme) .staff-theme,
+html.dark:has(.staff-theme) .staff-content,
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] main {
+    background: linear-gradient(135deg, #09080b 0%, #1b0b17 48%, #0b080d 100%) !important;
+    background-color: #09080b !important;
+    background-image: linear-gradient(135deg, #09080b 0%, #1b0b17 48%, #0b080d 100%) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-header'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-content'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-footer'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-group'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-menu'],
+html.dark:has(.staff-theme) .staff-theme [data-slot='sidebar-inset'] > header {
+    background: #0d0a0f !important;
+    background-color: #0d0a0f !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page input,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page textarea,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page select,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form input,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form textarea,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form select,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table input,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table textarea {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+    border-color: #493342 !important;
+    color: #fff7fb !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form input::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form textarea::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table input::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table textarea::placeholder {
+    color: #bda9b5 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search:focus,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form input:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form textarea:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form [data-slot='select-trigger']:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table input:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table textarea:focus-visible {
+    border-color: #ec4899 !important;
+    box-shadow: 0 0 0 2px rgb(236 72 153 / 0.24) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-date,
+html.dark:has(.staff-theme) .staff-theme main button.owner-inventory-date {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+    border-color: #db2777 !important;
+    color: #f9a8d4 !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-date svg,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-date span {
+    color: #f9a8d4 !important;
+    stroke: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    border-color: #493342 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover button {
+    background: transparent !important;
+    color: #f4eef2 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover button:hover,
+html.dark:has(.staff-theme) body .staff-date-picker-popover button[aria-selected='true'],
+html.dark:has(.staff-theme) body .staff-date-picker-popover button[data-selected='true'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page .staff-save-button,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table ~ button.staff-save-button,
+html.dark:has(.staff-theme) .staff-theme main button.staff-save-button {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    background-image: none !important;
+    border-color: #f472b6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgb(219 39 119 / 0.22) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.staff-save-button:hover {
+    background: #be185d !important;
+    background-color: #be185d !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.payment-method-switch[role='switch'][aria-checked='true']:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']) {
+    border-color: #f472b6 !important;
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.payment-method-switch[role='switch'][aria-checked='false']:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']) {
+    border-color: #493342 !important;
+    background: #211820 !important;
+    background-color: #211820 !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.payment-method-switch[role='switch']:focus-visible {
+    box-shadow: 0 0 0 2px rgb(219 39 119 / 0.32) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.payment-method-switch .payment-method-switch-thumb {
+    background: #fff7fb !important;
+    background-color: #fff7fb !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .business-page input,
+html.dark:has(.staff-theme) .staff-theme main .business-page textarea,
+html.dark:has(.staff-theme) .staff-theme main .business-page select,
+html.dark:has(.staff-theme) .staff-theme main .business-page [data-slot='select-trigger'] {
+    border-color: #493342 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+    color: #fff7fb !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .business-page input::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .business-page textarea::placeholder {
+    color: #bda9b5 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .business-page input:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .business-page textarea:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .business-page select:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .business-page [data-slot='select-trigger']:focus-visible {
+    border-color: #db2777 !important;
+    box-shadow: 0 0 0 2px rgb(219 39 119 / 0.24) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-order-page input.owner-form-field,
+html.dark:has(.staff-theme) .staff-theme main .owner-order-page textarea.owner-form-field {
+    border-color: #493342 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+    color: #fff7fb !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-order-page input.owner-form-field::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-order-page textarea.owner-form-field::placeholder {
+    color: #bda9b5 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-order-page input.owner-form-field:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-order-page textarea.owner-form-field:focus-visible {
+    border-color: #db2777 !important;
+    box-shadow: 0 0 0 2px rgb(219 39 119 / 0.24) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-quantity-control {
+    border-color: #493342 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-quantity-control button:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']) {
+    border: 1px solid #493342 !important;
+    background: #211820 !important;
+    background-color: #211820 !important;
+    background-image: none !important;
+    color: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-quantity-control button:hover:not([data-variant='owner']) {
+    border-color: #db2777 !important;
+    background: #351525 !important;
+    background-color: #351525 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-quantity-count {
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-status-group,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-payment-option {
+    border-color: #493342 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-status-option,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-payment-option {
+    border-color: #493342 !important;
+    background: #211820 !important;
+    background-color: #211820 !important;
+    color: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-status-option[data-selected='true'],
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-payment-option[data-selected='true'] {
+    border-color: #f472b6 !important;
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-package-card,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-card {
+    border-color: #493342 !important;
+    background: #151117 !important;
+    background-color: #151117 !important;
+    color: #f4eef2 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-package-card:hover,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-card:hover,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-variant-card[data-selected='true'] {
+    border-color: #db2777 !important;
+    background: #2b1422 !important;
+    background-color: #2b1422 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-customer-input {
+    border-color: #db2777 !important;
+    background: #27131e !important;
+    background-color: #27131e !important;
+    color: #fff7fb !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-customer-input::placeholder {
+    color: #c7a4b5 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page input.pos-checkout-field {
+    border-color: #493342 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+    color: #fff7fb !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page input.pos-checkout-field::placeholder {
+    color: #bda9b5 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page input.pos-checkout-field:focus-visible {
+    border-color: #db2777 !important;
+    box-shadow: 0 0 0 2px rgb(219 39 119 / 0.24) !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-trigger,
+html.dark:has(.staff-theme) body .staff-sales-filter-content {
+    border-color: #db2777 !important;
+    background: #171219 !important;
+    background-color: #171219 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-item {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #f4eef2 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-item[data-highlighted],
+html.dark:has(.staff-theme) body .staff-sales-filter-item[data-state='checked'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) body .staff-sales-filter-item:hover {
+    background: #351525 !important;
+    background-color: #351525 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-cart-content,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-cart-content [class*='overflow-y-auto'],
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-payment-methods {
+    scrollbar-width: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-cart-content::-webkit-scrollbar,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-cart-content [class*='overflow-y-auto']::-webkit-scrollbar,
+html.dark:has(.staff-theme) .staff-theme main .pos-page .pos-payment-methods::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='tooltip-content'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    border-color: #f472b6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 20px rgb(219 39 119 / 0.24) !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='tooltip-content'] > svg {
+    background: #db2777 !important;
+    fill: #db2777 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [data-slot='card'],
+html.dark:has(.staff-theme) .staff-theme main .bg-card,
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-white'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-slate-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-slate-100'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-gray-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-gray-100'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-neutral-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-emerald-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-green-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-blue-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-indigo-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-rose-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-pink-50'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#'] {
+    background: #151117 !important;
+    background-color: #151117 !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main input,
+html.dark:has(.staff-theme) .staff-theme main textarea,
+html.dark:has(.staff-theme) .staff-theme main select,
+html.dark:has(.staff-theme) .staff-theme main [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='input'] {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main table,
+html.dark:has(.staff-theme) .staff-theme main thead,
+html.dark:has(.staff-theme) .staff-theme main tbody,
+html.dark:has(.staff-theme) .staff-theme main tr,
+html.dark:has(.staff-theme) .staff-theme main th,
+html.dark:has(.staff-theme) .staff-theme main td {
+    background: #151117 !important;
+    background-color: #151117 !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']),
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button']:not([data-variant='owner']):not([class*='bg-primary']):not([class*='bg-staff-accent']):not([class*='bg-pink-']):not([class*='bg-rose-']) {
+    background: #1a141b !important;
+    background-color: #1a141b !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-staff-accent'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-primary'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#d94f83]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#2596be]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#3f9567]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-[#5aa67a]'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-pink-500'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-pink-600'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-rose-500'],
+html.dark:has(.staff-theme) .staff-theme main [class*='bg-rose-600'],
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button'][data-variant='owner'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main tr:hover,
+html.dark:has(.staff-theme) .staff-theme main tr:hover td,
+html.dark:has(.staff-theme) .staff-theme main button:hover:not([data-variant='owner']),
+html.dark:has(.staff-theme) .staff-theme main [data-slot='button']:hover:not([data-variant='owner']) {
+    background: #2b1422 !important;
+    background-color: #2b1422 !important;
+    background-image: none !important;
+}
+
+html.dark:has(.staff-theme) body [data-slot='dialog-content'],
+html.dark:has(.staff-theme) body [data-slot='popover-content'],
+html.dark:has(.staff-theme) body [data-slot='dropdown-menu-content'],
+html.dark:has(.staff-theme) body [data-slot='select-content'],
+html.dark:has(.staff-theme) body [data-slot='command'],
+html.dark:has(.staff-theme) body [cmdk-root],
+html.dark:has(.staff-theme) body .staff-date-picker-popover {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+}
+
+/* Final Staff-dark inventory overrides: keep controls charcoal, not pink blocks. */
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search,
+html.dark:has(.staff-theme) .staff-theme main .staff-inventory-category-select [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page input,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page textarea,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page select,
+html.dark:has(.staff-theme) .staff-theme main .stock-movement-page [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form input,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form textarea,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form select,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form [data-slot='select-trigger'],
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table input,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table textarea {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+    border-color: #493342 !important;
+    color: #fff7fb !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form input::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form textarea::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table input::placeholder,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table textarea::placeholder {
+    color: #bda9b5 !important;
+    opacity: 1 !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search:focus,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-search:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form input:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form textarea:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-form [data-slot='select-trigger']:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table input:focus-visible,
+html.dark:has(.staff-theme) .staff-theme main .owner-opname-table textarea:focus-visible {
+    border-color: #ec4899 !important;
+    box-shadow: 0 0 0 2px rgb(236 72 153 / 0.24) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.owner-inventory-date,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-date {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+    border-color: #db2777 !important;
+    color: #f9a8d4 !important;
+    box-shadow: none !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-date svg,
+html.dark:has(.staff-theme) .staff-theme main .owner-inventory-date span {
+    color: #f9a8d4 !important;
+    stroke: #f9a8d4 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover,
+html.dark:has(.staff-theme) body .staff-inventory-category-content {
+    background: #171219 !important;
+    background-color: #171219 !important;
+    background-image: none !important;
+    border-color: #493342 !important;
+    color: #f8f3f6 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover button,
+html.dark:has(.staff-theme) body .staff-inventory-category-content [data-slot='select-item'] {
+    background: transparent !important;
+    color: #f4eef2 !important;
+}
+
+html.dark:has(.staff-theme) body .staff-date-picker-popover button:hover,
+html.dark:has(.staff-theme) body .staff-date-picker-popover button[aria-selected='true'],
+html.dark:has(.staff-theme) body .staff-date-picker-popover button[data-selected='true'],
+html.dark:has(.staff-theme) body .staff-inventory-category-content [data-highlighted],
+html.dark:has(.staff-theme) body .staff-inventory-category-content [data-state='checked'] {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    color: #ffffff !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.staff-save-button {
+    background: #db2777 !important;
+    background-color: #db2777 !important;
+    background-image: none !important;
+    border-color: #f472b6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgb(219 39 119 / 0.22) !important;
+}
+
+html.dark:has(.staff-theme) .staff-theme main button.staff-save-button:hover {
+    background: #be185d !important;
+    background-color: #be185d !important;
 }

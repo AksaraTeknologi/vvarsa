@@ -14,7 +14,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
 
     return (
         <div
-            className={cn('appearance-tabs inline-flex gap-1 rounded-2xl border border-[#4ec77e]/30 bg-[#0e221b] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]', className)}
+            className={cn('appearance-tabs staff-appearance-tabs inline-flex gap-1 rounded-2xl border border-[#4ec77e]/30 bg-[#0e221b] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]', className)}
             data-appearance={appearance}
             {...props}
         >

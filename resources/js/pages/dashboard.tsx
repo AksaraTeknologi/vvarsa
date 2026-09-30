@@ -40,6 +40,7 @@ function StatCard({
     icon: Icon,
     trend,
     color,
+    staffDarkTheme,
 }: {
     title: string;
     value: string;
@@ -47,12 +48,13 @@ function StatCard({
     icon: React.ElementType;
     trend?: 'up' | 'down' | 'neutral';
     color: string;
+    staffDarkTheme?: boolean;
 }) {
     return (
         <div className="bg-card border-border rounded-2xl border px-4 py-5 shadow-sm transition-shadow hover:shadow-md">
             <div className="mb-4 flex items-center justify-between gap-3">
                 <p className="text-muted-foreground text-sm leading-none font-medium">{title}</p>
-                <div className={`owner-stat-icon flex size-10 items-center justify-center rounded-xl ${color}`}>
+                <div className={`owner-stat-icon ${staffDarkTheme ? 'staff-dark-stat-icon dark:!border-[#db2777] dark:!bg-[#4a102a]' : ''} flex size-10 items-center justify-center rounded-xl ${color}`}>
                     <Icon size={16} />
                 </div>
             </div>
@@ -65,7 +67,7 @@ function StatCard({
 
                 {trend && (
                     <div
-                        className={`owner-trend-icon flex items-center justify-center rounded-full p-1.5 ${trend === 'up' ? 'bg-emerald-100' : trend === 'down' ? 'bg-rose-100' : 'bg-slate-100'}`}
+                        className={`owner-trend-icon ${staffDarkTheme ? 'staff-dark-trend-icon' : ''} flex items-center justify-center rounded-full p-1.5 ${trend === 'up' ? 'bg-emerald-100' : trend === 'down' ? 'bg-rose-100' : 'bg-slate-100'}`}
                     >
                         {trend === 'up' ? <ArrowUpRight size={12} /> : trend === 'down' ? <ArrowDownRight size={12} /> : null}
                     </div>
@@ -105,6 +107,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         subtitle={`${t('dashboard.thisMonth')}: ${formatRupiah(stats.sales_month, true)}`}
                         icon={TrendingUp}
                         color="bg-emerald-500"
+                        staffDarkTheme={isStaff}
                         trend="up"
                     />
                     <StatCard
@@ -113,6 +116,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         subtitle={`${t('dashboard.thisMonth')}: ${formatRupiah(stats.expense_month, true)}`}
                         icon={TrendingDown}
                         color={isStaff ? 'bg-emerald-500' : 'bg-rose-500'}
+                        staffDarkTheme={isStaff}
                         trend="down"
                     />
                     <StatCard
@@ -121,6 +125,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         subtitle={netPositive ? t('dashboard.profit') : t('dashboard.loss')}
                         icon={Wallet}
                         color={netPositive ? 'bg-blue-500' : 'bg-orange-500'}
+                        staffDarkTheme={isStaff}
                         trend={netPositive ? 'up' : 'down'}
                     />
                     <StatCard
@@ -129,6 +134,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                         subtitle={t('dashboard.fromProducts', { total: stats.total_products })}
                         icon={stats.low_stock_products > 0 ? AlertTriangle : Package}
                         color={stats.low_stock_products > 0 ? 'bg-amber-500' : 'bg-slate-500'}
+                        staffDarkTheme={isStaff}
                     />
                 </div>
 
@@ -358,7 +364,7 @@ export default function Dashboard({ stats, chart_data, recent_transactions, upco
                                 className="owner-quick-action bg-card border-border flex min-h-[132px] flex-col justify-between rounded-2xl border p-4 text-left shadow-sm"
                             >
                                 <div className="flex items-center justify-between">
-                                    <div className={`owner-stat-icon flex size-10 items-center justify-center rounded-xl text-white ${color}`}>
+                                    <div className={`owner-stat-icon ${isStaff ? 'staff-dark-stat-icon dark:!border-[#db2777] dark:!bg-[#4a102a]' : ''} flex size-10 items-center justify-center rounded-xl text-white ${color}`}>
                                         <Icon size={18} />
                                     </div>
                                 </div>

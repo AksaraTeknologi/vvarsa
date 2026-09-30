@@ -95,6 +95,21 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
     };
 
     const tableColumns = columns(updateStatus, cancelOrder, openPayModal, t);
+        const filterTriggerStyle = isOwner
+        ? '!rounded-lg !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !font-medium !text-[#ebfff4] !shadow-none hover:!bg-[#112a20] focus-visible:!ring-2 focus-visible:!ring-[#5fe198]/25'
+                : isStaff
+                    ? '!rounded-lg !border-[#f3b7cc] !bg-[#fffafd] !text-sm !font-medium !text-[#5a1830] !shadow-none hover:!bg-[#fff0f5] focus-visible:!ring-2 focus-visible:!ring-[#d94f83]/25 dark:!border-[#71314b] dark:!bg-[#171219] dark:!text-[#f8f3f6] dark:hover:!bg-[#21151d]'
+                    : '!rounded-lg !border-[#71314b] !bg-[#171219] !text-sm !font-medium !text-[#f8f3f6] !shadow-none hover:!bg-[#21151d] focus-visible:!ring-2 focus-visible:!ring-[#d94f83]/25';
+    const filterContentStyle = isOwner
+        ? '!rounded-lg !border-[#2d4f3d] !bg-[#0d1f17] !text-[#ebfff4] !shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
+                : isStaff
+                    ? '!rounded-lg !border-[#f3b7cc] !bg-[#fffafd] !text-[#5a1830] !shadow-[0_12px_28px_rgba(90,24,48,0.12)] dark:!border-[#71314b] dark:!bg-[#171219] dark:!text-[#f8f3f6] dark:!shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
+                    : '!rounded-lg !border-[#71314b] !bg-[#171219] !text-[#f8f3f6] !shadow-[0_16px_32px_rgba(0,0,0,0.35)]';
+    const filterItemStyle = isOwner
+        ? '!my-0.5 !rounded-md !px-3 !text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]'
+                : isStaff
+                    ? '!my-0.5 !rounded-md !px-3 !text-[#5a1830] focus:!bg-[#ffe3ed] focus:!text-[#7f204a] dark:!text-[#f4eef2] dark:focus:!bg-[#351525] dark:focus:!text-white'
+                    : '!my-0.5 !rounded-md !px-3 !text-[#f4eef2] focus:!bg-[#351525] focus:!text-white';
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -152,27 +167,27 @@ export default function OrdersIndex({ orders, summary, filters, paymentMethods =
                 )}
 
                 {/* Filters */}
-                <div className="flex flex-wrap gap-2">
+                <div className={`flex flex-wrap gap-2 ${isStaff ? 'staff-sales-filters' : ''}`}>
                     <Select value={filters.status ?? 'all'} onValueChange={(v) => applyFilter('status', v)}>
-                        <SelectTrigger className="!h-10 !w-40 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !font-medium !text-[#ebfff4] !shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] hover:!bg-[#112a20] focus-visible:!ring-2 focus-visible:!ring-[#5fe198]/25">
+                        <SelectTrigger className={`${isStaff ? 'staff-sales-filter-trigger' : ''} !h-10 !w-40 ${filterTriggerStyle}`}>
                             <SelectValue placeholder={t('orders.allStatuses')} />
                         </SelectTrigger>
-                        <SelectContent className="!rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-[#ebfff4] !shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
-                            <SelectItem value="all" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.allStatuses')}</SelectItem>
-                            <SelectItem value="pending" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.pending')}</SelectItem>
-                            <SelectItem value="processing" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.inProcess')}</SelectItem>
-                            <SelectItem value="done" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.completed')}</SelectItem>
-                            <SelectItem value="cancelled" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.cancelled')}</SelectItem>
+                        <SelectContent className={`${isStaff ? 'staff-sales-filter-content' : ''} ${filterContentStyle}`}>
+                            <SelectItem value="all" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.allStatuses')}</SelectItem>
+                            <SelectItem value="pending" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.pending')}</SelectItem>
+                            <SelectItem value="processing" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.inProcess')}</SelectItem>
+                            <SelectItem value="done" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.completed')}</SelectItem>
+                            <SelectItem value="cancelled" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.cancelled')}</SelectItem>
                         </SelectContent>
                     </Select>
                     <Select value={filters.payment_status ?? 'all'} onValueChange={(v) => applyFilter('payment_status', v)}>
-                        <SelectTrigger className="!h-10 !w-44 !rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-sm !font-medium !text-[#ebfff4] !shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] hover:!bg-[#112a20] focus-visible:!ring-2 focus-visible:!ring-[#5fe198]/25">
+                        <SelectTrigger className={`${isStaff ? 'staff-sales-filter-trigger' : ''} !h-10 !w-44 ${filterTriggerStyle}`}>
                             <SelectValue placeholder={t('orders.allPayments')} />
                         </SelectTrigger>
-                        <SelectContent className="!rounded-xl !border-[#2d4f3d] !bg-[#0d1f17] !text-[#ebfff4] !shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
-                            <SelectItem value="all" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.allPayments')}</SelectItem>
-                            <SelectItem value="unpaid" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.unpaid')}</SelectItem>
-                            <SelectItem value="paid" className="!text-[#ebfff4] focus:!bg-[#123b2f] focus:!text-[#ebfff4]">{t('orders.paid')}</SelectItem>
+                        <SelectContent className={`${isStaff ? 'staff-sales-filter-content' : ''} ${filterContentStyle}`}>
+                            <SelectItem value="all" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.allPayments')}</SelectItem>
+                            <SelectItem value="unpaid" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.unpaid')}</SelectItem>
+                            <SelectItem value="paid" className={`${isStaff ? 'staff-sales-filter-item' : ''} ${filterItemStyle}`}>{t('orders.paid')}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>

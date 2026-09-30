@@ -104,11 +104,20 @@ export function DatePicker({ value, onChange, placeholder = "Pilih tanggal", dis
             day_button: "h-7 w-7 rounded-full bg-transparent p-0 font-normal text-[#e9d5ff] hover:bg-[#6d28d9] hover:text-white focus-visible:ring-2 focus-visible:ring-[#a78bfa]/40 aria-selected:!bg-[#8b5cf6] aria-selected:!text-white aria-selected:hover:!bg-[#a855f7]",
             today: "!bg-[#6d28d9] !text-white",
           } : resolvedTheme === "staff-pink" ? {
-            caption_label: "text-sm font-semibold text-[#d94f83]",
-            button_previous: "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
-            button_next: "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
-            day_button: "h-8 w-8 rounded-full bg-transparent p-0 font-normal hover:bg-[#fff0f5] hover:text-[#b83268] focus-visible:ring-2 focus-visible:ring-[#d94f83]/30 aria-selected:!bg-[#d94f83] aria-selected:!text-white aria-selected:hover:!bg-[#b83268] aria-selected:opacity-100",
-            today: "!bg-[#fff0f5] !text-[#d94f83]",
+            caption_label: isDarkMode ? "text-sm font-semibold text-[#f9a8d4]" : "text-sm font-semibold text-[#d94f83]",
+            weekday: isDarkMode
+              ? "flex h-7 flex-1 items-center justify-center text-xs font-medium text-[#c7b5c0]"
+              : "flex h-7 flex-1 items-center justify-center text-xs font-medium text-[#a75b79]",
+            button_previous: isDarkMode
+              ? "h-8 w-8 rounded-full border-[#493342] bg-[#171219] p-0 text-[#f9a8d4] shadow-sm hover:bg-[#351525] hover:text-[#fff7fb]"
+              : "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
+            button_next: isDarkMode
+              ? "h-8 w-8 rounded-full border-[#493342] bg-[#171219] p-0 text-[#f9a8d4] shadow-sm hover:bg-[#351525] hover:text-[#fff7fb]"
+              : "h-8 w-8 rounded-full border-[#f3b7cc] bg-white p-0 text-[#d94f83] shadow-sm hover:bg-[#fff0f5] hover:text-[#b83268]",
+            day_button: isDarkMode
+              ? "h-8 w-8 rounded-full bg-transparent p-0 font-normal text-[#f8f3f6] hover:bg-[#351525] hover:text-[#f9a8d4] focus-visible:ring-2 focus-visible:ring-[#ec4899]/35 aria-selected:!bg-[#db2777] aria-selected:!text-white aria-selected:hover:!bg-[#be185d] aria-selected:opacity-100"
+              : "h-8 w-8 rounded-full bg-transparent p-0 font-normal text-[#5a1830] hover:bg-[#fff0f5] hover:text-[#b83268] focus-visible:ring-2 focus-visible:ring-[#d94f83]/30 aria-selected:!bg-[#d94f83] aria-selected:!text-white aria-selected:hover:!bg-[#b83268] aria-selected:opacity-100",
+            today: isDarkMode ? "!bg-[#351525] !text-[#f9a8d4]" : "!bg-[#fff0f5] !text-[#d94f83]",
           } : isOwnerTheme ? {
             months: "flex flex-col",
             month: "relative space-y-3",

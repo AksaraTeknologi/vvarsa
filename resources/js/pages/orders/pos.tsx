@@ -689,7 +689,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 return (
                                                     <div
                                                         key={item.id}
-                                                        className="flex flex-col gap-2.5 overflow-hidden rounded-2xl border border-[#2d4f3d] bg-[#0f261e] p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.18)]"
+                                                        className="flex flex-col gap-2.5 overflow-hidden rounded-xl border border-[#2d4f3d] bg-[#0f261e] p-3.5"
                                                     >
                                                         <div className="flex items-start justify-between gap-2">
                                                             <div className="min-w-0">
@@ -751,7 +751,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 <div
                                                     key={item.id}
                                                     onClick={() => setActiveCartItemId(item.id)}
-                                                    className={`flex cursor-pointer flex-col gap-2.5 overflow-hidden rounded-2xl border p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.16)] transition-all ${
+                                                    className={`flex cursor-pointer flex-col gap-2.5 overflow-hidden rounded-xl border p-3 transition-colors ${
                                                         isActive
                                                             ? 'border-[#76b58e] bg-[#123b2f]'
                                                             : 'border-[#2d4f3d] bg-[#0f261e] hover:border-[#4e8770] hover:bg-[#12372d]'
@@ -796,12 +796,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     </div>
 
                                                     {/* Detail Varian Summary Badge */}
-                                                    <div className="rounded-lg border border-[#2d4f3d] bg-[#0c1d17] p-2 text-xs">
-                                                        <span className="mb-0.5 block text-xs font-bold uppercase tracking-wider text-[#a9d9ba]">
+                                                    <div className="flex flex-wrap items-center gap-x-2 px-1 text-xs">
+                                                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a9d9ba]">
                                                             {t('pos.selectedFlavorDetail')}
                                                         </span>
                                                         <span
-                                                            className={`text-xs font-semibold ${totalSelected > 0 ? 'text-[#dfffea]' : 'text-[#9bb8a5] font-normal italic'}`}
+                                                            className={`text-xs ${totalSelected > 0 ? 'font-semibold text-[#dfffea]' : 'font-normal text-[#9bb8a5] italic'}`}
                                                         >
                                                             {getVariantSummary(item)}
                                                         </span>
@@ -816,7 +816,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                             return (
                                                                 <div
                                                                     key={vId}
-                                                                    className="flex items-center justify-between gap-2 rounded-xl border border-[#2d4f3d] bg-[#0c1d17] px-2.5 py-1 text-xs"
+                                                                    className="flex items-center justify-between gap-2 border-b border-[#2d4f3d] px-1 py-1.5 text-xs last:border-b-0"
                                                                 >
                                                                     <span className="truncate font-medium">{v.name.replace('Mochi ', '')}</span>
                                                                     <div className="flex shrink-0 items-center gap-1.5">
@@ -886,11 +886,12 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         <div className="flex items-center justify-between">
                                             <Label className="text-muted-foreground text-sm font-medium">{t('pos.orderStatus')}</Label>
                                         </div>
-                                        <div className="grid grid-cols-3 gap-1 rounded-xl border border-[#214437] bg-[#123b2f] p-1">
+                                        <div className="pos-status-group grid grid-cols-3 gap-1 rounded-xl border border-[#214437] bg-[#123b2f] p-1">
                                             <button
                                                 type="button"
                                                 onClick={() => setOrderStatus('done')}
-                                                className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
+                                                data-selected={orderStatus === 'done'}
+                                                className={`pos-status-option flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                                     orderStatus === 'done'
                                                         ? 'border border-[#89d7ae] bg-[#0a1814] text-[#dfffea] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
                                                         : 'text-[#a9d9ba] hover:bg-[#1a4538] hover:text-[#ebfff4]'
@@ -901,7 +902,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             <button
                                                 type="button"
                                                 onClick={() => setOrderStatus('processing')}
-                                                className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
+                                                data-selected={orderStatus === 'processing'}
+                                                className={`pos-status-option flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                                     orderStatus === 'processing'
                                                         ? 'border border-[#b7d7a8] bg-[#0a1814] text-[#ecfce6] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
                                                         : 'text-[#a9d9ba] hover:bg-[#1a4538] hover:text-[#ebfff4]'
@@ -912,7 +914,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                             <button
                                                 type="button"
                                                 onClick={() => setOrderStatus('pending')}
-                                                className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
+                                                data-selected={orderStatus === 'pending'}
+                                                className={`pos-status-option flex cursor-pointer items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                                     orderStatus === 'pending'
                                                         ? 'border border-[#d4d9dc] bg-[#0a1814] text-[#f1f5f9] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
                                                         : 'text-[#a9d9ba] hover:bg-[#1a4538] hover:text-[#ebfff4]'
@@ -948,33 +951,33 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     value={customerName}
                                                     onChange={(e) => setCustomerName(e.target.value)}
                                                     placeholder={t('pos.customerNamePlaceholder')}
-                                                    className="owner-form-field h-9 rounded-xl text-xs"
+                                                    className="pos-checkout-field pos-customer-input owner-form-field h-9 !rounded-lg text-xs"
                                                 />
                                                 <Input
                                                     value={customerPhone}
                                                     onChange={(e) => setCustomerPhone(e.target.value)}
                                                     placeholder={t('pos.customerPhonePlaceholder')}
-                                                    className="owner-form-field h-9 rounded-xl text-xs"
+                                                    className="pos-checkout-field pos-customer-input owner-form-field h-9 !rounded-lg text-xs"
                                                 />
                                                 <Input
                                                     type="email"
                                                     value={customerEmail}
                                                     onChange={(e) => setCustomerEmail(e.target.value)}
                                                     placeholder={t('pos.customerEmailPlaceholder')}
-                                                    className="owner-form-field h-9 rounded-xl text-xs"
+                                                    className="pos-checkout-field pos-customer-input owner-form-field h-9 !rounded-lg text-xs"
                                                 />
                                                 <Input
                                                     value={notes}
                                                     onChange={(e) => setNotes(e.target.value)}
                                                     placeholder={t('pos.orderNotesPlaceholder')}
-                                                    className="owner-form-field h-9 rounded-xl text-xs"
+                                                    className="pos-checkout-field pos-customer-input owner-form-field h-9 !rounded-lg text-xs"
                                                 />
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Potongan / Diskon */}
-                                    <div className="space-y-1.5 rounded-xl border border-[#214437] bg-[#0f261e] p-3">
+                                    <div className="space-y-1.5 rounded-lg border border-[#214437] bg-[#0f261e] p-3">
                                         <div className="flex items-center justify-between">
                                             <Label className="flex items-center gap-1.5 text-xs font-semibold text-[#ebfff4]">
                                                 <Tag size={13} className="text-[#7fe0aa]" />
@@ -1037,7 +1040,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                     }
                                                 }}
                                                 placeholder={discountType === 'nominal' ? 'Contoh: 10.000 (opsional)' : 'Contoh: 10% (opsional)'}
-                                                className="h-9 rounded-xl border-[#2d4f3d] bg-[#0b1813] pr-10 text-xs text-[#ebfff4] placeholder:text-[#8fb9a0]"
+                                                className="pos-checkout-field h-9 !rounded-lg border-[#2d4f3d] bg-[#0b1813] pr-10 text-xs text-[#ebfff4] placeholder:text-[#8fb9a0]"
                                             />
                                             <div className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs font-bold">
                                                 {discountType === 'nominal' ? 'Rp' : '%'}
@@ -1055,7 +1058,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                     {/* Payment Method */}
                                     <div>
                                         <Label className="text-muted-foreground mb-1.5 block text-xs">{t('pos.paymentMethod')}</Label>
-                                        <div className="grid max-h-44 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3">
+                                        <div className="pos-payment-methods grid max-h-44 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3">
                                             {paymentMethods.length > 0
                                                 ? paymentMethods.map((pm) => {
                                                       const lowerName = pm.name.toLowerCase();
@@ -1077,7 +1080,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                               key={pm.id}
                                                               type="button"
                                                               onClick={() => setPaymentMethod(value)}
-                                                              className={`flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border p-2.5 text-center text-xs font-medium transition-all ${
+                                                              data-selected={paymentMethod === value}
+                                                              className={`pos-payment-option flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border p-2.5 text-center text-xs font-medium transition-all ${
                                                                   paymentMethod === value
                                                                       ? 'border-[#3f9567] bg-[#3f9567] text-white shadow-xs'
                                                                       : 'border-[#2d4f3d] bg-[#0f261e] text-[#dfffea] hover:bg-[#123b2f]'
@@ -1104,7 +1108,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                               key={method.key}
                                                               type="button"
                                                               onClick={() => setPaymentMethod(method.key)}
-                                                              className={`flex cursor-pointer flex-col items-center gap-1 rounded-xl border p-2.5 text-xs font-medium transition-all ${
+                                                              data-selected={paymentMethod === method.key}
+                                                              className={`pos-payment-option flex cursor-pointer flex-col items-center gap-1 rounded-xl border p-2.5 text-xs font-medium transition-all ${
                                                                   paymentMethod === method.key
                                                                       ? 'border-[#3f9567] bg-[#3f9567] text-white shadow-xs'
                                                                       : 'border-[#2d4f3d] bg-[#0f261e] text-[#dfffea] hover:bg-[#123b2f]'
@@ -1120,7 +1125,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
 
                                     {/* Cash Received (if cash) */}
                                     {isCash && (
-                                        <div className="border-border/80 bg-muted/20 space-y-2 rounded-xl border p-3">
+                                        <div className="border-border/80 bg-muted/20 space-y-2 rounded-lg border p-3">
                                             <div className="flex items-center justify-between">
                                                 <Label className="text-muted-foreground text-xs font-medium">
                                                     {t('pos.cashReceived')} ({getCurrencySymbol()})
@@ -1136,7 +1141,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 value={cashReceived > 0 ? formatRupiah(cashReceived) : ''}
                                                 onChange={(e) => setCashReceived(parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0)}
                                                 placeholder={`Min: ${formatRupiah(finalTotal)}`}
-                                                className={`h-9 rounded-xl border-[#2d4f3d] bg-[#0b1813] text-xs text-[#ebfff4] placeholder:text-[#8fb9a0] ${
+                                                className={`pos-checkout-field h-9 !rounded-lg border-[#2d4f3d] bg-[#0b1813] text-xs text-[#ebfff4] placeholder:text-[#8fb9a0] ${
                                                     cashReceived > 0 && cashReceived < finalTotal
                                                         ? 'border-rose-400 focus-visible:ring-rose-400 dark:border-rose-600'
                                                         : ''
@@ -1297,7 +1302,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         <div
                                             key={pkg.id}
                                             onClick={() => addPackageToCart(pkg)}
-                                            className="group border-border bg-card relative flex cursor-pointer flex-col justify-between rounded-xl border p-3 shadow-2xs transition-all hover:border-[#8fc7a5] hover:shadow-sm active:scale-[0.99] sm:p-4"
+                                            className="pos-package-card group border-border bg-card relative flex cursor-pointer flex-col justify-between rounded-xl border p-3 shadow-2xs transition-all hover:border-[#8fc7a5] hover:shadow-sm active:scale-[0.99] sm:p-4"
                                         >
                                             <div>
                                                 <div className="mb-2 flex items-center justify-between">
@@ -1468,7 +1473,8 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                         <div
                                             key={v.id}
                                             onClick={() => handleVariantClick(v)}
-                                            className={`group relative rounded-xl border p-3 text-left shadow-2xs transition-all select-none active:scale-[0.99] ${
+                                            data-selected={currentQty > 0}
+                                            className={`pos-variant-card group relative rounded-xl border p-3 text-left shadow-2xs transition-all select-none active:scale-[0.99] ${
                                                 currentQty > 0
                                                     ? 'pos-selection-pop border-[#8fc7a5] bg-emerald-50 shadow-xs dark:border-[#76b58e] dark:bg-[#123b2f]'
                                                     : 'bg-card border-border cursor-pointer hover:border-[#a9d4b6] hover:shadow-xs'
@@ -1480,7 +1486,7 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                 </div>
                                                 {currentQty > 0 && packages.length > 0 && (
                                                     <div
-                                                        className="flex items-center gap-1 rounded-lg bg-[#3f9567] p-0.5 text-white shadow-xs"
+                                                        className="pos-variant-quantity-control flex items-center gap-1 rounded-md border p-0.5 shadow-xs"
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
                                                         <button
@@ -1490,17 +1496,17 @@ export default function PosPage({ variants, packages, paymentMethods = [] }: Pro
                                                                     adjustQty(activeCartItemId, v.id, -1);
                                                                 }
                                                             }}
-                                                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded text-xs font-bold transition-colors hover:bg-[#327d55] active:bg-[#286b47]"
+                                                            className="pos-variant-quantity-button flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-xs font-bold transition-colors"
                                                             title={t('pos.variantCard.reduceVariant', 'Kurangi varian')}
                                                         >
                                                             <Minus size={11} />
                                                         </button>
-                                                        <span className="min-w-[1rem] px-1 text-center text-xs font-bold">{currentQty}</span>
+                                                        <span className="pos-variant-quantity-count min-w-[1rem] px-1 text-center text-xs font-bold">{currentQty}</span>
                                                         <button
                                                             type="button"
                                                             onClick={() => handleVariantClick(v)}
                                                             disabled={isPackageFull}
-                                                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded text-xs font-bold transition-colors hover:bg-[#327d55] active:bg-[#286b47] disabled:opacity-40"
+                                                            className="pos-variant-quantity-button flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-xs font-bold transition-colors disabled:opacity-40"
                                                             title={t('pos.variantCard.addVariant', 'Tambah varian')}
                                                         >
                                                             <Plus size={11} />

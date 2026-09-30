@@ -204,7 +204,11 @@ export default function StockIn({ products }: Props) {
                                             value={data.movement_date}
                                             onChange={(val) => setData('movement_date', val)}
                                             theme={isOwner ? 'owner-green' : 'owner'}
-                                            className={`owner-inventory-date !h-10 !border-[#3f9567] !bg-[#edf9f1] !px-3 !text-[#1d6e4b] ${isOwner ? 'hover:!bg-[#def2e4] hover:!text-[#124d39]' : ''}`}
+                                            className={`owner-inventory-date !h-10 !px-3 ${
+                                                isStaff
+                                                    ? '!border-[#e9a6bf] !bg-[#fffafd] !text-[#5a1830] hover:!bg-[#fff0f5] hover:!text-[#b83268] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
+                                                    : '!border-[#3f9567] !bg-[#edf9f1] !text-[#1d6e4b] dark:!border-[#db2777] dark:!bg-[#171219] dark:!text-[#f9a8d4] dark:hover:!bg-[#2a1421] dark:hover:!text-[#fff7fb]'
+                                            } ${isOwner ? 'hover:!bg-[#def2e4] hover:!text-[#124d39]' : ''}`}
                                         />
                                         {displayError('movement_date') && (
                                             <p className="mt-1 text-xs text-rose-500">{displayError('movement_date')}</p>
@@ -254,6 +258,7 @@ export default function StockIn({ products }: Props) {
                         <Button
                             type="submit"
                             disabled={processing}
+                            variant={isStaff ? 'owner' : 'default'}
                             className={
                                 isOwner
                                     ? 'h-10 rounded-xl bg-[#3f9567] px-5 font-semibold text-white shadow-sm shadow-[#3f9567]/20 hover:bg-[#2f7d51] disabled:opacity-70'

@@ -86,6 +86,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                     <div className="flex gap-2">
                         <Button
                             asChild
+                            variant={isStaff ? 'staff' : isOwner ? 'owner' : 'default'}
                             className={`owner-stock-in-button !h-10 !rounded-xl !border !px-4 !font-semibold shadow-sm ${isOwner ? '!border-[#3f9567]' : isStaff ? '!border-[#d94f83]' : '!border-blue-600'}`}
                         >
                             <Link href="/inventory/stock-in">
@@ -93,7 +94,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                                 {t('navigation.stockIn')}
                             </Link>
                         </Button>
-                        <Button asChild variant="owner" className="owner-add-product-button rounded-xl">
+                        <Button asChild variant={isStaff ? 'staff' : isOwner ? 'owner' : 'default'} className="owner-add-product-button rounded-xl">
                             <Link href="/inventory/create">
                                 <PackagePlus size={16} />
                                 {t('inventory.addProduct')}
@@ -142,12 +143,12 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                         />
                     </div>
 
-                    <div className="w-full sm:w-48">
+                    <div className="staff-inventory-category-select w-full sm:w-48">
                         <Select value={category} onValueChange={setCategory}>
                             <SelectTrigger className="h-12 w-full rounded-xl border-[#dde9df] bg-white text-sm text-slate-700 shadow-sm">
                                 <SelectValue placeholder={t('inventory.category')} />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="staff-inventory-category-content">
                                 <SelectItem value="all">{t('inventory.allCategories')}</SelectItem>
                                 {categories.map((c) => (
                                     <SelectItem key={c.id} value={c.id.toString()}>
@@ -158,7 +159,7 @@ export default function InventoryIndex({ products, categories, filters, low_stoc
                         </Select>
                     </div>
 
-                    <Button onClick={applyFilter} variant="owner" className="h-12 rounded-xl px-4 py-2 text-sm">
+                    <Button onClick={applyFilter} variant={isStaff ? 'staff' : isOwner ? 'owner' : 'default'} className="h-12 rounded-xl px-4 py-2 text-sm">
                         {t('common.filter')}
                     </Button>
                 </div>
