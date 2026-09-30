@@ -3109,11 +3109,20 @@ html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#07160e]']
 html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#0c1d17]'],
 html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#0e221b]'],
 html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#0f241d]'],
-html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#0f261e]'] {
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#0f261e]'],
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#17392d]'],
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#112b22]'],
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#143128]'] {
     background: #ffffff !important;
     background-color: #ffffff !important;
     border-color: #cbd9d0 !important;
     color: #1d2a22 !important;
+}
+
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='bg-[#17392d]'] {
+    background: #e7f7ee !important;
+    background-color: #e7f7ee !important;
+    border-color: #9bc9aa !important;
 }
 
 html:not(.dark):has(.owner-theme) .owner-business-dialog input,
@@ -3132,6 +3141,12 @@ html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='text-[#d8f3e2]
 html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='text-[#b8f5d1]'],
 html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='text-[#dfffea]'] {
     color: #1d2a22 !important;
+}
+
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='text-[#cfead9]'],
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='text-[#9ce4b5]'],
+html:not(.dark):has(.owner-theme) .owner-business-dialog [class*='text-[#eafff3]'] {
+    color: #52685a !important;
 }
 
 html:not(.dark):has(.owner-theme) .owner-business-dialog button.bg-black,
