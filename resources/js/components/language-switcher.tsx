@@ -33,7 +33,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
             onClick={toggleLanguage}
             className={cn(
                 'relative inline-flex h-8 w-[72px] shrink-0 cursor-pointer items-center rounded-full p-1 transition-colors duration-300 ease-in-out shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50',
-                isEn ? 'bg-[#2596BE] justify-start' : 'bg-[#B0B0B0] justify-end',
+                isEn ? 'bg-[#5E4BF2] justify-start' : 'bg-[#B0B0B0] justify-end',
                 className
             )}
         >

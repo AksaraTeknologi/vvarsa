@@ -32,7 +32,7 @@ export function MoreBenefits() {
     ] as const;
 
     return (
-        <section className="bg-[linear-gradient(180deg,#F7F5FF_0%,#F3F0EC_100%)] px-6 py-16 lg:px-10">
+        <section className="relative w-full bg-[linear-gradient(180deg,#F7F5FF_0%,#F3F0EC_100%)] px-6 py-16 lg:px-10 dark:bg-none dark:bg-[#121324]">
             <div className="mx-auto max-w-7xl">
                 <div
                     data-reveal
@@ -43,16 +43,16 @@ export function MoreBenefits() {
                             {t('landing.moreBenefits.badge', 'Kenapa lebih cepat')}
                         </span>
 
-                        <h2 className="mt-4 text-[2rem] font-black leading-tight tracking-[-0.04em] sm:text-3xl">
+                        <h2 className="mt-4 text-[2rem] font-black leading-tight tracking-[-0.04em] sm:text-3xl text-[#17182A] dark:text-white">
                             {t('landing.moreBenefits.title1', 'Rapi di dalam,')}
-                            <span className="text-[#5E4BF2]">
+                            <span className="text-[#5E4BF2] dark:text-[#a594f9]">
                                 {' '}
                                 {t('landing.moreBenefits.titleHighlight', 'lebih kuat di luar.')}
                             </span>
                         </h2>
                     </div>
 
-                    <p className="max-w-xl text-sm font-semibold leading-relaxed text-[#66677A] sm:text-base">
+                    <p className="max-w-xl text-sm font-semibold leading-relaxed text-[#66677A] sm:text-base dark:text-[#A4A1B8]">
                         {t('landing.moreBenefits.description', 'Suasana kerja yang lebih teratur membuat tim lebih fokus, lebih cepat, dan lebih siap bertumbuh tanpa hambatan manual.')}
                     </p>
                 </div>
@@ -63,10 +63,7 @@ export function MoreBenefits() {
                             <div
                                 key={title}
                                 data-reveal
-                                className="reveal-hidden rounded-[1.75rem] border border-[#E9E4F7] bg-white/80 p-5 shadow-[0_18px_45px_rgba(94,75,242,0.08)] transition duration-500 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(94,75,242,0.12)]"
-                                style={{
-                                    backgroundColor: bg,
-                                }}
+                                className="reveal-hidden rounded-[1.75rem] border border-[#E9E4F7] bg-white/80 p-5 shadow-[0_18px_45px_rgba(94,75,242,0.08)] transition duration-500 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(94,75,242,0.12)] dark:border-[#2b2d4b] dark:!bg-[#1e1f38] dark:text-white"
                             >
                                 <span
                                     className="mb-4 flex size-11 items-center justify-center rounded-2xl text-white"
@@ -80,11 +77,11 @@ export function MoreBenefits() {
                                     />
                                 </span>
 
-                                <h3 className="text-base font-black text-[#17182A]">
+                                <h3 className="text-base font-black text-[#17182A] dark:text-white">
                                     {title}
                                 </h3>
 
-                                <p className="mt-2 text-sm font-semibold leading-relaxed text-[#66677A]">
+                                <p className="mt-2 text-sm font-semibold leading-relaxed text-[#66677A] dark:text-[#A4A1B8]">
                                     {text}
                                 </p>
                             </div>

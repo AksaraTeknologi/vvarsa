@@ -64,26 +64,23 @@ export function Pricing({ goToDashboard }: LandingProps) {
     return (
         <section
             id="paket"
-            className="bg-[radial-gradient(circle_at_top,rgba(94,75,242,0.08),transparent_30%),linear-gradient(180deg,#F8F6F2_0%,#F1F0FF_100%)] px-6 py-16 lg:px-10 lg:py-20"
+            className="relative w-full bg-[radial-gradient(circle_at_top,rgba(94,75,242,0.08),transparent_30%),linear-gradient(180deg,#F8F6F2_0%,#F1F0FF_100%)] px-6 py-16 lg:px-10 lg:py-20 dark:bg-[#121324] dark:bg-none"
         >
             <div className="mx-auto max-w-7xl">
-                <div
-                    data-reveal
-                    className="reveal-hidden mx-auto max-w-2xl text-center"
-                >
+                <div className="mx-auto max-w-2xl text-center">
                     <span className="rounded-full bg-[#1777FB] px-4 py-2 text-[10px] font-black uppercase text-white">
                         {t('landing.pricing.badge', 'Harga transparan')}
                     </span>
 
-                    <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] sm:text-4xl">
+                    <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] sm:text-4xl text-[#17182A] dark:text-white">
                         {t('landing.pricing.title1', 'Pilih yang paling pas,')}
-                        <span className="text-[#5E4BF2]">
+                        <span className="text-[#5E4BF2] dark:text-[#a594f9]">
                             {' '}
                             {t('landing.pricing.titleHighlight', 'tanpa ribet.')}
                         </span>
                     </h2>
 
-                    <p className="mt-3 text-sm font-semibold leading-relaxed text-[#777689] sm:text-base">
+                    <p className="mt-3 text-sm font-semibold leading-relaxed text-[#777689] sm:text-base dark:text-[#A4A1B8]">
                         {t('landing.pricing.description', 'Mulai dari yang paling sederhana sampai yang siap mendukung bisnis yang tumbuh cepat.')}
                     </p>
                 </div>
@@ -96,11 +93,10 @@ export function Pricing({ goToDashboard }: LandingProps) {
                         return (
                             <div
                                 key={plan.key}
-                                data-reveal
-                                className={`reveal-hidden relative flex min-h-[500px] flex-col rounded-[2rem] p-6 transition duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+                                className={`relative flex min-h-[500px] flex-col rounded-[2rem] p-6 transition duration-500 hover:-translate-y-2 hover:shadow-2xl ${
                                     isFeatured
-                                        ? 'border-[3px] border-[#5E4BF2] bg-white shadow-[0_30px_75px_rgba(94,75,242,0.18)] lg:-translate-y-1'
-                                        : 'border border-[#EEEAF5] bg-white/90 shadow-[0_22px_50px_rgba(24,24,35,0.04)]'
+                                        ? 'border-[3px] border-[#5E4BF2] bg-white shadow-[0_30px_75px_rgba(94,75,242,0.18)] lg:-translate-y-1 dark:bg-[#1f203b] dark:border-[#5E4BF2] dark:text-white dark:shadow-[0_30px_75px_rgba(94,75,242,0.35)]'
+                                        : 'border border-[#EEEAF5] bg-white/90 shadow-[0_22px_50px_rgba(24,24,35,0.04)] dark:border-[#2b2d4b] dark:bg-[#1a1b32] dark:text-white dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)]'
                                 }`}
                             >
                                 {isFeatured && (
@@ -121,43 +117,43 @@ export function Pricing({ goToDashboard }: LandingProps) {
                                     </span>
 
                                     {!plan.isFree && (
-                                        <span className="text-xs font-bold text-[#8A8999]">
+                                        <span className="text-xs font-bold text-[#8A8999] dark:text-[#A4A1B8]">
                                             {t('landing.pricing.perMonth', '/ bulan')}
                                         </span>
                                     )}
                                 </div>
 
                                 <div className="mb-4">
-                                    <h3 className="text-[2rem] font-black tracking-[-0.04em] text-[#17182A]">
+                                    <h3 className="text-[2rem] font-black tracking-[-0.04em] text-[#17182A] dark:text-white">
                                         {plan.name}
                                     </h3>
 
-                                    <p className="mt-2 text-sm font-semibold text-[#8A8999]">
+                                    <p className="mt-2 text-sm font-semibold text-[#8A8999] dark:text-[#A4A1B8]">
                                         {plan.description}
                                     </p>
                                 </div>
 
                                 <div className="mt-2 flex items-end gap-2">
-                                    <span className="text-[2.2rem] font-black tracking-[-0.06em] text-[#17182A] sm:text-[2.8rem]">
+                                    <span className="text-[2.2rem] font-black tracking-[-0.06em] text-[#17182A] sm:text-[2.8rem] dark:text-white">
                                         {plan.price}
                                     </span>
 
                                     {plan.isFree && (
-                                        <span className="pb-2 text-xs font-bold text-[#9998A8]">
+                                        <span className="pb-2 text-xs font-bold text-[#9998A8] dark:text-[#A4A1B8]">
                                             {t('landing.pricing.forever', 'selamanya')}
                                         </span>
                                     )}
                                 </div>
 
-                                <div className="my-6 h-px bg-[#EDEAF3]" />
+                                <div className="my-6 h-px bg-[#EDEAF3] dark:bg-[#2b2d4b]" />
 
                                 <ul className="flex-1 space-y-4">
                                     {plan.features.map((feature) => (
                                         <li
                                             key={feature}
-                                            className="flex items-center gap-3 text-sm font-bold text-[#3A3C4F]"
+                                            className="flex items-center gap-3 text-sm font-bold text-[#3A3C4F] dark:text-[#C5C3D6]"
                                         >
-                                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#E9F5DE] text-[#3E791E]">
+                                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#E9F5DE] text-[#3E791E] dark:bg-[#2f4024] dark:text-[#D8F380]">
                                                 <Check
                                                     className="size-3"
                                                     strokeWidth={3}

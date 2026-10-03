@@ -1,9 +1,10 @@
 import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem } from '@/types';
+import { cn } from '@/lib/utils';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
@@ -19,6 +20,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Password() {
+    const { auth } = usePage<SharedData>().props;
+    const isAdmin = auth.user?.roles?.includes('admin') || auth.user?.role === 'admin';
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
@@ -53,12 +56,21 @@ export default function Password() {
             <Head title="Profile settings" />
 
             <SettingsLayout>
-                <div className="space-y-5 rounded-2xl border border-[#4ec77e]/30 bg-[#0c1d17] p-5 shadow-[0_20px_60px_rgba(7,20,15,0.7)] md:p-6">
+                <div
+                    className={cn(
+                        'space-y-5 rounded-2xl p-5 md:p-6',
+                        isAdmin
+                            ? 'border border-[#DCD8FF] bg-white text-neutral-900 shadow-sm dark:border-[#2b2d4b] dark:bg-[#16172b] dark:text-white'
+                            : 'border border-[#4ec77e]/30 bg-[#0c1d17] shadow-[0_20px_60px_rgba(7,20,15,0.7)]',
+                    )}
+                >
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
                     <form onSubmit={updatePassword} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="current_password" className="text-sm font-medium text-[#f4fff8]">Current password</Label>
+                            <Label htmlFor="current_password" className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                Current password
+                            </Label>
 
                             <Input
                                 id="current_password"
@@ -66,7 +78,12 @@ export default function Password() {
                                 value={data.current_password}
                                 onChange={(e) => setData('current_password', e.target.value)}
                                 type="password"
-                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                className={cn(
+                                    'mt-1 block h-10 w-full rounded-xl px-3 text-sm border',
+                                    isAdmin
+                                        ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                        : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                )}
                                 autoComplete="current-password"
                                 placeholder="Current password"
                             />
@@ -75,7 +92,9 @@ export default function Password() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password" className="text-sm font-medium text-[#f4fff8]">New password</Label>
+                            <Label htmlFor="password" className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                New password
+                            </Label>
 
                             <Input
                                 id="password"
@@ -83,7 +102,12 @@ export default function Password() {
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 type="password"
-                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                className={cn(
+                                    'mt-1 block h-10 w-full rounded-xl px-3 text-sm border',
+                                    isAdmin
+                                        ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                        : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                )}
                                 autoComplete="new-password"
                                 placeholder="New password"
                             />
@@ -92,14 +116,21 @@ export default function Password() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation" className="text-sm font-medium text-[#f4fff8]">Confirm password</Label>
+                            <Label htmlFor="password_confirmation" className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                Confirm password
+                            </Label>
 
                             <Input
                                 id="password_confirmation"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
                                 type="password"
-                                className="mt-1 block h-10 w-full rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                className={cn(
+                                    'mt-1 block h-10 w-full rounded-xl px-3 text-sm border',
+                                    isAdmin
+                                        ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                        : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                )}
                                 autoComplete="new-password"
                                 placeholder="Confirm password"
                             />
@@ -108,7 +139,9 @@ export default function Password() {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <Button disabled={processing} variant="owner" className="rounded-xl">Save password</Button>
+                            <Button disabled={processing} variant={isAdmin ? 'admin' : 'owner'} className="rounded-xl">
+                                Save password
+                            </Button>
 
                             <Transition
                                 show={recentlySuccessful}
@@ -117,7 +150,7 @@ export default function Password() {
                                 leave="transition ease-in-out"
                                 leaveTo="opacity-0"
                             >
-                                <p className="text-sm text-neutral-600">Saved</p>
+                                <p className="text-sm text-neutral-600 dark:text-[#d4d0e6]">Saved</p>
                             </Transition>
                         </div>
                     </form>

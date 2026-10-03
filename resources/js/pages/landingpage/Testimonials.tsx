@@ -34,7 +34,7 @@ export function Testimonials() {
     return (
         <section
             id="cerita"
-            className="px-6 py-16 lg:px-10 lg:py-20"
+            className="relative w-full px-6 py-16 lg:px-10 lg:py-20 bg-transparent dark:bg-[#121324]"
         >
             <div className="mx-auto max-w-7xl">
                 <div
@@ -42,13 +42,13 @@ export function Testimonials() {
                     className="reveal-hidden flex flex-col justify-between gap-5 sm:flex-row sm:items-end"
                 >
                     <div>
-                        <span className="rounded-full bg-[#BDB5FF] px-4 py-2 text-[10px] font-black uppercase text-[#40349A]">
+                        <span className="rounded-full bg-[#BDB5FF] px-4 py-2 text-[10px] font-black uppercase text-[#40349A] dark:bg-[#34355e] dark:text-[#BDB5FF]">
                             {t('landing.testimonials.badge', 'Cerita pengguna')}
                         </span>
 
-                        <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] sm:text-4xl">
+                        <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] sm:text-4xl text-[#17182A] dark:text-white">
                             {t('landing.testimonials.title1', 'Mereka sudah')}
-                            <span className="text-[#5E4BF2]">
+                            <span className="text-[#5E4BF2] dark:text-[#a594f9]">
                                 {' '}
                                 {t('landing.testimonials.titleHighlight', 'merasakan.')}
                             </span>
@@ -61,7 +61,7 @@ export function Testimonials() {
                                 (item) => (
                                     <span
                                         key={item}
-                                        className="flex size-8 items-center justify-center rounded-full border-2 border-[#F7F5FF] bg-[#D8F380] text-[9px] font-black"
+                                        className="flex size-8 items-center justify-center rounded-full border-2 border-[#F7F5FF] bg-[#D8F380] text-[9px] font-black text-[#17182A] dark:border-[#1e1f38]"
                                     >
                                         {item}
                                     </span>
@@ -69,7 +69,7 @@ export function Testimonials() {
                             )}
                         </div>
 
-                        <span className="text-xs font-black text-[#17182A]">
+                        <span className="text-xs font-black text-[#17182A] dark:text-white">
                             {t('landing.testimonials.usersCount', '+1,200 pengguna')}
                         </span>
                     </div>
@@ -80,10 +80,7 @@ export function Testimonials() {
                         <div
                             key={item.name}
                             data-reveal
-                            className="reveal-hidden group rounded-[2rem] border border-[#E9E6F1] bg-white p-6 shadow-[0_18px_45px_rgba(94,75,242,0.06)] transition duration-500 hover:-translate-y-2 hover:border-[#D8D2FF] hover:shadow-[0_28px_70px_rgba(94,75,242,0.12)]"
-                            style={{
-                                background: item.bg,
-                            }}
+                            className="reveal-hidden group rounded-[2rem] border border-[#E9E6F1] bg-white p-6 shadow-[0_18px_45px_rgba(94,75,242,0.06)] transition duration-500 hover:-translate-y-2 hover:border-[#D8D2FF] hover:shadow-[0_28px_70px_rgba(94,75,242,0.12)] dark:border-[#2b2d4b] dark:!bg-[#1e1f38] dark:text-white"
                         >
                             <div className="flex gap-1">
                                 {Array.from({
@@ -100,11 +97,11 @@ export function Testimonials() {
                                 )}
                             </div>
 
-                            <p className="mt-6 text-sm font-bold leading-relaxed text-[#555667]">
+                            <p className="mt-6 text-sm font-bold leading-relaxed text-[#555667] dark:text-[#C5C3D6]">
                                 “{item.text}”
                             </p>
 
-                            <div className="mt-7 flex items-center gap-3 border-t border-[#EEEAF4] pt-5">
+                            <div className="mt-7 flex items-center gap-3 border-t border-[#EEEAF4] pt-5 dark:border-[#2b2d4b]">
                                 <span
                                     className="flex size-11 items-center justify-center rounded-full text-xs font-black text-[#17182A]"
                                     style={{
@@ -116,11 +113,11 @@ export function Testimonials() {
                                 </span>
 
                                 <div>
-                                    <p className="text-xs font-black text-[#17182A]">
+                                    <p className="text-xs font-black text-[#17182A] dark:text-white">
                                         {item.name}
                                     </p>
 
-                                    <p className="text-[10px] font-semibold text-[#9998A8]">
+                                    <p className="text-[10px] font-semibold text-[#9998A8] dark:text-[#A4A1B8]">
                                         {item.role}
                                     </p>
                                 </div>

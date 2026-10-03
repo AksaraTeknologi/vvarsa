@@ -11,14 +11,14 @@ export function Stats() {
     ] as const;
 
     return (
-        <section className="bg-white px-6 py-14 lg:px-10">
-            <div className="mx-auto grid max-w-7xl grid-cols-2 overflow-hidden rounded-[2.25rem] border border-[#EAE4F7] bg-[linear-gradient(135deg,#FDFBFF_0%,#F3F0FF_100%)] shadow-[0_24px_60px_rgba(94,75,242,0.06)] sm:grid-cols-4">
+        <section className="relative w-full bg-white px-6 py-14 lg:px-10 dark:bg-[#121324]">
+            <div className="mx-auto grid max-w-7xl grid-cols-2 overflow-hidden rounded-[2.25rem] border border-[#EAE4F7] bg-[linear-gradient(135deg,#FDFBFF_0%,#F3F0FF_100%)] shadow-[0_24px_60px_rgba(94,75,242,0.06)] sm:grid-cols-4 dark:border-[#2b2d4b] dark:bg-[radial-gradient(125%_125%_at_50%_0%,#1c1d36_0%,#16172b_100%)]">
                 {items.map(([value, label, color], index) => (
                     <div
                         key={label}
                         className={`p-6 text-center ${
                             index !== 3
-                                ? 'border-b border-[#E8E5F1] sm:border-b-0 sm:border-r'
+                                ? 'border-b border-[#E8E5F1] sm:border-b-0 sm:border-r dark:border-[#2b2d4b]'
                                 : ''
                         }`}
                     >
@@ -29,7 +29,7 @@ export function Stats() {
                             {value}
                         </p>
 
-                        <p className="mt-1 text-[10px] font-bold text-[#898797] sm:text-xs">
+                        <p className="mt-1 text-[10px] font-bold text-[#898797] sm:text-xs dark:text-[#A4A1B8]">
                             {label}
                         </p>
                     </div>

@@ -37,7 +37,7 @@ export function HowItWorks() {
     return (
         <section
             id="cara-kerja"
-            className="relative mt-4 overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.22),transparent_30%),linear-gradient(180deg,#17182A_0%,#101426_100%)] px-6 py-16 text-white lg:px-10 lg:py-20"
+            className="relative w-full overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.22),transparent_30%),linear-gradient(180deg,#17182A_0%,#101426_100%)] px-6 py-16 text-white lg:px-10 lg:py-20 dark:bg-[#121324]"
         >
             <div className="absolute left-[-80px] top-[-40px] size-52 rounded-full bg-[#D8F380]/18 blur-3xl" />
 

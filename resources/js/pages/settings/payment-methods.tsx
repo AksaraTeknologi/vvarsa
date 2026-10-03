@@ -6,8 +6,9 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { handleAsyncAction, routerPromise } from '@/lib/toast-handler';
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { cn } from '@/lib/utils';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { Check, Edit2, Plus, ShieldAlert, Trash2, X } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
@@ -31,6 +32,8 @@ interface Props {
 }
 
 export default function PaymentMethodsSettings({ paymentMethods }: Props) {
+    const { auth } = usePage<SharedData>().props;
+    const isAdmin = auth.user?.roles?.includes('admin') || auth.user?.role === 'admin';
     const [editingId, setEditingId] = useState<number | null>(null);
 
     // Form to create
@@ -127,52 +130,78 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
 
                     {/* Form Tambah */}
                     {editingId === null && (
-                        <form onSubmit={handleCreate} className="space-y-4 rounded-2xl border border-[#4ec77e]/30 bg-[#0c1d17] p-5 shadow-[0_20px_60px_rgba(7,20,15,0.7)] md:p-6">
-                            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#f4fff8]">
-                                <Plus size={16} className="text-[#76dba0]" />
+                        <form
+                            onSubmit={handleCreate}
+                            className={cn(
+                                'space-y-4 rounded-2xl p-5 md:p-6',
+                                isAdmin
+                                    ? 'border border-[#DCD8FF] bg-white text-neutral-900 shadow-sm dark:border-[#2b2d4b] dark:bg-[#16172b] dark:text-white'
+                                    : 'border border-[#4ec77e]/30 bg-[#0c1d17] shadow-[0_20px_60px_rgba(7,20,15,0.7)]',
+                            )}
+                        >
+                            <h3 className={cn('flex items-center gap-1.5 text-sm font-semibold', isAdmin ? 'text-neutral-900 dark:text-white' : 'text-[#f4fff8]')}>
+                                <Plus size={16} className={isAdmin ? 'text-[#5E4BF2] dark:text-[#79D7FF]' : 'text-[#76dba0]'} />
                                 Tambah Metode / Rekening Baru
                             </h3>
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="name" className="text-sm font-medium text-[#f4fff8]">Nama Metode *</Label>
+                                    <Label htmlFor="name" className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                        Nama Metode *
+                                    </Label>
                                     <Input
                                         id="name"
                                         placeholder="cth: Transfer Bank BRI, ShopeePay"
                                         value={createForm.data.name}
                                         onChange={(e) => createForm.setData('name', e.target.value)}
-                                        required className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                        required
+                                        className={cn(
+                                            'h-10 rounded-xl px-3 text-sm border',
+                                            isAdmin
+                                                ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                                : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                        )}
                                     />
                                     <InputError message={createForm.errors.name} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="account_name" className="text-sm font-medium text-[#f4fff8]">Nama Pemilik (a.n.)</Label>
+                                    <Label htmlFor="account_name" className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                        Nama Pemilik (a.n.)
+                                    </Label>
                                     <Input
                                         id="account_name"
                                         placeholder="cth: Mochi Delight"
                                         value={createForm.data.account_name}
-                                        className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                        className={cn(
+                                            'h-10 rounded-xl px-3 text-sm border',
+                                            isAdmin
+                                                ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                                : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                        )}
                                         onChange={(e) => createForm.setData('account_name', e.target.value)}
                                     />
                                     <InputError message={createForm.errors.account_name} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="account_number" className="text-sm font-medium text-[#f4fff8]">No. Rekening / HP</Label>
+                                    <Label htmlFor="account_number" className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                        No. Rekening / HP
+                                    </Label>
                                     <Input
                                         id="account_number"
                                         placeholder="cth: 1223-01-xxxx, 0812-xxxx"
                                         value={createForm.data.account_number}
-                                        className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                        className={cn(
+                                            'h-10 rounded-xl px-3 text-sm border',
+                                            isAdmin
+                                                ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                                : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                        )}
                                         onChange={(e) => createForm.setData('account_number', e.target.value)}
                                     />
                                     <InputError message={createForm.errors.account_number} />
                                 </div>
                             </div>
                             <div className="flex justify-end pt-1">
-                                <Button
-                                    type="submit"
-                                    disabled={createForm.processing}
-                                    variant="owner" className="rounded-xl"
-                                >
+                                <Button type="submit" disabled={createForm.processing} variant={isAdmin ? 'admin' : 'owner'} className="rounded-xl">
                                     {createForm.processing ? 'Menyimpan...' : 'Tambah Metode'}
                                 </Button>
                             </div>
@@ -180,13 +209,25 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                     )}
 
                     {/* List/Table */}
-                    <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
-                        <div className="border-border border-b bg-[#f7fbf8] p-4">
-                            <h3 className="text-sm font-semibold text-[#1f2a23]">Daftar Metode Pembayaran Aktif</h3>
+                    <div
+                        className={cn(
+                            'overflow-hidden rounded-2xl border shadow-sm',
+                            isAdmin ? 'border-[#DCD8FF] bg-white dark:border-[#2b2d4b] dark:bg-[#16172b]' : 'border-border bg-white',
+                        )}
+                    >
+                        <div
+                            className={cn(
+                                'border-b p-4',
+                                isAdmin ? 'border-[#DCD8FF] bg-[#F4F2FF] dark:border-[#2b2d4b] dark:bg-[#1e1f38]' : 'border-border bg-[#f7fbf8]',
+                            )}
+                        >
+                            <h3 className={cn('text-sm font-semibold', isAdmin ? 'text-neutral-900 dark:text-white' : 'text-[#1f2a23]')}>
+                                Daftar Metode Pembayaran Aktif
+                            </h3>
                         </div>
                         {paymentMethods.length === 0 ? (
                             <div className="text-muted-foreground space-y-2 py-12 text-center text-sm">
-                                <ShieldAlert size={28} className="mx-auto text-owner-accent opacity-50" />
+                                <ShieldAlert size={28} className={cn('mx-auto opacity-50', isAdmin ? 'text-[#5E4BF2]' : 'text-owner-accent')} />
                                 <p className="text-sm">Belum ada metode pembayaran yang dikonfigurasi.</p>
                                 <p className="text-sm">Sistem akan menggunakan fallback bawaan (Tunai, Transfer, QRIS) di kasir.</p>
                             </div>
@@ -197,32 +238,58 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
 
                                     if (isEditing) {
                                         return (
-                                            <form key={pm.id} onSubmit={(e) => handleUpdate(e, pm.id)} className="space-y-4 bg-owner-accent/[0.04] p-4 md:p-5">
+                                            <form
+                                                key={pm.id}
+                                                onSubmit={(e) => handleUpdate(e, pm.id)}
+                                                className={cn('space-y-4 p-4 md:p-5', isAdmin ? 'bg-[#5E4BF2]/[0.04] dark:bg-[#5E4BF2]/[0.10]' : 'bg-owner-accent/[0.04]')}
+                                            >
                                                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                                                     <div className="space-y-1.5">
-                                                        <Label className="text-sm font-medium text-[#f4fff8]">Nama Metode *</Label>
+                                                        <Label className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                                            Nama Metode *
+                                                        </Label>
                                                         <Input
                                                             value={editForm.data.name}
                                                             onChange={(e) => editForm.setData('name', e.target.value)}
-                                                            required className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                                            required
+                                                            className={cn(
+                                                                'h-10 rounded-xl px-3 text-sm border',
+                                                                isAdmin
+                                                                    ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                                                    : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                                            )}
                                                         />
                                                         <InputError message={editForm.errors.name} />
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <Label className="text-sm font-medium text-[#f4fff8]">Nama Pemilik (a.n.)</Label>
+                                                        <Label className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                                            Nama Pemilik (a.n.)
+                                                        </Label>
                                                         <Input
                                                             value={editForm.data.account_name}
                                                             onChange={(e) => editForm.setData('account_name', e.target.value)}
-                                                            className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                                            className={cn(
+                                                                'h-10 rounded-xl px-3 text-sm border',
+                                                                isAdmin
+                                                                    ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                                                    : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                                            )}
                                                         />
                                                         <InputError message={editForm.errors.account_name} />
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <Label className="text-sm font-medium text-[#f4fff8]">No. Rekening / HP</Label>
+                                                        <Label className={cn('text-sm font-medium', isAdmin ? 'text-neutral-800 dark:text-white' : 'text-[#f4fff8]')}>
+                                                            No. Rekening / HP
+                                                        </Label>
                                                         <Input
                                                             value={editForm.data.account_number}
                                                             onChange={(e) => editForm.setData('account_number', e.target.value)}
-                                                            className="h-10 rounded-xl border border-[#4ec77e]/30 bg-[#0e221b] px-3 text-sm text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30"
+                                                            className={cn(
+                                                                'h-10 rounded-xl px-3 text-sm border',
+                                                                isAdmin
+                                                                    ? 'border-[#E2DFFA] bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-[#5E4BF2] focus-visible:ring-[#5E4BF2]/20 dark:border-[#2f3154] dark:bg-[#1e1f38] dark:text-white dark:placeholder:text-[#8d8ba7]'
+                                                                    : 'border-[#4ec77e]/30 bg-[#0e221b] text-[#ecfff5] placeholder:text-[#cfead9] focus-visible:border-[#76dba0] focus-visible:ring-[#4ec77e]/30',
+                                                            )}
                                                         />
                                                         <InputError message={editForm.errors.account_number} />
                                                     </div>
@@ -237,24 +304,24 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                             id={`edit-active-${pm.id}`}
                                                             checked={editForm.data.is_active}
                                                             onChange={(e) => editForm.setData('is_active', e.target.checked)}
-                                                            className="rounded border-owner-accent text-owner-accent focus:ring-owner-accent"
+                                                            className={cn(
+                                                                'rounded',
+                                                                isAdmin
+                                                                    ? 'border-[#5E4BF2] text-[#5E4BF2] focus:ring-[#5E4BF2]'
+                                                                    : 'border-owner-accent text-owner-accent focus:ring-owner-accent',
+                                                            )}
                                                         />
                                                     </div>
                                                     <div className="flex gap-2">
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={cancelEditing}
-                                                            className="rounded-lg"
-                                                        >
+                                                        <Button type="button" variant="outline" size="sm" onClick={cancelEditing} className="rounded-lg">
                                                             <X size={14} className="mr-1" /> Batal
                                                         </Button>
                                                         <Button
                                                             type="submit"
                                                             disabled={editForm.processing}
                                                             size="sm"
-                                                            variant="owner" className="rounded-lg"
+                                                            variant={isAdmin ? 'admin' : 'owner'}
+                                                            className="rounded-lg"
                                                         >
                                                             <Check size={14} className="mr-1" /> Simpan
                                                         </Button>
@@ -294,7 +361,11 @@ export default function PaymentMethodsSettings({ paymentMethods }: Props) {
                                                         aria-label={`${pm.is_active ? 'Nonaktifkan' : 'Aktifkan'} ${pm.name}`}
                                                         onClick={() => handleToggleActive(pm)}
                                                         className={`payment-method-switch relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:ring-2 focus-visible:ring-[#db2777] focus-visible:ring-offset-0 focus:outline-none ${
-                                                            pm.is_active ? 'bg-owner-accent' : 'bg-slate-200 dark:bg-slate-800'
+                                                            pm.is_active
+                                                                ? isAdmin
+                                                                    ? 'bg-[#5E4BF2]'
+                                                                    : 'bg-owner-accent'
+                                                                : 'bg-slate-200 dark:bg-slate-800'
                                                         }`}
                                                     >
                                                         <span

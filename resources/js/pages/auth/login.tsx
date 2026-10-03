@@ -94,15 +94,15 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <Label htmlFor="remember">{t('auth.login.rememberMe', 'Remember me')}</Label>
                     </div>
 
-                    <Button type="submit" variant="default" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" variant="default" className="mt-4 w-full shadow-lg transition duration-200 hover:-translate-y-0.5 dark:bg-[#5E4BF2] dark:text-white dark:hover:bg-[#4938D9] dark:shadow-[0_4px_20px_rgba(94,75,242,0.45)]" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         {processing ? t('auth.login.loggingIn', 'Log in...') : t('auth.login.submitButton', 'Log in')}
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
+                <div className="text-center text-sm text-neutral-600 dark:text-[#C5C3D6]">
                     {t('auth.login.noAccount', "Don't have an account?")}{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
+                    <TextLink href={route('register')} tabIndex={5} className="dark:text-[#D8F380] dark:hover:text-[#e5f8a0]">
                         {t('auth.login.signUp', 'Sign up')}
                     </TextLink>
                 </div>

@@ -104,15 +104,15 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" variant="default" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                    <Button type="submit" variant="default" className="mt-2 w-full shadow-lg transition duration-200 hover:-translate-y-0.5 dark:bg-[#5E4BF2] dark:text-white dark:hover:bg-[#4938D9] dark:shadow-[0_4px_20px_rgba(94,75,242,0.45)]" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         {processing ? t('auth.register.registering', 'Creating account...') : t('auth.register.submitButton', 'Create account')}
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
+                <div className="text-center text-sm text-neutral-600 dark:text-[#C5C3D6]">
                     {t('auth.register.haveAccount', 'Already have an account?')}{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
+                    <TextLink href={route('login')} tabIndex={6} className="dark:text-[#D8F380] dark:hover:text-[#e5f8a0]">
                         {t('auth.register.logIn', 'Log in')}
                     </TextLink>
                 </div>

@@ -14,7 +14,7 @@ export function FinalCta({ goToDashboard }: LandingProps) {
     ] as const;
 
     return (
-        <section className="px-6 py-16 lg:px-10 lg:py-20">
+        <section className="relative w-full px-6 py-16 lg:px-10 lg:py-20 dark:bg-[#121324]">
             <div
                 data-reveal
                 className="reveal-hidden relative mx-auto max-w-7xl overflow-hidden rounded-[3rem] bg-[linear-gradient(135deg,#5E4BF2_0%,#4736D4_100%)] px-7 py-14 text-white shadow-[0_35px_90px_rgba(94,75,242,0.3)] sm:px-12 lg:px-20 lg:py-20"

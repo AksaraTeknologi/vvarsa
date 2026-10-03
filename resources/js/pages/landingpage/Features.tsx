@@ -75,7 +75,7 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
         <>
             <section
                 id="produk"
-                className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.38),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(216,243,128,0.25),transparent_28%),linear-gradient(180deg,#F4F0FF_0%,#F0EFF7_40%,#F7F2ED_100%)] px-6 py-16 text-[#17182A] lg:px-10 lg:py-20"
+                className="relative w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(94,75,242,0.38),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(216,243,128,0.25),transparent_28%),linear-gradient(180deg,#F4F0FF_0%,#F0EFF7_40%,#F7F2ED_100%)] px-6 py-16 text-[#17182A] lg:px-10 lg:py-20 dark:bg-[#121324] dark:bg-none dark:text-white"
             >
                 <div className="absolute top-[-100px] right-[-120px] size-[420px] rounded-full bg-[#5E4BF2]/16 blur-[120px]" />
 
@@ -90,15 +90,15 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                 {t('landing.features.badge', 'Semua dalam satu tempat')}
                             </span>
 
-                            <h2 className="mt-4 text-[2.5rem] leading-[0.9] font-black tracking-[-0.06em] text-[#17182A] sm:text-4xl lg:text-[4.5rem]">
+                            <h2 className="mt-4 text-[2.5rem] leading-[0.9] font-black tracking-[-0.06em] text-[#17182A] sm:text-4xl lg:text-[4.5rem] dark:text-white">
                                 {t('landing.features.title1', 'Satu dashboard.')}
                                 <br />
-                                <span className="text-[#5E4BF2]">{t('landing.features.titleHighlight', 'Banyak hal')}</span>
+                                <span className="text-[#5E4BF2] dark:text-[#a594f9]">{t('landing.features.titleHighlight', 'Banyak hal')}</span>
                                 <br />
                                 {t('landing.features.title2', 'jadi mudah.')}
                             </h2>
 
-                            <p className="mt-4 max-w-[31rem] text-sm leading-relaxed font-semibold text-[#5F6073] sm:text-base">
+                            <p className="mt-4 max-w-[31rem] text-sm leading-relaxed font-semibold text-[#5F6073] sm:text-base dark:text-[#A4A1B8]">
                                 {t('landing.features.description', 'Tidak perlu pindah-pindah aplikasi. Semua data penting bisnismu saling terhubung secara otomatis.')}
                             </p>
 
@@ -114,15 +114,15 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                             onClick={() => setActiveFeature(index)}
                                             className={`group flex w-full items-center gap-4 rounded-[1.5rem] border p-4 text-left transition-all duration-300 ${
                                                 active
-                                                    ? '-translate-y-0.5 border-[#E5E1FF] bg-white text-[#17182A] shadow-[0_22px_50px_rgba(94,75,242,0.14),inset_0_1px_0_rgba(255,255,255,0.8)]'
-                                                    : 'border-transparent bg-white/55 text-[#17182A] hover:-translate-y-0.5 hover:border-[#E5E1FF] hover:bg-white/90 hover:shadow-[0_18px_38px_rgba(94,75,242,0.08)]'
+                                                    ? '-translate-y-0.5 border-[#E5E1FF] bg-white text-[#17182A] shadow-[0_22px_50px_rgba(94,75,242,0.14)] dark:border-[#5E4BF2] dark:bg-[#1e1f38] dark:text-white'
+                                                    : 'border-transparent bg-white/55 text-[#17182A] hover:-translate-y-0.5 hover:border-[#E5E1FF] hover:bg-white/90 dark:bg-[#16172b]/60 dark:text-[#C5C3D6] dark:hover:bg-[#1e1f38] dark:hover:text-white'
                                             }`}
                                         >
                                             <span
                                                 className={`flex size-12 shrink-0 items-center justify-center rounded-[1.1rem] ${
                                                     active
                                                         ? 'bg-[#D8F380] text-[#17182A] shadow-[0_8px_18px_rgba(216,243,128,0.35)]'
-                                                        : 'bg-[#eaf6ee] text-[#2f8f5c]'
+                                                        : 'bg-[#eaf6ee] text-[#2f8f5c] dark:bg-[#25382b] dark:text-[#D8F380]'
                                                 }`}
                                             >
                                                 <Icon className="size-5" />
@@ -130,12 +130,12 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
 
                                             <div className="flex-1">
                                                 <p className="text-base font-black">{feature.title}</p>
-                                                <p className="mt-1 text-[10px] font-semibold tracking-[0.12em] text-[#7C7D8D] uppercase">
+                                                <p className="mt-1 text-[10px] font-semibold tracking-[0.12em] text-[#7C7D8D] uppercase dark:text-[#8E8C9F]">
                                                     {feature.number} · {t('landing.features.mainFeature', 'Fitur utama')}
                                                 </p>
                                             </div>
 
-                                            <ChevronRight className={`size-4 transition ${active ? 'translate-x-1 text-[#5E4BF2]' : 'opacity-30'}`} />
+                                            <ChevronRight className={`size-4 transition ${active ? 'translate-x-1 text-[#5E4BF2] dark:text-[#D8F380]' : 'opacity-30'}`} />
                                         </button>
                                     );
                                 })}
@@ -145,8 +145,8 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                         <div className="relative">
                             <div className="absolute inset-3 rounded-[2.5rem] bg-[#5E4BF2]/10 blur-2xl" />
 
-                            <div className="relative overflow-hidden rounded-[2.2rem] border border-white/70 bg-white p-3 shadow-[0_38px_90px_rgba(94,75,242,0.18)] sm:p-4">
-                                <div className="flex items-center justify-between rounded-[1.3rem] border border-[#EDE9F9] bg-[#F8F7FF] px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                            <div className="relative overflow-hidden rounded-[2.2rem] border border-white/70 bg-white p-3 shadow-[0_38px_90px_rgba(94,75,242,0.18)] sm:p-4 dark:border-[#2b2d4b] dark:bg-[#16172b] dark:shadow-[0_38px_90px_rgba(0,0,0,0.6)]">
+                                <div className="flex items-center justify-between rounded-[1.3rem] border border-[#EDE9F9] bg-[#F8F7FF] px-3 py-2.5 dark:border-[#2b2d4b] dark:bg-[#1e1f38]">
                                     <div className="flex items-center gap-3">
                                         <span className="flex size-10 items-center justify-center rounded-2xl bg-[#D8F380] text-[#17182A] shadow-[0_10px_24px_rgba(216,243,128,0.35)]">
                                             {(() => {
@@ -156,19 +156,19 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                                         </span>
 
                                         <div className="leading-none">
-                                            <p className="text-[8px] font-bold tracking-[0.18em] text-[#9AA0B3] uppercase">VVARSA dashboard</p>
-                                            <p className="mt-1.5 text-lg font-black text-[#17182A]">{localizedFeatures[activeFeature].title}</p>
+                                            <p className="text-[8px] font-bold tracking-[0.18em] text-[#9AA0B3] uppercase dark:text-[#8E8C9F]">VVARSA dashboard</p>
+                                            <p className="mt-1.5 text-lg font-black text-[#17182A] dark:text-white">{localizedFeatures[activeFeature].title}</p>
                                         </div>
                                     </div>
 
-                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E1E6F5] bg-white px-2.5 py-1 text-[8px] font-black tracking-[0.14em] text-[#17182A] uppercase shadow-sm">
+                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E1E6F5] bg-white px-2.5 py-1 text-[8px] font-black tracking-[0.14em] text-[#17182A] uppercase shadow-sm dark:border-[#2b2d4b] dark:bg-[#121324] dark:text-white">
                                         <span className="size-1.5 rounded-full bg-[#D8F380] shadow-[0_0_0_3px_rgba(216,243,128,0.2)]" />
                                         {t('landing.features.live', 'Live')}
                                     </span>
                                 </div>
 
                                 <div className="mt-4 grid gap-3 lg:grid-cols-[1.08fr_0.92fr]">
-                                    <div className="rounded-[1.6rem] border border-[#F0EEFF] bg-white p-4 shadow-[0_24px_42px_rgba(94,75,242,0.08)]">
+                                    <div className="rounded-[1.6rem] border border-[#F0EEFF] bg-white p-4 shadow-[0_24px_42px_rgba(94,75,242,0.08)] dark:border-[#2b2d4b] dark:bg-[#1e1f38] dark:text-white">
                                         <div className="flex items-start justify-between gap-3">
                                             <div>
                                                 <p className="text-[9px] font-bold tracking-[0.12em] text-[#9AA0B3] uppercase">
@@ -358,11 +358,11 @@ export function Features({ autoRotate = true }: { autoRotate?: boolean }) {
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <div className="mx-auto max-w-7xl px-6 lg:px-10">
-                <div className="h-px w-full bg-gradient-to-r from-transparent via-[#5E4BF2]/45 to-transparent" />
-            </div>
+                <div className="mx-auto mt-12 max-w-7xl">
+                    <div className="h-px w-full bg-gradient-to-r from-transparent via-[#5E4BF2]/45 to-transparent dark:via-[#5E4BF2]/70" />
+                </div>
+            </section>
         </>
     );
 }

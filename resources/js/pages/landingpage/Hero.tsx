@@ -8,14 +8,14 @@ export function Hero({ goToDashboard }: LandingProps) {
     const { t } = useTranslation();
 
     return (
-        <section className="hero-gradient relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(105,190,125,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(222,248,229,0.9),transparent_28%),linear-gradient(180deg,#f8fff9_0%,#ffffff_52%,#eaf8ed_100%)] px-5 pt-12 pb-20 sm:px-6 lg:px-10 lg:pt-24 lg:pb-28">
-            <div className="hero-orb absolute top-[120px] left-[-120px] size-[340px] rounded-full bg-[#a8e3b5]/70 blur-[110px]" />
+        <section className="hero-gradient relative w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(105,190,125,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(222,248,229,0.9),transparent_28%),linear-gradient(180deg,#f8fff9_0%,#ffffff_52%,#eaf8ed_100%)] px-5 pt-16 pb-20 sm:px-6 lg:px-10 lg:pt-24 lg:pb-28 dark:bg-none dark:bg-[#121324]">
+            <div className="hero-orb absolute top-[120px] left-[-120px] size-[340px] rounded-full bg-[#a8e3b5]/70 blur-[110px] dark:bg-[#5E4BF2]/20" />
 
-            <div className="hero-orb absolute top-[-100px] right-[-100px] size-[420px] rounded-full bg-[#d8f3e0]/90 blur-[110px]" />
+            <div className="hero-orb absolute top-[-100px] right-[-100px] size-[420px] rounded-full bg-[#d8f3e0]/90 blur-[110px] dark:bg-[#5E4BF2]/15" />
 
-            <div className="absolute top-[18%] left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#bde8c7]/35 blur-[120px]" />
+            <div className="absolute top-[18%] left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#bde8c7]/35 blur-[120px] dark:bg-[#5E4BF2]/10" />
 
-            <div className="absolute bottom-[4%] left-[10%] h-[240px] w-[240px] rounded-full bg-[#ffffff]/80 blur-[90px]" />
+            <div className="absolute bottom-[4%] left-[10%] h-[240px] w-[240px] rounded-full bg-[#ffffff]/80 blur-[90px] dark:bg-[#121324]/80" />
 
             <div className="hero-grid absolute inset-0 opacity-[0.4]" />
 
@@ -24,21 +24,21 @@ export function Hero({ goToDashboard }: LandingProps) {
 
                 <div data-reveal className="reveal-hidden relative z-10">
                     <h1 className="max-w-3xl text-[2.3rem] leading-[0.86] font-black tracking-[-0.06em] sm:text-4xl lg:text-[4.2rem]">
-                        {t('landing.hero.title1', 'Usaha lebih')}
+                        <span className="text-[#17182A] dark:text-white">{t('landing.hero.title1', 'Usaha lebih')}</span>
                         <br />
                         <span className="relative inline-block text-[#5E4BF2]">
                             <span className="relative z-10">{t('landing.hero.titleHighlight', 'tertata')}</span>
 
                             <span className="absolute right-0 -bottom-2 left-0 -z-0 h-4 rounded-[0.6rem] bg-[#D8F380] opacity-90 sm:h-6" />
                         </span>{' '}
-                        <span className="text-[#17182A]">{t('landing.hero.titleAnd', 'dan')}</span>
+                        <span className="text-[#17182A] dark:text-white">{t('landing.hero.titleAnd', 'dan')}</span>
                         <br />
-                        <span className="text-[#17182A]">{t('landing.hero.title2', 'lebih siap tumbuh.')}</span>
+                        <span className="text-[#17182A] dark:text-white">{t('landing.hero.title2', 'lebih siap tumbuh.')}</span>
                     </h1>
 
-                    <p className="mt-5 max-w-xl text-sm leading-relaxed font-semibold text-[#66677A] sm:text-base">
+                    <p className="mt-5 max-w-xl text-sm leading-relaxed font-semibold text-[#66677A] sm:text-base dark:text-[#A4A1B8]">
                         {t('landing.hero.description', 'VVARSA menyatukan stok, kasir, penjualan, dan laporan dalam satu sistem yang elegan, efisien, dan siap berkembang.')}
-                        <span className="text-[#5E4BF2]">
+                        <span className="text-[#5E4BF2] dark:text-[#a594f9]">
                             {' '}
                             {t('landing.hero.descriptionSub', 'Dengan operasional yang lebih tertata, Anda dapat fokus pada pelayanan, penjualan, dan pertumbuhan bisnis dengan lebih tenang.')}
                         </span>
@@ -55,9 +55,9 @@ export function Hero({ goToDashboard }: LandingProps) {
 
                         <a
                             href="#cara-kerja"
-                            className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#E6E2F4] bg-white px-6 py-4 text-sm font-black text-[#343548] transition hover:-translate-y-1 hover:border-[#5E4BF2] hover:text-[#5E4BF2] sm:text-base"
+                            className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#E6E2F4] bg-white px-6 py-4 text-sm font-black text-[#343548] transition hover:-translate-y-1 hover:border-[#5E4BF2] hover:text-[#5E4BF2] sm:text-base dark:border-[#2b2d4b] dark:bg-[#1e1f38] dark:text-white dark:hover:border-[#5E4BF2] dark:hover:text-[#D8F380]"
                         >
-                            <span className="flex size-7 items-center justify-center rounded-full bg-[#D8F380]">
+                            <span className="flex size-7 items-center justify-center rounded-full bg-[#D8F380] text-[#17182A]">
                                 <Play className="size-3.5 fill-current" />
                             </span>
                             {t('landing.hero.ctaDemo', 'Lihat Demo')}
@@ -65,20 +65,20 @@ export function Hero({ goToDashboard }: LandingProps) {
                     </div>
 
                     <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-                        <div className="rounded-full border border-[#EAE5F8] bg-white px-4 py-2 shadow-sm">
+                        <div className="rounded-full border border-[#EAE5F8] bg-white px-4 py-2 shadow-sm dark:border-[#2b2d4b] dark:bg-[#1e1f38]">
                             <div className="flex items-center gap-1">
                                 {[1, 2, 3, 4, 5].map((item) => (
                                     <Star key={item} className="size-4 fill-[#FFB800] text-[#FFB800]" />
                                 ))}
                             </div>
 
-                            <p className="mt-1 text-xs font-black text-[#5E4BF2]">{t('landing.hero.ratingText', '4.9/5 dari pengguna')}</p>
+                            <p className="mt-1 text-xs font-black text-[#5E4BF2] dark:text-[#a594f9]">{t('landing.hero.ratingText', '4.9/5 dari pengguna')}</p>
                         </div>
 
-                        <div className="rounded-full border border-[#EAE5F8] bg-white px-4 py-2 shadow-sm">
-                            <p className="text-xl font-black text-[#17182A]">1,200+</p>
+                        <div className="rounded-full border border-[#EAE5F8] bg-white px-4 py-2 shadow-sm dark:border-[#2b2d4b] dark:bg-[#1e1f38]">
+                            <p className="text-xl font-black text-[#17182A] dark:text-white">1,200+</p>
 
-                            <p className="text-[10px] font-black tracking-[0.18em] text-[#8A8999] uppercase">{t('landing.hero.activeBusinesses', 'Bisnis aktif')}</p>
+                            <p className="text-[10px] font-black tracking-[0.18em] text-[#8A8999] uppercase dark:text-[#A4A1B8]">{t('landing.hero.activeBusinesses', 'Bisnis aktif')}</p>
                         </div>
 
                         <div className="flex -space-x-2">
@@ -109,42 +109,42 @@ export function Hero({ goToDashboard }: LandingProps) {
 
                     <div className="absolute top-[10%] left-[2%] h-[87%] w-[87%] rotate-[-5deg] rounded-[3rem] border-2 border-[#BDB5FF] bg-[#DCD8FF]/80 shadow-[0_20px_55px_rgba(94,75,242,0.18)]" />
 
-                    <div className="hero-panel absolute inset-x-[2%] top-0 z-10 mx-auto max-w-[500px]">
-                        <div className="card-depth overflow-hidden rounded-[2.75rem] border-[5px] border-white bg-white shadow-[0_40px_90px_rgba(55,43,130,0.22)]">
-                            <div className="flex items-center justify-between border-b border-[#ECEAF5] px-5 py-4">
+                    <div className="hero-panel absolute inset-x-[2%] top-2 lg:top-3 z-10 mx-auto max-w-[500px]">
+                        <div className="card-depth overflow-hidden rounded-[2.75rem] border-[5px] border-white bg-white shadow-[0_40px_90px_rgba(55,43,130,0.22)] dark:border-[#2b2d4b] dark:bg-[#16172b] dark:text-white dark:shadow-[0_40px_90px_rgba(0,0,0,0.6)]">
+                            <div className="flex items-center justify-between border-b border-[#ECEAF5] px-5 py-4 dark:border-[#2b2d4b]">
                                 <div className="flex items-center gap-3">
                                     <span className="flex size-10 items-center justify-center rounded-xl bg-[#5E4BF2] text-white">
                                         <ChefHat className="size-5" />
                                     </span>
 
                                     <div>
-                                        <p className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.welcome', 'Selamat datang,')}</p>
+                                        <p className="text-[10px] font-bold text-[#9998AA] dark:text-[#A4A1B8]">{t('landing.hero.welcome', 'Selamat datang,')}</p>
 
-                                        <p className="text-sm font-black">{t('landing.hero.dashboardTitle', 'VVARSA Dashboard')}</p>
+                                        <p className="text-sm font-black dark:text-white">{t('landing.hero.dashboardTitle', 'VVARSA Dashboard')}</p>
                                     </div>
                                 </div>
 
-                                <span className="relative flex size-9 items-center justify-center rounded-xl bg-[#F4F2FC]">
+                                <span className="relative flex size-9 items-center justify-center rounded-xl bg-[#F4F2FC] dark:bg-[#1f2038] dark:text-white">
                                     <Bell className="size-4" />
 
-                                    <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-[#FF5252] ring-2 ring-white" />
+                                    <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-[#FF5252] ring-2 ring-white dark:ring-[#16172b]" />
                                 </span>
                             </div>
 
-                            <div className="bg-[#FAF9FE] p-5">
+                            <div className="bg-[#FAF9FE] p-5 dark:bg-[#121324]">
                                 <div className="grid grid-cols-2 gap-3">
-                                    <div className="rounded-2xl bg-white p-4 shadow-sm">
+                                    <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-[#1e1f38] dark:text-white">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.todayRevenue', 'Omzet Hari Ini')}</span>
+                                            <span className="text-[10px] font-bold text-[#9998AA] dark:text-[#A4A1B8]">{t('landing.hero.todayRevenue', 'Omzet Hari Ini')}</span>
 
-                                            <span className="rounded-lg bg-[#EAF8DC] p-1.5 text-[#3E6A19]">
+                                            <span className="rounded-lg bg-[#EAF8DC] p-1.5 text-[#3E6A19] dark:bg-[#3E6A19]/30 dark:text-[#D8F380]">
                                                 <TrendingUp className="size-3.5" />
                                             </span>
                                         </div>
 
                                         <p className="mt-2 text-xl font-black">{formatCurrency(3450000, undefined, true)}</p>
 
-                                        <p className="mt-1 text-[10px] font-bold text-[#45A62E]">{t('landing.hero.fromYesterday', '+24.8% dari kemarin')}</p>
+                                        <p className="mt-1 text-[10px] font-bold text-[#45A62E] dark:text-[#D8F380]">{t('landing.hero.fromYesterday', '+24.8% dari kemarin')}</p>
                                     </div>
 
                                     <div className="rounded-2xl bg-[#5E4BF2] p-4 text-white shadow-lg shadow-[#5E4BF2]/20">
@@ -160,18 +160,18 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </div>
                                 </div>
 
-                                <div className="mt-3 rounded-[1.75rem] border border-[#F0ECFF] bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF9FF_100%)] p-4 shadow-sm">
+                                <div className="mt-3 rounded-[1.75rem] border border-[#F0ECFF] bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF9FF_100%)] p-4 shadow-sm dark:border-[#2b2d4b] dark:bg-[radial-gradient(125%_125%_at_50%_0%,#1c1d36_0%,#16172b_100%)]">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.salesPerformance', 'Performa Penjualan')}</p>
+                                            <p className="text-[10px] font-bold text-[#9998AA] dark:text-[#A4A1B8]">{t('landing.hero.salesPerformance', 'Performa Penjualan')}</p>
 
-                                            <p className="mt-1 text-sm font-black">{t('landing.hero.thisWeek', 'Minggu ini')}</p>
+                                            <p className="mt-1 text-sm font-black dark:text-white">{t('landing.hero.thisWeek', 'Minggu ini')}</p>
                                         </div>
 
-                                        <span className="rounded-lg bg-[#F1EFFD] px-2 py-1 text-[9px] font-black text-[#5E4BF2]">{t('landing.hero.sevenDays', '7 Hari')}</span>
+                                        <span className="rounded-lg bg-[#F1EFFD] px-2 py-1 text-[9px] font-black text-[#5E4BF2] dark:bg-[#5E4BF2]/30 dark:text-[#D8F380]">{t('landing.hero.sevenDays', '7 Hari')}</span>
                                     </div>
 
-                                    <div className="relative mt-5 h-28 overflow-hidden rounded-[1.25rem] bg-[linear-gradient(180deg,#F7F5FF_0%,#FFFFFF_100%)] p-2">
+                                    <div className="relative mt-5 h-28 overflow-hidden rounded-[1.25rem] bg-[linear-gradient(180deg,#F7F5FF_0%,#FFFFFF_100%)] p-2 dark:bg-[#121324]">
                                         <div className="absolute inset-0 bg-[linear-gradient(rgba(94,75,242,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(94,75,242,0.04)_1px,transparent_1px)] bg-[size:18px_18px]" />
 
                                         <svg viewBox="0 0 300 120" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
@@ -205,7 +205,7 @@ export function Hero({ goToDashboard }: LandingProps) {
                                         </svg>
                                     </div>
 
-                                    <div className="mt-2 flex justify-between text-[8px] font-bold text-[#AAA8B8]">
+                                    <div className="mt-2 flex justify-between text-[8px] font-bold text-[#AAA8B8] dark:text-[#807D99]">
                                         <span>{t('landing.hero.days.mon', 'Sen')}</span>
                                         <span>{t('landing.hero.days.tue', 'Sel')}</span>
                                         <span>{t('landing.hero.days.wed', 'Rab')}</span>
@@ -216,39 +216,39 @@ export function Hero({ goToDashboard }: LandingProps) {
                                     </div>
                                 </div>
 
-                                <div className="mt-3 rounded-2xl bg-white p-4 shadow-sm">
+                                <div className="mt-3 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#1e1f38] dark:text-white">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#D8F380]">
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#D8F380] text-[#17182A]">
                                                 <Package className="size-4" />
                                             </span>
 
                                             <div>
-                                                <p className="text-[10px] font-bold text-[#9998AA]">{t('landing.hero.inventoryStatus', 'Status Inventori')}</p>
+                                                <p className="text-[10px] font-bold text-[#9998AA] dark:text-[#A4A1B8]">{t('landing.hero.inventoryStatus', 'Status Inventori')}</p>
 
-                                                <p className="text-xs font-black">{t('landing.hero.itemsAvailable', '128 item tersedia')}</p>
+                                                <p className="text-xs font-black dark:text-white">{t('landing.hero.itemsAvailable', '128 item tersedia')}</p>
                                             </div>
                                         </div>
 
-                                        <span className="rounded-full bg-[#EAF8DC] px-2 py-1 text-[9px] font-black text-[#3E6A19]">{t('landing.hero.safe', 'Aman')}</span>
+                                        <span className="rounded-full bg-[#EAF8DC] px-2 py-1 text-[9px] font-black text-[#3E6A19] dark:bg-[#3E6A19]/30 dark:text-[#D8F380]">{t('landing.hero.safe', 'Aman')}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="animate-float-delay absolute top-[25%] left-[-2%] z-20 w-[190px] rounded-2xl border border-white bg-white p-3.5 shadow-2xl sm:left-[-5%]">
+                    <div className="animate-float-delay absolute top-[25%] left-[-2%] z-20 w-[190px] rounded-2xl border border-white bg-white p-3.5 shadow-2xl sm:left-[-5%] dark:border-[#2b2d4b] dark:bg-[#1c1d36] dark:text-white">
                         <div className="flex items-start gap-3">
-                            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#D8F380]">
+                            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#D8F380] text-[#17182A]">
                                 <Check className="size-4" strokeWidth={3} />
                             </span>
 
                             <div>
-                                <p className="text-[9px] font-bold text-[#9694A6]">{t('landing.hero.txSuccess', 'Transaksi berhasil')}</p>
+                                <p className="text-[9px] font-bold text-[#9694A6] dark:text-[#A4A1B8]">{t('landing.hero.txSuccess', 'Transaksi berhasil')}</p>
 
-                                <p className="mt-0.5 text-xs font-black">{formatRupiah(450000)}</p>
+                                <p className="mt-0.5 text-xs font-black dark:text-white">{formatRupiah(450000)}</p>
 
-                                <p className="mt-1 text-[8px] font-bold text-[#49A22E]">{t('landing.hero.autoStockDeducted', '✓ Stok otomatis terpotong')}</p>
+                                <p className="mt-1 text-[8px] font-bold text-[#49A22E] dark:text-[#D8F380]">{t('landing.hero.autoStockDeducted', '✓ Stok otomatis terpotong')}</p>
                             </div>
                         </div>
                     </div>
@@ -269,13 +269,13 @@ export function Hero({ goToDashboard }: LandingProps) {
                         </div>
                     </div>
 
-                    <div className="animate-float-slow absolute bottom-[3%] left-[10%] z-20 flex items-center gap-2 rounded-full border-2 border-white bg-white py-2 pr-4 pl-2 shadow-xl">
-                        <span className="flex size-8 items-center justify-center rounded-full bg-[#79D7FF] text-[10px] font-black">RA</span>
+                    <div className="animate-float-slow absolute bottom-[3%] left-[10%] z-20 flex items-center gap-2 rounded-full border-2 border-white bg-white py-2 pr-4 pl-2 shadow-xl dark:border-[#2b2d4b] dark:bg-[#1c1d36] dark:text-white">
+                        <span className="flex size-8 items-center justify-center rounded-full bg-[#79D7FF] text-[10px] font-black text-[#17182A]">RA</span>
 
                         <div>
-                            <p className="text-[8px] font-bold text-[#9998AA]">{t('landing.hero.owner', 'Owner')}</p>
+                            <p className="text-[8px] font-bold text-[#9998AA] dark:text-[#A4A1B8]">{t('landing.hero.owner', 'Owner')}</p>
 
-                            <p className="text-[10px] font-black">Rina A.</p>
+                            <p className="text-[10px] font-black dark:text-white">Rina A.</p>
                         </div>
                     </div>
                 </div>

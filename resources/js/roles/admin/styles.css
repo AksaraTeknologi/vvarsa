@@ -318,69 +318,44 @@ body:has(.admin-theme)::-webkit-scrollbar-thumb:hover { background: #4938d9 !imp
 .admin-settings-page [data-variant='owner'], .admin-settings-page .bg-owner-accent { background-color: #5e4bf2 !important; color: #ffffff !important; }
 .admin-settings-page .text-owner-accent, .admin-settings-page .text-green-600 { color: #5e4bf2 !important; }
 .admin-settings-page .border-owner-accent, .admin-settings-page .border-owner-accent\/25, .admin-settings-page .border-owner-accent\/30 { border-color: #dcd8ff !important; }
-.admin-settings-page .appearance-tabs { border-color: #dcd8ff !important; }
-.admin-settings-page .appearance-tabs button:hover, .admin-settings-page .appearance-tabs button:focus-visible { background: #f1effd !important; color: #5e4bf2 !important; }
-.admin-settings-page .appearance-tabs button:not(.bg-owner-accent) { color: #5e4bf2 !important; }
-.admin-settings-page .appearance-tabs button.bg-owner-accent, .admin-settings-page .appearance-tabs button.bg-owner-accent:hover { background: #3f9567 !important; color: #ffffff !important; }
-.admin-settings-page .appearance-tabs button {
-    background: #eeeaf5 !important;
-    color: #5f6073 !important;
+.admin-settings-page .appearance-tabs {
+    border-color: #dcd8ff !important;
+    background: #f4f2ff !important;
 }
+html.dark .admin-settings-page .appearance-tabs {
+    border-color: #2f3154 !important;
+    background: #1e1f38 !important;
+}
+
+.admin-settings-page .appearance-tabs button {
+    background: transparent !important;
+    color: #686673 !important;
+    box-shadow: none !important;
+}
+html.dark .admin-settings-page .appearance-tabs button {
+    color: #8d8ba7 !important;
+}
+
 .admin-settings-page .appearance-tabs button:hover,
 .admin-settings-page .appearance-tabs button:focus-visible {
-    background: #e2ddec !important;
-    color: #303042 !important;
+    background: #eae7fe !important;
+    color: #5e4bf2 !important;
 }
-.admin-settings-page .appearance-tabs button[data-appearance-value='light'],
-.admin-settings-page .appearance-tabs button[data-appearance-value='system'],
-.admin-settings-page .appearance-tabs button[data-appearance-value='light']:hover,
-.admin-settings-page .appearance-tabs button[data-appearance-value='system']:hover {
-    color: #5f6073 !important;
+html.dark .admin-settings-page .appearance-tabs button:hover,
+html.dark .admin-settings-page .appearance-tabs button:focus-visible {
+    background: #28294a !important;
+    color: #ffffff !important;
 }
+
+.admin-settings-page .appearance-tabs[data-appearance='light'] button[data-appearance-value='light'],
+.admin-settings-page .appearance-tabs[data-appearance='light'] button[data-appearance-value='light']:hover,
 .admin-settings-page .appearance-tabs[data-appearance='dark'] button[data-appearance-value='dark'],
-.admin-settings-page .appearance-tabs[data-appearance='dark'] button[data-appearance-value='dark']:hover {
-    background: #3f9567 !important;
+.admin-settings-page .appearance-tabs[data-appearance='dark'] button[data-appearance-value='dark']:hover,
+.admin-settings-page .appearance-tabs[data-appearance='system'] button[data-appearance-value='system'],
+.admin-settings-page .appearance-tabs[data-appearance='system'] button[data-appearance-value='system']:hover {
+    background: #5e4bf2 !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(63, 149, 103, 0.28) !important;
-}
-.admin-settings-page .appearance-tabs[data-appearance='light'],
-.admin-settings-page .appearance-tabs[data-appearance='system'] {
-    border-color: #c9c7d0 !important;
-    background: #f3f2f5 !important;
-}
-.admin-settings-page .appearance-tabs[data-appearance='light'] button,
-.admin-settings-page .appearance-tabs[data-appearance='system'] button,
-.admin-settings-page .appearance-tabs[data-appearance='light'] button:focus-visible,
-.admin-settings-page .appearance-tabs[data-appearance='system'] button:focus-visible {
-    background: #e3e1e7 !important;
-    color: #4b4a54 !important;
-    box-shadow: none !important;
-}
-
-.admin-settings-page .appearance-tabs[data-appearance='light'] button:hover,
-.admin-settings-page .appearance-tabs[data-appearance='system'] button:hover {
-    background: #7c3aed !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 12px rgb(124 58 237 / 0.28) !important;
-}
-
-.admin-settings-page .appearance-tabs button[data-appearance-value='light'],
-.admin-settings-page .appearance-tabs button[data-appearance-value='system'],
-.admin-settings-page .appearance-tabs button[data-appearance-value='light']:hover,
-.admin-settings-page .appearance-tabs button[data-appearance-value='system']:hover,
-.admin-settings-page .appearance-tabs button[data-appearance-value='light']:focus-visible,
-.admin-settings-page .appearance-tabs button[data-appearance-value='system']:focus-visible {
-    background: transparent !important;
-    color: #5f6073 !important;
-    box-shadow: none !important;
-}
-
-.admin-settings-page .appearance-tabs button[data-appearance-value='dark'],
-.admin-settings-page .appearance-tabs button[data-appearance-value='dark']:hover,
-.admin-settings-page .appearance-tabs button[data-appearance-value='dark']:focus-visible {
-    background: #3f9567 !important;
-    color: #ffffff !important;
-    box-shadow: 0 8px 20px rgba(63, 149, 103, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(94, 75, 242, 0.35) !important;
 }
 .admin-settings-page, .admin-settings-page * { scrollbar-color: #5e4bf2 #f1effd !important; }
 .admin-settings-page::-webkit-scrollbar, .admin-settings-page *::-webkit-scrollbar { width: 8px !important; }
